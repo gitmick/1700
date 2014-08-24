@@ -42,9 +42,9 @@ Lemming.prototype.checkFalling=function() {
 }
 
 Lemming.prototype.walk=function() {
-	if (this.x>=levelLoader.worldHtmlImage.width || levelLoader.worldBitmapData.getPixel(this.x,this.y)==0)
+	if (this.x>=levelLoader.worldHtmlImage.width)
 		this.direction=-1;
-	else if (this.x<=0 || levelLoader.worldBitmapData.getPixel(this.x,this.y)==0)
+	else if (this.x<=0)
 		this.direction=1;
 	this.x+=this.direction;
 }
