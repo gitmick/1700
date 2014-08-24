@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+
+
+function LevelLoader(levelName) {
+	this.name=levelName;
+	this.dirPath;
+}
+LevelLoader.prototype.createDirPath= function () {
+	this.dirPath = "levels/"+levelName;
+}

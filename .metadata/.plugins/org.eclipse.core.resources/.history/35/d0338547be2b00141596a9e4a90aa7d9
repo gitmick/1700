@@ -1,0 +1,48 @@
+/**
+ * 
+ */
+
+
+var bmp;
+var stage;
+var lemming;
+
+function init() {
+//Create a stage by getting a reference to the canvas
+    stage = new createjs.Stage("canvas");
+    //Create a Shape DisplayObject.
+//    circle = new createjs.Shape();
+//  circle.graphics.beginFill("red").drawCircle(0, 0, 40);
+//    //Set position of Shape instance.
+//    circle.x = circle.y = 50;
+//    //Add Shape instance to stage display list.
+//    stage.addChild(circle);
+//    
+    
+    
+    
+    bmp = new createjs.Bitmap("img/diskontent.png");
+    bmp.image.onload=setImage;
+	
+    
+    
+    createjs.Ticker.addEventListener("tick", tick);
+    
+}
+
+function setImage() {
+	//bmp.x = 100;
+	//bmp.y = 100;
+	stage.addChild(bmp);
+	//Update stage will render next frame
+	lemming=new Lemming();
+    lemming.create();
+    
+    stage.update();
+}
+
+function tick() {
+	lemming.draw();
+	stage.update();
+}
+

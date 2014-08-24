@@ -1,0 +1,18 @@
+/**
+ * 
+ */
+
+function Lemming() {
+	this.x=300;
+	this.y=0;
+}
+
+Lemming.prototype.create=function() {
+	circle = new createjs.Shape();
+	circle.graphics.beginFill("red").drawCircle(this.x, this.y, 40);
+	stage.addChild(circle);
+}
+
+Lemming.prototype.paint=function() {
+
+}

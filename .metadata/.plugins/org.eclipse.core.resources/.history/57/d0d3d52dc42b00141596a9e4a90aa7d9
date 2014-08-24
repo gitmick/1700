@@ -1,0 +1,26 @@
+/**
+ * 
+ */
+
+
+function LevelLoader(levelName) {
+	this.name=levelName;
+	this.dirPath;
+	this.worldBitmap;
+	this.loaded=false;
+}
+
+LevelLoader.prototype.init = function() {
+	this.createDirPath();
+	this.worldBitmap = new createjs.Bitmap(this.dirPath+"/world.png");
+	this.worldBitmap.image.onload=setWorldImage;
+	
+}
+
+LevelLoader.prototype.createDirPath= function () {
+	this.dirPath = "levels/"+this.name;
+}
+
+function setWorldImage()  {
+	levelLoader.loaded=true;
+}

@@ -1,0 +1,44 @@
+/**
+ * 
+ */
+
+function Lemming() {
+	this.x=300;
+	this.y=0;
+	this.circle;
+	this.falling=true;
+}
+
+Lemming.prototype.create=function() {
+	this.circle = new createjs.Shape();
+	this.circle.graphics.beginFill("red").drawCircle(this.x, this.y, 40);
+	stage.addChild(this.circle);
+	this.move=this.fall;
+}
+
+
+
+Lemming.prototype.draw=function() {
+	
+	this.circle.x=this.x;
+	this.circle.y=this.y;
+}
+
+Lemming.prototype.fall=function() {
+	this.checkFalling();
+	if (this.falling) {
+		this.y++;
+	}
+	else {
+		this.move=this.fall;
+		this.move();
+	}
+}
+
+Lemming.prototype.checkFalling=function() {
+	var color=levelLoader.worldBitmapData.getPixel(this.x,this.y);
+}
+
+Lemming.prototype.walk=function() {
+	
+}

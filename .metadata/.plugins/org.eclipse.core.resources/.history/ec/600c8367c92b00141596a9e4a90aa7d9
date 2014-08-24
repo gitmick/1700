@@ -1,0 +1,34 @@
+/**
+ * 
+ */
+
+function Lemming() {
+	this.x=300;
+	this.y=0;
+	this.circle;
+	this.falling=true;
+}
+
+Lemming.prototype.create=function() {
+	this.circle = new createjs.Shape();
+	this.circle.graphics.beginFill("red").drawCircle(this.x, this.y, 40);
+	stage.addChild(this.circle);
+}
+
+Lemming.prototype.move=function() {
+	
+}
+
+Lemming.prototype.draw=function() {
+	this.y++;
+	this.circle.x=this.x;
+	this.circle.y=this.y;
+}
+
+Lemming.prototype.fall=function() {
+	
+}
+
+Lemming.prototype.walk=function() {
+	
+}
