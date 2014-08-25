@@ -17,7 +17,7 @@ function Lemming() {
 	this.action;
 }
 
-Lemming.prototype.setAction=function(a) {
+Lemming.prototype.setAction(a) {
 	this.action=a;
 	this.action.lemming=this;
 	this.move();
@@ -72,20 +72,17 @@ Lemming.prototype.move=function(){
 //	}else{
 //		this.fall();
 //	}
-	if (this.action.check()) 
-		this.action.act();
 }
 
+Lemming.prototype.dig = function() {
+	game.setWorldPixel(this.x,this.y,10000);
+	this.y+=this.speed;
+}
 
+Lemming.prototype.fall=function() {
+	this.y+=this.speed;
+}
 
-//Lemming.prototype.fall=function() {
-//	this.y+=this.speed;
-//}
-//
-//Lemming.prototype.walk=function() {
-//	this.y-=this.getDY();
-//	this.x+=this.direction*this.speed;
-//}
 
 Lemming.prototype.hasFloor=function(){
 	return game.getWorldPixel(this.x,this.y)==0;
@@ -112,7 +109,10 @@ Lemming.prototype.getDY=function(){
 	return dy;
 }
 
-
+Lemming.prototype.walk=function() {
+	this.y-=this.getDY();
+	this.x+=this.direction*this.speed;
+}
 
 
 

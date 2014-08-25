@@ -1,0 +1,15 @@
+ /**
+ * 
+ */
+
+function Action(actionLemming) {
+	this.lemming = l;
+}
+
+Action.prototype.check= function() {
+	return false;
+}
+
+Action.prototype.act = function() {
+	
+}

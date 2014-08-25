@@ -1,0 +1,59 @@
+ /**
+ * 
+ */
+
+function Action() {
+	this.lemming;
+}
+
+Action.prototype.check= function() {
+	return false;
+}
+
+Action.prototype.act = function() {
+	
+}
+
+Action.prototype.hasFloor=function(){
+	return game.getWorldPixel(lemming.x,lemming.y)==0;
+}
+
+Action.prototype.againstWall=function(){
+	for(var aw=lemming.maxDY;aw<lemming.height;aw++){
+		if(game.getWorldPixel(lemming.x+(lemming.direction),lemming.y-aw)==0){
+			return true;
+		}
+	}
+	return false;
+}
+
+function Fall() {}
+Fall.prototype=new Action();
+
+Fall.prototype.check=function() {
+	if (this.hasFloor()) {
+		lemming.setAction(new Walk());
+		return false;
+	}
+	return true;
+}
+
+Fall.prototype.act=function() {
+	lemming.y+=lemming.speed;
+}
+
+function Walk() {}
+Walk.prototype=new Action();
+
+Walk.prototype.check=function() {
+	if (!this.hasFloor()) {
+		lemming.setAction(new Fall());
+		return false;
+	}
+}
+
+Walk.prototype.act = function() {
+	lemming.y-=lemming.getDY();
+	lemming.x+=lemming.direction*lemming.speed;
+}
+

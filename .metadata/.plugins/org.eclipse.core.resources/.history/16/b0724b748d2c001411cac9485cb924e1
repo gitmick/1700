@@ -22,7 +22,6 @@ Game.prototype.initControls = function() {
 	digControl.addEventListener("click",this.dig);
 	stage.addChild(digControl);
 	
-	mineControl = new createjs.Shape();
 	mineControl.graphics.beginFill("blue").drawCircle(60,650,20);
 	mineControl.addEventListener("click",this.mine);
 	stage.addChild(mineControl);

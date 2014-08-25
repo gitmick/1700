@@ -21,18 +21,10 @@ Game.prototype.initControls = function() {
 	digControl.graphics.beginFill("blue").drawCircle(20,650,20);
 	digControl.addEventListener("click",this.dig);
 	stage.addChild(digControl);
-	
-	mineControl = new createjs.Shape();
-	mineControl.graphics.beginFill("blue").drawCircle(60,650,20);
-	mineControl.addEventListener("click",this.mine);
-	stage.addChild(mineControl);
 }
 
 Game.prototype.dig = function() {
-	game.selectedLemming.setAction(new Dig());
-}
-Game.prototype.mine = function() {
-	game.selectedLemming.setAction(new Mine());
+	game.selectedLemming.move=game.selectedLemming.dig;
 }
 
 Game.prototype.start = function(){

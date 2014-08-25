@@ -31,15 +31,11 @@ function init() {
     createjs.Ticker.setFPS(60);
     createjs.Ticker.addEventListener("tick", tick);
     
-    stage.mouseMoveOutside = false;
+    stage.mouseMoveOutside = true;
     stage.on("stagemousemove", function(evt) {
 //        console.log("stageX/Y: "+evt.stageX+","+evt.stageY); // always in bounds
 //        console.log("rawX/Y: "+evt.rawX+","+evt.rawY); // could be < 0, or > width/height
-    	//TODO make generic
-    	if (evt.stageY<600)
-    		mouseX=evt.stageX;
-    	else
-    		mouseX=300;
+    	mouseX=evt.stageX;
     });
     
 }

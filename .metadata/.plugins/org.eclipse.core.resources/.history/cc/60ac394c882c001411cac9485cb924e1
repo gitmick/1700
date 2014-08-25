@@ -1,0 +1,11 @@
+ /**
+ * 
+ */
+
+function Action(Lemming l) {
+	this.lemming = l;
+}
+
+Action.prototype.check= function() {
+	
+}

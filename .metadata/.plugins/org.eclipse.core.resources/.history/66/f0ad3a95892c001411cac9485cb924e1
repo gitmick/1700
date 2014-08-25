@@ -13,18 +13,10 @@ function Lemming() {
 	
 	this.maxDY=8; //maximum pitch/slope (should be smaller than this.height)
 	this.speed=1.0; //might break collision if different than 1.0 
-
-	this.action;
 }
 
-Lemming.prototype.setAction=function(a) {
-	this.action=a;
-	this.action.lemming=this;
-	this.move();
-}
 
 Lemming.prototype.create=function() {
-	this.setAction(new Fall());
 	this.circle = new createjs.Shape();
 	this.circle.lemming=this;
 	this.drawLemming();
@@ -63,29 +55,26 @@ Lemming.prototype.draw=function(currentScroll) {
 
 
 Lemming.prototype.move=function(){
-//	if(this.hasFloor()){
-//		if(!this.againstWall()){
-//			this.walk();
-//		}else{
-//			this.direction*=-1;
-//		}
-//	}else{
-//		this.fall();
-//	}
-	if (this.action.check()) 
-		this.action.act();
+	if(this.hasFloor()){
+		if(!this.againstWall()){
+			this.walk();
+		}else{
+			this.direction*=-1;
+		}
+	}else{
+		this.fall();
+	}
 }
 
+Lemming.prototype.dig = function() {
+	game.setWorldPixel(this.x,this.y,10000);
+	this.y+=this.speed;
+}
 
+Lemming.prototype.fall=function() {
+	this.y+=this.speed;
+}
 
-//Lemming.prototype.fall=function() {
-//	this.y+=this.speed;
-//}
-//
-//Lemming.prototype.walk=function() {
-//	this.y-=this.getDY();
-//	this.x+=this.direction*this.speed;
-//}
 
 Lemming.prototype.hasFloor=function(){
 	return game.getWorldPixel(this.x,this.y)==0;
@@ -112,7 +101,10 @@ Lemming.prototype.getDY=function(){
 	return dy;
 }
 
-
+Lemming.prototype.walk=function() {
+	this.y-=this.getDY();
+	this.x+=this.direction*this.speed;
+}
 
 
 
