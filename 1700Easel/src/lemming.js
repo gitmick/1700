@@ -22,7 +22,7 @@ Lemming.prototype.create=function() {
 
 
 
-Lemming.prototype.draw=function() {
+Lemming.prototype.draw=function(currentScroll) {
 	this.circle.x=parseInt(this.x-currentScroll);
 	this.circle.y=parseInt(this.y);
 }

@@ -9,6 +9,9 @@ function LevelLoader(levelName) {
 	this.worldHtmlImage= new Image();
 	this.worldBitmap;
 	this.worldBitmapData;
+	
+	this.levelWidth=1600;
+	
 	this.loaded=false;
 }
 

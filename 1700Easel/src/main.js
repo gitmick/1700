@@ -3,12 +3,10 @@
  */
 
 
-//das muss hier weg
-var imageSize=1600;
-var canvasSize=800;
-var currentScroll=0;
+var canvasWidth=800;
+var canvasHeight=600;
 
-var mouseX=200;
+var mouseX;
 
 var bmp;
 var stage;
@@ -42,44 +40,13 @@ function init() {
     
 }
 
-function setImage() {
-	//bmp.x = 100;
-	//bmp.y = 100;
-	stage.addChild(game.levelLoader.worldBitmap);
-	//Update stage will render next frame
-    
-    stage.update();
-    
-    
-}
 
 
 var alreadyInitialized=false;
 
 function tick() {
-	if (!alreadyInitialized && game.levelLoader.loaded) {
-		alreadyInitialized=true;
-		//setImage();
-	}
-	else {
-		if (game.levelLoader.loaded) {
-			
-			if (mouseX>canvasSize-100) {
-	    		if (currentScroll<=imageSize-canvasSize)
-	    			currentScroll+=(mouseX-(canvasSize-100))/8.0;
-	    	}
-	    	else if (mouseX<100) {
-	    		if (currentScroll>1)
-	    			currentScroll-=(100-mouseX)/8.0;
-	    	}
-			
-			game.levelLoader.worldBitmap.x=0-currentScroll;
-			
-			game.update();
-			
-		}
-		stage.update();
-	}
-	
+	game.scrollLevel(mouseX);
+	game.update();
+	stage.update();
 }
 
