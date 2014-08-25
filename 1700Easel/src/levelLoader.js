@@ -17,8 +17,6 @@ LevelLoader.prototype.init = function() {
 	this.worldHtmlImage.src = this.dirPath+"/world.png";
 	this.worldHtmlImage.name = 'world';
 	this.worldHtmlImage.onload = setWorldImage;
-	
-	
 }
 
 LevelLoader.prototype.createDirPath= function () {

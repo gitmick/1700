@@ -69,16 +69,18 @@ function tick() {
 	else {
 		if (levelLoader.loaded) {
 			
-			if (mouseX>700) {
+			if (mouseX>canvasSize-100) {
 	    		if (currentScroll<=imageSize-canvasSize)
-	    			currentScroll++;
+	    			currentScroll+=(mouseX-(canvasSize-100))/8.0;
 	    	}
 	    	else if (mouseX<100) {
 	    		if (currentScroll>1)
-	    			currentScroll--;
+	    			currentScroll-=(100-mouseX)/8.0;
 	    	}
 			
 			levelLoader.worldBitmap.x=0-currentScroll;
+			lemming.move();
+			lemming.move();
 			lemming.move();
 			lemming.draw();
 		}
