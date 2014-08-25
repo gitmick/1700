@@ -3,27 +3,28 @@
  */
 
 function Lemming() {
-	this.x=300;
+	this.x=0;
 	this.y=0;
 	this.circle;
 	this.direction=1;
-	this.maxDY=5;
 	this.height=10;
-	this.width=10;
+	this.width=10;	
+	
+	this.maxDY=8; //maximum pitch/slope (should be smaller than this.height)
+	this.speed=1.0; //might break collision if different than 1.0 
 }
 
 Lemming.prototype.create=function() {
 	this.circle = new createjs.Shape();
 	this.circle.graphics.beginFill("red").drawCircle(0,-this.height, this.height);
 	stage.addChild(this.circle);
-	//this.move=this.fall;
 }
 
 
 
 Lemming.prototype.draw=function() {
-	this.circle.x=this.x-currentScroll;
-	this.circle.y=this.y;
+	this.circle.x=parseInt(this.x-currentScroll);
+	this.circle.y=parseInt(this.y);
 }
 
 
@@ -41,17 +42,17 @@ Lemming.prototype.move=function(){
 
 
 Lemming.prototype.fall=function() {
-	this.y++;
+	this.y+=this.speed;
 }
 
 
 Lemming.prototype.hasFloor=function(){
-	return levelLoader.worldBitmapData.getPixel(this.x,this.y)==0;
+	return game.getWorldPixel(this.x,this.y)==0;
 }
 
 Lemming.prototype.againstWall=function(){
 	for(var aw=this.maxDY;aw<this.height;aw++){
-		if(levelLoader.worldBitmapData.getPixel(this.x+(this.direction),this.y-aw)==0){
+		if(game.getWorldPixel(this.x+(this.direction),this.y-aw)==0){
 			return true;
 		}
 	}
@@ -61,7 +62,7 @@ Lemming.prototype.againstWall=function(){
 Lemming.prototype.getDY=function(){
 	var dy=0;
 	while(dy<this.maxDY){
-		if(levelLoader.worldBitmapData.getPixel(this.x+this.direction,this.y-(dy+1))==0){
+		if(game.getWorldPixel(this.x,this.y-(dy+1))==0){
 			dy++;
 		}else{
 			return dy;
@@ -71,8 +72,8 @@ Lemming.prototype.getDY=function(){
 }
 
 Lemming.prototype.walk=function() {
-	this.x+=this.direction;
 	this.y-=this.getDY();
+	this.x+=this.direction*this.speed;
 }
 
 

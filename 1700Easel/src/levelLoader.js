@@ -16,7 +16,16 @@ LevelLoader.prototype.init = function() {
 	this.createDirPath();
 	this.worldHtmlImage.src = this.dirPath+"/world.png";
 	this.worldHtmlImage.name = 'world';
-	this.worldHtmlImage.onload = setWorldImage;
+
+	var that = this;
+	
+	this.worldHtmlImage.onload = function(event){
+		that.worldBitmapData = new createjs.BitmapData(that.worldHtmlImage);
+		that.worldBitmap = new createjs.Bitmap(that.worldBitmapData.canvas);
+		that.loaded=true;
+		stage.addChild(that.worldBitmap);
+		game.start();
+	};
 }
 
 LevelLoader.prototype.createDirPath= function () {
@@ -24,9 +33,8 @@ LevelLoader.prototype.createDirPath= function () {
 	console.log("initializing level: "+this.dirPath);
 }
 
-function setWorldImage()  {
-	levelLoader.worldBitmapData = new createjs.BitmapData(levelLoader.worldHtmlImage);
-	levelLoader.worldBitmap = new createjs.Bitmap(levelLoader.worldBitmapData.canvas);
-	levelLoader.loaded=true;
-	
+LevelLoader.prototype.getWorldPixel = function(px,py){
+	if(py<0)return -1;
+	return this.worldBitmapData.getPixel(px,py);
 }
+

@@ -12,9 +12,7 @@ var mouseX=200;
 
 var bmp;
 var stage;
-var lemming;
-
-var levelLoader;
+var game;
 
 function init() {
 //Create a stage by getting a reference to the canvas
@@ -29,10 +27,8 @@ function init() {
 //    
     
     
-    
-    levelLoader = new LevelLoader("devLevel");
-    levelLoader.init();
-	
+    game = new Game();
+	game.init();
     
     createjs.Ticker.setFPS(60);
     createjs.Ticker.addEventListener("tick", tick);
@@ -49,25 +45,24 @@ function init() {
 function setImage() {
 	//bmp.x = 100;
 	//bmp.y = 100;
-	stage.addChild(levelLoader.worldBitmap);
+	stage.addChild(game.levelLoader.worldBitmap);
 	//Update stage will render next frame
-	lemming=new Lemming();
-    lemming.create();
     
     stage.update();
     
     
 }
 
+
 var alreadyInitialized=false;
 
 function tick() {
-	if (!alreadyInitialized && levelLoader.loaded) {
+	if (!alreadyInitialized && game.levelLoader.loaded) {
 		alreadyInitialized=true;
-		setImage();
+		//setImage();
 	}
 	else {
-		if (levelLoader.loaded) {
+		if (game.levelLoader.loaded) {
 			
 			if (mouseX>canvasSize-100) {
 	    		if (currentScroll<=imageSize-canvasSize)
@@ -78,11 +73,10 @@ function tick() {
 	    			currentScroll-=(100-mouseX)/8.0;
 	    	}
 			
-			levelLoader.worldBitmap.x=0-currentScroll;
-			lemming.move();
-			lemming.move();
-			lemming.move();
-			lemming.draw();
+			game.levelLoader.worldBitmap.x=0-currentScroll;
+			
+			game.update();
+			
 		}
 		stage.update();
 	}
