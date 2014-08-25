@@ -3,13 +3,28 @@ function Game(){
 	this.maxLemmings=33;
 	this.lemmings = [];
 	
-	this.speedFactor=3; //makes the game n-times faster (use very high numbers to check collision performance)
-	this.currentScroll=0;	
+	this.speedFactor=1; //makes the game n-times faster (use very high numbers to check collision performance)
+	this.currentScroll=0;
+	
+	this.selectedLemming;
+	this.digControl;
 }
 
 Game.prototype.init = function(){
     this.levelLoader = new LevelLoader("devLevel");
     this.levelLoader.init();
+    this.initControls();
+}
+
+Game.prototype.initControls = function() {
+	digControl = new createjs.Shape();
+	digControl.graphics.beginFill("blue").drawCircle(20,650,20);
+	digControl.addEventListener("click",this.dig);
+	stage.addChild(digControl);
+}
+
+Game.prototype.dig = function() {
+	game.selectedLemming.move=game.selectedLemming.dig;
 }
 
 Game.prototype.start = function(){
@@ -18,6 +33,10 @@ Game.prototype.start = function(){
 
 Game.prototype.getWorldPixel = function(px,py){
 	return this.levelLoader.getWorldPixel(px,py);
+}
+
+Game.prototype.setWorldPixel = function(px,py,color){
+	return this.levelLoader.setWorldPixel(px,py,color);
 }
 
 Game.prototype.addLemmings = function(){

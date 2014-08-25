@@ -42,7 +42,6 @@ function init() {
 
 
 
-var alreadyInitialized=false;
 
 function tick() {
 	game.scrollLevel(mouseX);
