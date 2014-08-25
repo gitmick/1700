@@ -60,7 +60,6 @@ Game.prototype.scrollLevel = function(mouseX){
     			this.currentScroll-=(100-mouseX)/8.0;
     	}
 		this.levelLoader.worldBitmap.x=0-this.currentScroll;
-		this.levelLoader.s.x=0-this.currentScroll;
 	}
 }
 
