@@ -84,5 +84,5 @@ Mine.prototype.check = function() {
 Mine.prototype.act= function() {
 	game.setWorldPixel(this.lemming.x,this.lemming.y,10000);
 	this.lemming.y+=this.lemming.speed;
-	this.lemming.x+=this.lemming.speed*2;
+	this.lemming.x+=this.lemming.speed*2*this.lemming.direction;
 }
