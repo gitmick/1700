@@ -25,7 +25,7 @@ Lemming.prototype.setAction=function(a) {
 
 Lemming.prototype.create=function() {
 	this.setAction(new Fall());
-	this.circle = new createjs.Shape();
+	this.circle =  new createjs.Sprite(lemmingsSheet, "run");
 	this.circle.lemming=this;
 	this.drawLemming();
 	this.selection = new createjs.Shape();
@@ -35,7 +35,8 @@ Lemming.prototype.create=function() {
 }
 
 Lemming.prototype.drawLemming = function() {
-	this.circle.graphics.beginFill("red").drawCircle(0,-this.height, this.height);
+	
+	//this.circle.graphics.beginFill("red").drawCircle(0,-this.height, this.height);
 }
 
 Lemming.prototype.drawSelection = function() {
@@ -54,6 +55,10 @@ Lemming.prototype.select=function(evt) {
 }
 
 Lemming.prototype.draw=function(currentScroll) {	
+	if (this.direction<0)
+		this.circle.setTransform(0, 0, -0.5, 0.5);
+	else
+		this.circle.setTransform(0, 0, 0.5, 0.5);
 	this.selection.x=parseInt(this.x-currentScroll);
 	this.selection.y=parseInt(this.y);
 	this.circle.x=parseInt(this.x-currentScroll);
