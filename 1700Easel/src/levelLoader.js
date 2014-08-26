@@ -29,8 +29,9 @@ LevelLoader.prototype.init = function() {
 		that.worldBitmap = new createjs.Bitmap(that.worldBitmapData.canvas);
 		that.loaded=true;
 		stage.addChild(that.worldBitmap);
-		game.start();
 		stage.addChild(that.s);
+		game.start();
+		
 	};
 }
 
@@ -46,7 +47,23 @@ LevelLoader.prototype.getWorldPixel = function(px,py){
 
 LevelLoader.prototype.setWorldPixel = function(px,py,color){
 	if(py<0)return -1;
-	this.worldBitmapData.setPixel(px,py,color);
-	this.s.graphics.beginFill("white").drawRect(px,py,2,2);
+	
+	
+	r=12;
+	x=r;
+	d=-r;
+	y=0;
+	while (y<x) {
+		for (xi=x;xi>-x;xi--) {
+			this.worldBitmapData.setPixel(px+xi,py+y,color);
+		}
+		d=d+2*y+1;
+		y++;
+		if (d>0) {
+			d=d-2*x+2;
+			x--;
+		}
+	}
+	this.s.graphics.beginFill("white").drawCircle(px,py,12);
 }
 
