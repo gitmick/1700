@@ -46,9 +46,6 @@ LevelLoader.prototype.getWorldPixel = function(px,py){
 }
 
 LevelLoader.prototype.setWorldPixel = function(px,py,color){
-	if(py<0)return -1;
-	
-	
 	r=12;
 	x=r;
 	d=-r;
