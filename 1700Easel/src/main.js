@@ -28,7 +28,7 @@ function init() {
     game = new Game();
 	game.init();
     
-    createjs.Ticker.setFPS(60);
+    createjs.Ticker.setFPS(30);
     createjs.Ticker.addEventListener("tick", tick);
     
     stage.mouseMoveOutside = false;
@@ -36,6 +36,8 @@ function init() {
 //        console.log("stageX/Y: "+evt.stageX+","+evt.stageY); // always in bounds
 //        console.log("rawX/Y: "+evt.rawX+","+evt.rawY); // could be < 0, or > width/height
     	//TODO make generic
+    	game.mouseX=evt.stageX;
+    	game.mouseY=evt.stageY;
     	if (evt.stageY<600)
     		mouseX=evt.stageX;
     	else

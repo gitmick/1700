@@ -14,6 +14,8 @@ function LevelLoader(levelName) {
 	
 	this.loaded=false;
 	this.s;
+	
+	this.actionImage = new Image();
 }
 
 LevelLoader.prototype.init = function() {
@@ -33,6 +35,15 @@ LevelLoader.prototype.init = function() {
 		game.start();
 		
 	};
+	this.actionImage.src="img/actions.png";
+	this.actionImage.name="actions";
+	this.actionImage.onload = function(event) {
+		var bitmap = new createjs.Bitmap(that.actionImage);
+		bitmap.y=620;
+		stage.addChild(bitmap);
+	}
+	
+	
 }
 
 LevelLoader.prototype.createDirPath= function () {
@@ -45,14 +56,16 @@ LevelLoader.prototype.getWorldPixel = function(px,py){
 	return this.worldBitmapData.getPixel(px,py);
 }
 
-LevelLoader.prototype.setWorldPixel = function(px,py,color){
-	r=12;
+LevelLoader.prototype.setWorldPixel = function(px,py,radius,color){
+	r=radius;
 	x=r;
 	d=-r;
 	y=0;
-	while (y<x) {
+	//this.s.graphics.beginFill("white");
+	while (y<=x) {
 		for (xi=x;xi>-x;xi--) {
 			this.worldBitmapData.setPixel(px+xi,py+y,color);
+			//this.s.graphics.drawCircle(px+xi,py+y,1);
 		}
 		d=d+2*y+1;
 		y++;
@@ -61,6 +74,7 @@ LevelLoader.prototype.setWorldPixel = function(px,py,color){
 			x--;
 		}
 	}
-	this.s.graphics.beginFill("white").drawCircle(px,py,12);
+	//this.s.graphics.beginFill("rgba(255,0,0,0.5)").drawCircle(px,py,radius);
+	this.s.graphics.beginFill("white").drawCircle(px,py,radius);
 }
 
