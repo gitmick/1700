@@ -1,12 +1,13 @@
 
 	level.backgroundColor=0;
-	level.floats=0;
-	level.climbs=0;
-	level.bombs=0;
-	level.builds=0;
-	level.bashs=0;
-	level.mines=0;
-	level.digs=0;
+	level.actionCount[Float]=10;
+	level.actionCount[Climb]=20;
+	level.actionCount[Bomb]=10;
+	level.actionCount[Block]=10;
+	level.actionCount[Build]=10;
+	level.actionCount[Bash]=10;
+	level.actionCount[Mine]=10;
+	level.actionCount[Dig]=10;
 	level.maxPoliceMen=100;
 	level.dropX=0;
 	level.goalX=0;

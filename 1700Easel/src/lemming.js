@@ -24,6 +24,7 @@ function Lemming() {
 }
 
 Lemming.prototype.setAction=function(a) {
+	console.log(a);
 	this.lastAction=this.action;
 	this.action=a;
 	this.action.lemming=this;
@@ -48,7 +49,7 @@ Lemming.prototype.create=function() {
 }
 
 Lemming.prototype.frontFootX = function() {
-		return this.x+this.width/2+this.direction;
+		return this.x+((this.width/2)*this.direction);
 }
 Lemming.prototype.frontFootY = function() {
 	return this.y+this.height;
@@ -65,15 +66,18 @@ Lemming.prototype.drawSelectable = function() {
 }
 
 Lemming.prototype.select=function(evt) {
-	if (game.selectedLemming) {
-		game.selectedLemming.selection.graphics.clear();
-	}
-	if (evt.currentTarget.lemming!=game.selectedLemming) {
-		game.selectedLemming=evt.currentTarget.lemming;
-		game.selectedLemming.drawSelection();
-	}
-	else {
-		game.selectedLemming=null;
+//	if (game.selectedLemming) {
+//		game.selectedLemming.selection.graphics.clear();
+//	}
+//	if (evt.currentTarget.lemming!=game.selectedLemming) {
+//		game.selectedLemming=evt.currentTarget.lemming;
+//		game.selectedLemming.drawSelection();
+//	}
+//	else {
+//		game.selectedLemming=null;
+//	}
+	if (game.selectedAction) {
+		evt.currentTarget.lemming.setAction(new game.selectedAction);
 	}
 }
 

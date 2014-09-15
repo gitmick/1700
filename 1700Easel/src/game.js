@@ -10,85 +10,65 @@ function Game(){
 	this.digControl;
 	this.mouseX;
 	this.mouseY;
+	this.selectedAction;
+	this.controlAction=new Object();
+	this.controlX=new Object();
+	this.controlY=new Object();
+	
 }
 
 Game.prototype.init = function(){
     this.levelLoader = new LevelLoader("testLevel");
     this.levelLoader.init();
-    this.initControls();
+    
 }
 
 Game.prototype.initControls = function() {
-
-	
-
-	
-	climbControl = new createjs.Shape();
-	climbControl.graphics.beginFill("blue").drawCircle(20,650,20);
-	climbControl.addEventListener("click",this.climb);
-	stage.addChild(climbControl);
-	
-	floatControl = new createjs.Shape();
-	floatControl.graphics.beginFill("blue").drawCircle(60,650,20);
-	floatControl.addEventListener("click",this.float);
-	stage.addChild(floatControl);
-	
-	bombControl = new createjs.Shape();
-	bombControl.graphics.beginFill("blue").drawCircle(100,650,20);
-	bombControl.addEventListener("click",this.bomb);
-	stage.addChild(bombControl);
-	
-	blockControl = new createjs.Shape();
-	blockControl.graphics.beginFill("blue").drawCircle(140,650,20);
-	blockControl.addEventListener("click",this.block);
-	stage.addChild(blockControl);
-	
-	buildControl = new createjs.Shape();
-	buildControl.graphics.beginFill("blue").drawCircle(180,650,20);
-	buildControl.addEventListener("click",this.build);
-	stage.addChild(buildControl);
-	
-	bashControl = new createjs.Shape();
-	bashControl.graphics.beginFill("blue").drawCircle(220,650,20);
-	bashControl.addEventListener("click",this.bash);
-	stage.addChild(bashControl);
-	
-	mineControl = new createjs.Shape();
-	mineControl.graphics.beginFill("blue").drawCircle(260,650,20);
-	mineControl.addEventListener("click",this.mine);
-	stage.addChild(mineControl);
-	
-	digControl = new createjs.Shape();
-	digControl.graphics.beginFill("blue").drawCircle(300,650,20);
-	digControl.addEventListener("click",this.dig);
-	stage.addChild(digControl);
+	this.addControl(20, 650, Climb);
+	this.addControl(60, 650, Float);
+	this.addControl(100, 650, Bomb);
+	this.addControl(140, 650, Block);
+	this.addControl(180, 650, Build);
+	this.addControl(220, 650, Bash);
+	this.addControl(260, 650, Mine);
+	this.addControl(300, 650, Dig);
 }
 
-Game.prototype.dig = function() {
-	game.selectedLemming.setAction(new Dig());
+Game.prototype.addControl = function(x,y,action_) {
+	control = new createjs.Shape();
+	control.graphics.beginFill("blue").drawCircle(x,y,20);
+	var that = this;
+	
+	control.action=action_;
+	this.controlAction[action_]=control;
+	this.controlX[action_]=x;
+	this.controlY[action_]=y;
+	stage.addChild(control);
+	control.addEventListener("click",function(evt) {
+		selAction = evt.currentTarget.action;
+		leftActions = level.actionCount[selAction];
+		if (leftActions>0) {
+			if (that.selectedAction) {
+				lastControl=that.controlAction[that.selectedAction];
+				lastX=that.controlX[that.selectedAction];
+				lastY=that.controlY[that.selectedAction];
+				lastControl.graphics.clear();
+				lastControl.graphics.beginFill("blue").drawCircle(lastX,lastY,20);
+			}
+			that.selectedAction=selAction;
+			
+			evt.currentTarget.graphics.beginFill("red").drawCircle(x,y,20);
+		}
+	});
+
 }
-Game.prototype.mine = function() {
-	game.selectedLemming.setAction(new Mine());
+
+Game.prototype.setAction = function(ac) {
+	this.selectionAction=ac;
 }
-Game.prototype.climb = function() {
-	game.selectedLemming.setAction(new Climb());
-}
-Game.prototype.float = function() {
-	game.selectedLemming.setAction(new Float());
-}
-Game.prototype.bomb = function() {
-	game.selectedLemming.setAction(new Bomb());
-}
-Game.prototype.block = function() {
-	game.selectedLemming.setAction(new Block());
-}
-Game.prototype.build = function() {
-	game.selectedLemming.setAction(new Build());
-}
-Game.prototype.bash = function() {
-	game.selectedLemming.setAction(new Bash());
-}
+
 Game.prototype.start = function(){
+	this.initControls();
     this.addLemmings();
 }
 
@@ -128,8 +108,8 @@ Game.prototype.scrollLevel = function(mouseX){
 Game.prototype.update = function(){
 	for(var i=0;i<this.lemmings.length;i++){
 		var lemming = this.lemmings[i];
-		//if (lemming.dead)
-		//	continue;
+		if (lemming.dead)
+			continue;
 		for(var s=0;s<this.speedFactor;s++){
 			
 				lemming.move();

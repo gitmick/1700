@@ -60,11 +60,12 @@ LevelLoader.prototype.getWorldPixel = function(px,py){
 }
 
 LevelLoader.prototype.setWorldPixel = function(px,py,radius,color){
+	
 	r=radius;
 	x=r;
 	d=-r;
 	y=0;
-	this.s.graphics.beginFill("white");
+//	this.s.graphics.beginFill("white");
 //	while (y<=r) {
 //		for (xi=x;xi>-x;xi--) {
 //			this.worldBitmapData.setPixel(px+xi,py+y,level.backgroundColor);
@@ -78,13 +79,24 @@ LevelLoader.prototype.setWorldPixel = function(px,py,radius,color){
 //		}
 //	}
 	for (xi=x;xi>-x;xi--) {
-		for (yi=y;yi>-y;yi--) {
-			this.worldBitmapData.setPixel(px+xi,py+yi,level.backgroundColor);
-			this.s.graphics.drawCircle(px+xi,py+yi,1);
+		for (yi=r;yi>-r;yi--) {
+			if (xi*xi+yi*yi<r*r){
+//				console.log(xi);
+//				console.log(yi);
+//				console.log(xi*xi+yi*yi);
+//				console.log(r^2);
+//				console.log(" ");
+				if (color)
+					this.worldBitmapData.setPixel(px+xi,py+yi,level.backgroundColor);
+				else
+					this.worldBitmapData.setPixel(px+xi,py+yi,23);
+				//this.s.graphics.drawCircle(px+xi,py+yi,1);
+			}
 		}
 	}
-	this.s.graphics.beginFill("rgba(255,0,0,0.5)").drawCircle(px,py,radius);
-	//this.s.graphics.beginFill("black").drawCircle(px,py,radius);
+	//this.s.graphics.beginFill("rgba(255,0,0,0.5)").drawCircle(px,py,radius);
+	if (color)
+		this.s.graphics.beginFill("black").drawCircle(px,py,radius);
 }
 
 
@@ -111,13 +123,7 @@ function loadLevel() {
 
 function Level() {
 	this.backgroundColor=0;
-	this.floats=0;
-	this.climbs=0;
-	this.bombs=0;
-	this.builds=0;
-	this.bashs=0;
-	this.mines=0;
-	this.digs=0;
+	this.actionCount=new Object();
 	this.maxPoliceMen=0;
 	this.dropX=0;
 	this.goalX=0;
