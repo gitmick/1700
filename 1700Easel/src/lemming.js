@@ -105,12 +105,12 @@ Lemming.prototype.move=function(){
 
 
 Lemming.prototype.hasFloor=function(){
-	return game.getWorldPixel(this.x+(this.width/2),this.y+this.height)==0;
+	return game.getWorldPixel(this.x+(this.width/2),this.y+this.height)!=level.backgroundColor;
 }
 
 Lemming.prototype.againstWall=function(){
 	for(var aw=this.maxDY;aw<this.height;aw++){
-		if(game.getWorldPixel(this.frontFootX(),this.frontFootY()-aw)==0){
+		if(game.getWorldPixel(this.frontFootX(),this.frontFootY()-aw)!=level.backgroundColor){
 			return true;
 		}
 	}
@@ -120,7 +120,7 @@ Lemming.prototype.againstWall=function(){
 Lemming.prototype.getDY=function(){
 	var dy=-this.maxDY;
 	while(dy<this.maxDY){
-		if(game.getWorldPixel(this.frontFootX(),this.frontFootY()-(dy+2))==0){
+		if(game.getWorldPixel(this.frontFootX(),this.frontFootY()-(dy+2))!=level.backgroundColor){
 			dy++;
 		}else{
 			return dy;

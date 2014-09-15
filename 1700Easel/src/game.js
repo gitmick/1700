@@ -13,7 +13,7 @@ function Game(){
 }
 
 Game.prototype.init = function(){
-    this.levelLoader = new LevelLoader("devLevel");
+    this.levelLoader = new LevelLoader("testLevel");
     this.levelLoader.init();
     this.initControls();
 }
@@ -101,7 +101,7 @@ Game.prototype.setWorldPixel = function(px,py,radius,color){
 }
 
 Game.prototype.addLemmings = function(){
-	for(var i=0;i<this.maxLemmings;i++){
+	for(var i=0;i<level.maxPoliceMen;i++){
 		var lemming = new Lemming();
 	    lemming.create();
 	    lemming.x=240;
@@ -128,8 +128,11 @@ Game.prototype.scrollLevel = function(mouseX){
 Game.prototype.update = function(){
 	for(var i=0;i<this.lemmings.length;i++){
 		var lemming = this.lemmings[i];
+		//if (lemming.dead)
+		//	continue;
 		for(var s=0;s<this.speedFactor;s++){
-			lemming.move();
+			
+				lemming.move();
 		}
 		lemming.draw(this.currentScroll);
 	}

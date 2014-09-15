@@ -15,11 +15,15 @@ Action.prototype.act = function() {
 }
 
 
-function Fall() {}
+function Fall() {
+	this.height=0;
+}
 Fall.prototype=new Action();
 
 Fall.prototype.check=function() {
 	if (this.lemming.hasFloor()) {
+		if (this.height>1000 && !this.lemming.canFloat)
+			this.lemming.kill();
 		this.lemming.setAction(new Walk());
 		return false;
 	}
@@ -27,7 +31,14 @@ Fall.prototype.check=function() {
 }
 
 Fall.prototype.act=function() {
-	this.lemming.y+=this.lemming.speed;
+	for (i=0;i<5;i++) {
+		if (this.check()) {
+			this.lemming.y+=this.lemming.speed;
+			if (this.lemming.y>0)
+				this.height++;
+			
+		}
+	}
 }
 
 function Climb() {}
@@ -96,6 +107,7 @@ Build.prototype.act=function() {
 }
 
 function Bash() {
+	this.counter=50;
 }
 Bash.prototype=new Action();
 
@@ -107,8 +119,8 @@ Bash.prototype.check=function() {
 }
 
 Bash.prototype.act=function() {
-	game.setWorldPixel(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,26,10000);
-	this.lemming.x+=this.lemming.speed*2*this.lemming.direction;
+	game.setWorldPixel(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,10000);
+	this.lemming.x+=this.lemming.speed*this.lemming.direction;
 }
 
 function Walk() {}
