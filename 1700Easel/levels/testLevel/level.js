@@ -9,8 +9,10 @@
 	level.actionCount[Mine]=10;
 	level.actionCount[Dig]=10;
 	level.maxPoliceMen=100;
-	level.dropX=0;
+	level.policeDelay=100;
+	level.dropX=100;
+	level.dropY=100;
 	level.goalX=0;
 	level.goalY=0;
 	level.minSafeCount=0;
-	level.soundFile="sound.mp3";
+	level.soundFile="track.mp3";

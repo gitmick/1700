@@ -2,7 +2,8 @@ function Game(){
 	this.levelLoader;
 	this.maxLemmings=100;
 	this.lemmings = [];
-	
+	this.added=0;
+	this.delayCount=0;
 	this.speedFactor=1; //makes the game n-times faster (use very high numbers to check collision performance)
 	this.currentScroll=0;
 	
@@ -14,6 +15,10 @@ function Game(){
 	this.controlAction=new Object();
 	this.controlX=new Object();
 	this.controlY=new Object();
+	
+}
+
+Game.prototype.startScreen = function() {
 	
 }
 
@@ -69,23 +74,26 @@ Game.prototype.setAction = function(ac) {
 
 Game.prototype.start = function(){
 	this.initControls();
-    this.addLemmings();
 }
 
 Game.prototype.getWorldPixel = function(px,py){
 	return this.levelLoader.getWorldPixel(px,py);
 }
 
-Game.prototype.setWorldPixel = function(px,py,radius,color){
-	return this.levelLoader.setWorldPixel(px,py,radius,color);
+Game.prototype.drawCircle = function(px,py,radius,color){
+	return this.levelLoader.drawCircle(px,py,radius,color);
+}
+
+Game.prototype.drawRect = function(px,py,w,h,color){
+	return this.levelLoader.drawRect(px,py,w,h,color);
 }
 
 Game.prototype.addLemmings = function(){
-	for(var i=0;i<level.maxPoliceMen;i++){
+	if(this.added++<level.maxPoliceMen){
 		var lemming = new Lemming();
 	    lemming.create();
-	    lemming.x=240;
-	    lemming.y=i*-50;
+	    lemming.x=level.dropX;
+	    lemming.y=level.dropY;
 	  	this.lemmings.push(lemming);
 	}
 }
@@ -105,15 +113,6 @@ Game.prototype.scrollLevel = function(mouseX){
 	}
 }
 
-Game.prototype.update = function(){
-	for(var i=0;i<this.lemmings.length;i++){
-		var lemming = this.lemmings[i];
-		if (lemming.dead)
-			continue;
-		for(var s=0;s<this.speedFactor;s++){
-			
-				lemming.move();
-		}
-		lemming.draw(this.currentScroll);
-	}
+Game.prototype.update = function(){	
+	this.update=this.levelLoader.preloadLevel;	
 }

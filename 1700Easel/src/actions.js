@@ -76,7 +76,7 @@ Bomb.prototype.check=function() {
 
 Bomb.prototype.act=function() {
 	if (this.counter--==0) {
-		game.setWorldPixel(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,40,10000);
+		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,40,10000);
 		this.lemming.kill();
 	}
 	this.lemming.lastAction.act();
@@ -93,11 +93,14 @@ Block.prototype.check=function() {
 
 Block.prototype.act=function() {
 	if (!this.blocked)
-		game.setWorldPixel(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,20,0);
+		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,20,0);
 	this.blocked=true;
 }
 
 function Build() {
+	this.walk = new Walk();
+
+	this.counter=61;
 }
 Build.prototype=new Action();
 
@@ -106,7 +109,15 @@ Build.prototype.check=function() {
 }
 
 Build.prototype.act=function() {
-	//game.setWorldPixel(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,20,0);
+	if (!this.walk.lemming)
+		this.walk.lemming=this.lemming;
+	this.counter--;
+	if (this.counter==0)
+		this.lemming.setAction(new Walk());
+	if (this.counter%12==0)
+		game.drawRect(this.lemming.x+(this.lemming.width*this.lemming.direction),this.lemming.y+this.lemming.height-5,20,5,11);
+	else
+		this.walk.act();
 }
 
 function Bash() {
@@ -122,7 +133,7 @@ Bash.prototype.check=function() {
 }
 
 Bash.prototype.act=function() {
-	game.setWorldPixel(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,10000);
+	game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,17,10000);
 	this.lemming.x+=this.lemming.speed*this.lemming.direction;
 }
 
@@ -146,9 +157,10 @@ Walk.prototype.check=function() {
 
 Walk.prototype.act = function() {
 	if (!this.lemming.againstWall()) {
-		this.lemming.y-=this.lemming.getDY();
+		this.lemming.y-=this.lemming.getDY();	
 		this.lemming.x+=this.lemming.direction*this.lemming.speed;
-		//console.log("walk" + this.lemming.getDY()+" "+this.lemming.speed+" "+this.lemming.direction);
+		if (!this.lemming.hasFloor())
+			this.lemming.y++;
 	}
 }
 
@@ -166,7 +178,7 @@ Dig.prototype.check = function() {
 }
 
 Dig.prototype.act= function() {
-	game.setWorldPixel(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,10000);
+	game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,10000);
 	this.lemming.y+=this.lemming.speed;
 }
 
@@ -184,7 +196,7 @@ Mine.prototype.check = function() {
 }
 
 Mine.prototype.act= function() {
-	game.setWorldPixel(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,10000);
+	game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,10000);
 	if (this.down)this.lemming.y+=this.lemming.speed;
 	this.down=!this.down;
 	this.lemming.x+=this.lemming.speed*this.lemming.direction;

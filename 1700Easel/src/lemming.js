@@ -13,7 +13,7 @@ function Lemming() {
 	
 	this.scale=1;
 	
-	this.maxDY=8; //maximum pitch/slope (should be smaller than this.height)
+	this.maxDY=12; //maximum pitch/slope (should be smaller than this.height)
 	this.speed=1.0; //might break collision if different than 1.0 
 
 	this.action;
@@ -49,33 +49,23 @@ Lemming.prototype.create=function() {
 }
 
 Lemming.prototype.frontFootX = function() {
-		return this.x+((this.width/2)*this.direction);
+		return this.x+((this.width/2)*(this.direction+1));
 }
 Lemming.prototype.frontFootY = function() {
 	return this.y+this.height;
 }
 
-Lemming.prototype.drawSelection = function() {
-	this.selection.graphics.beginStroke("green").drawRect(2,2,this.height+14,this.width+14);
-	stage.addChild(this.selection);
-}
 
 Lemming.prototype.drawSelectable = function() {
-	this.selection.graphics.beginStroke("orange").drawRect(2,2,this.height+14,this.width+14);
+	this.selection.graphics.beginStroke("orange").drawRect(2,2,this.height,this.width);
 	stage.addChild(this.selection);
+	if (!game.selectedLemming)
+		game.selectedLemming=this;
+	else
+		this.selection.graphics.clear();
 }
 
 Lemming.prototype.select=function(evt) {
-//	if (game.selectedLemming) {
-//		game.selectedLemming.selection.graphics.clear();
-//	}
-//	if (evt.currentTarget.lemming!=game.selectedLemming) {
-//		game.selectedLemming=evt.currentTarget.lemming;
-//		game.selectedLemming.drawSelection();
-//	}
-//	else {
-//		game.selectedLemming=null;
-//	}
 	if (game.selectedAction) {
 		evt.currentTarget.lemming.setAction(new game.selectedAction);
 	}
@@ -85,13 +75,11 @@ Lemming.prototype.select=function(evt) {
 Lemming.prototype.draw=function(currentScroll) {
 	if (this.dead)
 		return;
-	if (this!=game.selectedLemming) {
-		if (this.selection.x<game.mouseX && this.selection.x+this.width>game.mouseX
-				&& this.selection.y<game.mouseY && this.selection.y+this.height>game.mouseY)
-			this.drawSelectable();
-		else
-			this.selection.graphics.clear();
-	}
+	if (this.selection.x<game.mouseX && this.selection.x+this.width>game.mouseX
+			&& this.selection.y<game.mouseY && this.selection.y+this.height>game.mouseY)
+		this.drawSelectable();
+	else
+		this.selection.graphics.clear();
 	this.circle.setTransform(0, 0, this.scale, this.scale);
 	this.selection.x=parseInt(this.x-currentScroll);
 	this.selection.y=parseInt(this.y);
@@ -110,27 +98,51 @@ Lemming.prototype.move=function(){
 
 Lemming.prototype.hasFloor=function(){
 	return game.getWorldPixel(this.x+(this.width/2),this.y+this.height)!=level.backgroundColor;
+	
+	
+var openSize=0;
+	
+	for(var aw=0;aw<this.width;aw++){
+		if(game.getWorldPixel(this.x+aw,this.y+this.height+1)==level.backgroundColor){
+			if (++openSize==this.height)
+				return false;
+		}
+	}
+	return true;
+	
 }
 
 Lemming.prototype.againstWall=function(){
-	for(var aw=this.maxDY;aw<this.height;aw++){
-		if(game.getWorldPixel(this.frontFootX(),this.frontFootY()-aw)!=level.backgroundColor){
-			return true;
+	
+	var openSize=0;
+	
+	for(var aw=-this.maxDY;aw<this.height+this.maxDY;aw++){
+		if(game.getWorldPixel(this.frontFootX(),this.y+aw)==level.backgroundColor){
+			if (++openSize==this.height)
+				return false;
 		}
+		else
+			openSize=0;
 	}
-	return false;
+	return true;
 }
 
 Lemming.prototype.getDY=function(){
-	var dy=-this.maxDY;
-	while(dy<this.maxDY){
-		if(game.getWorldPixel(this.frontFootX(),this.frontFootY()-(dy+2))!=level.backgroundColor){
-			dy++;
-		}else{
-			return dy;
+var openSize=0;
+	
+	for(var aw=-this.maxDY;aw<this.height+this.maxDY;aw++){
+		if(game.getWorldPixel(this.frontFootX()-(this.direction*5),this.y+aw)==level.backgroundColor){
+			openSize++;
+		}
+		else {
+			if (openSize>=this.height) {
+				dy=this.height-aw;
+				return dy;
+			} 
+			openSize=0;
 		}
 	}
-	return dy;
+	return 0;
 }
 
 
