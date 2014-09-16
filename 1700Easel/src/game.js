@@ -23,8 +23,9 @@ Game.prototype.startScreen = function() {
 }
 
 Game.prototype.init = function(){
-    this.levelLoader = new LevelLoader("testLevel");
-    this.levelLoader.init();
+    this.levelLoader = new LevelLoader();
+    this.levelLoader.load("testLevel");
+    
     
 }
 

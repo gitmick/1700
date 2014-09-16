@@ -48,8 +48,8 @@ Loader.prototype.loadSound = function(sndSrc,sndName) {
 };
 
 
-function LevelLoader(levelName) {
-	this.name=levelName;
+function LevelLoader() {
+	this.name;
 	this.dirPath;
 	this.worldHtmlImage= new Image();
 	this.worldBitmap;
@@ -64,6 +64,17 @@ function LevelLoader(levelName) {
 	
 	this.loader = new Loader();
 	
+	this.counter=0;
+	
+}
+
+LevelLoader.prototype.load = function(levelName) {
+	this.name=levelName;
+	game.lemmings = [];
+	game.added=0;
+	game.currentScroll=0;
+	this.init();
+	game.update=this.preloadLevel;
 }
 
 LevelLoader.prototype.preloadLevel = function() {
@@ -83,7 +94,7 @@ LevelLoader.prototype.preloadLevel = function() {
 		stage.addChild(this.levelLoader.worldBitmap);
 		stage.addChild(this.levelLoader.s);
 		
-		createjs.Sound.play("testLevel");
+		createjs.Sound.play(this.levelLoader.name);
 		
 		
 		this.update=this.levelLoader.updateLevel;
@@ -103,6 +114,11 @@ LevelLoader.prototype.updateLevel = function() {
 		}
 		lemming.draw(this.currentScroll);
 	}
+	if (this.levelLoader.counter++>100) {
+		this.levelLoader = new LevelLoader();
+		this.levelLoader.load("devLevel");
+	}
+		
 }
 
 
