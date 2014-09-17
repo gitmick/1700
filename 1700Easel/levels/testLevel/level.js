@@ -10,9 +10,9 @@
 	level.actionCount[Mine]=10;
 	level.actionCount[Dig]=10;
 	level.maxPoliceMen=100;
-	level.policeDelay=5;
-	level.dropX=100;
-	level.dropY=100;
+	level.policeDelay=50;
+	level.dropX=170;
+	level.dropY=350;
 	level.goalX=0;
 	level.goalY=0;
 	level.minSafeCount=0;

@@ -74,7 +74,7 @@ function LevelLoader() {
 	this.s;
 	
 	this.actionImage = new Image();
-	
+	this.heliImage = new Image();
 	this.loader = new Loader();
 	
 	this.counter=0;
@@ -110,6 +110,11 @@ LevelLoader.prototype.preloadLevel = function() {
 		stage.addChild(this.levelLoader.s);
 		
 		createjs.Sound.play(this.levelLoader.name);
+		
+		var heli = new createjs.Bitmap(this.levelLoader.heliImage);
+		heli.y=300;
+		heli.x=100;
+		stage.addChild(heli);
 		
 		this.click=this.levelLoader.click;
 		this.update=this.levelLoader.updateLevel;
@@ -164,6 +169,7 @@ LevelLoader.prototype.init = function() {
 	this.loader.loadScript(this.dirPath+"/level.js");
 	this.loader.loadImage(this.dirPath+"/world.png",this.worldHtmlImage);
 	this.loader.loadImage("img/actions.png",this.actionImage);	
+	this.loader.loadImage("img/heli.png",this.heliImage);	
 	this.loader.loadSound(this.dirPath+"/track.mp3",this.name);
 	
 }

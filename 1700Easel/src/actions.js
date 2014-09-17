@@ -148,6 +148,10 @@ function Build() {
 Build.prototype=new Action();
 
 Build.prototype.check=function() {
+	if (this.lemming.againstWall()) {
+		this.lemming.setAction(new Walk());
+		return false;
+	}
 	return true;
 }
 
@@ -170,6 +174,10 @@ function Bash() {
 Bash.prototype=new Action();
 
 Bash.prototype.check=function() {
+	if (!this.lemming.hasFloor()) {
+		this.lemming.setAction(new Fall());
+		return false;
+	}
 	if (this.counter--==0) {
 		this.lemming.setAction(new Walk());
 	}
@@ -216,6 +224,10 @@ function Dig() {
 Dig.prototype=new Action();
 
 Dig.prototype.check = function() {
+	if (!this.lemming.hasFloor()) {
+		this.lemming.setAction(new Fall());
+		return false;
+	}
 	if (this.counter--==0) {
 		this.lemming.setAction(new Walk());
 	}
@@ -235,6 +247,10 @@ function Mine() {
 Mine.prototype=new Action();
 
 Mine.prototype.check = function() {
+	if (!this.lemming.hasFloor()) {
+		this.lemming.setAction(new Fall());
+		return false;
+	}
 	if (this.counter--==0) {
 		this.lemming.setAction(new Walk());
 	}
