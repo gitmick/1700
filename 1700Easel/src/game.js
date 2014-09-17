@@ -3,6 +3,8 @@ function Game(){
 	this.maxLemmings=100;
 	this.lemmings = [];
 	this.added=0;
+	this.winCount=0;
+	
 	this.delayCount=0;
 	this.speedFactor=1; //makes the game n-times faster (use very high numbers to check collision performance)
 	this.currentScroll=0;

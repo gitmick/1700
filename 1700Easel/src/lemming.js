@@ -23,6 +23,7 @@ function Lemming() {
 	this.dead=false;
 	
 	this.mouseListener = new MouseListener(0,0,32,32);
+	this.win=false;
 }
 
 Lemming.prototype.setAction=function(a) {
@@ -44,7 +45,6 @@ Lemming.prototype.create=function() {
 	this.circle =  new createjs.Sprite(lemmingsSheet, "run");
 	this.circle.lemming=this;
 	this.selection = new createjs.Shape();
-	//this.circle.addEventListener("click",this.select);
 	stage.addChild(this.circle);
 	this.height=this.circle.getBounds().height*this.scale;
 	this.width=this.circle.getBounds().width*this.scale;
@@ -69,16 +69,14 @@ Lemming.prototype.drawSelectable = function() {
 
 Lemming.prototype.select=function(evt) {
 	if (game.selectedAction) {
-//		evt.currentTarget.lemming.setAction(new game.selectedAction);
 		if (game.useAction())
 			this.setAction(new game.selectedAction);
-		
 	}
 }
 
 
 Lemming.prototype.draw=function(currentScroll) {
-	if (this.dead)
+	if (this.dead || this.win)
 		return;
 	if (this.selection.x<game.mouseX && this.selection.x+this.width>game.mouseX
 			&& this.selection.y<game.mouseY && this.selection.y+this.height>game.mouseY) {
@@ -86,6 +84,12 @@ Lemming.prototype.draw=function(currentScroll) {
 	}
 	else
 		this.selection.graphics.clear();
+	if (this.selection.x<level.goalX && this.selection.x+this.width>level.goalX
+			&& this.selection.y<level.goalY && this.selection.y+this.height>level.goalY) {
+		this.win=true;
+		game.winCount++;
+		return;
+	}
 	this.circle.setTransform(0, 0, this.scale, this.scale);
 	this.mouseListener.x=parseInt(this.x-currentScroll);
 	this.mouseListener.y=parseInt(this.y);
@@ -104,7 +108,6 @@ Lemming.prototype.click=function(x,y) {
 }
 
 Lemming.prototype.move=function(){
-	
 	if (this.action.check()) 
 		this.action.act();
 }

@@ -2,9 +2,25 @@
  * 
  */
 
+function contains(a, obj) {
+    var i = a.length;
+    while (i--) {
+       if (a[i] === obj) {
+           return true;
+       }
+    }
+    return false;
+}
+
 function Action() {
 	this.lemming;
 	this.effectStarted=false;
+	this.possibleActions = [];
+	this.possibleActions.push(Bomb);
+	this.possibleActions.push(Climb);
+	this.possibleActions.push(Float);
+	this.possibleActions.push(Fall);
+	this.possibleActions.push(Walk);
 }
 
 Action.prototype.check= function() {
@@ -20,9 +36,13 @@ Action.prototype.effect = function(name) {
 		this.effectStarted=true;
 	}
 }
+Action.prototype.actionPossible = function(action) {
+	return contains(this.possibleActions,action);
+}
 
 function Fall() {
 	this.height=0;
+	this.possibleActions.push(Walk);
 }
 Fall.prototype=new Action();
 
@@ -47,6 +67,7 @@ Fall.prototype.act=function() {
 	}
 }
 
+
 function Climb() {}
 Climb.prototype=new Action();
 
@@ -60,6 +81,10 @@ Climb.prototype.act=function() {
 	this.lemming.setAction(this.lemming.lastAction);
 }
 
+Climb.prototype.actionPossible = function(action) {
+	return true;
+}
+
 function Float() {}
 Float.prototype=new Action();
 
@@ -71,6 +96,10 @@ Float.prototype.act=function() {
 	this.effect("Float");
 	this.lemming.canFloat=true;
 	this.lemming.setAction(this.lemming.lastAction);
+}
+
+Float.prototype.actionPossible = function(action) {
+	return true;
 }
 
 function Bomb() {
@@ -90,9 +119,13 @@ Bomb.prototype.act=function() {
 	}
 	this.lemming.lastAction.act();
 }
+Bomb.prototype.actionPossible = function(action) {
+	return true;
+}
 
 function Block() {
 	this.blocked=false;
+	this.possibleActions.push(Bomb);
 }
 Block.prototype=new Action();
 
