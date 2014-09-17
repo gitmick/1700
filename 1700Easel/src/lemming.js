@@ -112,10 +112,10 @@ Lemming.prototype.move=function(){
 
 
 Lemming.prototype.hasFloor=function(){
-	return game.getWorldPixel(this.x+(this.width/2),this.y+this.height)!=level.backgroundColor;
+	//return game.getWorldPixel(this.x+(this.width/2),this.y+this.height)!=level.backgroundColor;
 	
 	
-var openSize=0;
+	var openSize=0;
 	
 	for(var aw=0;aw<this.width;aw++){
 		if(game.getWorldPixel(this.x+aw,this.y+this.height+1)==level.backgroundColor){

@@ -115,9 +115,9 @@ Game.prototype.drawRect = function(px,py,w,h,color){
 Game.prototype.addLemmings = function(){
 	if(this.added++<level.maxPoliceMen){
 		var lemming = new Lemming();
-	    lemming.create();
-	    lemming.x=level.dropX;
+		lemming.x=level.dropX;
 	    lemming.y=level.dropY;
+		lemming.create();
 	  	this.lemmings.push(lemming);
 	}
 }

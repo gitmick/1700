@@ -26,8 +26,7 @@ Loader.prototype.loadScript = function(url)
     var head = document.getElementsByTagName('head')[0];
     var script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src = url;
-
+    script.src = url+"?"+Math.random();
     // Then bind the event to the callback function.
     // There are several events for cross browser compatibility.
     var that=this;
@@ -196,7 +195,7 @@ LevelLoader.prototype.drawCircle = function(px,py,radius,color){
 		}
 	}
 	if (color)
-		this.s.graphics.beginFill("black").drawCircle(px,py,radius);
+		this.s.graphics.beginFill(level.backgroundColorName).drawCircle(px,py,radius);
 }
 
 
