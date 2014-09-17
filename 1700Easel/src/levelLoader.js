@@ -2,6 +2,19 @@
  * d-p-t-r was here
  */
 
+
+function MouseListener(x,y,w,h) {
+	this.x=x;
+	this.y=y;
+	this.w=w;
+	this.h=h;
+}
+
+MouseListener.prototype.click = function(x,y) {
+	return (x>this.x && x<this.x+this.w && y>this.y && y<this.y+this.h);
+}
+
+
 function Loader() {
 	this.waitingForLoads=0;
 }
@@ -52,6 +65,7 @@ function LevelLoader() {
 	this.name;
 	this.dirPath;
 	this.worldHtmlImage= new Image();
+	this.introImage= new Image();
 	this.worldBitmap;
 	this.worldBitmapData;
 	
@@ -73,20 +87,22 @@ LevelLoader.prototype.load = function(levelName) {
 	game.lemmings = [];
 	game.added=0;
 	game.currentScroll=0;
-	this.init();
-	game.update=this.preloadLevel;
+	this.intro();
+	game.update=this.showIntro;
 }
 
 LevelLoader.prototype.preloadLevel = function() {
 	waiting = this.levelLoader.loader.waitingForLoads;
+	console.log(waiting);
 	if (waiting==0){
 		this.levelLoader.loader.waitingForLoads=1;
-		
-		this.start();
-		
 		var bitmap = new createjs.Bitmap(this.levelLoader.actionImage);
 		bitmap.y=620;
 		stage.addChild(bitmap);
+		
+		this.start();
+		
+		
 		
 		this.levelLoader.worldBitmapData = new createjs.BitmapData(this.levelLoader.worldHtmlImage);
 		this.levelLoader.worldBitmap = new createjs.Bitmap(this.levelLoader.worldBitmapData.canvas);
@@ -96,8 +112,16 @@ LevelLoader.prototype.preloadLevel = function() {
 		
 		createjs.Sound.play(this.levelLoader.name);
 		
-		
+		this.click=this.levelLoader.click;
 		this.update=this.levelLoader.updateLevel;
+	}
+}
+
+LevelLoader.prototype.click = function(x,y) {
+	for(var i=0;i<this.lemmings.length;i++){
+		var lemming = this.lemmings[i];
+		if (lemming.click(x,y))
+			break;
 	}
 }
 
@@ -114,18 +138,30 @@ LevelLoader.prototype.updateLevel = function() {
 		}
 		lemming.draw(this.currentScroll);
 	}
-	if (this.levelLoader.counter++>100) {
-		this.levelLoader = new LevelLoader();
-		this.levelLoader.load("devLevel");
-	}
+//	if (this.levelLoader.counter++>100) {
+//		this.levelLoader = new LevelLoader();
+//		this.levelLoader.load("devLevel");
+//	}
 		
 }
 
+LevelLoader.prototype.intro = function() {
+	this.createDirPath();
+	this.loader.loadImage(this.dirPath+"/introScreen.png",this.introImage);
+}
+
+LevelLoader.prototype.showIntro = function() {
+	if (this.levelLoader.loader.waitingForLoads==0) {
+		var bitmap = new createjs.Bitmap(this.levelLoader.introImage);
+		stage.addChild(bitmap);
+		
+		this.levelLoader.init();
+		this.update=this.levelLoader.preloadLevel;
+	}
+}
 
 LevelLoader.prototype.init = function() {
 	this.s = new createjs.Shape();
-	this.createDirPath();
-	
 	this.loader.loadScript(this.dirPath+"/level.js");
 	this.loader.loadImage(this.dirPath+"/world.png",this.worldHtmlImage);
 	this.loader.loadImage("img/actions.png",this.actionImage);	

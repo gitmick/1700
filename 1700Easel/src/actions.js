@@ -4,6 +4,7 @@
 
 function Action() {
 	this.lemming;
+	this.effectStarted=false;
 }
 
 Action.prototype.check= function() {
@@ -13,7 +14,12 @@ Action.prototype.check= function() {
 Action.prototype.act = function() {
 	
 }
-
+Action.prototype.effect = function(name) {
+	if (!this.effectStarted) {
+		createjs.Sound.play(name);
+		this.effectStarted=true;
+	}
+}
 
 function Fall() {
 	this.height=0;
@@ -49,6 +55,7 @@ Climb.prototype.check=function() {
 }
 
 Climb.prototype.act=function() {
+	this.effect("Climb");
 	this.lemming.canClimb=true;
 	this.lemming.setAction(this.lemming.lastAction);
 }
@@ -61,6 +68,7 @@ Float.prototype.check=function() {
 }
 
 Float.prototype.act=function() {
+	this.effect("Float");
 	this.lemming.canFloat=true;
 	this.lemming.setAction(this.lemming.lastAction);
 }
@@ -75,6 +83,7 @@ Bomb.prototype.check=function() {
 }
 
 Bomb.prototype.act=function() {
+	this.effect("Bomb");
 	if (this.counter--==0) {
 		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,40,10000);
 		this.lemming.kill();
@@ -92,6 +101,7 @@ Block.prototype.check=function() {
 }
 
 Block.prototype.act=function() {
+	this.effect("Block");
 	if (!this.blocked)
 		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,20,0);
 	this.blocked=true;
@@ -109,6 +119,7 @@ Build.prototype.check=function() {
 }
 
 Build.prototype.act=function() {
+	this.effect("Build");
 	if (!this.walk.lemming)
 		this.walk.lemming=this.lemming;
 	this.counter--;
@@ -133,6 +144,7 @@ Bash.prototype.check=function() {
 }
 
 Bash.prototype.act=function() {
+	this.effect("Bash");
 	game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,17,10000);
 	this.lemming.x+=this.lemming.speed*this.lemming.direction;
 }
@@ -178,6 +190,7 @@ Dig.prototype.check = function() {
 }
 
 Dig.prototype.act= function() {
+	this.effect("Dig");
 	game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,10000);
 	this.lemming.y+=this.lemming.speed;
 }
@@ -196,6 +209,7 @@ Mine.prototype.check = function() {
 }
 
 Mine.prototype.act= function() {
+	this.effect("Mine");
 	game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,10000);
 	if (this.down)this.lemming.y+=this.lemming.speed;
 	this.down=!this.down;

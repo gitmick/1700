@@ -21,6 +21,8 @@ function Lemming() {
 	this.canClimb=false;
 	this.canFloat=false;
 	this.dead=false;
+	
+	this.mouseListener = new MouseListener(0,0,32,32);
 }
 
 Lemming.prototype.setAction=function(a) {
@@ -42,7 +44,7 @@ Lemming.prototype.create=function() {
 	this.circle =  new createjs.Sprite(lemmingsSheet, "run");
 	this.circle.lemming=this;
 	this.selection = new createjs.Shape();
-	this.circle.addEventListener("click",this.select);
+	//this.circle.addEventListener("click",this.select);
 	stage.addChild(this.circle);
 	this.height=this.circle.getBounds().height*this.scale;
 	this.width=this.circle.getBounds().width*this.scale;
@@ -67,7 +69,10 @@ Lemming.prototype.drawSelectable = function() {
 
 Lemming.prototype.select=function(evt) {
 	if (game.selectedAction) {
-		evt.currentTarget.lemming.setAction(new game.selectedAction);
+//		evt.currentTarget.lemming.setAction(new game.selectedAction);
+		if (game.useAction())
+			this.setAction(new game.selectedAction);
+		
 	}
 }
 
@@ -76,17 +81,27 @@ Lemming.prototype.draw=function(currentScroll) {
 	if (this.dead)
 		return;
 	if (this.selection.x<game.mouseX && this.selection.x+this.width>game.mouseX
-			&& this.selection.y<game.mouseY && this.selection.y+this.height>game.mouseY)
+			&& this.selection.y<game.mouseY && this.selection.y+this.height>game.mouseY) {
 		this.drawSelectable();
+	}
 	else
 		this.selection.graphics.clear();
 	this.circle.setTransform(0, 0, this.scale, this.scale);
+	this.mouseListener.x=parseInt(this.x-currentScroll);
+	this.mouseListener.y=parseInt(this.y);
 	this.selection.x=parseInt(this.x-currentScroll);
 	this.selection.y=parseInt(this.y);
 	this.circle.x=parseInt(this.x-currentScroll);
 	this.circle.y=parseInt(this.y);
 }
 
+Lemming.prototype.click=function(x,y) {
+	if (this.mouseListener.click(x, y)) {
+		this.select();
+		return true;
+	}
+	return false;
+}
 
 Lemming.prototype.move=function(){
 	
