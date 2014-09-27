@@ -5,10 +5,10 @@
 function MainLoader () {
 	this.loader = new Loader();
 	this.mainScreen = new Image();
-	this.loader.loadImage("img/startScreen.png", this.mainScreen);
+	this.loader.loadImage("img/startScreen.png?1", this.mainScreen);
 	
 	
-	this.startObject = new MouseListener(160,430,140,70);
+	this.startObject = new MouseListener(140,330,140,70);
 }
 
 
@@ -32,6 +32,6 @@ MainLoader.prototype.showImage = function() {
 MainLoader.prototype.click = function(x,y) {
 	if (this.levelLoader.startObject.click(x,y)) {
 	    this.levelLoader = new LevelLoader();
-	    this.levelLoader.load("testLevel");
+	    this.levelLoader.load("devLevel");
 	}
 }

@@ -34,14 +34,22 @@ Game.prototype.init = function(){
 }
 
 Game.prototype.initControls = function() {
-	this.addControl(0, 620, Climb);
-	this.addControl(40, 620, Float);
-	this.addControl(80, 620, Bomb);
-	this.addControl(120, 620, Block);
-	this.addControl(160, 620, Build);
-	this.addControl(200, 620, Bash);
-	this.addControl(240, 620, Mine);
-	this.addControl(280, 620, Dig);
+	this.addControl(0, 368, Climb);
+	this.addControl(35, 368, Float);
+	this.addControl(70, 368, Bomb);
+	this.addControl(110, 368, Block);
+	this.addControl(145, 368, Build);
+	this.addControl(185, 368, Bash);
+	this.addControl(225, 368, Mine);
+	this.addControl(260, 368, Dig);
+	
+	this.addGlobalControl(312, 368, MorePolicemen);
+	this.addGlobalControl(352, 368, LessPolicemen);
+	
+	this.addGlobalControl(392, 368, FinishSpeed);
+	
+	this.addGlobalControl(432, 368, FinishSpeed);
+	this.addGlobalControl(472, 368, BombAll);
 }
 
 Game.prototype.addControl = function(x,y,action_) {
@@ -76,6 +84,24 @@ Game.prototype.addControl = function(x,y,action_) {
 			that.selectedControl=evt.currentTarget;
 			evt.currentTarget.graphics.beginFill("rgba(255,0,0,0.5)").drawRect(x,y,40,40);
 		}
+	});
+
+}
+
+Game.prototype.addGlobalControl = function(x,y,action_) {
+	control = new createjs.Shape();
+	control.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x,y,40,40);
+	
+	
+	var that = this;
+	
+	control.action=action_;
+
+	stage.addChild(control);
+	control.addEventListener("click",function(evt) {
+		selAction = evt.currentTarget.action;
+		a = new selAction;
+		a.execute();
 	});
 
 }

@@ -22,7 +22,7 @@ function Lemming() {
 	this.canFloat=false;
 	this.dead=false;
 	
-	this.mouseListener = new MouseListener(0,0,32,32);
+	this.mouseListener = new MouseListener(0,0,40,40);
 	this.win=false;
 }
 
@@ -51,7 +51,7 @@ Lemming.prototype.create=function() {
 }
 
 Lemming.prototype.frontFootX = function() {
-		return this.x+((this.width/2)*(this.direction+1));
+		return this.x+(this.width/2)+((this.width/8)*(this.direction));
 }
 Lemming.prototype.frontFootY = function() {
 	return this.y+this.height;
@@ -73,13 +73,23 @@ Lemming.prototype.select=function(evt) {
 			this.setAction(new game.selectedAction);
 	}
 }
+Lemming.prototype.click=function(x,y) {
+	if (this.mouseListener.click(game.mouseX, game.mouseY)) {
+		this.select();
+		return true;
+	}
+	return false;
+}
 
 
 Lemming.prototype.draw=function(currentScroll) {
 	if (this.dead || this.win)
 		return;
-	if (this.selection.x<game.mouseX && this.selection.x+this.width>game.mouseX
-			&& this.selection.y<game.mouseY && this.selection.y+this.height>game.mouseY) {
+//	if (this.selection.x<game.mouseX && this.selection.x+this.width>game.mouseX
+//			&& this.selection.y<game.mouseY && this.selection.y+this.height>game.mouseY) {
+//		this.drawSelectable();
+//	}
+	if (this.mouseListener.click(game.mouseX, game.mouseY)) {
 		this.drawSelectable();
 	}
 	else
@@ -91,21 +101,14 @@ Lemming.prototype.draw=function(currentScroll) {
 		return;
 	}
 	this.circle.setTransform(0, 0, this.scale, this.scale);
-	this.mouseListener.x=parseInt(this.x-currentScroll);
-	this.mouseListener.y=parseInt(this.y);
+	this.mouseListener.x=parseInt(this.x-currentScroll-4);
+	this.mouseListener.y=parseInt(this.y-4);
 	this.selection.x=parseInt(this.x-currentScroll);
 	this.selection.y=parseInt(this.y);
 	this.circle.x=parseInt(this.x-currentScroll);
 	this.circle.y=parseInt(this.y);
 }
 
-Lemming.prototype.click=function(x,y) {
-	if (this.mouseListener.click(x, y)) {
-		this.select();
-		return true;
-	}
-	return false;
-}
 
 Lemming.prototype.move=function(){
 	if (this.action.check()) 
@@ -122,7 +125,7 @@ Lemming.prototype.hasFloor=function(){
 	
 	for(var aw=0;aw<this.width;aw++){
 		if(game.getWorldPixel(this.x+aw,this.y+this.height+1)==level.backgroundColor){
-			if (++openSize==this.height)
+			if (++openSize==this.width/2)
 				return false;
 		}
 	}

@@ -103,7 +103,7 @@ Float.prototype.actionPossible = function(action) {
 }
 
 function Bomb() {
-	this.counter=50;
+	this.counter=50+parseInt(Math.random()*10);
 }
 Bomb.prototype=new Action();
 
@@ -113,14 +113,19 @@ Bomb.prototype.check=function() {
 
 Bomb.prototype.act=function() {
 	this.effect("Bomb");
-	if (this.counter--==0) {
-		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,40,10000);
+	this.counter--;
+	if (this.counter==0) {
+		
 		this.lemming.kill();
+	}
+	if (this.counter==20) {
+		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,20,10000);
+		this.lemming.circle.gotoAndPlay("exp");
 	}
 	this.lemming.lastAction.act();
 }
 Bomb.prototype.actionPossible = function(action) {
-	return true;
+	return false;
 }
 
 function Block() {
@@ -135,8 +140,10 @@ Block.prototype.check=function() {
 
 Block.prototype.act=function() {
 	this.effect("Block");
-	if (!this.blocked)
-		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,20,0);
+	if (!this.blocked) {
+		game.drawRect(this.lemming.x+this.lemming.width/4,this.lemming.y+this.lemming.height/4,15,30,23);
+		this.lemming.circle.gotoAndPlay("stand");
+	}
 	this.blocked=true;
 }
 
@@ -162,8 +169,8 @@ Build.prototype.act=function() {
 	this.counter--;
 	if (this.counter==0)
 		this.lemming.setAction(new Walk());
-	if (this.counter%12==0)
-		game.drawRect(this.lemming.x+(this.lemming.width*this.lemming.direction),this.lemming.y+this.lemming.height-5,20,5,11);
+	if (this.counter%8==0)
+		game.drawRect(this.lemming.x+((this.lemming.width/2)*this.lemming.direction),this.lemming.y+this.lemming.height-5,12,5,11);
 	else
 		this.walk.act();
 }
@@ -263,4 +270,41 @@ Mine.prototype.act= function() {
 	if (this.down)this.lemming.y+=this.lemming.speed;
 	this.down=!this.down;
 	this.lemming.x+=this.lemming.speed*this.lemming.direction;
+}
+
+
+function BombAll() {
+}
+
+BombAll.prototype.execute=function() {
+	for(var i=0;i<game.lemmings.length;i++){
+		var lemming = game.lemmings[i];
+		if (!lemming.dead)
+		lemming.setAction(new Bomb());
+	}
+}
+
+
+function FinishSpeed() {
+}
+
+FinishSpeed.prototype.execute=function() {
+	game.speedFactor=4;
+}
+
+
+function MorePolicemen() {
+}
+
+MorePolicemen.prototype.execute=function() {
+	if (level.policeDelay>10)
+		level.policeDelay-=5;
+}
+
+function LessPolicemen() {
+}
+
+LessPolicemen.prototype.execute=function() {
+
+		level.policeDelay+=5;
 }

@@ -2,6 +2,18 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+
+<style>
+canvas, img {
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
+    -ms-interpolation-mode: nearest-neighbor;
+}
+body { background-color:#000000;}
+</style>
+
 <script src="http://code.createjs.com/easeljs-0.7.1.min.js"></script>
 <script src="http://code.createjs.com/soundjs-0.5.2.min.js"></script>
 <script src="src/main.js"></script>
@@ -14,7 +26,7 @@
 <script src="src/mainScreen.js"></script>
 <title>Title</title>
 </head>
-<body onload="init()">
-<canvas id="canvas" width="800" height="700"></canvas>
+<body onload="init()" background-color="black">
+<canvas id="canvas" width="512" height="384"></canvas>
 </body>
 </html>

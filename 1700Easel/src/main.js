@@ -14,8 +14,19 @@ var game;
 
 function init() {
 
+	var canvas = document.getElementById('canvas');
+
+	var h=height()*0.95;
+	var w=(h/384)*512;
+	
+	canvas.style.width = w*1.0+'px';
+	canvas.style.height = h*1.0+'px';
+
+	
     stage = new createjs.Stage("canvas");
 
+    
+    
     game = new Game();
 	game.init();
     
@@ -39,7 +50,12 @@ function init() {
     });
 }
 
-
+function width(){
+	   return window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth||0;
+	}
+	function height(){
+	   return window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight||0;
+	}
 
 
 function tick() {

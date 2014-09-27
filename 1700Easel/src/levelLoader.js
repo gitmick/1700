@@ -64,6 +64,7 @@ function LevelLoader() {
 	this.name;
 	this.dirPath;
 	this.worldHtmlImage= new Image();
+	this.mapHtmlImage= new Image();
 	this.introImage= new Image();
 	this.worldBitmap;
 	this.worldBitmapData;
@@ -95,24 +96,27 @@ LevelLoader.prototype.preloadLevel = function() {
 	console.log(waiting);
 	if (waiting==0){
 		this.levelLoader.loader.waitingForLoads=1;
-		var bitmap = new createjs.Bitmap(this.levelLoader.actionImage);
-		bitmap.y=620;
-		stage.addChild(bitmap);
-		
-		this.start();
 		
 		
 		
-		this.levelLoader.worldBitmapData = new createjs.BitmapData(this.levelLoader.worldHtmlImage);
-		this.levelLoader.worldBitmap = new createjs.Bitmap(this.levelLoader.worldBitmapData.canvas);
+		
+		
+		
+		this.levelLoader.worldBitmapData = new createjs.BitmapData(this.levelLoader.mapHtmlImage);
+		this.levelLoader.worldBitmap = new createjs.Bitmap(this.levelLoader.worldHtmlImage);
 		this.levelLoader.loaded=true;
 		stage.addChild(this.levelLoader.worldBitmap);
 		stage.addChild(this.levelLoader.s);
 		
+		var bitmap = new createjs.Bitmap(this.levelLoader.actionImage);
+		bitmap.y=365;
+		//bitmap.setTransform(0, 0, 0.7, 0.7);
+		stage.addChild(bitmap);
+		this.start();
 		createjs.Sound.play(this.levelLoader.name);
 		
 		var heli = new createjs.Bitmap(this.levelLoader.heliImage);
-		heli.y=300;
+		heli.y=100;
 		heli.x=100;
 		stage.addChild(heli);
 		
@@ -168,7 +172,8 @@ LevelLoader.prototype.init = function() {
 	this.s = new createjs.Shape();
 	this.loader.loadScript(this.dirPath+"/level.js");
 	this.loader.loadImage(this.dirPath+"/world.png",this.worldHtmlImage);
-	this.loader.loadImage("img/actions.png",this.actionImage);	
+	this.loader.loadImage(this.dirPath+"/map.png",this.mapHtmlImage);
+	this.loader.loadImage("img/actions.png?2",this.actionImage);	
 	this.loader.loadImage("img/heli.png",this.heliImage);	
 	this.loader.loadSound(this.dirPath+"/track.mp3",this.name);
 	
@@ -218,7 +223,7 @@ LevelLoader.prototype.drawRect = function(px,py,w,h,color){
 			}
 		}
 	}
-	if (color)
+	if (color && color!=23)
 		this.s.graphics.beginFill("brown").drawRect(px,py,w,h);
 }
 
