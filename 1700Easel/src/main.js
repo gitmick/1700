@@ -48,6 +48,12 @@ function init() {
     stage.on("click", function(evt) {
     	game.click(evt.stageX,evt.stageY);
     });
+    stage.on("pressmove", function(evt) {
+    	game.pressmove(evt.stageX,evt.stageY);
+    });
+    stage.on("pressup", function(evt) {
+    	game.pressup(evt.stageX,evt.stageY);
+    });
 }
 
 function width(){

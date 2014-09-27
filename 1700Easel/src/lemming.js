@@ -80,7 +80,9 @@ Lemming.prototype.click=function(x,y) {
 	}
 	return false;
 }
-
+Lemming.prototype.under=function(x,y) {
+	return (this.mouseListener.click(game.mouseX, game.mouseY));
+};
 
 Lemming.prototype.draw=function(currentScroll) {
 	if (this.dead || this.win)

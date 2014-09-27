@@ -273,6 +273,48 @@ Mine.prototype.act= function() {
 }
 
 
+
+function Jump(jc) {
+	this.jumpCount=jc;
+}
+Jump.prototype=new Action();
+
+Jump.prototype.check=function() {
+	if (!this.lemming.hasFloor() && this.jumpCount>1) {
+		this.lemming.setAction(new Fall());
+		return false;
+	}
+	if (this.lemming.againstWall()) {
+		this.lemming.direction*=-1;
+		if (this.lemming.direction>0)
+			this.lemming.circle.gotoAndPlay("run");
+		else
+			this.lemming.circle.gotoAndPlay("runR");
+	}
+	return true;
+}
+
+Jump.prototype.act = function() {
+	this.jumpCount--;
+	if (!this.lemming.againstWall()) {
+		if (this.jumpCount>1)
+			this.lemming.y-=this.lemming.getDY();	
+		else {
+			this.lemming.y-=((this.jumpCount+10)/2);
+		}
+		this.lemming.x+=this.lemming.direction*this.lemming.speed;
+		if (!this.lemming.hasFloor())
+			this.lemming.y++;
+		if (this.jumpCount<-17)
+			this.lemming.setAction(new Walk());
+	}
+}
+
+
+
+
+
+
 function BombAll() {
 }
 

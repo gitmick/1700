@@ -2,6 +2,7 @@ function Game(){
 	this.levelLoader;
 	this.maxLemmings=100;
 	this.lemmings = [];
+	
 	this.added=0;
 	this.winCount=0;
 	
@@ -19,6 +20,10 @@ function Game(){
 	this.controlX=new Object();
 	this.controlY=new Object();
 	this.selectedControl;
+	
+	this.jumpCount=0;
+	this.multilemmings = [];
+	this.multilemmingtimes = [];
 }
 
 Game.prototype.startScreen = function() {
@@ -118,6 +123,29 @@ Game.prototype.useAction = function() {
 
 Game.prototype.click = function(x,y) {
 	
+}
+
+Game.prototype.pressmove = function(x,y) {
+	this.jumpCount++;
+	for(var i=0;i<this.lemmings.length;i++){
+		var lemming = this.lemmings[i];
+		if (lemming.under(x,y) && !contains(this.multilemmings,lemming)) {
+			this.multilemmings.push(lemming);
+			this.multilemmingtimes.push(this.jumpCount);
+//			console.log(this.jumpCount);
+		}
+			
+	}
+}
+
+Game.prototype.pressup = function(x,y) {
+	for(var i=0;i<this.multilemmings.length;i++){
+		var lemming = this.multilemmings[i];
+		var jc = this.multilemmingtimes[i];
+		lemming.setAction(new Jump(jc));
+	}
+	this.multilemmings = [];
+	this.jumpCount=0;
 }
 
 Game.prototype.setAction = function(ac) {
