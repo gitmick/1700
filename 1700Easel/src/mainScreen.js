@@ -5,7 +5,7 @@
 function MainLoader () {
 	this.loader = new Loader();
 	this.mainScreen = new Image();
-	this.loader.loadImage("img/startScreen.png?1", this.mainScreen);
+	this.mainScreen=this.loader.loadImage("img/startScreen.png?1", this.mainScreen);
 	
 	
 	this.startObject = new MouseListener(140,330,140,70);

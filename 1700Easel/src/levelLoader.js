@@ -41,20 +41,33 @@ Loader.prototype.loadScript = function(url)
     head.appendChild(script);
 }
 
+var loadedImages = {};
+
 Loader.prototype.loadImage = function(imgSrc,img) {
+	if (imgSrc in loadedImages) {
+		img=loadedImages[imgSrc];
+	}
 	this.waitingForLoads++;
 	img.src=imgSrc+"?"+Math.random();
 	img.name=imgSrc;
 	var that=this;
 	img.onload=function() {
+		loadedImages[imgSrc]=img;
 		that.waitingForLoads--;
 	}
+	return img;
 };
+
+var loadedSounds = new Array();
+
 Loader.prototype.loadSound = function(sndSrc,sndName) {
+	if (contains(loadedSounds,sndSrc+sndName))
+		return;
 	this.waitingForLoads++;
 	createjs.Sound.registerSound({id:sndName, src:sndSrc+"?"+Math.random()});
 	var that=this;
 	createjs.Sound.addEventListener("fileload", function() {
+		loadedSounds.push(sndSrc+sndName);
 		that.waitingForLoads--;
 	});
 };
@@ -152,7 +165,7 @@ LevelLoader.prototype.updateLevel = function() {
 
 LevelLoader.prototype.intro = function() {
 	this.createDirPath();
-	this.loader.loadImage(this.dirPath+"/introScreen.png",this.introImage);
+	this.introImage=this.loader.loadImage(this.dirPath+"/introScreen.png",this.introImage);
 }
 
 LevelLoader.prototype.showIntro = function() {
@@ -169,9 +182,9 @@ LevelLoader.prototype.init = function() {
 	this.s = new createjs.Shape();
 //	this.loader.waitingForLoads++;
 	this.loader.loadScript(this.dirPath+"/level.js");
-	this.loader.loadImage(this.dirPath+"/world.png",this.worldHtmlImage);
-	this.loader.loadImage(this.dirPath+"/map.png",this.mapHtmlImage);
-	this.loader.loadImage("img/actions.png?2",this.actionImage);	
+	this.worldHtmlImage=this.loader.loadImage(this.dirPath+"/world.png",this.worldHtmlImage);
+	this.mapHtmlImage=this.loader.loadImage(this.dirPath+"/map.png",this.mapHtmlImage);
+	this.actionImage=this.loader.loadImage("img/actions.png?2",this.actionImage);	
 	this.loader.loadSound(this.dirPath+"/track.mp3",this.name);
 	
 

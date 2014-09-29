@@ -8,7 +8,7 @@ function Asset() {
 }
 
 Asset.prototype.loadImage = function(file,img) {
-	this.loader.loadImage("assets/"+this.dirPath+"/"+file,img);
+	return this.loader.loadImage("assets/"+this.dirPath+"/"+file,img);
 }
 
 Asset.prototype.loadSound = function(file,name) {

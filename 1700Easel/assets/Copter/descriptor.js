@@ -7,7 +7,7 @@ function Copter() {
 }
 Copter.prototype = new Asset();
 Copter.prototype.load = function() {
-	this.loadImage("heli.png",this.heliImage);
+	this.heliImage=this.loadImage("heli.png",this.heliImage);
 	
 };
 
