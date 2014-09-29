@@ -23,6 +23,9 @@ MainLoader.prototype.showImage = function() {
 		this.levelLoader.loader.loadSound("fx/Mine.mp3","Mine");
 		this.levelLoader.loader.loadSound("fx/Dig.mp3","Dig");
 		
+		//remove!!!
+		this.levelLoader.loader.loadSound("assets/Copter/heli.mp3","heli");
+		
 		this.levelLoader.loader.waitingForLoads=1;
 		var bitmap = new createjs.Bitmap(this.levelLoader.mainScreen);
 		stage.addChild(bitmap);

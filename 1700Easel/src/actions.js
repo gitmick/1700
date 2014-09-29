@@ -12,10 +12,32 @@ function contains(a, obj) {
     return false;
 }
 
-function Action() {
-	this.lemming;
+function Act() {
 	this.effectStarted=false;
 	this.possibleActions = [];
+}
+
+Act.prototype.check= function() {
+	return false;
+};
+
+Act.prototype.act = function() {
+	
+};
+
+Act.prototype.effect = function(name) {
+	if (!this.effectStarted) {
+		createjs.Sound.play(name);
+		this.effectStarted=true;
+	}
+};
+
+Act.prototype.actionPossible = function(action) {
+	return contains(this.possibleActions,action);
+};
+
+function Action() {
+	this.lemming;
 	this.possibleActions.push(Bomb);
 	this.possibleActions.push(Climb);
 	this.possibleActions.push(Float);
@@ -23,22 +45,7 @@ function Action() {
 	this.possibleActions.push(Walk);
 }
 
-Action.prototype.check= function() {
-	return false;
-}
-
-Action.prototype.act = function() {
-	
-}
-Action.prototype.effect = function(name) {
-	if (!this.effectStarted) {
-		createjs.Sound.play(name);
-		this.effectStarted=true;
-	}
-}
-Action.prototype.actionPossible = function(action) {
-	return contains(this.possibleActions,action);
-}
+Action.prototype=new Act();
 
 function Fall() {
 	this.height=0;
@@ -303,9 +310,7 @@ Jump.prototype.act = function() {
 			this.lemming.y-=((this.jumpCount+10)/2);
 		}
 		this.lemming.x+=this.lemming.direction*this.lemming.speed;
-		if (!this.lemming.hasFloor())
-			this.lemming.y++;
-		if (this.jumpCount<-17)
+		if (this.lemming.hasFloor() || this.jumpCount<-17)
 			this.lemming.setAction(new Walk());
 	}
 }

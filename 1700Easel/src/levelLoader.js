@@ -43,7 +43,7 @@ Loader.prototype.loadScript = function(url)
 
 Loader.prototype.loadImage = function(imgSrc,img) {
 	this.waitingForLoads++;
-	img.src=imgSrc;
+	img.src=imgSrc+"?"+Math.random();
 	img.name=imgSrc;
 	var that=this;
 	img.onload=function() {
@@ -52,7 +52,7 @@ Loader.prototype.loadImage = function(imgSrc,img) {
 };
 Loader.prototype.loadSound = function(sndSrc,sndName) {
 	this.waitingForLoads++;
-	createjs.Sound.registerSound({id:sndName, src:sndSrc});
+	createjs.Sound.registerSound({id:sndName, src:sndSrc+"?"+Math.random()});
 	var that=this;
 	createjs.Sound.addEventListener("fileload", function() {
 		that.waitingForLoads--;
@@ -96,12 +96,6 @@ LevelLoader.prototype.preloadLevel = function() {
 	console.log(waiting);
 	if (waiting==0){
 		this.levelLoader.loader.waitingForLoads=1;
-		
-		
-		
-		
-		
-		
 		this.levelLoader.worldBitmapData = new createjs.BitmapData(this.levelLoader.mapHtmlImage);
 		this.levelLoader.worldBitmap = new createjs.Bitmap(this.levelLoader.worldHtmlImage);
 		this.levelLoader.loaded=true;
@@ -115,10 +109,12 @@ LevelLoader.prototype.preloadLevel = function() {
 		this.start();
 		createjs.Sound.play(this.levelLoader.name);
 		
-		var heli = new createjs.Bitmap(this.levelLoader.heliImage);
-		heli.y=100;
-		heli.x=100;
-		stage.addChild(heli);
+		//loadAssets
+		level.initAssets();
+		for (var i=0; i<level.assets.length;i++) {
+			var asset = level.assets[i];
+			asset.paint();
+		}
 		
 		this.click=this.levelLoader.click;
 		this.update=this.levelLoader.updateLevel;
@@ -137,6 +133,12 @@ LevelLoader.prototype.updateLevel = function() {
 	if (this.delayCount++%level.policeDelay==0)
 		this.addLemmings();
 	this.selectedLemming=false;
+	
+	for (var i=0; i<level.assets.length;i++) {
+		var asset = level.assets[i];
+		asset.update(this.currentScroll);
+	}
+	
 	for(var i=0;i<this.lemmings.length;i++){
 		var lemming = this.lemmings[i];
 		if (lemming.dead)
@@ -146,11 +148,6 @@ LevelLoader.prototype.updateLevel = function() {
 		}
 		lemming.draw(this.currentScroll);
 	}
-//	if (this.levelLoader.counter++>100) {
-//		this.levelLoader = new LevelLoader();
-//		this.levelLoader.load("devLevel");
-//	}
-		
 }
 
 LevelLoader.prototype.intro = function() {
@@ -170,12 +167,14 @@ LevelLoader.prototype.showIntro = function() {
 
 LevelLoader.prototype.init = function() {
 	this.s = new createjs.Shape();
+//	this.loader.waitingForLoads++;
 	this.loader.loadScript(this.dirPath+"/level.js");
 	this.loader.loadImage(this.dirPath+"/world.png",this.worldHtmlImage);
 	this.loader.loadImage(this.dirPath+"/map.png",this.mapHtmlImage);
 	this.loader.loadImage("img/actions.png?2",this.actionImage);	
-	this.loader.loadImage("img/heli.png",this.heliImage);	
 	this.loader.loadSound(this.dirPath+"/track.mp3",this.name);
+	
+
 	
 }
 
@@ -240,7 +239,24 @@ function Level() {
 	this.goalY=0;
 	this.minSafeCount=0;
 	this.soundFile="";
+	this.assets=new Array();
 }
 
+var loadedAssets = new Array();
+
+Level.prototype.registerAsset = function(folderName) {
+	if (!contains(loadedAssets,folderName)) {
+		game.levelLoader.loader.loadScript("assets/"+folderName+"/descriptor.js");
+		loadedAssets.push(folderName);
+	}
+}
+Level.prototype.initAsset = function(folderName) {
+	eval("var asset = new "+folderName+"();");
+	asset.loader=game.levelLoader.loader;
+	asset.dirPath = folderName;
+	asset.load();
+	this.assets.push(asset);
+	return asset;
+}
 
 level = new Level();
