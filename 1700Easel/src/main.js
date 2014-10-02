@@ -46,12 +46,15 @@ function init() {
     		mouseX=300;
     });
     stage.on("click", function(evt) {
+    	console.log("mainClick");
     	game.click(evt.stageX,evt.stageY);
     });
     stage.on("pressmove", function(evt) {
+    	console.log("mainMove");
     	game.pressmove(evt.stageX,evt.stageY);
     });
     stage.on("pressup", function(evt) {
+    	console.log("mainUp");
     	game.pressup(evt.stageX,evt.stageY);
     });
 }

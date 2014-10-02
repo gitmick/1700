@@ -8,7 +8,7 @@ function Copter() {
 Copter.prototype = new Asset();
 Copter.prototype.load = function() {
 	this.heliImage=this.loadImage("heli.png",this.heliImage);
-	
+	this.loadSound("heli.mp3","heli");
 };
 
 Copter.prototype.draw = function() {

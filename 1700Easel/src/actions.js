@@ -15,6 +15,7 @@ function contains(a, obj) {
 function Act() {
 	this.effectStarted=false;
 	this.possibleActions = [];
+	this.effectInstance;
 }
 
 Act.prototype.check= function() {
@@ -27,7 +28,7 @@ Act.prototype.act = function() {
 
 Act.prototype.effect = function(name) {
 	if (!this.effectStarted) {
-		createjs.Sound.play(name);
+		this.effectInstance=createjs.Sound.play(name);
 		this.effectStarted=true;
 	}
 };
@@ -55,6 +56,7 @@ Fall.prototype=new Action();
 
 Fall.prototype.check=function() {
 	if (this.lemming.hasFloor()) {
+		this.effectInstance.stop();
 		if (this.height>1000 && !this.lemming.canFloat)
 			this.lemming.kill();
 		this.lemming.setAction(new Walk());
@@ -64,7 +66,11 @@ Fall.prototype.check=function() {
 }
 
 Fall.prototype.act=function() {
-	for (i=0;i<5;i++) {
+	this.effect("Float");
+	speed=5;
+	if (this.lemming.canFloat)
+		speed=1;
+	for (i=0;i<speed;i++) {
 		if (this.check()) {
 			this.lemming.y+=this.lemming.speed;
 			if (this.lemming.y>0)
@@ -110,7 +116,7 @@ Float.prototype.actionPossible = function(action) {
 }
 
 function Bomb() {
-	this.counter=50+parseInt(Math.random()*10);
+	this.counter=100+parseInt(Math.random()*10);
 }
 Bomb.prototype=new Action();
 
@@ -122,14 +128,16 @@ Bomb.prototype.act=function() {
 	this.effect("Bomb");
 	this.counter--;
 	if (this.counter==0) {
-		
 		this.lemming.kill();
 	}
 	if (this.counter==20) {
-		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,20,10000);
+		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,20,FREE);
 		this.lemming.circle.gotoAndPlay("exp");
+		this.effectStarted=false;
+		this.effect("Exp");
 	}
-	this.lemming.lastAction.act();
+	if (this.counter>20)
+		this.lemming.lastAction.act();
 }
 Bomb.prototype.actionPossible = function(action) {
 	return false;
@@ -148,7 +156,7 @@ Block.prototype.check=function() {
 Block.prototype.act=function() {
 	this.effect("Block");
 	if (!this.blocked) {
-		game.drawRect(this.lemming.x+this.lemming.width/4,this.lemming.y+this.lemming.height/4,15,30,23);
+		game.drawRect(this.lemming.x+this.lemming.width/4,this.lemming.y+this.lemming.height/4,15,30,INVISIBLE_BLOCK);
 		this.lemming.circle.gotoAndPlay("stand");
 	}
 	this.blocked=true;
@@ -157,7 +165,7 @@ Block.prototype.act=function() {
 function Build() {
 	this.walk = new Walk();
 
-	this.counter=61;
+	this.counter=361;
 }
 Build.prototype=new Action();
 
@@ -176,9 +184,9 @@ Build.prototype.act=function() {
 	this.counter--;
 	if (this.counter==0)
 		this.lemming.setAction(new Walk());
+	if (this.counter%32==0)
+		game.drawRect(this.lemming.x+((this.lemming.width/4)*this.lemming.direction),this.lemming.y+this.lemming.height-5,12,5,BLOCK);
 	if (this.counter%8==0)
-		game.drawRect(this.lemming.x+((this.lemming.width/2)*this.lemming.direction),this.lemming.y+this.lemming.height-5,12,5,11);
-	else
 		this.walk.act();
 }
 
@@ -200,7 +208,7 @@ Bash.prototype.check=function() {
 
 Bash.prototype.act=function() {
 	this.effect("Bash");
-	game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,17,10000);
+	game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,17,FREE);
 	this.lemming.x+=this.lemming.speed*this.lemming.direction;
 }
 
@@ -250,7 +258,7 @@ Dig.prototype.check = function() {
 
 Dig.prototype.act= function() {
 	this.effect("Dig");
-	game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,10000);
+	game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,FREE);
 	this.lemming.y+=this.lemming.speed;
 }
 
@@ -273,7 +281,7 @@ Mine.prototype.check = function() {
 
 Mine.prototype.act= function() {
 	this.effect("Mine");
-	game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,10000);
+	game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,FREE);
 	if (this.down)this.lemming.y+=this.lemming.speed;
 	this.down=!this.down;
 	this.lemming.x+=this.lemming.speed*this.lemming.direction;
@@ -327,7 +335,7 @@ BombAll.prototype.execute=function() {
 	for(var i=0;i<game.lemmings.length;i++){
 		var lemming = game.lemmings[i];
 		if (!lemming.dead)
-		lemming.setAction(new Bomb());
+			lemming.setAction(new Bomb());
 	}
 }
 
@@ -352,6 +360,5 @@ function LessPolicemen() {
 }
 
 LessPolicemen.prototype.execute=function() {
-
 		level.policeDelay+=5;
 }
