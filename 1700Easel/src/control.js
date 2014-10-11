@@ -43,53 +43,31 @@ Control.prototype.showPic = function(x,y,picName) {
 	stage.addChild(bitmap);
 };
 
-Control.prototype.addControl = function(x,y,action_,picName) {
+Control.prototype.showEntityPic = function(x,y,picName,displayEntity) {
+	picName = "img/actions/"+picName+".png";
+	pic = globalLoader.getImage(picName);
+	bitmap= displayEntity.addBitmap(pic,false).element;
+	return bitmap;
+};
 
-	this.showPic(x,y,picName);
-	control = new createjs.Shape();
-	control.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x,y,36,36);
+Control.prototype.addControl = function(x,y,action_,picName) {
+	cE = new ControlElement();
+	this.showEntityPic(x,y,picName,cE.displayEntity);
+	cE.scaleBitmap = this.showEntityPic(x,y,picName,cE.displayEntity);
+	cE.selectionShape = cE.displayEntity.addShape(false).element;
 	
-	var text = new createjs.Text(""+level.actionCount[action_], "20px Arial", "#ff7700"); 
-	text.x = x+10;
-	text.y=y-20;
-	this.controlText[action_]=text;
-	stage.addChild(text);
+	cE.selectionShape.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x,y,36,36);
+	cE.action=action_;
 	
-	var that = this;
+	cE.displayEntity.addInteractionEntity(36, 36, cE, false);
+	cE.displayEntity.pos(x, y);
 	
-	control.action=action_;
-	this.controlAction[action_]=control;
-	this.controlX[action_]=x;
-	this.controlY[action_]=y;
-	stage.addChild(control);
-	control.addEventListener("click",function(evt) {
-		
-		selAction = evt.currentTarget.action;
-		leftActions = level.actionCount[selAction];
-		if (leftActions>0) {
-			if (that.selectedAction) {
-				lastControl=that.controlAction[that.selectedAction];
-				lastX=that.controlX[that.selectedAction];
-				lastY=that.controlY[that.selectedAction];
-				lastControl.graphics.clear();
-				lastControl.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(lastX,lastY,36,36);
-			}
-			that.selectedAction=selAction;
-			if (selAction.multiSelect) {
-				game.pressmove=that.pressmove_ms;
-				game.pressup=that.pressup_ms;
-			}
-			else {
-				game.pressmove=that.pressmove;
-				game.pressup=that.pressup;
-			}
-			that.selectedControl=evt.currentTarget;
-			evt.currentTarget.graphics.beginFill("rgba(255,0,0,0.5)").drawRect(x,y,40,40);
-		}
-	});
-	control.addEventListener("mousemove",function(evt) {
-		actionBitmap.setTransform(x-18,250,2,2);
-	});
+	cE.text = new createjs.Text(""+level.actionCount[action_], "20px Arial", "#ff7700"); 
+	cE.text.x = x+10;
+	cE.text.y=y-20;
+	stage.addChild(cE.text);
+	
+	this.controlAction[action_]=cE;
 }
 
 Control.prototype.addGlobalControl = function(x,y,action_,picName) {
@@ -124,9 +102,10 @@ Control.prototype.actionAvailable = function() {
 Control.prototype.useAction = function() {
 	if (!this.actionAvailable())
 		return false;
+	var count = level.actionCount[this.selectedAction];
 	level.actionCount[this.selectedAction]=--count;
-	text = this.controlText[this.selectedAction]; 
-	text.text=""+count;	
+	ce = this.controlAction[this.selectedAction]; 
+	ce.text.text=""+count;	
 	return true;
 }
 
@@ -167,7 +146,28 @@ Control.prototype.pressup = function(x,y) {
 }
 
 
+function ControlElement() {
+	this.displayEntity = new DisplayEntity();
+	this.text;
+	this.selectionShape;
+	this.scaleBitmap;
+	this.action;
+}
 
+ControlElement.prototype.select = function(x,y){
+	leftActions = level.actionCount[this.action];
+	if (leftActions>0) {
+		if (game.control.selectedAction) {
+			lastCE=game.control.controlAction[game.control.selectedAction];
+			lastCE.selectionShape.graphics.clear();
+			lastCE.selectionShape.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(lastCE.displayEntity.x,lastCE.displayEntity.y,36,36);
+		}
+		game.control.selectedAction=this.action;
+		this.selectionShape.graphics.beginFill("rgba(255,0,0,0.5)").drawRect(0,0,36,36);
+	}
+};
+ControlElement.prototype.explore = function(x,y){};
+ControlElement.prototype.collect = function(x,y){};
 
 
 

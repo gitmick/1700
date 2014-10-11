@@ -219,7 +219,6 @@ InteractionEntity.prototype.compare = function(ml) {
 	return ml.selectionDistance-this.selectionDistance;
 }
 
-
 function Button(x,y,w,h) {
 	this.displayEntity = new DisplayEntity();
 	this.displayEntity.addInteractionEntity(w, h, this, false);
