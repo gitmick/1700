@@ -101,6 +101,7 @@ Lemming.prototype.explore=function(x,y) {
 
 Lemming.prototype.left=function(x,y) {
 	this.selection.graphics.clear();
+	game.selectedLemming=false;
 }
 
 Lemming.prototype.collected=function(time) {

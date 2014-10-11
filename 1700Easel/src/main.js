@@ -376,15 +376,22 @@ DesktopInteraction.prototype.tick = function() {
 	else
 		this.collectionDelay=0;
 	game.scrollLevel(mouseX);
-	if (this.clickX>-1) {
-		interactionHandler.select(this.clickX,this.clickY);
-		this.clickX=-1;
-	}
-	else if (!this.mouseDown)
+	
+	if (!this.mouseDown)
 		interactionHandler.explore(game.mouseX,game.mouseY);
 	else if (this.collectionDelay>5) {
 		this.collect();
 	}
+	
+	if (this.clickX>-1) {
+		if (game.selectedLemming) {
+			game.selectedLemming.select();
+		}
+		else
+			interactionHandler.select(this.clickX,this.clickY);
+		this.clickX=-1;
+	}
+	
 }
 
 DesktopInteraction.prototype.collect = function() {
