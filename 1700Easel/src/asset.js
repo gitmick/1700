@@ -5,6 +5,8 @@ function Asset() {
 	this.loader;
 	this.dirPath;
 	this.action=false;
+	this.initialized=false;
+	this.displayEntity = new DisplayEntity();
 }
 
 Asset.prototype.loadImage = function(file,img) {
@@ -28,7 +30,11 @@ Asset.prototype.paint = function() {
 		this.draw();
 };
 
-Asset.prototype.draw = function() {
+Asset.prototype.draw = function(deFrame) {
+	this.displayEntity.adjust(deFrame);
+}
+
+Asset.prototype.drawInitial = function(deFrame) {
 	
 };
 
@@ -37,19 +43,18 @@ Asset.prototype.setAction = function(a) {
 	this.action.asset=this;
 }
 
-Asset.prototype.update = function(currentScroll) {
+Asset.prototype.update = function(deFrame) {
+	if (!this.initialized) {
+		this.drawInitial(deFrame);
+		this.initialized=true;
+	}
 	if (this.action) {
 		if (this.action.check) {
 			this.action.act();
 		}
 	}
+	this.draw(deFrame);
 };
-
-Asset.prototype.load = function() {};
-Asset.prototype.onLevelStart = function() {};
-Asset.prototype.onAllPolicemenEntered = function() {};
-Asset.prototype.lost= function() {};
-Asset.prototype.won = function() {};
 
 
 

@@ -25,13 +25,23 @@ function Lemming() {
 	this.mouseListener = new MouseListener(0,0,40,40);
 	this.win=false;
 	this.control=game.control;
+	
+	
+	
+	
 }
 
 Lemming.prototype.setAction=function(a) {
+	if (this.action) {
+		if (!this.action.actionPossible(a))
+			return false;
+		this.action.stop();
+	}
 	this.lastAction=this.action;
 	this.action=a;
 	this.action.lemming=this;
 	this.move();
+	return true;
 }
 
 Lemming.prototype.kill=function() {
@@ -47,6 +57,7 @@ Lemming.prototype.create=function() {
 	this.circle.lemming=this;
 	this.selection = new createjs.Shape();
 	stage.addChild(this.circle);
+	stage.addChild(this.selection);
 	this.height=this.circle.getBounds().height*this.scale;
 	this.width=this.circle.getBounds().width*this.scale;
 	this.setAction(new Fall());
@@ -62,7 +73,6 @@ Lemming.prototype.frontFootY = function() {
 
 Lemming.prototype.drawSelectable = function() {
 	this.selection.graphics.beginStroke("orange").drawRect(2,2,this.height,this.width);
-	stage.addChild(this.selection);
 	if (!game.selectedLemming)
 		game.selectedLemming=this;
 	else
@@ -71,8 +81,10 @@ Lemming.prototype.drawSelectable = function() {
 
 Lemming.prototype.select=function(evt) {
 	if (this.control.selectedAction) {
-		if (this.control.useAction())
-			this.setAction(new this.control.selectedAction);
+		if (this.control.useAction()) {
+			if (!this.setAction(new this.control.selectedAction))
+				this.control.unuseAction()
+		}
 	}
 }
 Lemming.prototype.click=function(x,y) {
@@ -127,7 +139,7 @@ Lemming.prototype.hasFloor=function(){
 	//return game.getWorldPixel(this.x+(this.width/2),this.y+this.height)!=level.backgroundColor;
 	var openSize=0;
 	
-	for(var aw=0;aw<this.width;aw++){
+	for(var aw=5;aw<this.width-5;aw++){
 		if(game.getWorldPixel(this.x+aw,this.y+this.height+1)==FREE){
 			if (++openSize==this.width/2)
 				return false;

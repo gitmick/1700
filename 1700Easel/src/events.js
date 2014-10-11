@@ -129,7 +129,7 @@ function IntroLevel() {
 	this.showIntroAction = new LevelLoadAction();
 	this.loadLevelSpecific = new LevelLoadAction();
 	this.loadAssets = new LevelLoadAction();
-	this.play = new MachineAction();
+	this.play = new PlayAction();
 	this.loadIntroAction.afterLoad = this.showIntroAction;
 	this.showIntroAction.afterLoad = this.loadLevelSpecific;
 	this.loadLevelSpecific.afterLoad = this.loadAssets;
@@ -145,6 +145,58 @@ IntroLevel.prototype.start = function(machine) {
 
 	this.init();
 	machine.addAction(this.loadIntroAction);
+};
+
+
+function Trigger() {
+	this.triggers = {};
+	this.interceptors = {};
+}
+
+Trigger.prototype.addTrigger = function(name,callback) {
+	var list = this.triggers[name];
+	if (!list) {
+		list = new Array();
+		this.triggers[name]=list;
+	}
+	list.push(callback);
+}
+Trigger.prototype.removeTrigger = function(name,callback) {
+	var list = this.triggers[name];
+	arrayWithout(list,callback);
+}
+
+Trigger.prototype.addInterceptor = function(name,callback) {
+	var list = this.interceptors[name];
+	if (!list) {
+		list = new Array();
+		this.interceptors[name]=list;
+	}
+	list.push(callback);
+}
+Trigger.prototype.removeInterceptor = function(name,callback) {
+	var list = this.interceptors[name];
+	arrayWithout(list,callback);
+}
+Trigger.prototype.isIntercepted = function(name) {
+	var list = this.interceptors[name];
+	if (list) {
+		for (var i=0;i<list.length;i++) {
+			var intercept = list[i];
+			if (intercept())
+				return true;
+		}
+	}
+	return false;
+}
+Trigger.prototype.bang = function(name) {
+	var list = this.triggers[name];
+	if (list) {
+		for (var i=0;i<list.length;i++) {
+			var trigger = list[i];
+			trigger.bang(name);
+		}
+	}
 }
 
 

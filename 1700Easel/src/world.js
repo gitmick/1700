@@ -2,27 +2,42 @@
  * 
  */
 
-var FREE=16777215;
+//var FREE=16777215;
+var FREE=10592129;
 var DEADLY=2;
 var BLOCK=0;
 var INVISIBLE_BLOCK=1;
 
 function World() {
-	this.worldBitmap;
 	this.worldBitmapData;
-	this.s = new createjs.Shape();
+	this.s;
+	this.foreGround;
+	this.width=0;
+	this.displayEntity = new DisplayEntity();
 }
 
 World.prototype.init = function(lvl) {
 	this.worldBitmapData = new createjs.BitmapData(lvl.mapHtmlImage);
-	this.worldBitmap = new createjs.Bitmap(lvl.worldHtmlImage);
-	stage.addChild(this.worldBitmap);
-	stage.addChild(this.s);
+	this.width=lvl.worldHtmlImage.width;
+	
+	
+	this.displayEntity.addBitmap(lvl.worldHtmlImage,true);
+	this.s=this.displayEntity.addShape(true).element;
+	this.s.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
+	this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
+	this.foreGround=this.displayEntity.addShape(true).element;
+	this.foreGround.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
+}
+
+World.prototype.scroll = function(x) {
+	this.displayEntity.adjust(x);
 }
 
 World.prototype.getWorldPixel = function(px,py){
 	if(py<0)return FREE;
-	return this.worldBitmapData.getPixel(px,py);
+	var col = this.worldBitmapData.getPixel(px,py);
+	if (col>10000) return FREE;
+	return col;
 }
 
 World.prototype.drawCircle = function(px,py,radius,color){	
@@ -37,10 +52,13 @@ World.prototype.drawCircle = function(px,py,radius,color){
 			}
 		}
 	}
-	if (color==FREE)
+	if (color==FREE) {
 		this.s.graphics.beginFill(level.backgroundColorName).drawCircle(px,py,radius);
+		//this.foreGround.graphics.endFill().drawCircle(px,py,radius);
+	}
 	else if (color==BLOCK)
-		this.s.graphics.beginFill("brown").drawCircle(px,py,radius);
+		this.foreGround.graphics.beginFill("brown").drawCircle(px,py,radius);
+	this.foreGround.updateCache("source-overlay");
 }
 
 
@@ -52,5 +70,6 @@ World.prototype.drawRect = function(px,py,w,h,color){
 	}
 	if (color==BLOCK)
 		this.s.graphics.beginFill("brown").drawRect(px,py,w,h);
+	this.s.updateCache("source-overlay");
 }
 

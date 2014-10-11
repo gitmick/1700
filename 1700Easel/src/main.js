@@ -4,7 +4,7 @@
 
 
 var canvasWidth=800;
-var canvasHeight=600;
+var canvasHeight=384;
 
 var mouseX;
 
@@ -14,17 +14,13 @@ var game;
 
 function init() {
 
-	var canvas = document.getElementById('canvas');
-
-	var h=height()*0.95;
-	var w=(h/384)*512;
+	setSize();
 	
-	canvas.style.width = w*1.0+'px';
-	canvas.style.height = h*1.0+'px';
-
-	
-    stage = new createjs.Stage("canvas");
-
+	window.onresize = function(event) {
+	    setSize();
+	};
+	stage = new createjs.Stage("canvas");
+    createjs.Touch.enable(stage);
     
     
     game = new Game();
@@ -40,7 +36,7 @@ function init() {
     	//TODO make generic
     	game.mouseX=evt.stageX;
     	game.mouseY=evt.stageY;
-    	if (evt.stageY<600)
+    	if (evt.stageY<canvasWidth)
     		mouseX=evt.stageX;
     	else
     		mouseX=300;
@@ -59,6 +55,25 @@ function init() {
     });
 }
 
+function setSize() {
+	var canvas = document.getElementById('canvas');
+
+	var h=height()*0.994;
+	var w=width()/(height()/384);
+	
+	
+	if (w<512)
+		w=512;
+	canvas.width=w;
+	canvasWidth=w;
+	canvas.style.width = w*(height()/384)*0.994+'px';
+	canvas.style.height = h*1.0+'px';
+
+	if (w<512)
+		w=512;
+	canvas.width=w;
+}
+
 function width(){
 	   return window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth||0;
 	}
@@ -72,4 +87,70 @@ function tick() {
 	game.update();
 	stage.update();
 }
+
+
+function DEFrame() {
+	this.currentScroll;
+}
+function DEElement() {
+	this.element=new Object();
+}
+DEElement.prototype.pos = function(x,y,deFrame) {
+	this.element.x=x;
+	this.element.y=y;
+};
+function DEScrollElement() {
+	this.element=new Object();
+}
+DEScrollElement.prototype.pos = function(x,y,deFrame) {
+	if (deFrame)
+		this.element.x=x-deFrame.currentScroll;
+	else
+		this.element.x=x;
+	this.element.y=y;
+};
+function DisplayEntity() {
+	this.deElements=new Array();
+	this.x=0;
+	this.y=0;
+}
+DisplayEntity.prototype.pos = function(x,y,deFrame) {
+	this.x=x;
+	this.y=y;
+	for (var i=0;i<this.deElements.length;i++) {
+		this.deElements[i].pos(x,y,deFrame);
+	}
+};
+
+DisplayEntity.prototype.adjust = function(deFrame) {
+	for (var i=0;i<this.deElements.length;i++) {
+		this.deElements[i].pos(this.x,this.y,deFrame);
+	}
+}
+DisplayEntity.prototype.addBitmap = function(img,scrollable) {
+	var ent = scrollable?new DEScrollElement():new DEElement();
+	bitmap = new createjs.Bitmap(img);
+	stage.addChild(bitmap);
+	ent.element=bitmap;
+	this.deElements.push(ent);
+	return ent;
+}
+
+DisplayEntity.prototype.addBitmap = function(img,scrollable) {
+	var ent = scrollable?new DEScrollElement():new DEElement();
+	bitmap = new createjs.Bitmap(img);
+	stage.addChild(bitmap);
+	ent.element=bitmap;
+	this.deElements.push(ent);
+	return ent;
+}
+DisplayEntity.prototype.addShape = function(scrollable) {
+	var ent = scrollable?new DEScrollElement():new DEElement();
+	s = new createjs.Shape();
+	stage.addChild(s);
+	ent.element=s;
+	this.deElements.push(ent);
+	return ent;
+}
+
 

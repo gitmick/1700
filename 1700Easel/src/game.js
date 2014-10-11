@@ -1,3 +1,6 @@
+var ADD_POLICEMEN = "addPolicemen";
+var ADD_POLICEMEN_FINISHED = "addPolicemenFinished";
+
 function Game(){
 	
 	this.machine = new Machine();
@@ -23,6 +26,9 @@ function Game(){
 	this.jumpCount=0;
 	this.multilemmings = [];
 	this.multilemmingtimes = [];
+	
+	
+	this.trigger = new Trigger();
 }
 
 
@@ -40,29 +46,11 @@ Game.prototype.click = function(x,y) {
 }
 
 Game.prototype.pressmove = function(x,y) {
-	this.jumpCount++;
-	for(var i=0;i<this.lemmings.length;i++){
-		var lemming = this.lemmings[i];
-		if (lemming.under(x,y) && !contains(this.multilemmings,lemming)) {
-			this.multilemmings.push(lemming);
-			this.multilemmingtimes.push(this.jumpCount);
-		}
-			
-	}
+	
 }
 
 Game.prototype.pressup = function(x,y) {
-	if (this.jumpCount<2)
-		this.click(x,y);
-	if (this.jumpCount<10)
-		return;
-	for(var i=0;i<this.multilemmings.length;i++){
-		var lemming = this.multilemmings[i];
-		var jc = this.multilemmingtimes[i];
-		lemming.setAction(new Jump(jc));
-	}
-	this.multilemmings = [];
-	this.jumpCount=0;
+	
 }
 
 
@@ -86,24 +74,60 @@ Game.prototype.addLemmings = function(){
 		lemming.create();
 	  	this.lemmings.push(lemming);
 	}
+	if (this.added==level.maxPoliceMen)
+		this.trigger.bang(ADD_POLICEMEN_FINISHED);
 }
 
 Game.prototype.scrollLevel = function(mouseX){
-	//if (this.levelLoader.loaded) {
-	if (false){
+	if (this.level && this.level.world) {
 		if (mouseX>canvasWidth-100) {
-    		if (this.currentScroll<=this.levelLoader.levelWidth-canvasWidth)
+    		if (this.currentScroll<=this.level.world.width-canvasWidth)
     			this.currentScroll+=(mouseX-(canvasWidth-100))/8.0;
     	}
     	else if (mouseX<100) {
     		if (this.currentScroll>1)
     			this.currentScroll-=(100-mouseX)/8.0;
     	}
-		this.levelLoader.worldBitmap.x=0-this.currentScroll;
-		this.levelLoader.s.x=0-this.currentScroll;
+		def = new DEFrame();
+		def.currentScroll = this.currentScroll;
+		this.level.world.scroll(def);
 	}
 }
 
 Game.prototype.update = function(){	
 	this.machine.tick();
-}
+};
+
+
+function PlayAction() {}
+PlayAction.prototype = new MachineAction();
+
+PlayAction.prototype.act = function() {
+	if (!game.trigger.isIntercepted(ADD_POLICEMEN)) {
+		if (game.delayCount++%level.policeDelay==2){
+			game.addLemmings();
+			game.trigger.bang(ADD_POLICEMEN);
+		}
+	}
+	game.selectedLemming=false;
+	
+	def = new DEFrame();
+	def.currentScroll = game.currentScroll;
+	
+	for (var i=0; i<level.assets.length;i++) {
+		var asset = level.assets[i];
+		asset.update(def);
+	}
+	
+	for(var i=0;i<game.lemmings.length;i++){
+		var lemming = game.lemmings[i];
+		if (lemming.dead)
+			continue;
+		for(var s=0;s<game.speedFactor;s++){			
+				lemming.move();
+		}
+		lemming.draw(game.currentScroll);
+	}
+	return true;
+};
+

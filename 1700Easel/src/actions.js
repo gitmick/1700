@@ -5,7 +5,7 @@
 function contains(a, obj) {
     var i = a.length;
     while (i--) {
-       if (a[i] === obj) {
+       if (a[i].constructor  === obj.constructor ) {
            return true;
        }
     }
@@ -36,30 +36,39 @@ Act.prototype.effect = function(name) {
 Act.prototype.actionPossible = function(action) {
 	return contains(this.possibleActions,action);
 };
+Act.prototype.stop = function() {
+	if (this.effectInstance) {
+		this.effectInstance.stop();
+	}
+}
+
 
 function Action() {
 	this.lemming;
-	this.possibleActions.push(Bomb);
-	this.possibleActions.push(Climb);
-	this.possibleActions.push(Float);
-	this.possibleActions.push(Fall);
-	this.possibleActions.push(Walk);
+	this.multiSelect=false;
+	this.possibleActions.push(new Bomb());
+	this.possibleActions.push(new Climb());
+	this.possibleActions.push(new Float());
+	this.possibleActions.push(new Fall());
+	this.possibleActions.push(new Walk());
+	this.possibleActions.push(new Kill());
 }
 
 Action.prototype=new Act();
 
 function Fall() {
 	this.height=0;
-	this.possibleActions.push(Walk);
 }
 Fall.prototype=new Action();
 
 Fall.prototype.check=function() {
 	if (this.lemming.hasFloor()) {
-		this.effectInstance.stop();
-		if (this.height>1000 && !this.lemming.canFloat)
-			this.lemming.kill();
-		this.lemming.setAction(new Walk());
+		if (this.effectInstance)
+			this.effectInstance.stop();
+		if (this.height>100 && !this.lemming.canFloat)
+			this.lemming.setAction(new Kill());
+		else 
+			this.lemming.setAction(new Walk());
 		return false;
 	}
 	return true;
@@ -80,6 +89,26 @@ Fall.prototype.act=function() {
 	}
 }
 
+function Kill() {
+	this.count=0;
+}
+Kill.prototype=new Action();
+Kill.prototype.check=function() {
+	return true;
+};
+Kill.prototype.actionPossible = function(action) {
+	return false;
+};
+Kill.prototype.act = function() {
+	this.effect("Kill");
+	if (this.count++==0) {
+		this.lemming.circle.gotoAndPlay("exp");
+	}
+	if (this.count==13) {
+		this.lemming.kill();
+		this.effectInstance.stop();
+	}
+}
 
 function Climb() {}
 Climb.prototype=new Action();
@@ -145,7 +174,8 @@ Bomb.prototype.actionPossible = function(action) {
 
 function Block() {
 	this.blocked=false;
-	this.possibleActions.push(Bomb);
+	this.possibleActions = new Array();
+	this.possibleActions.push(new Bomb());
 }
 Block.prototype=new Action();
 
@@ -182,11 +212,19 @@ Build.prototype.act=function() {
 	if (!this.walk.lemming)
 		this.walk.lemming=this.lemming;
 	this.counter--;
-	if (this.counter==0)
+	if (this.counter==0) {
 		this.lemming.setAction(new Walk());
-	if (this.counter%32==0)
-		game.drawRect(this.lemming.x+((this.lemming.width/4)*this.lemming.direction),this.lemming.y+this.lemming.height-5,12,5,BLOCK);
-	if (this.counter%8==0)
+		this.effectInstance.stop();
+	}
+	if (this.counter%36==0) {
+		characterCenter = this.lemming.x+(this.lemming.width/2);
+		startDraw = characterCenter + ((this.lemming.width/3)*this.lemming.direction);
+		if (this.lemming.direction<0) {
+			startDraw-=8;
+		}
+		game.drawRect(startDraw,this.lemming.y+this.lemming.height-5,16,5,BLOCK);
+	}
+	if (this.counter%3==0)
 		this.walk.act();
 }
 
@@ -208,8 +246,10 @@ Bash.prototype.check=function() {
 
 Bash.prototype.act=function() {
 	this.effect("Bash");
-	game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,17,FREE);
-	this.lemming.x+=this.lemming.speed*this.lemming.direction;
+	if (this.counter%3==0) {
+		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,FREE);
+		this.lemming.x+=this.lemming.speed*this.lemming.direction;
+	}
 }
 
 function Walk() {}
@@ -258,8 +298,10 @@ Dig.prototype.check = function() {
 
 Dig.prototype.act= function() {
 	this.effect("Dig");
-	game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,FREE);
-	this.lemming.y+=this.lemming.speed;
+	if (this.counter%2==2) {
+		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,FREE);
+		this.lemming.y+=this.lemming.speed;
+	}
 }
 
 function Mine() {
@@ -281,10 +323,12 @@ Mine.prototype.check = function() {
 
 Mine.prototype.act= function() {
 	this.effect("Mine");
-	game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,FREE);
-	if (this.down)this.lemming.y+=this.lemming.speed;
-	this.down=!this.down;
-	this.lemming.x+=this.lemming.speed*this.lemming.direction;
+	if (this.counter%2==2) {
+		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,FREE);
+		if (this.down)this.lemming.y+=this.lemming.speed;
+		this.down=!this.down;
+		this.lemming.x+=this.lemming.speed*this.lemming.direction;
+	}
 }
 
 

@@ -9,28 +9,62 @@ function Control() {
 	this.controlX=new Object();
 	this.controlY=new Object();
 	this.selectedControl;
+	
+	
+	//a bit dirty:
+	this.BashImage=new Image();
+	this.BlockImage=new Image();
+	this.BombImage=new Image();
+	this.BombAllImage=new Image();
+	this.BuildImage=new Image();
+	this.ClimbImage=new Image();
+	this.DigImage=new Image();
+	this.FastForwardImage=new Image();
+	this.FloatImage=new Image();
+	this.JumpAllImage=new Image();
+	this.MineImage=new Image();
+	this.MinusImage=new Image();
+	this.PlusImage=new Image();
+	
+	this.BashBitmap;
+	this.BlockBitmap;
+	this.BombBitmap;
+	this.BombAllBitmap;
+	this.BuildBitmap;
+	this.ClimbBitmap;
+	this.DigBitmap;
+	this.FastForwardBitmap;
+	this.FloatBitmap;
+	this.JumpAllBitmap;
+	this.MineBitmap;
+	this.MinusBitmap;
+	this.PlusBitmap;
+	
 }
 
 Control.prototype.init = function() {
-	this.addControl(0, 348, Climb);
-	this.addControl(35, 348, Float);
-	this.addControl(70, 348, Bomb);
-	this.addControl(110, 348, Block);
-	this.addControl(145, 348, Build);
-	this.addControl(185, 348, Bash);
-	this.addControl(225, 348, Mine);
-	this.addControl(260, 348, Dig);
+	this.addControl(0, 350, Climb,this.ClimbBitmap);
+	this.addControl(40, 350, Float,this.FloatBitmap);
+	this.addControl(80, 350, Bomb,this.BombBitmap);
+	this.addControl(120, 350, Block,this.BlockBitmap);
+	this.addControl(160, 350, Build,this.BuildBitmap);
+	this.addControl(200, 350, Bash,this.BashBitmap);
+	this.addControl(240, 350, Mine,this.MineBitmap);
+	this.addControl(280, 350, Dig,this.DigBitmap);
 	
-	this.addGlobalControl(312, 348, MorePolicemen);
-	this.addGlobalControl(352, 348, LessPolicemen);
+	this.addGlobalControl(320, 350, MorePolicemen,this.PlusBitmap);
+	this.addGlobalControl(360, 350, LessPolicemen,this.MinusBitmap);
 	
-	this.addGlobalControl(392, 348, FinishSpeed);
+	this.addControl(400, 350, JumpAll,this.JumpAllBitmap);
 	
-	this.addGlobalControl(432, 348, FinishSpeed);
-	this.addGlobalControl(472, 348, BombAll);
+	this.addGlobalControl(440, 350, FinishSpeed,this.FastForwardBitmap);
+	this.addGlobalControl(480, 350, BombAll,this.BombAllBitmap);
+}
+function JumpAll() {
+	this.multiSelect=true;
 }
 
-Control.prototype.addControl = function(x,y,action_) {
+Control.prototype.addControl = function(x,y,action_,actionBitmap) {
 	control = new createjs.Shape();
 	control.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x,y,40,40);
 	
@@ -48,6 +82,7 @@ Control.prototype.addControl = function(x,y,action_) {
 	this.controlY[action_]=y;
 	stage.addChild(control);
 	control.addEventListener("click",function(evt) {
+		actionBitmap.setTransform(x-18,250,2,2);
 		selAction = evt.currentTarget.action;
 		leftActions = level.actionCount[selAction];
 		if (leftActions>0) {
@@ -59,6 +94,14 @@ Control.prototype.addControl = function(x,y,action_) {
 				lastControl.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(lastX,lastY,40,40);
 			}
 			that.selectedAction=selAction;
+			if (selAction.multiSelect) {
+				game.pressmove=that.pressmove_ms;
+				game.pressup=that.pressup_ms;
+			}
+			else {
+				game.pressmove=that.pressmove;
+				game.pressup=that.pressup;
+			}
 			that.selectedControl=evt.currentTarget;
 			evt.currentTarget.graphics.beginFill("rgba(255,0,0,0.5)").drawRect(x,y,40,40);
 		}
@@ -93,4 +136,55 @@ Control.prototype.useAction = function() {
 	text.text=""+count;	
 	return true;
 }
+
+Control.prototype.unuseAction = function() {
+	var count = level.actionCount[this.selectedAction];
+	level.actionCount[this.selectedAction]=++count;
+	text = this.controlText[this.selectedAction]; 
+	text.text=""+count;	
+	return true;
+}
+
+Control.prototype.pressmove_ms = function(x,y) {
+	this.jumpCount++;
+	for(var i=0;i<this.lemmings.length;i++){
+		var lemming = this.lemmings[i];
+		if (lemming.under(x,y) && !contains(this.multilemmings,lemming)) {
+			console.log(i);
+			this.multilemmings.push(lemming);
+			this.multilemmingtimes.push(this.jumpCount);
+		}
+			
+	}
+}
+
+Control.prototype.pressup_ms = function(x,y) {
+	console.log("jump");
+	for(var i=0;i<this.multilemmings.length;i++){
+		var lemming = this.multilemmings[i];
+		var jc = this.multilemmingtimes[i];
+		console.log(i+" "+jc);
+		lemming.setAction(new Jump(jc));
+	}
+	this.multilemmings = [];
+	this.jumpCount=0;
+}
+
+Control.prototype.pressmove = function(x,y) {
+	this.jumpCount++;
+}
+
+Control.prototype.pressup = function(x,y) {
+	if (this.jumpCount<8)
+		this.click(x,y);
+	this.jumpCount=0;
+}
+
+
+
+
+
+
+
+
 
