@@ -118,7 +118,7 @@ function StartLevel() {
 }
 StartLevel.prototype.init = function(){};
 StartLevel.prototype.start = function(machine) {
-	interactionHandler.interactionEntities = new Array();
+	interactionHandler.reset();
 	this.loadAction.level=this;
 	this.levelInitialize.level=this;
 	this.init();
@@ -138,7 +138,7 @@ function IntroLevel() {
 }
 IntroLevel.prototype.init = function(){};
 IntroLevel.prototype.start = function(machine) {
-	interactionHandler.interactionEntities = new Array();
+	interactionHandler.reset();
 	this.loadIntroAction.level=this;
 	this.showIntroAction.level=this;
 	this.loadLevelSpecific.level=this;

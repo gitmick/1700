@@ -99,6 +99,16 @@ Lemming.prototype.explore=function(x,y) {
 		this.drawSelectable("orange");
 }
 
+Lemming.prototype.left=function(x,y) {
+	this.selection.graphics.clear();
+}
+
+Lemming.prototype.collected=function(time) {
+	if (game.control.selectedAction === JumpAll)
+		this.setAction(new Jump(time));
+}
+
+
 Lemming.prototype.drawSelectable = function(color) {
 	this.selection.graphics.beginStroke(color).drawRect(2,2,this.height,this.width);
 	game.selectedLemming=this;
@@ -112,9 +122,6 @@ Lemming.prototype.under=function(x,y) {
 Lemming.prototype.draw=function(deFrame) {
 	if (this.dead || this.win)
 		return;
-	
-	if (game.selectedLemming!=this) 
-		this.selection.graphics.clear();
 	
 	if (this.selection.x<level.goalX && this.selection.x+this.width>level.goalX
 			&& this.selection.y<level.goalY && this.selection.y+this.height>level.goalY) {

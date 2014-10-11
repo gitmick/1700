@@ -12,6 +12,8 @@ var bmp;
 var stage;
 var game;
 
+var deviceInteraction;
+
 function init() {
 
 	setSize();
@@ -21,7 +23,7 @@ function init() {
 	};
 	stage = new createjs.Stage("canvas");
     createjs.Touch.enable(stage);
-    
+    deviceInteraction = new DesktopInteraction();
     
     game = new Game();
 	game.init();
@@ -29,31 +31,7 @@ function init() {
     createjs.Ticker.setFPS(30);
     createjs.Ticker.addEventListener("tick", tick);
     
-    stage.mouseMoveOutside = false;
-    stage.on("stagemousemove", function(evt) {
-//        console.log("stageX/Y: "+evt.stageX+","+evt.stageY); // always in bounds
-//        console.log("rawX/Y: "+evt.rawX+","+evt.rawY); // could be < 0, or > width/height
-    	//TODO make generic
-    	game.mouseX=evt.stageX;
-    	game.mouseY=evt.stageY;
-    	if (evt.stageY<canvasWidth)
-    		mouseX=evt.stageX;
-    	else
-    		mouseX=300;
-    	interactionHandler.explore(evt.stageX,evt.stageY);
-    });
-    stage.on("click", function(evt) {
-    	console.log("mainClick");
-    	interactionHandler.select(evt.stageX,evt.stageY);
-    });
-    stage.on("pressmove", function(evt) {
-    	console.log("mainMove");
-    	game.pressmove(evt.stageX,evt.stageY);
-    });
-    stage.on("pressup", function(evt) {
-    	console.log("mainUp");
-    	interactionHandler.select(evt.stageX,evt.stageY);
-    });
+    
 }
 
 function setSize() {
@@ -84,10 +62,7 @@ function width(){
 
 
 function tick() {
-	game.scrollLevel(mouseX);
-	game.selectedLemming=false;
-	interactionHandler.explore(game.mouseX,game.mouseY);
-	
+	deviceInteraction.tick();
 	game.update();
 	stage.update();
 }
@@ -224,12 +199,20 @@ function Button(x,y,w,h) {
 	this.displayEntity.addInteractionEntity(w, h, this, false);
 	this.displayEntity.pos(x, y);
 }
-Button.prototype.select = function(x,y){};
-Button.prototype.explore = function(x,y){};
-Button.prototype.collect = function(x,y){};
+
 
 function InteractionHandler() {
 	this.interactionEntities = new Array();
+	this.stillOverEntity=false;
+	this.collection = new Array();
+	this.collectionIE = new Array();
+}
+
+InteractionHandler.prototype.reset = function() {
+	this.interactionEntities = new Array();
+	this.stillOverEntity = false;
+	this.collection = new Array();
+	this.collectionIE = new Array();
 }
 
 InteractionHandler.prototype.select = function(x,y) {
@@ -237,6 +220,9 @@ InteractionHandler.prototype.select = function(x,y) {
 	selected = false;
 	for (var i=0;i<this.interactionEntities.length;i++) {
 		var iE = this.interactionEntities[i];
+		if (!iE.target.select) {
+			continue;
+		}
 		var val = iE.click(x,y);
 		if (val) {
 			iE.selectionDistance=val;
@@ -251,11 +237,45 @@ InteractionHandler.prototype.select = function(x,y) {
 	}
 };
 
+function CollectionItem(time,item) {
+	this.time=time;
+	this.item=item;
+}
+
+InteractionHandler.prototype.collect = function(x,y,time) {
+	collected=false;
+	for (var i=0;i<this.interactionEntities.length;i++) {
+		var iE = this.interactionEntities[i];
+		if (!iE.target.collected) {
+			continue;
+		}
+		var val = iE.click(x,y);
+		if (val && !(contains(this.collectionIE,iE))) {
+			this.collectionIE.push(iE);
+			this.collection.push(new CollectionItem(time,iE));
+			collected=true;
+		}
+	}
+	return collected;
+};
+
+InteractionHandler.prototype.collected = function() {
+	for (var i=0;i<this.collection.length;i++) {
+		var colI = this.collection[i];
+		colI.item.target.collected(colI.time);
+	}
+	this.collection = new Array();
+	this.collectionIE = new Array();
+}
+
 InteractionHandler.prototype.explore = function(x,y) {
 	//TODO remove duplication
 	selected = false;
 	for (var i=0;i<this.interactionEntities.length;i++) {
 		var iE = this.interactionEntities[i];
+		if (!iE.target.explore) {
+			continue;
+		}
 		var val = iE.click(x,y);
 		if (val) {
 			iE.selectionDistance=val;
@@ -266,9 +286,103 @@ InteractionHandler.prototype.explore = function(x,y) {
 		}
 	}
 	if (selected) {
+		if (this.stillOverEntity && selected!=this.stillOverEntity) 
+			this.stillOverEntity.target.left();
 		selected.target.explore(x,y);
+		this.stillOverEntity=selected;
+	}
+	else {
+		if (this.stillOverEntity) { 
+			this.stillOverEntity.target.left();
+			this.stillOverEntity=false;
+		}
 	}
 };
 
 interactionHandler = new InteractionHandler();
+
+
+function DeviceInteraction() {
+	
+}
+
+DesktopInteraction.prototype.tick = function() {}
+
+function DesktopInteraction() {
+	
+	this.mouseDown=false;
+	this.time=0;
+	this.collectionDelay=0;
+	
+	this.clickX=-1;
+	this.clickY=-1;
+	
+	stage.mouseMoveOutside = false;
+    stage.on("stagemousemove", function(evt) {
+    	game.mouseX=evt.stageX;
+    	game.mouseY=evt.stageY;
+    	if (evt.stageY<canvasWidth)
+    		mouseX=evt.stageX;
+    	else
+    		mouseX=300;
+    	interactionHandler.explore(evt.stageX,evt.stageY);
+    });
+    var that = this;
+    stage.on("click", function(evt) {
+    	console.log("mainClick");
+    	that.clickX=evt.stageX;
+    	that.clickY=evt.stageY;
+    	that.mouseDown=false;
+    });
+    stage.on("pressmove", function(evt) {
+    	console.log("mainMove");
+    	if (that.collectionDelay>5){
+	    	game.mouseX=evt.stageX;
+	    	game.mouseY=evt.stageY;
+	    	that.collect();
+    	}
+    	that.mouseDown=true;
+    });
+    stage.on("pressup", function(evt) {
+    	console.log("mainUp");
+    	if (that.time>0) {
+    		interactionHandler.collected();
+    		that.time=0;
+    	}
+    	else {
+    		that.clickX=evt.stageX;
+        	that.clickY=evt.stageY;
+    	}
+    	that.mouseDown=false;
+    });
+}
+
+DesktopInteraction.prototype.tick = function() {
+	if (this.mouseDown) {
+		this.collectionDelay++;
+	}
+	else
+		this.collectionDelay=0;
+	game.scrollLevel(mouseX);
+	if (this.clickX>-1) {
+		interactionHandler.select(this.clickX,this.clickY);
+		this.clickX=-1;
+	}
+	else if (!this.mouseDown)
+		interactionHandler.explore(game.mouseX,game.mouseY);
+	else if (this.collectionDelay>5) {
+		this.collect();
+	}
+}
+
+DesktopInteraction.prototype.collect = function() {
+	var collected = interactionHandler.collect(game.mouseX,game.mouseY,this.time);
+	if (this.time==0 && collected)
+		this.time=1;
+	if (this.time>0)
+		this.time++;
+}
+
+
+
 

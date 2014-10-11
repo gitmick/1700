@@ -34,6 +34,7 @@ function JumpAll() {
 	this.multiSelect=true;
 }
 
+
 Control.prototype.showPic = function(x,y,picName) {
 	picName = "img/actions/"+picName+".png";
 	pic = globalLoader.getImage(picName);
@@ -166,7 +167,12 @@ ControlElement.prototype.select = function(x,y){
 		this.selectionShape.graphics.beginFill("rgba(255,0,0,0.5)").drawRect(0,0,36,36);
 	}
 };
-ControlElement.prototype.explore = function(x,y){};
+ControlElement.prototype.explore = function(x,y){
+	this.scaleBitmap.setTransform(this.displayEntity.x-18,this.displayEntity.y-72,2,2);
+};
+ControlElement.prototype.left = function(x,y){
+	this.scaleBitmap.setTransform(this.displayEntity.x,this.displayEntity.y,1,1);
+};
 ControlElement.prototype.collect = function(x,y){};
 
 
