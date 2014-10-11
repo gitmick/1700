@@ -10,63 +10,44 @@ function Control() {
 	this.controlY=new Object();
 	this.selectedControl;
 	
-	
-	//a bit dirty:
-	this.BashImage=new Image();
-	this.BlockImage=new Image();
-	this.BombImage=new Image();
-	this.BombAllImage=new Image();
-	this.BuildImage=new Image();
-	this.ClimbImage=new Image();
-	this.DigImage=new Image();
-	this.FastForwardImage=new Image();
-	this.FloatImage=new Image();
-	this.JumpAllImage=new Image();
-	this.MineImage=new Image();
-	this.MinusImage=new Image();
-	this.PlusImage=new Image();
-	
-	this.BashBitmap;
-	this.BlockBitmap;
-	this.BombBitmap;
-	this.BombAllBitmap;
-	this.BuildBitmap;
-	this.ClimbBitmap;
-	this.DigBitmap;
-	this.FastForwardBitmap;
-	this.FloatBitmap;
-	this.JumpAllBitmap;
-	this.MineBitmap;
-	this.MinusBitmap;
-	this.PlusBitmap;
-	
 }
 
 Control.prototype.init = function() {
-	this.addControl(0, 350, Climb,this.ClimbBitmap);
-	this.addControl(40, 350, Float,this.FloatBitmap);
-	this.addControl(80, 350, Bomb,this.BombBitmap);
-	this.addControl(120, 350, Block,this.BlockBitmap);
-	this.addControl(160, 350, Build,this.BuildBitmap);
-	this.addControl(200, 350, Bash,this.BashBitmap);
-	this.addControl(240, 350, Mine,this.MineBitmap);
-	this.addControl(280, 350, Dig,this.DigBitmap);
+	this.addControl(0, 350, Climb,"Climb");
+	this.addControl(40, 350, Float,"Float");
+	this.addControl(80, 350, Bomb,"Bomb");
+	this.addControl(120, 350, Block,"Block");
+	this.addControl(160, 350, Build,"Build");
+	this.addControl(200, 350, Bash,"Bash");
+	this.addControl(240, 350, Mine,"Mine");
+	this.addControl(280, 350, Dig,"Dig");
 	
-	this.addGlobalControl(320, 350, MorePolicemen,this.PlusBitmap);
-	this.addGlobalControl(360, 350, LessPolicemen,this.MinusBitmap);
+	this.addGlobalControl(320, 350, MorePolicemen,"Plus");
+	this.addGlobalControl(360, 350, LessPolicemen,"Minus");
 	
-	this.addControl(400, 350, JumpAll,this.JumpAllBitmap);
+	this.addControl(400, 350, JumpAll,"JumpAll");
 	
-	this.addGlobalControl(440, 350, FinishSpeed,this.FastForwardBitmap);
-	this.addGlobalControl(480, 350, BombAll,this.BombAllBitmap);
+	this.addGlobalControl(440, 350, FinishSpeed,"FastForward");
+	this.addGlobalControl(480, 350, BombAll,"BombAll");
 }
 function JumpAll() {
 	this.multiSelect=true;
 }
 
-Control.prototype.addControl = function(x,y,action_,actionBitmap) {
+Control.prototype.showPic = function(x,y,picName) {
+	picName = "img/actions/"+picName+".png";
+	pic = globalLoader.getImage(picName);
+	bitmap= new createjs.Bitmap(pic);
+	bitmap.y=y;
+	bitmap.x=x;
+	stage.addChild(bitmap);
+};
+
+Control.prototype.addControl = function(x,y,action_,picName) {
+
+	this.showPic(x,y,picName);
 	control = new createjs.Shape();
-	control.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x,y,40,40);
+	control.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x,y,36,36);
 	
 	var text = new createjs.Text(""+level.actionCount[action_], "20px Arial", "#ff7700"); 
 	text.x = x+10;
@@ -82,7 +63,7 @@ Control.prototype.addControl = function(x,y,action_,actionBitmap) {
 	this.controlY[action_]=y;
 	stage.addChild(control);
 	control.addEventListener("click",function(evt) {
-		actionBitmap.setTransform(x-18,250,2,2);
+		
 		selAction = evt.currentTarget.action;
 		leftActions = level.actionCount[selAction];
 		if (leftActions>0) {
@@ -91,7 +72,7 @@ Control.prototype.addControl = function(x,y,action_,actionBitmap) {
 				lastX=that.controlX[that.selectedAction];
 				lastY=that.controlY[that.selectedAction];
 				lastControl.graphics.clear();
-				lastControl.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(lastX,lastY,40,40);
+				lastControl.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(lastX,lastY,36,36);
 			}
 			that.selectedAction=selAction;
 			if (selAction.multiSelect) {
@@ -106,10 +87,14 @@ Control.prototype.addControl = function(x,y,action_,actionBitmap) {
 			evt.currentTarget.graphics.beginFill("rgba(255,0,0,0.5)").drawRect(x,y,40,40);
 		}
 	});
-
+	control.addEventListener("mousemove",function(evt) {
+		actionBitmap.setTransform(x-18,250,2,2);
+	});
 }
 
-Control.prototype.addGlobalControl = function(x,y,action_) {
+Control.prototype.addGlobalControl = function(x,y,action_,picName) {
+	this.showPic(x,y,picName);
+	
 	control = new createjs.Shape();
 	control.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x,y,40,40);
 	
@@ -127,9 +112,17 @@ Control.prototype.addGlobalControl = function(x,y,action_) {
 
 }
 
-Control.prototype.useAction = function() {
+Control.prototype.actionAvailable = function() {
+	if (!this.selectedAction)
+		return false;
 	var count = level.actionCount[this.selectedAction];
 	if (count==0)
+		return false;
+	return true;
+}
+
+Control.prototype.useAction = function() {
+	if (!this.actionAvailable())
 		return false;
 	level.actionCount[this.selectedAction]=--count;
 	text = this.controlText[this.selectedAction]; 
@@ -137,13 +130,6 @@ Control.prototype.useAction = function() {
 	return true;
 }
 
-Control.prototype.unuseAction = function() {
-	var count = level.actionCount[this.selectedAction];
-	level.actionCount[this.selectedAction]=++count;
-	text = this.controlText[this.selectedAction]; 
-	text.text=""+count;	
-	return true;
-}
 
 Control.prototype.pressmove_ms = function(x,y) {
 	this.jumpCount++;

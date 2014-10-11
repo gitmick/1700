@@ -3,16 +3,7 @@
  */
 
 
-function MouseListener(x,y,w,h) {
-	this.x=x;
-	this.y=y;
-	this.w=w;
-	this.h=h;
-}
 
-MouseListener.prototype.click = function(x,y) {
-	return (x>this.x && x<this.x+this.w && y>this.y && y<this.y+this.h);
-}
 
 
 function Loader() {
@@ -90,6 +81,10 @@ Loader.prototype.loadImage = function(imgSrc,img) {
 	}
 	return img;
 };
+
+Loader.prototype.getImage = function(imgSrc) {
+	return loadedImages[imgSrc];
+}
 
 var loadedSounds = new Array();
 

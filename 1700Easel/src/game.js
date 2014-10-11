@@ -109,7 +109,7 @@ PlayAction.prototype.act = function() {
 			game.trigger.bang(ADD_POLICEMEN);
 		}
 	}
-	game.selectedLemming=false;
+	//game.selectedLemming=false;
 	
 	def = new DEFrame();
 	def.currentScroll = game.currentScroll;
@@ -126,7 +126,7 @@ PlayAction.prototype.act = function() {
 		for(var s=0;s<game.speedFactor;s++){			
 				lemming.move();
 		}
-		lemming.draw(game.currentScroll);
+		lemming.draw(def);
 	}
 	return true;
 };

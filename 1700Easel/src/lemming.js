@@ -22,19 +22,33 @@ function Lemming() {
 	this.canFloat=false;
 	this.dead=false;
 	
-	this.mouseListener = new MouseListener(0,0,40,40);
+	this.mouseListener;
 	this.win=false;
 	this.control=game.control;
 	
 	
-	
-	
+	this.displayEntity = new DisplayEntity();
 }
 
+Lemming.prototype.checkAction=function(a) {
+	if (this.action) 
+		return this.action.actionPossible(a);
+	return true;
+}
+
+Lemming.prototype.checkSelectedAction=function() {
+	if (!this.control.actionAvailable())
+		return false;
+	if (this.action) 
+		return this.action.actionPossible(new this.control.selectedAction);
+	return true;
+}
+
+
 Lemming.prototype.setAction=function(a) {
+	if (!this.checkAction(a))
+		return false;
 	if (this.action) {
-		if (!this.action.actionPossible(a))
-			return false;
 		this.action.stop();
 	}
 	this.lastAction=this.action;
@@ -48,16 +62,15 @@ Lemming.prototype.kill=function() {
 	this.circle.set({alpha:0});
 	this.selection.graphics.clear();
 	this.dead=true;
+	this.displayEntity.destroy();
 }
 
 Lemming.prototype.create=function() {
 	
-	this.circle =  new createjs.Sprite(lemmingsSheet, "run");
-	
+	this.circle = this.displayEntity.addSprite(lemmingsSheet, "run",true).element;
 	this.circle.lemming=this;
-	this.selection = new createjs.Shape();
-	stage.addChild(this.circle);
-	stage.addChild(this.selection);
+	this.selection = this.displayEntity.addShape().element;
+	this.mouseListener = this.displayEntity.addInteractionEntity(40, 40,this, true).element;
 	this.height=this.circle.getBounds().height*this.scale;
 	this.width=this.circle.getBounds().width*this.scale;
 	this.setAction(new Fall());
@@ -71,47 +84,38 @@ Lemming.prototype.frontFootY = function() {
 }
 
 
-Lemming.prototype.drawSelectable = function() {
-	this.selection.graphics.beginStroke("orange").drawRect(2,2,this.height,this.width);
-	if (!game.selectedLemming)
-		game.selectedLemming=this;
-	else
-		this.selection.graphics.clear();
+Lemming.prototype.select = function(x,y) {
+	if (this.checkSelectedAction()){
+		this.control.useAction();
+		this.setAction(new this.control.selectedAction);
+	}
 }
 
-Lemming.prototype.select=function(evt) {
-	if (this.control.selectedAction) {
-		if (this.control.useAction()) {
-			if (!this.setAction(new this.control.selectedAction))
-				this.control.unuseAction()
-		}
+Lemming.prototype.explore=function(x,y) {
+	if (this.checkSelectedAction()){
+		this.drawSelectable("green");
 	}
+	else
+		this.drawSelectable("orange");
 }
-Lemming.prototype.click=function(x,y) {
-	console.log("click");
-	if (this.mouseListener.click(game.mouseX, game.mouseY)) {
-		console.log("select");
-		this.select();
-		return true;
-	}
-	return false;
+
+Lemming.prototype.drawSelectable = function(color) {
+	this.selection.graphics.beginStroke(color).drawRect(2,2,this.height,this.width);
+	game.selectedLemming=this;
 }
+
+
 Lemming.prototype.under=function(x,y) {
 	return (this.mouseListener.click(game.mouseX, game.mouseY));
 };
 
-Lemming.prototype.draw=function(currentScroll) {
+Lemming.prototype.draw=function(deFrame) {
 	if (this.dead || this.win)
 		return;
-//	if (this.selection.x<game.mouseX && this.selection.x+this.width>game.mouseX
-//			&& this.selection.y<game.mouseY && this.selection.y+this.height>game.mouseY) {
-//		this.drawSelectable();
-//	}
-	if (this.mouseListener.click(game.mouseX, game.mouseY)) {
-		this.drawSelectable();
-	}
-	else
+	
+	if (game.selectedLemming!=this) 
 		this.selection.graphics.clear();
+	
 	if (this.selection.x<level.goalX && this.selection.x+this.width>level.goalX
 			&& this.selection.y<level.goalY && this.selection.y+this.height>level.goalY) {
 		this.win=true;
@@ -119,12 +123,7 @@ Lemming.prototype.draw=function(currentScroll) {
 		return;
 	}
 	this.circle.setTransform(0, 0, this.scale, this.scale);
-	this.mouseListener.x=parseInt(this.x-currentScroll-4);
-	this.mouseListener.y=parseInt(this.y-4);
-	this.selection.x=parseInt(this.x-currentScroll);
-	this.selection.y=parseInt(this.y);
-	this.circle.x=parseInt(this.x-currentScroll);
-	this.circle.y=parseInt(this.y);
+	this.displayEntity.pos(this.x,this.y,deFrame);
 }
 
 
