@@ -89,7 +89,7 @@ Loader.prototype.getImage = function(imgSrc) {
 var loadedSounds = new Array();
 
 Loader.prototype.loadSound = function(sndSrc,sndName) {
-	if (contains(loadedSounds,sndSrc+sndName))
+	if (isIn(loadedSounds,sndSrc+sndName))
 		return;
 	this.queue.push(sndSrc);
 	createjs.Sound.registerSound({id:sndName, src:sndSrc+"?"+Math.random()});

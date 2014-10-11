@@ -111,42 +111,6 @@ Control.prototype.useAction = function() {
 }
 
 
-Control.prototype.pressmove_ms = function(x,y) {
-	this.jumpCount++;
-	for(var i=0;i<this.lemmings.length;i++){
-		var lemming = this.lemmings[i];
-		if (lemming.under(x,y) && !contains(this.multilemmings,lemming)) {
-			console.log(i);
-			this.multilemmings.push(lemming);
-			this.multilemmingtimes.push(this.jumpCount);
-		}
-			
-	}
-}
-
-Control.prototype.pressup_ms = function(x,y) {
-	console.log("jump");
-	for(var i=0;i<this.multilemmings.length;i++){
-		var lemming = this.multilemmings[i];
-		var jc = this.multilemmingtimes[i];
-		console.log(i+" "+jc);
-		lemming.setAction(new Jump(jc));
-	}
-	this.multilemmings = [];
-	this.jumpCount=0;
-}
-
-Control.prototype.pressmove = function(x,y) {
-	this.jumpCount++;
-}
-
-Control.prototype.pressup = function(x,y) {
-	if (this.jumpCount<8)
-		this.click(x,y);
-	this.jumpCount=0;
-}
-
-
 function ControlElement() {
 	this.displayEntity = new DisplayEntity();
 	this.text;

@@ -242,6 +242,16 @@ function CollectionItem(time,item) {
 	this.item=item;
 }
 
+function isIn(a, obj) {
+    var i = a.length;
+    while (i--) {
+       if (a[i]  === obj ) {
+           return true;
+       }
+    }
+    return false;
+}
+
 InteractionHandler.prototype.collect = function(x,y,time) {
 	collected=false;
 	for (var i=0;i<this.interactionEntities.length;i++) {
@@ -250,7 +260,9 @@ InteractionHandler.prototype.collect = function(x,y,time) {
 			continue;
 		}
 		var val = iE.click(x,y);
-		if (val && !(contains(this.collectionIE,iE))) {
+		console.log("try collect"+time);
+		if (val && !(isIn(this.collectionIE,iE))) {
+			console.log("collect"+time);
 			this.collectionIE.push(iE);
 			this.collection.push(new CollectionItem(time,iE));
 			collected=true;
