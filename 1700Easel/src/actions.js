@@ -333,8 +333,8 @@ Mine.prototype.act= function() {
 
 
 
-function Jump(jc) {
-	this.jumpCount=jc;
+function Jump() {
+	this.jumpCount;
 }
 Jump.prototype=new Action();
 
@@ -360,9 +360,11 @@ Jump.prototype.act = function() {
 			this.lemming.y-=this.lemming.getDY();	
 		else {
 			this.lemming.y-=((this.jumpCount+10)/2);
+			if (this.lemming.hasFloor() || this.jumpCount<-17)
+				this.lemming.setAction(new Walk());
 		}
 		this.lemming.x+=this.lemming.direction*this.lemming.speed;
-		if (this.lemming.hasFloor() || this.jumpCount<-17)
+		if (this.jumpCount<-17)
 			this.lemming.setAction(new Walk());
 	}
 }

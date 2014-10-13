@@ -111,8 +111,12 @@ Lemming.prototype.left=function(x,y) {
 }
 
 Lemming.prototype.collected=function(time) {
-	if (game.control.selectedAction === JumpAll)
-		this.setAction(new Jump(time));
+	if (game.control.selectedAction === JumpAll) {
+		jump = new Jump();
+		jump.jumpCount=time;
+		this.setAction(jump);
+	}
+		
 }
 
 

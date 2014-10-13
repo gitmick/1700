@@ -105,10 +105,10 @@ InteractionHandler.prototype.collect = function(x,y,time) {
 			continue;
 		}
 		var val = iE.click(x,y);
-		console.log("try collect"+time);
-		if (val && !(isIn(this.collectionIE,iE))) {
+		//console.log("try collect"+time);
+		if (val && !(isIn(this.collectionIE,iE.target))) {
 			console.log("collect"+time);
-			this.collectionIE.push(iE);
+			this.collectionIE.push(iE.target);
 			this.collection.push(new CollectionItem(time,iE));
 			collected=true;
 		}
