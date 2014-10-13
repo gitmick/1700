@@ -46,6 +46,7 @@ FlyIn.prototype.act = function() {
 	}
 	this.counter++;
 	if (this.counter>this.asset.steps) {
+		this.effectInstance.stop();
 		this.asset.setAction(false);
 		game.trigger.removeInterceptor(ADD_POLICEMEN,this.wait);
 	}

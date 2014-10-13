@@ -41,19 +41,6 @@ Game.prototype.init = function(){
 
 
 
-Game.prototype.click = function(x,y) {
-	
-}
-
-Game.prototype.pressmove = function(x,y) {
-	
-}
-
-Game.prototype.pressup = function(x,y) {
-	
-}
-
-
 Game.prototype.getWorldPixel = function(px,py){
 	return this.level.world.getWorldPixel(px,py);
 }

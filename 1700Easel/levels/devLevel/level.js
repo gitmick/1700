@@ -15,7 +15,7 @@
 		level.maxPoliceMen=100;
 		level.policeDelay=100;
 		level.dropX=100;
-		level.dropY=80;
+		level.dropY=280;
 		level.goalX=0;
 		level.goalY=0;
 		level.minSafeCount=0;
@@ -24,9 +24,9 @@
 		level.initAssets = function() {
 			var copter = this.initAsset("Copter");
 			copter.startX=-200;
-			copter.startY=0;
+			copter.startY=200;
 			copter.targetX=0;
-			copter.targetY=0;
+			copter.targetY=200;
 			copter.show();
 		};
 	}

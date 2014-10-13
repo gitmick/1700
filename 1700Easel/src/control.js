@@ -5,9 +5,6 @@
 function Control() {
 	this.selectedAction;
 	this.controlAction=new Object();
-	this.controlText=new Object();
-	this.controlX=new Object();
-	this.controlY=new Object();
 	this.selectedControl;
 	
 }

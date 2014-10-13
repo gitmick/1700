@@ -59,9 +59,15 @@ Lemming.prototype.setAction=function(a) {
 }
 
 Lemming.prototype.kill=function() {
-	this.circle.set({alpha:0});
-	this.selection.graphics.clear();
 	this.dead=true;
+	arrayWithout(game.lemmings,this);
+	this.displayEntity.destroy();
+}
+
+Lemming.prototype.win=function() {
+	this.win=true;
+	game.winCount++;
+	arrayWithout(game.lemmings,this);
 	this.displayEntity.destroy();
 }
 

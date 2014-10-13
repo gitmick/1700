@@ -49,7 +49,6 @@ function FolderLevel(levelName) {
 	this.backgroundHtmlImage = new Image();
 	this.mapHtmlImage= new Image();
 	this.introImage= new Image();
-	this.actionImage= new Image();
 	this.world = new World();
 }
 FolderLevel.prototype = new IntroLevel();
@@ -71,7 +70,6 @@ FolderLevel.prototype.init = function() {
 		this.level.mapHtmlImage=this.loader.loadImage(this.level.dirPath+"/map.png",this.level.mapHtmlImage);
 		this.level.mapHtmlImage=this.loader.loadImage(this.level.dirPath+"/background.png",this.level.backgroundHtmlImage);
 		
-		//this.level.actionImage=this.loader.loadImage("img/actions.png",this.level.actionImage);	
 		this.loader.loadImage("img/actions/Bash.png",new Image());
 		this.loader.loadImage("img/actions/Block.png",new Image());
 		this.loader.loadImage("img/actions/Bomb.png",new Image());
@@ -95,16 +93,10 @@ FolderLevel.prototype.init = function() {
 		level.load();
 		game.control.init();
 		createjs.Sound.play(this.level.name);
-		
-		
-		
+
 	};
 	this.loadAssets.load = function() {
 		level.initAssets();
-//		for (var i=0; i<level.assets.length;i++) {
-//			var asset = level.assets[i];
-//			asset.drawInitial();
-//		}
 	};
 }
 

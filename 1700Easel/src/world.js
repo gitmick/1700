@@ -19,8 +19,6 @@ function World() {
 World.prototype.init = function(lvl) {
 	this.worldBitmapData = new createjs.BitmapData(lvl.mapHtmlImage);
 	this.width=lvl.worldHtmlImage.width;
-	
-	
 	this.displayEntity.addBitmap(lvl.worldHtmlImage,true);
 	this.s=this.displayEntity.addShape(true).element;
 	this.s.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
