@@ -116,7 +116,7 @@ function Level() {
 var loadedAssets = new Array();
 
 Level.prototype.registerAsset = function(folderName) {
-	if (!contains(loadedAssets,folderName)) {
+	if (!isIn(loadedAssets,folderName)) {
 		globalLoader.loadScript("assets/"+folderName+"/descriptor.js");
 		loadedAssets.push(folderName);
 	}

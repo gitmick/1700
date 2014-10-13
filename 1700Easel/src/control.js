@@ -60,7 +60,7 @@ Control.prototype.addControl = function(x,y,action_,picName) {
 	cE.displayEntity.addInteractionEntity(36, 36, cE, false);
 	cE.displayEntity.pos(x, y);
 	
-	cE.text = new createjs.Text(""+level.actionCount[action_], "20px Arial", "#ff7700"); 
+	cE.text = new createjs.Text(""+level.actionCount[action_], "20px VT323", "#ff7700"); 
 	cE.text.x = x+10;
 	cE.text.y=y-20;
 	stage.addChild(cE.text);

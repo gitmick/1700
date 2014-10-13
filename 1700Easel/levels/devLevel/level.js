@@ -16,17 +16,28 @@
 		level.policeDelay=100;
 		level.dropX=100;
 		level.dropY=280;
-		level.goalX=0;
-		level.goalY=0;
-		level.minSafeCount=0;
+		level.goalX=814;
+		level.goalY=310;
+		level.minSafeCount=100;
 		level.soundFile="track.mp3";
 		level.registerAsset("Copter");
+		level.registerAsset("Tank");
 		level.initAssets = function() {
 			var copter = this.initAsset("Copter");
 			copter.startX=-200;
-			copter.startY=200;
+			copter.startY=0;
 			copter.targetX=0;
-			copter.targetY=200;
+			copter.targetY=0;
 			copter.show();
+			
+			var tcopter = this.initAsset("Tank");
+			tcopter.startX=-100;
+			tcopter.startY=265;
+			tcopter.targetX=500;
+			tcopter.targetY=265;
+			tcopter.show();
 		};
+		
+		
+		
 	}

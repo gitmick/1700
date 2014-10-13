@@ -115,6 +115,12 @@ PlayAction.prototype.act = function() {
 		}
 		lemming.draw(def);
 	}
+	
+	game.level.world.moneyLeft--;
+	game.level.world.policeOut=game.lemmings.length;
+	game.level.world.policeSaved=game.winCount;
+	game.level.world.updateText();
+	
 	return true;
 };
 

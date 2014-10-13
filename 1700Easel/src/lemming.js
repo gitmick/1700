@@ -64,7 +64,7 @@ Lemming.prototype.kill=function() {
 	this.displayEntity.destroy();
 }
 
-Lemming.prototype.win=function() {
+Lemming.prototype.won=function() {
 	this.win=true;
 	game.winCount++;
 	arrayWithout(game.lemmings,this);
@@ -136,8 +136,7 @@ Lemming.prototype.draw=function(deFrame) {
 	
 	if (this.selection.x<level.goalX && this.selection.x+this.width>level.goalX
 			&& this.selection.y<level.goalY && this.selection.y+this.height>level.goalY) {
-		this.win=true;
-		game.winCount++;
+		this.won();
 		return;
 	}
 	this.circle.setTransform(0, 0, this.scale, this.scale);

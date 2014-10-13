@@ -14,17 +14,33 @@ function World() {
 	this.foreGround;
 	this.width=0;
 	this.displayEntity = new DisplayEntity();
+	
+	this.gameText;
+	this.moneyLeft=870000;
+	this.policeOut=0;
+	this.policeSaved=0;
 }
+
+World.prototype.updateText = function() {
+	this.gameText.text="Im Einsatz: "+this.policeOut+" Im Haus: "+this.policeSaved+" Geld verbraten: "+this.moneyLeft;
+};
 
 World.prototype.init = function(lvl) {
 	this.worldBitmapData = new createjs.BitmapData(lvl.mapHtmlImage);
 	this.width=lvl.worldHtmlImage.width;
+	
 	this.displayEntity.addBitmap(lvl.worldHtmlImage,true);
 	this.s=this.displayEntity.addShape(true).element;
 	this.s.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
 	this.foreGround=this.displayEntity.addShape(true).element;
 	this.foreGround.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
+	
+	
+	this.gameText = new createjs.Text("Gugug", "20px VT323", "#ff7700"); 
+	this.gameText.x=20;
+	this.gameText.y=20;
+	stage.addChild(this.gameText);
 }
 
 World.prototype.scroll = function(x) {
@@ -57,6 +73,7 @@ World.prototype.drawCircle = function(px,py,radius,color){
 	else if (color==BLOCK)
 		this.foreGround.graphics.beginFill("brown").drawCircle(px,py,radius);
 	this.foreGround.updateCache("source-overlay");
+	this.s.updateCache("source-overlay");
 }
 
 
@@ -67,7 +84,8 @@ World.prototype.drawRect = function(px,py,w,h,color){
 		}
 	}
 	if (color==BLOCK)
-		this.s.graphics.beginFill("brown").drawRect(px,py,w,h);
+		this.foreGround.graphics.beginFill("brown").drawRect(px,py,w,h);
+	this.foreGround.updateCache("source-overlay");
 	this.s.updateCache("source-overlay");
 }
 
