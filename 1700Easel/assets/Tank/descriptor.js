@@ -6,7 +6,7 @@ function Tank() {
 }
 Tank.prototype = new Asset();
 Tank.prototype.load = function() {
-	this.heliImage=this.loadImage("tank.png",this.tankImage);
+	this.tankImage=this.loadImage("tank.png",this.tankImage);
 	this.loadSound("tank.mp3","tank");
 };
 

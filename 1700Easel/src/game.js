@@ -1,5 +1,10 @@
 var ADD_POLICEMEN = "addPolicemen";
 var ADD_POLICEMEN_FINISHED = "addPolicemenFinished";
+var POLICEMAN_SAVED="policemanSaved";
+var POLICEMAN_KILLED="policemanKilled";
+var NO_MONEY_LEFT="noMoneyLeft";
+
+var timeKeeper = new TimeKeeper();
 
 function Game(){
 	
@@ -21,16 +26,29 @@ function Game(){
 	this.digControl;
 	this.mouseX;
 	this.mouseY;
-
-	
-	this.jumpCount=0;
-	this.multilemmings = [];
-	this.multilemmingtimes = [];
-	
 	
 	this.trigger = new Trigger();
 }
 
+Game.prototype.reset = function(){
+this.control = new Control();
+	
+	this.lemmings = [];
+	
+	this.added=0;
+	this.winCount=0;
+	
+	this.delayCount=0;
+	this.speedFactor=1; //makes the game n-times faster (use very high numbers to check collision performance)
+	this.currentScroll=0;
+	
+	this.selectedLemming;
+	this.digControl;
+	this.mouseX;
+	this.mouseY;
+	
+	this.trigger = new Trigger();
+}
 
 Game.prototype.init = function(){
 
@@ -91,6 +109,7 @@ PlayAction.prototype = new MachineAction();
 
 PlayAction.prototype.act = function() {
 	if (!game.trigger.isIntercepted(ADD_POLICEMEN)) {
+		
 		if (game.delayCount++%level.policeDelay==2){
 			game.addLemmings();
 			game.trigger.bang(ADD_POLICEMEN);
@@ -115,12 +134,80 @@ PlayAction.prototype.act = function() {
 		}
 		lemming.draw(def);
 	}
-	
-	game.level.world.moneyLeft--;
-	game.level.world.policeOut=game.lemmings.length;
-	game.level.world.policeSaved=game.winCount;
+	timeKeeper.tick();
+	game.level.world.setPoliceOut(game.lemmings.length);
+	game.level.world.setPoliceSaved(game.winCount);
 	game.level.world.updateText();
 	
 	return true;
 };
 
+function ExitChecker() {
+	this.allout=false;
+	this.enoughIn=false;
+	this.noOneLeft=false;
+}
+ExitChecker.prototype.bang = function(name) {
+	
+	if (name === ADD_POLICEMEN_FINISHED)
+		this.allout=true;
+	if (name === POLICEMAN_SAVED || name === POLICEMAN_KILLED) {
+		console.log(name);
+		if (game.lemmings.length==0 && this.allout) {
+			if (level.minSafeCount<game.winCount) {
+				this.enoughIn=true;
+				console.log("won");
+				game.machine.setAction(new WinAction());
+			}
+			else {
+				console.log("lost");
+				game.machine.setAction(new LostAction());
+			}
+		}
+	}
+};
+	
+
+function WinAction() {}
+WinAction.prototype = new MachineAction();
+
+WinAction.prototype.act = function() {
+	img = globalLoader.getImage("img/win.png");
+	var dE = new DisplayEntity();
+	dE.addBitmap(img,false);
+	startObject = new Button(0,0,400,400);
+	startObject.select = function(x, y) {
+		game.level = new FolderLevel("devLevel");
+		game.level.start(game.machine);
+	};
+}
+
+function LostAction() {}
+LostAction.prototype = new MachineAction();
+
+LostAction.prototype.act = function() {
+	img = globalLoader.getImage("img/lost.png");
+	var dE = new DisplayEntity();
+	dE.addBitmap(img,false);
+	startObject = new Button(0,0,400,700);
+	startObject.select = function(x, y) {
+		game.level = new FolderLevel("devLevel");
+		game.level.start(game.machine);
+	};
+}
+
+
+function TimeKeeper() {
+	this.moneyLeft=870000;
+	this.counter=0;
+}
+
+TimeKeeper.prototype.tick = function() {
+	if (this.counter++%25==0) {
+		this.moneyLeft-=100;
+		game.level.world.setMoneyLeft(this.moneyLeft);
+		if (this.moneyLeft<0) {
+			game.trigger.bang(NO_MONEY_LEFT);
+		}
+	}
+}

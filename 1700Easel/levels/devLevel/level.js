@@ -12,13 +12,13 @@
 		level.actionCount[Mine]=10;
 		level.actionCount[Dig]=10;
 		level.actionCount[JumpAll]=1;
-		level.maxPoliceMen=100;
+		level.maxPoliceMen=10;
 		level.policeDelay=100;
 		level.dropX=100;
-		level.dropY=280;
+		level.dropY=80;
 		level.goalX=814;
 		level.goalY=310;
-		level.minSafeCount=100;
+		level.minSafeCount=5;
 		level.soundFile="track.mp3";
 		level.registerAsset("Copter");
 		level.registerAsset("Tank");

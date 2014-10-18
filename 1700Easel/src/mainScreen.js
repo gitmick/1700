@@ -53,6 +53,11 @@ function FolderLevel(levelName) {
 }
 FolderLevel.prototype = new IntroLevel();
 FolderLevel.prototype.init = function() {
+	
+	stage.removeAllChildren();
+	//stage.removeAllEventListeners();
+	level = new Level();
+	
 	this.loadIntroAction.load = function() {
 		this.level.introImage=this.loader.loadImage(this.level.dirPath+"/introScreen.png",this.level.introImage);
 	};
@@ -67,8 +72,8 @@ FolderLevel.prototype.init = function() {
 		
 		this.loader.loadScript(this.level.dirPath+"/level.js");
 		this.level.worldHtmlImage=this.loader.loadImage(this.level.dirPath+"/world.png",this.level.worldHtmlImage);
-		this.level.mapHtmlImage=this.loader.loadImage(this.level.dirPath+"/map.png",this.level.mapHtmlImage);
-		this.level.mapHtmlImage=this.loader.loadImage(this.level.dirPath+"/background.png",this.level.backgroundHtmlImage);
+		this.level.mapHtmlImage=this.loader.loadImage(this.level.dirPath+"/background.png",this.level.mapHtmlImage);
+		this.level.backgroundHtmlImage=this.loader.loadImage(this.level.dirPath+"/background.png",this.level.backgroundHtmlImage);
 		
 		this.loader.loadImage("img/actions/Bash.png",new Image());
 		this.loader.loadImage("img/actions/Block.png",new Image());
@@ -84,10 +89,13 @@ FolderLevel.prototype.init = function() {
 		this.loader.loadImage("img/actions/Minus.png",new Image());
 		this.loader.loadImage("img/actions/Plus.png",new Image());
 		
+		this.loader.loadImage("img/win.png",new Image());
+		this.loader.loadImage("img/lost.png",new Image());
+		
 		this.loader.loadSound(this.level.dirPath+"/track.mp3",this.name);
 	};
 	this.loadLevelSpecific.load = function() {
-		
+		stage.removeAllChildren();
 		this.level.world.init(this.level);
 		
 		level.load();
@@ -97,6 +105,10 @@ FolderLevel.prototype.init = function() {
 	};
 	this.loadAssets.load = function() {
 		level.initAssets();
+		trigger = new ExitChecker();
+		game.trigger.addTrigger(POLICEMAN_SAVED, trigger);
+		game.trigger.addTrigger(POLICEMAN_KILLED, trigger);
+		game.trigger.addTrigger(ADD_POLICEMEN_FINISHED, trigger);
 	};
 }
 

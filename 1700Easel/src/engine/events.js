@@ -26,6 +26,12 @@ Machine.prototype.tick = function() {
 	}
 };
 
+Machine.prototype.setAction = function(a) {
+	this.actionQueue = new Array();
+	this.blockQueue = new Array();
+	this.addAction(a);
+}
+
 Machine.prototype.addAction = function(a) {
 	a.machine=this;
 	this.actionQueue.push(a);
@@ -139,6 +145,7 @@ function IntroLevel() {
 IntroLevel.prototype.init = function(){};
 IntroLevel.prototype.start = function(machine) {
 	interactionHandler.reset();
+	game.reset();
 	this.loadIntroAction.level=this;
 	this.showIntroAction.level=this;
 	this.loadLevelSpecific.level=this;
@@ -146,7 +153,7 @@ IntroLevel.prototype.start = function(machine) {
 	this.play.level=this;
 
 	this.init();
-	machine.addAction(this.loadIntroAction);
+	machine.setAction(this.loadIntroAction);
 };
 
 

@@ -4,7 +4,8 @@
 
 //var FREE=16777215;
 var FREE=10592129;
-var DEADLY=2;
+var DEADLY=4;
+var POLICE=2;
 var BLOCK=0;
 var INVISIBLE_BLOCK=1;
 
@@ -16,13 +17,38 @@ function World() {
 	this.displayEntity = new DisplayEntity();
 	
 	this.gameText;
+	this.policeText;
 	this.moneyLeft=870000;
 	this.policeOut=0;
 	this.policeSaved=0;
+	this.dirty=true;
+}
+World.prototype.setPoliceOut=function(out) {
+	if (out!=this.policeOut) {
+		this.policeOut=out;
+		this.dirty=true;
+	}
+}
+
+World.prototype.setPoliceSaved=function(saved) {
+	if (saved!=this.policeSaved) {
+		this.policeSaved=saved;
+		this.dirty=true;
+	}
+}
+
+World.prototype.setMoneyLeft=function(left) {
+	if (left!=this.moneyLeft) {
+		this.moneyLeft=left;
+		this.dirty=true;
+	}
 }
 
 World.prototype.updateText = function() {
-	this.gameText.text="Im Einsatz: "+this.policeOut+" Im Haus: "+this.policeSaved+" Geld verbraten: "+this.moneyLeft;
+	if (this.dirty) {
+		this.gameText.text="Im Einsatz: "+this.policeOut+" Im Haus: "+this.policeSaved+" Geld verbraten: "+this.moneyLeft;
+		this.dirty=false;
+	}
 };
 
 World.prototype.init = function(lvl) {
@@ -41,6 +67,11 @@ World.prototype.init = function(lvl) {
 	this.gameText.x=20;
 	this.gameText.y=20;
 	stage.addChild(this.gameText);
+	
+	this.policeText= new createjs.Text("", "20px VT323", "#ff7700"); 
+	this.policeText.x=20;
+	this.policeText.y=60;
+	stage.addChild(this.policeText);
 }
 
 World.prototype.scroll = function(x) {

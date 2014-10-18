@@ -62,6 +62,7 @@ Lemming.prototype.kill=function() {
 	this.dead=true;
 	arrayWithout(game.lemmings,this);
 	this.displayEntity.destroy();
+	game.trigger.bang(POLICEMAN_KILLED);
 }
 
 Lemming.prototype.won=function() {
@@ -69,6 +70,7 @@ Lemming.prototype.won=function() {
 	game.winCount++;
 	arrayWithout(game.lemmings,this);
 	this.displayEntity.destroy();
+	game.trigger.bang(POLICEMAN_SAVED);
 }
 
 Lemming.prototype.create=function() {
