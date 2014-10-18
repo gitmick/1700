@@ -22,6 +22,7 @@ MainLevel.prototype.init = function () {
 		
 		this.loader.loadSound("fx/Bash.mp3","Bash");
 		this.loader.loadSound("fx/float_huuu.mp3","Float");
+		this.loader.loadSound("fx/float_naaa.mp3","FloatFall");
 		this.loader.loadSound("fx/Climb.mp3","Climb");
 		this.loader.loadSound("fx/Block.mp3","Block");
 		this.loader.loadSound("fx/bomb_jessas.mp3","Bomb");

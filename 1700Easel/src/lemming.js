@@ -63,6 +63,7 @@ Lemming.prototype.kill=function() {
 	arrayWithout(game.lemmings,this);
 	this.displayEntity.destroy();
 	game.trigger.bang(POLICEMAN_KILLED);
+	this.left();
 }
 
 Lemming.prototype.won=function() {
@@ -100,6 +101,15 @@ Lemming.prototype.select = function(x,y) {
 }
 
 Lemming.prototype.explore=function(x,y) {
+	if (this.canClimb && this.canFloat) {
+		game.level.world.setEquipment("Extremsportler");
+	}
+	else if (this.canClimb) {
+		game.level.world.setEquipment("Klettermaxe");
+	}
+	else if (this.canFloat) {
+		game.level.world.setEquipment("Basejumper");
+	}
 	if (this.checkSelectedAction()){
 		this.drawSelectable("green");
 	}
@@ -110,6 +120,7 @@ Lemming.prototype.explore=function(x,y) {
 Lemming.prototype.left=function(x,y) {
 	this.selection.graphics.clear();
 	game.selectedLemming=false;
+	game.level.world.setEquipment("");
 }
 
 Lemming.prototype.collected=function(time) {

@@ -3,15 +3,24 @@ function Tank() {
 	this.targetX=0;
 	this.targetY=0;
 	this.steps=100;
+	
+	this.data = {
+			 framerate: 18,
+		     images: ["assets/Tank/tank_drive.png"],
+		     frames: {width:86, height:48},
+		     animations: {run:[0,7],idle:[8,8]}
+		 };
+	this.tankSheet;
+	this.sprite;
 }
 Tank.prototype = new Asset();
 Tank.prototype.load = function() {
-	this.tankImage=this.loadImage("tank.png",this.tankImage);
+	this.tankSheet = new createjs.SpriteSheet(this.data);
 	this.loadSound("tank.mp3","tank");
 };
 
 Tank.prototype.drawInitial = function() {
-	this.displayEntity.addBitmap(this.tankImage, true);
+	this.sprite=this.displayEntity.addSprite(this.tankSheet, "run",true).element;
 	this.displayEntity.pos(this.startX, this.startY);
 	this.setAction(new DriveIn());
 }
@@ -46,6 +55,7 @@ DriveIn.prototype.act = function() {
 	this.counter++;
 	if (this.counter>this.asset.steps) {
 		this.effectInstance.stop();
+		this.asset.sprite.gotoAndPlay("idle");
 		this.asset.setAction(false);
 	}
 	this.asset.displayEntity.pos(this.asset.startX+(this.counter*this.stepX),

@@ -75,10 +75,15 @@ Fall.prototype.check=function() {
 }
 
 Fall.prototype.act=function() {
-	this.effect("Float");
+	
+	
 	speed=5;
-	if (this.lemming.canFloat)
+	if (this.lemming.canFloat) {
 		speed=1;
+		this.effect("Float");
+	}
+	else
+		this.effect("FloatFall");
 	for (i=0;i<speed;i++) {
 		if (this.check()) {
 			this.lemming.y+=this.lemming.speed;
@@ -137,6 +142,7 @@ Float.prototype.check=function() {
 Float.prototype.act=function() {
 	this.effect("Float");
 	this.lemming.canFloat=true;
+	this.lemming.lastAction.effectStarted=false;
 	this.lemming.setAction(this.lemming.lastAction);
 }
 

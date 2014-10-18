@@ -22,7 +22,17 @@ function World() {
 	this.policeOut=0;
 	this.policeSaved=0;
 	this.dirty=true;
+	
+	this.equiq="";
 }
+
+World.prototype.setEquipment=function(eq) {
+	if (this.equiq!=eq) {
+		this.equiq=eq;
+		this.policeText.text=eq;
+	}
+}
+
 World.prototype.setPoliceOut=function(out) {
 	if (out!=this.policeOut) {
 		this.policeOut=out;
