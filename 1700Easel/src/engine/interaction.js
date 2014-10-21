@@ -87,15 +87,6 @@ function CollectionItem(time,item) {
 	this.item=item;
 }
 
-function isIn(a, obj) {
-    var i = a.length;
-    while (i--) {
-       if (a[i]  === obj ) {
-           return true;
-       }
-    }
-    return false;
-}
 
 InteractionHandler.prototype.collect = function(x,y,time) {
 	collected=false;

@@ -101,7 +101,7 @@ FolderLevel.prototype.init = function() {
 		
 		level.load();
 		game.control.init();
-		createjs.Sound.play(this.level.name);
+		soundPlayer.play(this.level.name,5);
 
 	};
 	this.loadAssets.load = function() {

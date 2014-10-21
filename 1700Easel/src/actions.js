@@ -2,15 +2,6 @@
  * 
  */
 
-function contains(a, obj) {
-    var i = a.length;
-    while (i--) {
-       if (a[i].constructor  === obj.constructor ) {
-           return true;
-       }
-    }
-    return false;
-}
 
 function Act() {
 	this.effectStarted=false;
@@ -26,9 +17,10 @@ Act.prototype.act = function() {
 	
 };
 
-Act.prototype.effect = function(name) {
+Act.prototype.effect = function(name,loopN,loopPause) {
 	if (!this.effectStarted) {
-		this.effectInstance=createjs.Sound.play(name);
+		//this.effectInstance=createjs.Sound.play(name);
+		this.effectInstance=soundPlayer.play(name,loopN,loopPause);
 		this.effectStarted=true;
 	}
 };
@@ -190,7 +182,7 @@ Block.prototype.check=function() {
 }
 
 Block.prototype.act=function() {
-	this.effect("Block");
+	this.effect("Block",1,1000);
 	if (!this.blocked) {
 		game.drawRect(this.lemming.x+this.lemming.width/4,this.lemming.y+this.lemming.height/4,15,30,INVISIBLE_BLOCK);
 		this.lemming.circle.gotoAndPlay("stand");

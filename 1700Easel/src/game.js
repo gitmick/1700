@@ -135,6 +135,7 @@ PlayAction.prototype.act = function() {
 		lemming.draw(def);
 	}
 	timeKeeper.tick();
+	soundPlayer.tick();
 	game.level.world.setPoliceOut(game.lemmings.length);
 	game.level.world.setPoliceSaved(game.winCount);
 	game.level.world.updateText();
@@ -172,6 +173,7 @@ function WinAction() {}
 WinAction.prototype = new MachineAction();
 
 WinAction.prototype.act = function() {
+	soundPlayer.reset();
 	img = globalLoader.getImage("img/win.png");
 	var dE = new DisplayEntity();
 	dE.addBitmap(img,false);
@@ -186,6 +188,7 @@ function LostAction() {}
 LostAction.prototype = new MachineAction();
 
 LostAction.prototype.act = function() {
+	soundPlayer.reset();
 	img = globalLoader.getImage("img/lost.png");
 	var dE = new DisplayEntity();
 	dE.addBitmap(img,false);
