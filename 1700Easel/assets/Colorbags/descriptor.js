@@ -16,17 +16,8 @@ ColorBag.prototype.init = function(pic,x,y,dir) {
 	this.displayEntity.pos(x, y);
 	this.setAction(new BagFallAction());
 }
-ColorBag.prototype.hasFloor=function(){
-	//return game.getWorldPixel(this.x+(this.width/2),this.y+this.height)!=level.backgroundColor;
-	var openSize=0;
-	
-	for(var aw=0;aw<8;aw++){
-		if(game.getWorldPixel(this.startX+aw,this.startY)==FREE){
-			if (++openSize==4)
-				return false;
-		}
-	}
-	return true;
+ColorBag.prototype.canFall=function(){
+	return game.level.world.canFall(this.displayEntity.x,this.displayEntity.y,8);
 	
 }
 
@@ -60,13 +51,19 @@ ThrowAction.prototype.act = function () {
 }
 
 function BagFallAction() {
+	this.lastX=0;
+	this.lastY=0;
 	this.counter=0;
 }
 BagFallAction.prototype = new AssetAction();
 BagFallAction.prototype.act = function() {
 	this.counter++;
-	this.asset.displayEntity.pos(this.asset.startX+(this.counter*this.asset.direction*5),this.asset.startY+(this.counter*this.counter/20));
-	if (this.asset.hasFloor()) {
+	this.lastX=this.asset.displayEntity.x;
+	this.lastY=this.asset.displayEntity.y;
+	game.level.world.drawRect(this.asset.displayEntity.x,this.asset.displayEntity.y,4,4,FREE);
+	this.asset.displayEntity.pos(this.asset.startX+(this.counter*this.asset.direction*3),this.asset.startY+(this.counter*this.counter/20));
+	game.level.world.drawRect(this.asset.displayEntity.x,this.asset.displayEntity.y,4,4,DEADLY);
+	if (this.asset.canFall()!=FREE) {
 		this.asset.setAction(false);
 	}
 }
