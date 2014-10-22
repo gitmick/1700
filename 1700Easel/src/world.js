@@ -2,11 +2,12 @@
  * 
  */
 
-//var FREE=16777215;
+//var FREE=16777215;10592129
 var FREE=10592129;
 var DEADLY=4;
 var POLICE=2;
-var BLOCK=0;
+var EVERBLOCK=3;
+var VISIBLE_BLOCK=0;
 var INVISIBLE_BLOCK=1;
 
 function World() {
@@ -91,7 +92,7 @@ World.prototype.scroll = function(x) {
 World.prototype.getWorldPixel = function(px,py){
 	if(py<0)return FREE;
 	var col = this.worldBitmapData.getPixel(px,py);
-	if (col>10000) return FREE;
+//	if (col>10000) return FREE;
 	return col;
 }
 
@@ -109,12 +110,13 @@ World.prototype.drawCircle = function(px,py,radius,color){
 	}
 	if (color==FREE) {
 		this.s.graphics.beginFill(level.backgroundColorName).drawCircle(px,py,radius);
-		//this.foreGround.graphics.endFill().drawCircle(px,py,radius);
+		this.s.updateCache("source-overlay");
 	}
-	else if (color==BLOCK)
+	else if (color==VISIBLE_BLOCK) {
 		this.foreGround.graphics.beginFill("brown").drawCircle(px,py,radius);
-	this.foreGround.updateCache("source-overlay");
-	this.s.updateCache("source-overlay");
+		this.foreGround.updateCache("source-overlay");
+	}
+	
 }
 
 
@@ -124,9 +126,58 @@ World.prototype.drawRect = function(px,py,w,h,color){
 			this.worldBitmapData.setPixel(px+xi,py+yi,level.color);
 		}
 	}
-	if (color==BLOCK)
+	if (color==VISIBLE_BLOCK)
 		this.foreGround.graphics.beginFill("brown").drawRect(px,py,w,h);
 	this.foreGround.updateCache("source-overlay");
 	this.s.updateCache("source-overlay");
 }
 
+World.prototype.canFall = function(x,y,width) {
+	var border = width/4;
+	var openSize=0;
+	for(var aw=border;aw<width-border;aw++){
+		if(this.getWorldPixel(x+aw,y)==DEADLY)
+			return DEADLY;
+		if(this.getWorldPixel(x+aw,y)>=FREE){
+			if (++openSize==width/2)
+				return FREE;
+		}
+	}
+	return EVERBLOCK;
+}
+
+World.prototype.canWalk=function(x,y,height,maxDY){
+	
+	var openSize=0;
+	
+	for(var aw=-maxDY;aw<height+maxDY;aw++){
+		if(this.getWorldPixel(x,y+aw)==DEADLY)
+			return DEADLY;
+		if(this.getWorldPixel(x,y+aw)>=FREE){
+			if (++openSize==height)
+				return FREE;
+		}
+		else
+			openSize=0;
+	}
+	return EVERBLOCK;
+}
+
+
+World.prototype.getDY=function(x,y,height,maxDY,direction){
+	var openSize=0;
+		
+		for(var aw=-maxDY;aw<height+maxDY;aw++){
+			if(this.getWorldPixel(x-(direction*5),y+aw)>=FREE){
+				openSize++;
+			}
+			else {
+				if (openSize>=height) {
+					dy=height-aw;
+					return dy;
+				} 
+				openSize=0;
+			}
+		}
+		return 0;
+	}

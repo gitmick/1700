@@ -165,50 +165,49 @@ Lemming.prototype.move=function(){
 
 
 Lemming.prototype.hasFloor=function(){
-	//return game.getWorldPixel(this.x+(this.width/2),this.y+this.height)!=level.backgroundColor;
-	var openSize=0;
-	
-	for(var aw=5;aw<this.width-5;aw++){
-		if(game.getWorldPixel(this.x+aw,this.y+this.height+1)==FREE){
-			if (++openSize==this.width/2)
-				return false;
-		}
-	}
-	return true;
-	
+	var result = game.level.world.canFall(this.x,this.y+this.height+1,this.width);
+	if (result==DEADLY)
+		this.kill();
+	return (result!=FREE);
 }
 
 Lemming.prototype.againstWall=function(){
-	
-	var openSize=0;
-	
-	for(var aw=-this.maxDY;aw<this.height+this.maxDY;aw++){
-		if(game.getWorldPixel(this.frontFootX(),this.y+aw)==FREE){
-			if (++openSize==this.height)
-				return false;
-		}
-		else
-			openSize=0;
-	}
-	return true;
+	var result = game.level.world.canWalk(this.frontFootX(),this.y,this.height,this.maxDY);
+	if (result==DEADLY)
+		this.kill();
+	return (result!=FREE);
+//	var openSize=0;
+//	
+//	for(var aw=-this.maxDY;aw<this.height+this.maxDY;aw++){
+//		if(game.getWorldPixel(this.frontFootX(),this.y+aw)==FREE){
+//			if (++openSize==this.height)
+//				return false;
+//		}
+//		else
+//			openSize=0;
+//	}
+//	return true;
 }
 
 Lemming.prototype.getDY=function(){
-var openSize=0;
 	
-	for(var aw=-this.maxDY;aw<this.height+this.maxDY;aw++){
-		if(game.getWorldPixel(this.frontFootX()-(this.direction*5),this.y+aw)==FREE){
-			openSize++;
-		}
-		else {
-			if (openSize>=this.height) {
-				dy=this.height-aw;
-				return dy;
-			} 
-			openSize=0;
-		}
-	}
-	return 0;
+	return game.level.world.getDY(this.frontFootX(),this.y,this.height,this.maxDY,this.direction);
+	
+//var openSize=0;
+//	
+//	for(var aw=-this.maxDY;aw<this.height+this.maxDY;aw++){
+//		if(game.getWorldPixel(this.frontFootX()-(this.direction*5),this.y+aw)==FREE){
+//			openSize++;
+//		}
+//		else {
+//			if (openSize>=this.height) {
+//				dy=this.height-aw;
+//				return dy;
+//			} 
+//			openSize=0;
+//		}
+//	}
+//	return 0;
 }
 
 

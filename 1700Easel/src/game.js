@@ -169,19 +169,26 @@ ExitChecker.prototype.bang = function(name) {
 };
 	
 
-function WinAction() {}
+function WinAction() {
+	this.started=false;
+}
 WinAction.prototype = new MachineAction();
 
 WinAction.prototype.act = function() {
-	soundPlayer.reset();
-	img = globalLoader.getImage("img/win.png");
-	var dE = new DisplayEntity();
-	dE.addBitmap(img,false);
-	startObject = new Button(0,0,400,400);
-	startObject.select = function(x, y) {
-		game.level = new FolderLevel("devLevel");
-		game.level.start(game.machine);
-	};
+	if (!this.started) {
+		soundPlayer.reset();
+		displayEntityHolder.destroy();
+		stage.removeAllChildren();
+		img = globalLoader.getImage("img/win.png");
+		var dE = new DisplayEntity();
+		dE.addBitmap(img,false);
+		startObject = new Button(0,0,400,400);
+		startObject.select = function(x, y) {
+			game.level = new FolderLevel("devLevel");
+			game.level.start(game.machine);
+		};
+		this.started=true;
+	}
 }
 
 function LostAction() {}

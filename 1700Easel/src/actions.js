@@ -143,7 +143,7 @@ Float.prototype.actionPossible = function(action) {
 }
 
 function Bomb() {
-	this.counter=100+parseInt(Math.random()*10);
+	this.counter=100+parseInt(Math.random()*20);
 }
 Bomb.prototype=new Action();
 

@@ -157,7 +157,9 @@ function DeviceInteraction() {
 DesktopInteraction.prototype.tick = function() {}
 
 function DesktopInteraction() {
-	
+this.init();
+}
+DesktopInteraction.prototype.init = function() {
 	this.mouseDown=false;
 	this.time=0;
 	this.collectionDelay=0;
@@ -181,6 +183,7 @@ function DesktopInteraction() {
     	that.clickX=evt.stageX;
     	that.clickY=evt.stageY;
     	that.mouseDown=false;
+    	console.log(game.level.world.getWorldPixel(evt.stageX,evt.stageY));
     });
     stage.on("pressmove", function(evt) {
     	console.log("mainMove");

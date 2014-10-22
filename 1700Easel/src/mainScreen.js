@@ -32,8 +32,7 @@ MainLevel.prototype.init = function () {
 		this.loader.loadSound("fx/build_2.mp3","Build");
 		this.loader.loadSound("fx/gen_death3.mp3","Kill");
 		
-		 lemmingsSheet = new createjs.SpriteSheet(data);
-		this.loader.loadSprites(lemmingsSheet);
+		 
 	};
 	this.levelInitialize.fire = function () {
 		var bitmap = new createjs.Bitmap(this.level.mainScreen);
@@ -73,7 +72,7 @@ FolderLevel.prototype.init = function() {
 		
 		this.loader.loadScript(this.level.dirPath+"/level.js");
 		this.level.worldHtmlImage=this.loader.loadImage(this.level.dirPath+"/world.png",this.level.worldHtmlImage);
-		this.level.mapHtmlImage=this.loader.loadImage(this.level.dirPath+"/background.png",this.level.mapHtmlImage);
+		this.level.mapHtmlImage=this.loader.loadImage(this.level.dirPath+"/map.png",this.level.mapHtmlImage);
 		this.level.backgroundHtmlImage=this.loader.loadImage(this.level.dirPath+"/background.png",this.level.backgroundHtmlImage);
 		
 		this.loader.loadImage("img/actions/Bash.png",new Image());
@@ -94,6 +93,17 @@ FolderLevel.prototype.init = function() {
 		this.loader.loadImage("img/lost.png",new Image());
 		
 		this.loader.loadSound(this.level.dirPath+"/track.mp3",this.name);
+		
+		var data = {
+				 framerate: 18,
+			     images: ["img/run.png"],
+			     frames: {width:32, height:32},
+			     animations: {run:[0,9],runR:[10,19],stand:[20,35],exp:[36,49]}
+			 };
+		lemmingsSheet = new createjs.SpriteSheet(data);
+		
+		//this.loader.loadSprites(lemmingsSheet);
+		
 	};
 	this.loadLevelSpecific.load = function() {
 		stage.removeAllChildren();

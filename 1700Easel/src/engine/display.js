@@ -15,6 +15,7 @@ DEElement.prototype.pos = function(x,y,deFrame) {
 
 DEElement.prototype.destroy = function() {
 	stage.removeChild(this.element);
+	
 }
 
 function DEScrollElement() {
@@ -28,10 +29,24 @@ DEScrollElement.prototype.pos = function(x,y,deFrame) {
 		this.element.x=x;
 	this.element.y=y;
 };
+
+
+function DisplayEntityHolder() {
+	this.entities = new Array();
+}
+DisplayEntityHolder.prototype.destroy = function() {
+	for (var i=0;i<this.entities.length;i++) {
+		this.entities[i].destroy();
+	}
+}
+
+displayEntityHolder = new DisplayEntityHolder();
+
 function DisplayEntity() {
 	this.deElements=new Array();
 	this.x=0;
 	this.y=0;
+	displayEntityHolder.entities.push(this);
 }
 DisplayEntity.prototype.pos = function(x,y,deFrame) {
 	this.x=x;
@@ -89,4 +104,5 @@ DisplayEntity.prototype.destroy = function() {
 	for (var i=0;i<this.deElements.length;i++) {
 		this.deElements[i].destroy();
 	}
+	arrayWithout(displayEntityHolder.entities, this);
 }
