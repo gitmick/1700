@@ -135,14 +135,17 @@ World.prototype.drawRect = function(px,py,w,h,color){
 World.prototype.canFall = function(x,y,width) {
 	var border = width/4;
 	var openSize=0;
+	var dead=false;
 	for(var aw=border;aw<width-border;aw++){
 		if(this.getWorldPixel(x+aw,y)==DEADLY)
-			return DEADLY;
+			dead=true;;
 		if(this.getWorldPixel(x+aw,y)>=FREE){
 			if (++openSize==width/2)
 				return FREE;
 		}
 	}
+	if (dead)
+		return DEADLY;
 	return EVERBLOCK;
 }
 
