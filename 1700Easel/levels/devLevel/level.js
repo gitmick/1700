@@ -23,6 +23,7 @@
 		level.registerAsset("Copter");
 		level.registerAsset("Tank");
 		level.registerAsset("ColorBags");
+		level.registerAsset("Phil");
 		level.initAssets = function() {
 			var copter = this.initAsset("Copter");
 			copter.startX=-200;
@@ -42,6 +43,11 @@
 			bagthrower.startX=820;
 			bagthrower.startY=0;
 			bagthrower.show();
+			
+			var phil = this.initAsset("Phil");
+			phil.startX=420;
+			phil.startY=200;
+			phil.show();
 		};
 		
 		
