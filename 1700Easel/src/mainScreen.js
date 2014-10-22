@@ -31,7 +31,8 @@ MainLevel.prototype.init = function () {
 		this.loader.loadSound("fx/Dig.mp3","Dig");
 		this.loader.loadSound("fx/build_2.mp3","Build");
 		this.loader.loadSound("fx/gen_death3.mp3","Kill");
-		
+		this.loader.loadSound("fx/climb_jodel2.mp3","ClimbUp");
+		this.loader.loadSound("fx/gen_uhoh.mp3","Juhu");
 		 
 	};
 	this.levelInitialize.fire = function () {

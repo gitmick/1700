@@ -22,7 +22,7 @@
 		level.soundFile="track.mp3";
 		level.registerAsset("Copter");
 		level.registerAsset("Tank");
-		level.registerAsset("ColorBags");
+		level.registerAsset("Colorbags");
 		level.registerAsset("Phil");
 		level.initAssets = function() {
 			var copter = this.initAsset("Copter");

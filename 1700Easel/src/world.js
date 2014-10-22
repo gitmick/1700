@@ -123,7 +123,7 @@ World.prototype.drawCircle = function(px,py,radius,color){
 World.prototype.drawRect = function(px,py,w,h,color){	
 	for (xi=0;xi<w;xi++) {
 		for (yi=0;yi<h;yi++) {
-			this.worldBitmapData.setPixel(px+xi,py+yi,level.color);
+			this.worldBitmapData.setPixel(px+xi,py+yi,color);
 		}
 	}
 	if (color==VISIBLE_BLOCK)
@@ -138,7 +138,7 @@ World.prototype.canFall = function(x,y,width) {
 	var dead=false;
 	for(var aw=border;aw<width-border;aw++){
 		if(this.getWorldPixel(x+aw,y)==DEADLY)
-			dead=true;;
+			dead=true;
 		if(this.getWorldPixel(x+aw,y)>=FREE){
 			if (++openSize==width/2)
 				return FREE;
@@ -152,18 +152,22 @@ World.prototype.canFall = function(x,y,width) {
 World.prototype.canWalk=function(x,y,height,maxDY){
 	
 	var openSize=0;
-	
+	var block = EVERBLOCK;
 	for(var aw=-maxDY;aw<height+maxDY;aw++){
-		if(this.getWorldPixel(x,y+aw)==DEADLY)
+		var result = this.getWorldPixel(x,y+aw);
+		if(result==DEADLY)
 			return DEADLY;
-		if(this.getWorldPixel(x,y+aw)>=FREE){
+		else if(result>=FREE){
 			if (++openSize==height)
 				return FREE;
 		}
-		else
+		else {
 			openSize=0;
+			if (result!=VISIBLE_BLOCK)
+				block = result;
+		}
 	}
-	return EVERBLOCK;
+	return result;
 }
 
 

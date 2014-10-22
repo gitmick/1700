@@ -23,7 +23,7 @@ function isIn(a, obj) {
 function contains(a, obj) {
     var i = a.length;
     while (i--) {
-       if (a[i].constructor  === obj.constructor ) {
+       if (obj instanceof a[i] ) {
            return true;
        }
     }

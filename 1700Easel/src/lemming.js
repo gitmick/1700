@@ -59,6 +59,7 @@ Lemming.prototype.setAction=function(a) {
 }
 
 Lemming.prototype.kill=function() {
+	soundPlayer.play("Kill");
 	this.dead=true;
 	arrayWithout(game.lemmings,this);
 	this.displayEntity.destroy();
@@ -67,6 +68,7 @@ Lemming.prototype.kill=function() {
 }
 
 Lemming.prototype.won=function() {
+	soundPlayer.play("Juhu");
 	this.win=true;
 	game.winCount++;
 	arrayWithout(game.lemmings,this);
@@ -176,17 +178,12 @@ Lemming.prototype.againstWall=function(){
 	if (result==DEADLY)
 		this.kill();
 	return (result!=FREE);
-//	var openSize=0;
-//	
-//	for(var aw=-this.maxDY;aw<this.height+this.maxDY;aw++){
-//		if(game.getWorldPixel(this.frontFootX(),this.y+aw)==FREE){
-//			if (++openSize==this.height)
-//				return false;
-//		}
-//		else
-//			openSize=0;
-//	}
-//	return true;
+}
+
+Lemming.prototype.isPolice=function(){
+	var result = game.level.world.canWalk(this.frontFootX(),this.y,this.height,this.maxDY);
+	console.log(result);
+	return (result==POLICE);
 }
 
 Lemming.prototype.getDY=function(){

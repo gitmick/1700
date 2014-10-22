@@ -25,7 +25,20 @@ Act.prototype.effect = function(name,loopN,loopPause) {
 	}
 };
 
+Act.prototype.effectFull = function(name,loopN,loopPause) {
+	if (!this.effectStarted) {
+		//this.effectInstance=createjs.Sound.play(name);
+		soundPlayer.play(name,loopN,loopPause);
+		this.effectStarted=true;
+	}
+};
+
 Act.prototype.actionPossible = function(action) {
+
+	if (action instanceof Climb && this.lemming.canClimb)
+		return false;
+	if (action instanceof Float && this.lemming.canFloat)
+		return false;
 	return contains(this.possibleActions,action);
 };
 Act.prototype.stop = function() {
@@ -38,12 +51,15 @@ Act.prototype.stop = function() {
 function Action() {
 	this.lemming;
 	this.multiSelect=false;
-	this.possibleActions.push(new Bomb());
-	this.possibleActions.push(new Climb());
-	this.possibleActions.push(new Float());
-	this.possibleActions.push(new Fall());
-	this.possibleActions.push(new Walk());
-	this.possibleActions.push(new Kill());
+	this.possibleActions.push(Bomb);
+	this.possibleActions.push( Climb);
+	this.possibleActions.push( Float);
+	this.possibleActions.push( Fall);
+	this.possibleActions.push( Walk);
+	this.possibleActions.push( Kill);
+	this.possibleActions.push( ClimbUp);
+	this.possibleActions.push( Dig);
+	this.possibleActions.push( Block);
 }
 
 Action.prototype=new Act();
@@ -115,7 +131,7 @@ Climb.prototype.check=function() {
 }
 
 Climb.prototype.act=function() {
-	this.effect("Climb");
+	this.effectFull("Climb");
 	this.lemming.canClimb=true;
 	this.lemming.setAction(this.lemming.lastAction);
 }
@@ -184,7 +200,7 @@ Block.prototype.check=function() {
 Block.prototype.act=function() {
 	this.effect("Block",1,1000);
 	if (!this.blocked) {
-		game.drawRect(this.lemming.x+this.lemming.width/4,this.lemming.y+this.lemming.height/4,15,30,INVISIBLE_BLOCK);
+		game.drawRect(this.lemming.x+this.lemming.width/4,this.lemming.y+this.lemming.height/4,15,30,POLICE);
 		this.lemming.circle.gotoAndPlay("stand");
 	}
 	this.blocked=true;
@@ -258,12 +274,15 @@ Walk.prototype.check=function() {
 		this.lemming.setAction(new Fall());
 		return false;
 	}
-	if (this.lemming.againstWall()) {
+	if (this.lemming.againstWall()  && ((!this.lemming.canClimb  || this.lemming.x<30 ) || !this.lemming.isPolice())) {
 		this.lemming.direction*=-1;
 		if (this.lemming.direction>0)
 			this.lemming.circle.gotoAndPlay("run");
 		else
 			this.lemming.circle.gotoAndPlay("runR");
+	}
+	else if (this.lemming.againstWall()) {
+		this.lemming.setAction(new ClimbUp());
 	}
 	return true;
 }
@@ -277,6 +296,24 @@ Walk.prototype.act = function() {
 	}
 }
 
+function ClimbUp() {
+	
+}
+ClimbUp.prototype = new Action();
+
+ClimbUp.prototype.check = function () {
+	if (!this.lemming.againstWall()) {
+		this.lemming.setAction(new Walk());
+		this.lemming.x+=3*this.lemming.direction;
+		return false;
+	}
+	return true;
+}
+
+ClimbUp.prototype.act = function() {
+	this.effect("ClimbUp");
+	this.lemming.y-=1;
+}
 
 function Dig() {
 	this.counter=100;
@@ -296,7 +333,7 @@ Dig.prototype.check = function() {
 
 Dig.prototype.act= function() {
 	this.effect("Dig");
-	if (this.counter%2==2) {
+	if (this.counter%2==0) {
 		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,FREE);
 		this.lemming.y+=this.lemming.speed;
 	}
@@ -321,7 +358,7 @@ Mine.prototype.check = function() {
 
 Mine.prototype.act= function() {
 	this.effect("Mine");
-	if (this.counter%2==2) {
+	if (this.counter%2==0) {
 		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,FREE);
 		if (this.down)this.lemming.y+=this.lemming.speed;
 		this.down=!this.down;

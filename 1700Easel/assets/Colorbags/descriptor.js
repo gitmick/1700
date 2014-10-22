@@ -58,15 +58,13 @@ function BagFallAction() {
 BagFallAction.prototype = new AssetAction();
 BagFallAction.prototype.act = function() {
 	this.counter++;
-	this.lastX=this.asset.displayEntity.x;
-	this.lastY=this.asset.displayEntity.y;
-	game.level.world.drawRect(this.asset.displayEntity.x+2,this.asset.displayEntity.y+2,4,4,FREE);
-	this.asset.displayEntity.pos(this.asset.startX+(this.counter*this.asset.direction*3),this.asset.startY+(this.counter*this.counter/20));
-	
+	game.level.world.drawRect(this.asset.displayEntity.x,this.asset.displayEntity.y,8,8,FREE);
+	this.asset.displayEntity.pos(this.asset.startX+(this.counter*this.asset.direction*3.5),this.asset.startY+(this.counter*this.counter/20));
 	if (this.asset.canFall()!=FREE && this.asset.canFall()!=DEADLY) {
 		this.asset.setAction(false);
 	}
-	game.level.world.drawRect(this.asset.displayEntity.x+2,this.asset.displayEntity.y+2,4,4,DEADLY);
+	else
+		game.level.world.drawRect(this.asset.displayEntity.x,this.asset.displayEntity.y,8,8,DEADLY);
 }
 
 

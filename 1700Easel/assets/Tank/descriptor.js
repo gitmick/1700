@@ -12,6 +12,7 @@ function Tank() {
 		 };
 	this.tankSheet;
 	this.sprite;
+	this.danger = EVERBLOCK;
 }
 Tank.prototype = new Asset();
 Tank.prototype.load = function() {
@@ -20,6 +21,7 @@ Tank.prototype.load = function() {
 };
 
 Tank.prototype.drawInitial = function() {
+	game.trigger.addTrigger(ADD_POLICEMEN_FINISHED, this);
 	this.sprite=this.displayEntity.addSprite(this.tankSheet, "run",true).element;
 	this.displayEntity.pos(this.startX, this.startY);
 	this.setAction(new DriveIn());
@@ -33,7 +35,8 @@ Tank.prototype.bang = function (name) {
 	s = this.startY;
 	this.startY=this.targetY;
 	this.targetY=s;
-	this.setAction(new FlyIn());
+	this.danger=DEADLY;
+	this.setAction(new DriveIn());
 }
 
 function DriveIn() {
@@ -58,6 +61,8 @@ DriveIn.prototype.act = function() {
 		this.asset.sprite.gotoAndPlay("idle");
 		this.asset.setAction(false);
 	}
+	game.level.world.drawRect(this.asset.displayEntity.x+10,this.asset.displayEntity.y+15,76,35,FREE);
 	this.asset.displayEntity.pos(this.asset.startX+(this.counter*this.stepX),
 			this.asset.startY+(this.counter*this.stepY) );
+	game.level.world.drawRect(this.asset.displayEntity.x+10,this.asset.displayEntity.y+15,76,35,this.asset.danger);
 }

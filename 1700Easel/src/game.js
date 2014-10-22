@@ -191,10 +191,14 @@ WinAction.prototype.act = function() {
 	}
 }
 
-function LostAction() {}
+function LostAction() {this.started=false;}
 LostAction.prototype = new MachineAction();
 
 LostAction.prototype.act = function() {
+	if (!this.started) {
+		displayEntityHolder.destroy();
+		stage.removeAllChildren();
+	
 	soundPlayer.reset();
 	img = globalLoader.getImage("img/lost.png");
 	var dE = new DisplayEntity();
@@ -204,6 +208,8 @@ LostAction.prototype.act = function() {
 		game.level = new FolderLevel("devLevel");
 		game.level.start(game.machine);
 	};
+	this.started=true;
+}
 }
 
 
