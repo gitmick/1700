@@ -167,7 +167,7 @@ World.prototype.canWalk=function(x,y,height,maxDY){
 				block = result;
 		}
 	}
-	return result;
+	return block;
 }
 
 

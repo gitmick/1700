@@ -182,7 +182,6 @@ Lemming.prototype.againstWall=function(){
 
 Lemming.prototype.isPolice=function(){
 	var result = game.level.world.canWalk(this.frontFootX(),this.y,this.height,this.maxDY);
-	console.log(result);
 	return (result==POLICE);
 }
 

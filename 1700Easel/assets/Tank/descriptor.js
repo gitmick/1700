@@ -21,7 +21,7 @@ Tank.prototype.load = function() {
 };
 
 Tank.prototype.drawInitial = function() {
-	game.trigger.addTrigger(ADD_POLICEMEN_FINISHED, this);
+	//game.trigger.addTrigger(ADD_POLICEMEN_FINISHED, this);
 	this.sprite=this.displayEntity.addSprite(this.tankSheet, "run",true).element;
 	this.displayEntity.pos(this.startX, this.startY);
 	this.setAction(new DriveIn());

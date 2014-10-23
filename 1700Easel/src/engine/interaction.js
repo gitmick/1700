@@ -118,6 +118,7 @@ InteractionHandler.prototype.collected = function() {
 
 InteractionHandler.prototype.explore = function(x,y) {
 	//TODO remove duplication
+	
 	selected = false;
 	for (var i=0;i<this.interactionEntities.length;i++) {
 		var iE = this.interactionEntities[i];
@@ -154,7 +155,7 @@ function DeviceInteraction() {
 	
 }
 
-DesktopInteraction.prototype.tick = function() {}
+
 
 function DesktopInteraction() {
 this.init();
@@ -168,25 +169,16 @@ DesktopInteraction.prototype.init = function() {
 	this.clickY=-1;
 	
 	stage.mouseMoveOutside = false;
-    stage.on("stagemousemove", function(evt) {
-    	game.mouseX=evt.stageX;
-    	game.mouseY=evt.stageY;
-    	if (evt.stageY<canvasWidth)
-    		mouseX=evt.stageX;
-    	else
-    		mouseX=300;
-    	interactionHandler.explore(evt.stageX,evt.stageY);
-    });
+  
     var that = this;
     stage.on("click", function(evt) {
     	console.log("mainClick");
     	that.clickX=evt.stageX;
     	that.clickY=evt.stageY;
     	that.mouseDown=false;
-    	console.log(game.level.world.getWorldPixel(evt.stageX,evt.stageY));
     });
     stage.on("pressmove", function(evt) {
-    	console.log("mainMove");
+    	console.log("pressMove");
     	if (that.collectionDelay>5){
 	    	game.mouseX=evt.stageX;
 	    	game.mouseY=evt.stageY;
@@ -206,6 +198,16 @@ DesktopInteraction.prototype.init = function() {
     	}
     	that.mouseDown=false;
     });
+    
+    stage.on("stagemousemove", function(evt) {
+    	game.mouseX=evt.stageX;
+    	game.mouseY=evt.stageY;
+    	if (evt.stageY<canvasWidth)
+    		mouseX=evt.stageX;
+    	else
+    		mouseX=300;
+    	interactionHandler.explore(evt.stageX,evt.stageY);
+    });
 }
 
 DesktopInteraction.prototype.tick = function() {
@@ -216,11 +218,17 @@ DesktopInteraction.prototype.tick = function() {
 		this.collectionDelay=0;
 	game.scrollLevel(mouseX);
 	
-	if (!this.mouseDown)
+	
+	if (!this.mouseDown) {
 		interactionHandler.explore(game.mouseX,game.mouseY);
+	}
 	else if (this.collectionDelay>5) {
 		this.collect();
 	}
+	
+// if (this.mouseDown && this.collectionDelay>5) {
+//		this.collect();
+//	}
 	
 	if (this.clickX>-1) {
 		if (game.selectedLemming) {

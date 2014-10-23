@@ -189,7 +189,7 @@ Bomb.prototype.actionPossible = function(action) {
 function Block() {
 	this.blocked=false;
 	this.possibleActions = new Array();
-	this.possibleActions.push(new Bomb());
+	this.possibleActions.push(Bomb);
 }
 Block.prototype=new Action();
 
@@ -274,7 +274,8 @@ Walk.prototype.check=function() {
 		this.lemming.setAction(new Fall());
 		return false;
 	}
-	if (this.lemming.againstWall()  && ((!this.lemming.canClimb  || this.lemming.x<30 ) || !this.lemming.isPolice())) {
+	if (this.lemming.againstWall()  && 
+			(!this.lemming.canClimb  || this.lemming.x<30 || this.lemming.isPolice())) {
 		this.lemming.direction*=-1;
 		if (this.lemming.direction>0)
 			this.lemming.circle.gotoAndPlay("run");
