@@ -60,6 +60,8 @@ function Action() {
 	this.possibleActions.push( ClimbUp);
 	this.possibleActions.push( Dig);
 	this.possibleActions.push( Block);
+	this.possibleActions.push( Mine);
+	this.possibleActions.push( Bash);
 }
 
 Action.prototype=new Act();
@@ -334,14 +336,14 @@ Dig.prototype.check = function() {
 
 Dig.prototype.act= function() {
 	this.effect("Dig");
-	if (this.counter%2==0) {
-		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,FREE);
+	if (this.counter%3==0) {
+		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,12,FREE);
 		this.lemming.y+=this.lemming.speed;
 	}
 }
 
 function Mine() {
-	this.counter=100;
+	this.counter=150;
 	this.down=false;
 }
 Mine.prototype=new Action();
@@ -359,8 +361,8 @@ Mine.prototype.check = function() {
 
 Mine.prototype.act= function() {
 	this.effect("Mine");
-	if (this.counter%2==0) {
-		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,FREE);
+	if (this.counter%3==0) {
+		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,12,FREE);
 		if (this.down)this.lemming.y+=this.lemming.speed;
 		this.down=!this.down;
 		this.lemming.x+=this.lemming.speed*this.lemming.direction;
