@@ -24,6 +24,7 @@ function World() {
 	this.policeSaved=0;
 	this.dirty=true;
 	
+
 	this.equiq="";
 }
 
@@ -63,6 +64,7 @@ World.prototype.updateText = function() {
 };
 
 World.prototype.init = function(lvl) {
+
 	this.worldBitmapData = new createjs.BitmapData(lvl.mapHtmlImage);
 	this.width=lvl.worldHtmlImage.width;
 	
@@ -96,40 +98,52 @@ World.prototype.getWorldPixel = function(px,py){
 	return col;
 }
 
+
+
+//World.prototype.drawCircle = function(px,py,radius,color){	
+//	r=radius;
+//	x=r;
+//	d=-r;
+//	y=0;
+//	for (xi=x;xi>-x;xi--) {
+//		for (yi=r;yi>-r;yi--) {
+//			if (xi*xi+yi*yi<r*r){
+//				this.worldBitmapData.setPixel(px+xi,py+yi,color);
+//			}
+//		}
+//	}
+//	if (color==FREE) {
+//		this.s.graphics.beginFill(level.backgroundColorName).drawCircle(px,py,radius);
+//		this.s.updateCache("source-overlay");
+//	}
+//	else if (color==VISIBLE_BLOCK) {
+//		this.foreGround.graphics.beginFill("brown").drawCircle(px,py,radius);
+//		this.foreGround.updateCache("source-overlay");
+//	}
+//	
+//}
+
 World.prototype.drawCircle = function(px,py,radius,color){	
-	r=radius;
-	x=r;
-	d=-r;
-	y=0;
-	for (xi=x;xi>-x;xi--) {
-		for (yi=r;yi>-r;yi--) {
-			if (xi*xi+yi*yi<r*r){
-				this.worldBitmapData.setPixel(px+xi,py+yi,color);
-			}
-		}
-	}
-	if (color==FREE) {
-		this.s.graphics.beginFill(level.backgroundColorName).drawCircle(px,py,radius);
-		this.s.updateCache("source-overlay");
-	}
-	else if (color==VISIBLE_BLOCK) {
-		this.foreGround.graphics.beginFill("brown").drawCircle(px,py,radius);
-		this.foreGround.updateCache("source-overlay");
-	}
-	
+	this.drawRect(px-radius/2,py-radius,radius,radius*2,color);
+	this.drawRect(px-radius,py-radius/2,radius*2,radius,color);
+	this.drawRect(px-radius*3/4,py-radius*3/4,radius*3/2,radius*3/2,color);
 }
 
-
 World.prototype.drawRect = function(px,py,w,h,color){	
-	for (xi=0;xi<w;xi++) {
-		for (yi=0;yi<h;yi++) {
+	for (xi=-1;xi<=w;xi++) {
+		for (yi=-1;yi<=h;yi++) {
 			this.worldBitmapData.setPixel(px+xi,py+yi,color);
 		}
 	}
-	if (color==VISIBLE_BLOCK)
+	if (color==VISIBLE_BLOCK) {
 		this.foreGround.graphics.beginFill("brown").drawRect(px,py,w,h);
-	this.foreGround.updateCache("source-overlay");
-	this.s.updateCache("source-overlay");
+		this.foreGround.updateCache("source-overlay");
+	}
+	else if (color==FREE) {
+		this.s.graphics.beginFill(level.backgroundColorName).drawRect(px,py,w,h);
+		this.s.updateCache("source-overlay");
+	}
+	
 }
 
 World.prototype.canFall = function(x,y,width) {

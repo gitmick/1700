@@ -8,7 +8,8 @@ function ColorBag() {
 ColorBag.prototype = new Asset();
 
 ColorBag.prototype.init = function(pic,x,y,dir) {
-	this.displayEntity.addBitmap(pic, true);
+	
+	this.displayEntity.addBitmapClone(pic, true);
 	this.startX=x;
 	this.startY=y;
 	if (dir) 
@@ -24,6 +25,7 @@ ColorBag.prototype.canFall=function(){
 function Colorbags() {
 	this.thrower = new Image();
 	this.bag = new Image();
+	this.bitmap;
 }
 Colorbags.prototype = new Asset();
 Colorbags.prototype.load = function () {
@@ -32,6 +34,7 @@ Colorbags.prototype.load = function () {
 };
 
 Colorbags.prototype.drawInitial = function() {
+	this.bitmap = new createjs.Bitmap(this.bag);
 	this.displayEntity.addBitmap(this.thrower, true);
 	this.displayEntity.pos(this.startX, this.startY);
 	this.setAction(new ThrowAction());
@@ -45,7 +48,7 @@ ThrowAction.prototype = new AssetAction();
 ThrowAction.prototype.act = function () {
 	if (this.counter++%500==0) {
 		colorBag = new ColorBag();
-		colorBag.init(this.asset.bag,this.asset.startX,this.asset.startY,-1);
+		colorBag.init(this.asset.bitmap,this.asset.startX,this.asset.startY,-1);
 		level.assets.push(colorBag);
 	}
 }

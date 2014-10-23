@@ -70,6 +70,15 @@ DisplayEntity.prototype.addBitmap = function(img,scrollable) {
 	return ent;
 }
 
+DisplayEntity.prototype.addBitmapClone = function(b,scrollable) {
+	var ent = scrollable?new DEScrollElement():new DEElement();
+	bitmap = b.clone();
+	stage.addChild(bitmap);
+	ent.element=bitmap;
+	this.deElements.push(ent);
+	return ent;
+}
+
 DisplayEntity.prototype.addSprite = function(spriteSheet,name,scrollable) {
 	var ent = scrollable?new DEScrollElement():new DEElement();
 	sprite = new createjs.Sprite(spriteSheet,name);

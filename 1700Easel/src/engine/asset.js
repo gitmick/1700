@@ -49,7 +49,7 @@ Asset.prototype.update = function(deFrame) {
 		this.initialized=true;
 	}
 	if (this.action) {
-		if (this.action.check) {
+		if (this.action.check()) {
 			this.action.act();
 		}
 	}
@@ -62,3 +62,7 @@ function AssetAction() {
 	this.asset;
 }
 AssetAction.prototype = new Act();
+
+AssetAction.prototype.check = function() {
+	return true;
+}
