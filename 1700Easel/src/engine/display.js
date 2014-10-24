@@ -42,7 +42,10 @@ DisplayEntityHolder.prototype.destroy = function() {
 
 displayEntityHolder = new DisplayEntityHolder();
 
+var deCount=0;
+
 function DisplayEntity() {
+	this.count=deCount++;
 	this.deElements=new Array();
 	this.x=0;
 	this.y=0;

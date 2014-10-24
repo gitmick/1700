@@ -39,6 +39,7 @@
 			tcopter.targetY=265;
 			tcopter.show();
 			
+			
 			var bagthrower = this.initAsset("Colorbags");
 			bagthrower.startX=820;
 			bagthrower.startY=0;

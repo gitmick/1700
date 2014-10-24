@@ -6,7 +6,7 @@ function Asset() {
 	this.dirPath;
 	this.action=false;
 	this.initialized=false;
-	this.displayEntity = new DisplayEntity();
+	this.displayEntity;
 }
 
 Asset.prototype.loadImage = function(file,img) {
@@ -18,6 +18,7 @@ Asset.prototype.loadSound = function(file,name) {
 }
 
 Asset.prototype.show = function () {
+	this.displayEntity = new DisplayEntity();
 	this.showMe=true;
 };
 

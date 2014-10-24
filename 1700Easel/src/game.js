@@ -155,7 +155,7 @@ ExitChecker.prototype.bang = function(name) {
 	if (name === POLICEMAN_SAVED || name === POLICEMAN_KILLED) {
 		console.log(name);
 		if (game.lemmings.length==0 && this.allout) {
-			if (level.minSafeCount<game.winCount) {
+			if (level.minSafeCount<=game.winCount) {
 				this.enoughIn=true;
 				console.log("won");
 				game.machine.setAction(new WinAction());
@@ -184,7 +184,7 @@ WinAction.prototype.act = function() {
 		dE.addBitmap(img,false);
 		startObject = new Button(0,0,400,400);
 		startObject.select = function(x, y) {
-			game.level = new FolderLevel("devLevel");
+			game.level = new FolderLevel(level.nextLevel);
 			game.level.start(game.machine);
 		};
 		this.started=true;
@@ -205,7 +205,7 @@ LostAction.prototype.act = function() {
 	dE.addBitmap(img,false);
 	startObject = new Button(0,0,400,700);
 	startObject.select = function(x, y) {
-		game.level = new FolderLevel("devLevel");
+		game.level = new FolderLevel(level.name);
 		game.level.start(game.machine);
 	};
 	this.started=true;

@@ -11,9 +11,9 @@ function MainLevel () {
 MainLevel.prototype = new StartLevel();
 MainLevel.prototype.init = function () {
 	
-	startObject = new Button(80,270,140,70);
+	startObject = new Button(0,0,1024,386);
 	startObject.select = function(x, y) {
-		game.level = new FolderLevel("devLevel");
+		game.level = new SelectLevel();
 		game.level.start(game.machine);
 	};
 	
@@ -40,6 +40,50 @@ MainLevel.prototype.init = function () {
 		stage.addChild(bitmap);
 	};
 };
+
+
+function SelectLevel () {
+	this.levelScreen = new Image();
+	
+}
+SelectLevel.prototype = new StartLevel();
+SelectLevel.prototype.init = function () {
+	
+	startObject = new Button(50,50,100,100);
+	startObject.select = function(x, y) {
+		game.level = new FolderLevel("buerstelDream");
+		game.level.start(game.machine);
+	};
+	
+	startObject = new Button(200,50,100,100);
+	startObject.select = function(x, y) {
+		game.level = new FolderLevel("devLevel");
+		game.level.start(game.machine);
+	};
+	
+	startObject = new Button(50,200,100,100);
+	startObject.select = function(x, y) {
+		game.level = new FolderLevel("devLevel");
+		game.level.start(game.machine);
+	};
+	
+	startObject = new Button(200,200,100,100);
+	startObject.select = function(x, y) {
+		game.level = new FolderLevel("devLevel");
+		game.level.start(game.machine);
+	};
+	this.loadAction.load = function() {
+		this.level.mainScreen=this.loader.loadImage("img/levelScreen.png", this.level.levelScreen);
+		
+
+		 
+	};
+	this.levelInitialize.fire = function () {
+		var bitmap = new createjs.Bitmap(this.level.levelScreen);
+		stage.addChild(bitmap);
+	};
+};
+
 
 
 function FolderLevel(levelName) {
@@ -113,6 +157,7 @@ FolderLevel.prototype.init = function() {
 		level.load();
 		game.control.init();
 		soundPlayer.play(this.level.name,5);
+		level.name=this.level.name;
 
 	};
 	this.loadAssets.load = function() {
