@@ -4,11 +4,13 @@
 
 //var FREE=16777215;10592129
 var FREE=10592129;
+var INVISIBLE_FREE=16777215;
 var DEADLY=4;
-var POLICE=2;
+
 var EVERBLOCK=3;
-var VISIBLE_BLOCK=0;
-var INVISIBLE_BLOCK=1;
+var POLICE=2;
+var VISIBLE_BLOCK=1;
+var INVISIBLE_BLOCK=0;
 
 function World() {
 	this.worldBitmapData;
@@ -99,30 +101,6 @@ World.prototype.getWorldPixel = function(px,py){
 }
 
 
-
-//World.prototype.drawCircle = function(px,py,radius,color){	
-//	r=radius;
-//	x=r;
-//	d=-r;
-//	y=0;
-//	for (xi=x;xi>-x;xi--) {
-//		for (yi=r;yi>-r;yi--) {
-//			if (xi*xi+yi*yi<r*r){
-//				this.worldBitmapData.setPixel(px+xi,py+yi,color);
-//			}
-//		}
-//	}
-//	if (color==FREE) {
-//		this.s.graphics.beginFill(level.backgroundColorName).drawCircle(px,py,radius);
-//		this.s.updateCache("source-overlay");
-//	}
-//	else if (color==VISIBLE_BLOCK) {
-//		this.foreGround.graphics.beginFill("brown").drawCircle(px,py,radius);
-//		this.foreGround.updateCache("source-overlay");
-//	}
-//	
-//}
-
 World.prototype.drawCircle = function(px,py,radius,color){	
 	this.drawRect(px-radius/2,py-radius,radius,radius*2,color);
 	this.drawRect(px-radius,py-radius/2,radius*2,radius,color);
@@ -150,23 +128,30 @@ World.prototype.canFall = function(x,y,width) {
 	var border = width/4;
 	var openSize=0;
 	var dead=false;
+	var block = INVISIBLE_BLOCK;
 	for(var aw=border;aw<width-border;aw++){
-		if(this.getWorldPixel(x+aw,y)==DEADLY)
+		result = this.getWorldPixel(x+aw,y);
+		if(result==DEADLY)
 			dead=true;
-		if(this.getWorldPixel(x+aw,y)>=FREE){
+		if(result>=FREE){
 			if (++openSize==width/2)
 				return FREE;
+		}
+		else {
+			openSize=0;
+			if (result>block)
+				block = result;
 		}
 	}
 	if (dead)
 		return DEADLY;
-	return EVERBLOCK;
+	return block;
 }
 
 World.prototype.canWalk=function(x,y,height,maxDY){
 	
 	var openSize=0;
-	var block = EVERBLOCK;
+	var block = INVISIBLE_BLOCK;
 	for(var aw=-maxDY;aw<height+maxDY;aw++){
 		var result = this.getWorldPixel(x,y+aw);
 		if(result==DEADLY)
@@ -177,7 +162,7 @@ World.prototype.canWalk=function(x,y,height,maxDY){
 		}
 		else {
 			openSize=0;
-			if (result!=VISIBLE_BLOCK)
+			if (result>block)
 				block = result;
 		}
 	}

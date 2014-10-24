@@ -57,7 +57,7 @@ SelectLevel.prototype.init = function () {
 	
 	startObject = new Button(200,50,100,100);
 	startObject.select = function(x, y) {
-		game.level = new FolderLevel("devLevel");
+		game.level = new FolderLevel("couch");
 		game.level.start(game.machine);
 	};
 	

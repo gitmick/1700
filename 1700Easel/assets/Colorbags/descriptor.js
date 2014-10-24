@@ -15,10 +15,13 @@ ColorBag.prototype.init = function(pic,x,y,dir) {
 	if (dir) 
 		this.direction=dir;
 	this.displayEntity.pos(x, y);
+	this.collisionHeight=8;
+	this.collisionWidth=8;
+	this.collisionType=DEADLY;
 	this.setAction(new BagFallAction());
 }
 ColorBag.prototype.canFall=function(){
-	return game.level.world.canFall(this.displayEntity.x,this.displayEntity.y,8);
+	return game.level.world.canFall(this.displayEntity.x+4,this.displayEntity.y+4,8);
 	
 }
 
@@ -57,19 +60,43 @@ function BagFallAction() {
 	this.lastX=0;
 	this.lastY=0;
 	this.counter=0;
-	this.factor = Math.random()+3;
+	this.factor = Math.random()*2+2.8;
 }
 BagFallAction.prototype = new AssetAction();
 BagFallAction.prototype.act = function() {
 	this.counter++;
-	game.level.world.drawRect(this.asset.displayEntity.x,this.asset.displayEntity.y,8,8,FREE);
-	this.asset.displayEntity.pos(this.asset.startX+(this.counter*this.asset.direction*this.factor),this.asset.startY+(this.counter*this.counter/20));
-	if (this.asset.canFall()!=FREE && this.asset.canFall()!=DEADLY) {
-		this.asset.setAction(false);
-		game.level.world.drawRect(this.asset.displayEntity.x,this.asset.displayEntity.y,8,8,INVISIBLE_BLOCK);
+	
+	speedX=this.factor;
+	speedY=this.counter/5;
+	change=false;
+	if (speedY>speedX) {
+		change=true;
+		x=speedX;
+		speedX=speedY;
+		speedY=x;
 	}
-	else
-		game.level.world.drawRect(this.asset.displayEntity.x,this.asset.displayEntity.y,8,8,DEADLY);
+	divider = speedY/speedX;
+	again=true;
+	this.asset.clearCollision();
+	for (var i=0;i<speedX;i++) {
+		if (again) {
+			if (change)
+				this.asset.pos(this.asset.displayEntity.x+(divider*this.asset.direction),this.asset.displayEntity.y+1);
+			else
+				this.asset.pos(this.asset.displayEntity.x+(1*this.asset.direction),this.asset.displayEntity.y+divider);
+			var collisionValue = this.asset.canFall(); 
+			if (collisionValue!=FREE && collisionValue!=DEADLY) {
+				if (collisionValue==EVERBLOCK)
+					console.log("Tank");
+				this.asset.setAction(false);
+				this.asset.collisionType=INVISIBLE_BLOCK;
+				again=false;
+			}
+			
+				
+		}
+	}
+	this.asset.finish();
 }
 
 

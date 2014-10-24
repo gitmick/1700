@@ -7,6 +7,43 @@ function Asset() {
 	this.action=false;
 	this.initialized=false;
 	this.displayEntity;
+	
+	this.collisionOffsetX=0;
+	this.collisionOffsetY=0;
+	this.collisionWidth=0;
+	this.collisionHeight=0;
+	this.collisionType=EVERBLOCK;
+	this.collisionSet=false;
+	this.collisionLastX=0;
+	this.collisionLastY=0;
+}
+
+Asset.prototype.hasCollision = function(x,y) {
+	
+}
+
+Asset.prototype.setCollision = function(x,y,type) {
+	game.level.world.drawRect(x+this.collisionOffsetX,
+			y+this.collisionOffsetY,
+			this.collisionWidth,this.collisionHeight,type);
+	this.collisionSet=true;
+}
+
+Asset.prototype.clearCollision = function() {
+	if (this.collisionHeight>0 && this.collisionSet) 
+		this.setCollision(this.collisionLastX,this.collisionLastY,INVISIBLE_FREE);
+}
+
+Asset.prototype.pos = function(x,y) {
+	this.displayEntity.pos(x,y);
+}
+
+Asset.prototype.finish = function() {
+	if (this.collisionHeight>0) {
+		this.setCollision(this.displayEntity.x,this.displayEntity.y,this.collisionType);
+		this.collisionLastX=this.displayEntity.x;
+		this.collisionLastY=this.displayEntity.y;
+	}
 }
 
 Asset.prototype.loadImage = function(file,img) {
