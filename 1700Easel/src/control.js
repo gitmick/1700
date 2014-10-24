@@ -69,23 +69,36 @@ Control.prototype.addControl = function(x,y,action_,picName) {
 }
 
 Control.prototype.addGlobalControl = function(x,y,action_,picName) {
-	this.showPic(x,y,picName);
-	
-	control = new createjs.Shape();
-	control.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x,y,40,40);
-	
-	
-	var that = this;
-	
-	control.action=action_;
+//	this.showPic(x,y,picName);
+//	
+//	control = new createjs.Shape();
+//	control.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x,y,40,40);
+//	
+//	
+//	var that = this;
+//	
+//	control.action=action_;
+//
+//	stage.addChild(control);
+//	control.addEventListener("click",function(evt) {
+//		selAction = evt.currentTarget.action;
+//		a = new selAction;
+//		a.execute();
+//	});
 
-	stage.addChild(control);
-	control.addEventListener("click",function(evt) {
-		selAction = evt.currentTarget.action;
-		a = new selAction;
-		a.execute();
-	});
-
+	cE = new GlobalControlElement();
+	this.showEntityPic(x,y,picName,cE.displayEntity);
+	cE.scaleBitmap = this.showEntityPic(x,y,picName,cE.displayEntity);
+	cE.selectionShape = cE.displayEntity.addShape(false).element;
+	
+	cE.selectionShape.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x,y,36,36);
+	cE.action=action_;
+	
+	cE.displayEntity.addInteractionEntity(36, 36, cE, false);
+	cE.displayEntity.pos(x, y);
+	
+	this.controlAction[action_]=cE;
+	
 }
 
 Control.prototype.actionAvailable = function() {
@@ -127,6 +140,9 @@ ControlElement.prototype.select = function(x,y){
 		game.control.selectedAction=this.action;
 		this.selectionShape.graphics.beginFill("rgba(255,0,0,0.5)").drawRect(0,0,36,36);
 	}
+	else {
+		this.selectionShape.graphics.beginFill("rgba(100,100,100,0.5)").drawRect(0,0,36,36);
+	}
 };
 ControlElement.prototype.explore = function(x,y){
 	this.scaleBitmap.setTransform(this.displayEntity.x-18,this.displayEntity.y-72,2,2);
@@ -135,6 +151,25 @@ ControlElement.prototype.left = function(x,y){
 	this.scaleBitmap.setTransform(this.displayEntity.x,this.displayEntity.y,1,1);
 };
 ControlElement.prototype.collect = function(x,y){};
+
+function GlobalControlElement() {
+	this.displayEntity = new DisplayEntity();
+	this.text;
+	this.selectionShape;
+	this.scaleBitmap;
+	this.action;
+}
+
+GlobalControlElement.prototype.select = function(x,y){
+	a = new this.action;
+	a.execute();
+};
+GlobalControlElement.prototype.explore = function(x,y){
+	this.scaleBitmap.setTransform(this.displayEntity.x-18,this.displayEntity.y-72,2,2);
+};
+GlobalControlElement.prototype.left = function(x,y){
+	this.scaleBitmap.setTransform(this.displayEntity.x,this.displayEntity.y,1,1);
+};
 
 
 

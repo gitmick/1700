@@ -18,8 +18,47 @@ function Asset() {
 	this.collisionLastY=0;
 }
 
-Asset.prototype.hasCollision = function(x,y) {
-	
+Asset.prototype.merge = function(asset) {
+	for (var i=0;i<asset.displayEntity.deElements.length;i++) {
+		de = asset.displayEntity.deElements[i];
+		de.xOff = asset.displayEntity.x-this.displayEntity.x;
+		de.yOff = asset.displayEntity.y-this.displayEntity.y;
+		de.pos = function(x,y,deFrame) {
+			if (deFrame)
+				this.element.x=x-deFrame.currentScroll+this.xOff;
+			else
+				this.element.x=x+this.xOff;
+			this.element.y=y+this.yOff;
+		};
+		this.displayEntity.deElements.push(de);
+	}
+	asset.displayEntity.deElements=new Array();
+}
+
+
+
+
+Asset.prototype.hasCollision = function(ax,ay) {
+	if (this.collisionHeight==0)
+		return false;
+	x=this.displayEntity.x+this.collisionOffsetX;
+	rightX=x+this.collisionWidth;
+	y=this.displayEntity.y+this.collisionOffsetY;
+	rightY=y+this.collisionHeight;
+	return (ax>=x && ax<=rightX && ay>=y && ay<=rightY);
+}
+
+Asset.prototype.findCollidingItem=function() {
+	if (this.collisionHeight==0)
+		return false;
+	x=this.displayEntity.x;
+	y=this.displayEntity.y+this.collisionHeight;
+	for (var i=0; i<level.assets.length;i++) {
+		var asset = level.assets[i];
+		if (asset.hasCollision(x,y))
+			return asset;
+	}
+	return false;
 }
 
 Asset.prototype.setCollision = function(x,y,type) {

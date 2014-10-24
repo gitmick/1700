@@ -154,7 +154,7 @@ World.prototype.canWalk=function(x,y,height,maxDY){
 	var block = INVISIBLE_BLOCK;
 	for(var aw=-maxDY;aw<height+maxDY;aw++){
 		var result = this.getWorldPixel(x,y+aw);
-		if(result==DEADLY)
+		if(aw>0 && result==DEADLY && aw < height)
 			return DEADLY;
 		else if(result>=FREE){
 			if (++openSize==height)

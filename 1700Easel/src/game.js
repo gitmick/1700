@@ -3,6 +3,8 @@ var ADD_POLICEMEN_FINISHED = "addPolicemenFinished";
 var POLICEMAN_SAVED="policemanSaved";
 var POLICEMAN_KILLED="policemanKilled";
 var NO_MONEY_LEFT="noMoneyLeft";
+var COLOR_HIT="colorHit";
+var STOP_COLOR="stopColor";
 
 var timeKeeper = new TimeKeeper();
 

@@ -62,6 +62,7 @@ function Action() {
 	this.possibleActions.push( Block);
 	this.possibleActions.push( Mine);
 	this.possibleActions.push( Bash);
+	this.possibleActions.push( Build);
 }
 
 Action.prototype=new Act();
@@ -319,7 +320,7 @@ ClimbUp.prototype.act = function() {
 }
 
 function Dig() {
-	this.counter=100;
+	this.counter=150;
 }
 Dig.prototype=new Action();
 
@@ -343,7 +344,7 @@ Dig.prototype.act= function() {
 }
 
 function Mine() {
-	this.counter=150;
+	this.counter=300;
 	this.down=false;
 }
 Mine.prototype=new Action();

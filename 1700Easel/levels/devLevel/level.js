@@ -3,7 +3,7 @@
 	level.load = function() {
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";
-		level.actionCount[Float]=10;
+		level.actionCount[Float]=0;
 		level.actionCount[Climb]=20;
 		level.actionCount[Bomb]=10;
 		level.actionCount[Block]=10;
@@ -12,13 +12,13 @@
 		level.actionCount[Mine]=10;
 		level.actionCount[Dig]=10;
 		level.actionCount[JumpAll]=1;
-		level.maxPoliceMen=5;
+		level.maxPoliceMen=30;
 		level.policeDelay=50;
 		level.dropX=100;
-		level.dropY=280;
+		level.dropY=230;
 		level.goalX=814;
 		level.goalY=310;
-		level.minSafeCount=5;
+		level.minSafeCount=20;
 		level.soundFile="track.mp3";
 		level.registerAsset("Copter");
 		level.registerAsset("Tank");
@@ -27,9 +27,9 @@
 		level.initAssets = function() {
 			var copter = this.initAsset("Copter");
 			copter.startX=-200;
-			copter.startY=0;
+			copter.startY=150;
 			copter.targetX=0;
-			copter.targetY=0;
+			copter.targetY=150;
 			copter.show();
 			
 			var tcopter = this.initAsset("Tank");
