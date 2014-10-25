@@ -197,10 +197,12 @@ function Block() {
 Block.prototype=new Action();
 
 Block.prototype.check=function() {
+	
 	return true;
 }
 
 Block.prototype.act=function() {
+	this.lemming.isDeadly();
 	this.effect("Block",1,1000);
 	if (!this.blocked) {
 		game.drawRect(this.lemming.x+this.lemming.width/4,this.lemming.y+this.lemming.height/4,15,30,POLICE);
@@ -251,6 +253,14 @@ function Bash() {
 Bash.prototype=new Action();
 
 Bash.prototype.check=function() {
+	
+	if (!this.lemming.canBash()) {
+		this.lemming.direction*-1;
+		this.lemming.setAction(new Walk());
+		this.effectFull("hoppala");
+		return false;
+	}
+	
 	if (!this.lemming.hasFloor()) {
 		this.lemming.setAction(new Fall());
 		return false;
@@ -325,6 +335,11 @@ function Dig() {
 Dig.prototype=new Action();
 
 Dig.prototype.check = function() {
+	if (!this.lemming.canDig()) {
+		this.lemming.setAction(new Walk());
+		this.effectFull("hoppala");
+		return false;
+	}
 	if (!this.lemming.hasFloor()) {
 		this.lemming.setAction(new Fall());
 		return false;
@@ -350,6 +365,12 @@ function Mine() {
 Mine.prototype=new Action();
 
 Mine.prototype.check = function() {
+	if (!this.lemming.canBash()) {
+		this.lemming.direction*-1;
+		this.lemming.setAction(new Walk());
+		this.effectFull("hoppala");
+		return false;
+	}
 	if (!this.lemming.hasFloor()) {
 		this.lemming.setAction(new Fall());
 		return false;

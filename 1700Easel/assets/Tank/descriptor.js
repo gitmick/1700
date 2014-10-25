@@ -35,7 +35,6 @@ Tank.prototype.drawInitial = function() {
 
 
 Tank.prototype.bang = function (name) {
-	console.log(this.hitCount);
 	if (this.hitCount++>2) {
 		game.trigger.bang(STOP_COLOR);
 		var s = this.startX;

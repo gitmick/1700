@@ -37,13 +37,14 @@ Colorbags.prototype.load = function () {
 };
 
 Colorbags.prototype.drawInitial = function() {
-	game.trigger.addTrigger(COLOR_HIT, this);
+	game.trigger.addTrigger(STOP_COLOR, this);
 	this.bitmap = new createjs.Bitmap(this.bag);
 	this.displayEntity.addBitmap(this.thrower, true);
 	this.displayEntity.pos(this.startX, this.startY);
 	this.setAction(new ThrowAction());
 };
 Colorbags.prototype.bang=function(name) {
+	console.log("stop me");
 	this.setAction(false);
 }
 
@@ -94,7 +95,6 @@ BagFallAction.prototype.act = function() {
 				if (collisionValue==EVERBLOCK) {
 					tank = this.asset.findCollidingItem();
 					if (tank && tank.bang) {
-						console.log("Tank");
 						tank.merge(this.asset);
 						tank.bang(COLOR_HIT);
 						this.asset.collisionType=INVISIBLE_FREE;

@@ -28,6 +28,9 @@ function Lemming() {
 	
 	
 	this.displayEntity = new DisplayEntity();
+	
+	this.floor=-1;
+	this.wall=-1;
 }
 
 Lemming.prototype.checkAction=function(a) {
@@ -160,50 +163,70 @@ Lemming.prototype.draw=function(deFrame) {
 
 
 Lemming.prototype.move=function(){
+	this.floor=-1;
+	this.wall=-1;
 	if (this.action.check()) 
 		this.action.act();
 }
 
+Lemming.prototype.getFloor=function() {
+	if (this.floor==-1)
+		this.floor = game.level.world.canFall(this.x,this.y+this.height+1,this.width);
+	return this.floor;
+}
 
+Lemming.prototype.getWall=function() {
+	if (this.wall==-1)
+		this.wall = game.level.world.canWalk(this.frontFootX(),this.y,this.height,this.maxDY);
+	return this.wall;
+}
 
 Lemming.prototype.hasFloor=function(){
-	var result = game.level.world.canFall(this.x,this.y+this.height+1,this.width);
+	var result = this.getFloor();
 	if (result==DEADLY)
 		this.kill();
 	return (result!=FREE);
 }
 
 Lemming.prototype.againstWall=function(){
-	var result = game.level.world.canWalk(this.frontFootX(),this.y,this.height,this.maxDY);
+	var result = this.getWall();
 	if (result==DEADLY)
 		this.kill();
 	return (result!=FREE);
 }
 
+Lemming.prototype.isDeadly=function() {
+	var result = this.getWall();
+	if (result==DEADLY)
+		this.kill();
+}
+
+Lemming.prototype.canBash=function(){
+	var result = this.getWall();
+	if (result==DEADLY)
+		this.kill();
+	return (result!=EVERBLOCK && result!=POLICE);
+}
+
+Lemming.prototype.canDig=function(){
+	var result = this.getFloor();
+	if (result==DEADLY)
+		this.kill();
+	return (result!=EVERBLOCK && result!=POLICE);
+}
+
 Lemming.prototype.isPolice=function(){
-	var result = game.level.world.canWalk(this.frontFootX(),this.y,this.height,this.maxDY);
+	var result = this.getWall();
 	return (result==POLICE);
 }
+
+
 
 Lemming.prototype.getDY=function(){
 	
 	return game.level.world.getDY(this.frontFootX(),this.y,this.height,this.maxDY,this.direction);
 	
-//var openSize=0;
-//	
-//	for(var aw=-this.maxDY;aw<this.height+this.maxDY;aw++){
-//		if(game.getWorldPixel(this.frontFootX()-(this.direction*5),this.y+aw)==FREE){
-//			openSize++;
-//		}
-//		else {
-//			if (openSize>=this.height) {
-//				dy=this.height-aw;
-//				return dy;
-//			} 
-//			openSize=0;
-//		}
-//	}
-//	return 0;
+
 }
 
 
