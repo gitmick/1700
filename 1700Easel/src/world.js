@@ -26,6 +26,7 @@ function World() {
 	this.policeSaved=0;
 	this.dirty=true;
 	
+	this.foreGroundMask;
 
 	this.equiq="";
 }
@@ -72,11 +73,20 @@ World.prototype.init = function(lvl) {
 	
 	this.displayEntity.addBitmap(lvl.worldHtmlImage,true);
 	this.s=this.displayEntity.addShape(true).element;
+
 	this.s.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
 	this.foreGround=this.displayEntity.addShape(true).element;
+	
 	this.foreGround.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	
+	bitmap=this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
+	this.foreGroundMask = new createjs.Shape();
+	this.foreGroundMask.graphics.beginFill("black").drawRect(0,0,1,1);
+	this.foreGroundMask.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
+	bitmap.element.mask=this.foreGroundMask;
+	
+	//stage.addChild(this.foreGroundMask);
 	
 	this.gameText = new createjs.Text("Gugug", "20px VT323", "#ff7700"); 
 	this.gameText.x=20;
@@ -120,6 +130,10 @@ World.prototype.drawRect = function(px,py,w,h,color){
 	else if (color==FREE) {
 		this.s.graphics.beginFill(level.backgroundColorName).drawRect(px,py,w,h);
 		this.s.updateCache("source-overlay");
+//		this.foreGround.mask=this.s;
+//		this.foreGround.updateCache("source-overlay");
+		this.foreGroundMask.graphics.beginFill("black").drawRect(px,py,w,h);
+		this.foreGroundMask.updateCache("source-overlay");
 	}
 	
 }

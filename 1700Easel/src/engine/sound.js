@@ -5,6 +5,8 @@
 function SoundPlayer() {
 	this.currentInstances = {};
 	this.waiting = {};
+	this.stopped = new Array();
+	this.waitIndex = new Array();
 	this.counter=0;
 }
 SoundPlayer.prototype.play = function(name,loopN,loopPause) {
@@ -32,6 +34,8 @@ SoundPlayer.prototype.play = function(name,loopN,loopPause) {
 				that.waiting[when]=instanceArray;
 			}
 			instanceArray.push(effectInstance);
+			if (!isIn(that.waitIndex,effectInstance))
+				that.waitIndex.push(effectInstance);
 		});
 	}
 	else {
@@ -43,6 +47,11 @@ SoundPlayer.prototype.play = function(name,loopN,loopPause) {
 	return effectInstance;
 }
 
+SoundPlayer.prototype.stop = function(instance) {
+	instance.stop();
+	if (isIn(this.waitIndex,instance))
+		this.stopped.push(instance);
+}
 
 SoundPlayer.prototype.tick = function() {
 	this.counter++;
@@ -50,7 +59,8 @@ SoundPlayer.prototype.tick = function() {
 	if (instanceArray) {
 		for (var i=0;i<instanceArray.length;i++) {
 			var instance = instanceArray[i];
-			instance.play();
+			if (!isIn(this.stopped,instance))
+				instance.play();
 		}
 	}
 }

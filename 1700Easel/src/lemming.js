@@ -62,6 +62,8 @@ Lemming.prototype.setAction=function(a) {
 }
 
 Lemming.prototype.kill=function() {
+	if (this.action)
+		this.action.stop();
 	soundPlayer.play("Kill");
 	this.dead=true;
 	arrayWithout(game.lemmings,this);
@@ -71,6 +73,8 @@ Lemming.prototype.kill=function() {
 }
 
 Lemming.prototype.won=function() {
+	if (this.action)
+		this.action.stop();
 	soundPlayer.play("Juhu");
 	this.win=true;
 	game.winCount++;

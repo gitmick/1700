@@ -43,7 +43,7 @@ Act.prototype.actionPossible = function(action) {
 };
 Act.prototype.stop = function() {
 	if (this.effectInstance) {
-		this.effectInstance.stop();
+		soundPlayer.stop(this.effectInstance);
 	}
 }
 
@@ -177,7 +177,7 @@ Bomb.prototype.act=function() {
 		this.lemming.kill();
 	}
 	if (this.counter==20) {
-		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,20,FREE);
+		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2+5,20,FREE);
 		this.lemming.circle.gotoAndPlay("exp");
 		this.effectStarted=false;
 		this.effect("Exp");
@@ -241,7 +241,7 @@ Build.prototype.act=function() {
 		if (this.lemming.direction<0) {
 			startDraw-=8;
 		}
-		game.drawRect(startDraw,this.lemming.y+this.lemming.height-5,16,5,BLOCK);
+		game.drawRect(startDraw,this.lemming.y+this.lemming.height-5,16,5,VISIBLE_BLOCK);
 	}
 	if (this.counter%3==0)
 		this.walk.act();
