@@ -181,6 +181,12 @@ function Bomb() {
 Bomb.prototype=new Action();
 
 Bomb.prototype.check=function() {
+	if (this.counter>20) {
+		p = (this.counter-20)/90;
+		this.lemming.setProgress(p);
+	}
+	else
+		this.lemming.clearProgress();
 	return true;
 }
 
@@ -196,7 +202,7 @@ Bomb.prototype.act=function() {
 		this.effectStarted=false;
 		this.effect("Exp");
 	}
-	if (this.counter>20)
+	if (this.counter>20) 
 		this.lemming.lastAction.act();
 }
 Bomb.prototype.actionPossible = function(action) {
@@ -227,8 +233,8 @@ Block.prototype.act=function() {
 
 function Build() {
 	this.walk = new Walk();
-
-	this.counter=361;
+	this.counterStart=361;
+	this.counter=this.counterStart;
 }
 Build.prototype=new Action();
 
@@ -237,6 +243,8 @@ Build.prototype.check=function() {
 		this.lemming.setAction(new Walk());
 		return false;
 	}
+	this.lemming.setProgress(this.counter/this.counterStart);
+	
 	return true;
 }
 
@@ -262,13 +270,16 @@ Build.prototype.act=function() {
 }
 
 function Bash() {
-	this.counter=100;
+	this.counterStart=250;
+	this.counter=this.counterStart;
+	this.freeCount=27;
 }
 Bash.prototype=new Action();
 
 Bash.prototype.check=function() {
 	
-	if (!this.lemming.canBash()) {
+	bashResult = this.lemming.canBash();
+	if (bashResult==POLICE || bashResult==EVERBLOCK) {
 		this.lemming.direction*-1;
 		this.lemming.setAction(new Walk());
 		this.effectFull("hoppala");
@@ -281,7 +292,17 @@ Bash.prototype.check=function() {
 	}
 	if (this.counter--==0) {
 		this.lemming.setAction(new Walk());
+		return false;
 	}
+	if ((this.counterStart-this.counter>10)&& bashResult==FREE) {
+		if (this.freeCount--==0) {
+			this.lemming.setAction(new Walk());
+			return false;
+		}
+	}
+	else
+		this.freeCount=27;
+	this.lemming.setProgress(this.counter/this.counterStart);
 	return true;
 }
 
@@ -354,7 +375,8 @@ ClimbUp.prototype.act = function() {
 }
 
 function Dig() {
-	this.counter=150;
+	this.counterStart=150;
+	this.counter=this.counterStart;
 }
 Dig.prototype=new Action();
 
@@ -371,6 +393,7 @@ Dig.prototype.check = function() {
 	if (this.counter--==0) {
 		this.lemming.setAction(new Walk());
 	}
+	this.lemming.setProgress(this.counter/this.counterStart);
 	return true;
 }
 
@@ -383,7 +406,8 @@ Dig.prototype.act= function() {
 }
 
 function Mine() {
-	this.counter=300;
+	this.counterStart=300;
+	this.counter=this.counterStart;
 	this.down=false;
 }
 Mine.prototype=new Action();
@@ -401,7 +425,9 @@ Mine.prototype.check = function() {
 	}
 	if (this.counter--==0) {
 		this.lemming.setAction(new Walk());
+		return false;
 	}
+	this.lemming.setProgress(this.counter/this.counterStart);
 	return true;
 }
 

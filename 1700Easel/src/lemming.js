@@ -7,6 +7,7 @@ function Lemming() {
 	this.y=0;
 	this.circle;
 	this.selection;
+	this.progress;
 	this.direction=1;
 	this.height=32;
 	this.width=32;	
@@ -58,7 +59,17 @@ Lemming.prototype.setAction=function(a) {
 	this.action=a;
 	this.action.lemming=this;
 	this.move();
+	this.clearProgress();
 	return true;
+}
+
+Lemming.prototype.setProgress=function(p) {
+	this.clearProgress();
+	this.progress.graphics.beginFill("green").drawRect(5,5,22*p,5);
+}
+
+Lemming.prototype.clearProgress=function() {
+	this.progress.graphics.clear();
 }
 
 Lemming.prototype.kill=function() {
@@ -88,6 +99,7 @@ Lemming.prototype.create=function() {
 	this.circle = this.displayEntity.addSprite(lemmingsSheet, "run",true).element;
 	this.circle.lemming=this;
 	this.selection = this.displayEntity.addShape().element;
+	this.progress = this.displayEntity.addShape().element;
 	this.mouseListener = this.displayEntity.addInteractionEntity(40, 40,this, true).element;
 	this.height=this.circle.getBounds().height*this.scale;
 	this.width=this.circle.getBounds().width*this.scale;
@@ -216,11 +228,10 @@ Lemming.prototype.isDeadly=function() {
 }
 
 Lemming.prototype.canBash=function(){
-	var result = game.level.world.canWalk(this.frontFootX()+(5*this.direction),this.y,this.height,this.maxDY/2);
-	console.log(result);
+	var result = game.level.world.canWalk(this.frontFootX()+(8*this.direction),this.y,this.height,this.maxDY/2);
 	if (result==DEADLY)
 		this.kill();
-	return (result!=EVERBLOCK && result!=POLICE);
+	return result;
 }
 
 Lemming.prototype.canDig=function(){
