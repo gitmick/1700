@@ -63,6 +63,7 @@ function Action() {
 	this.possibleActions.push( Mine);
 	this.possibleActions.push( Bash);
 	this.possibleActions.push( Build);
+	this.possibleActions.push( Jump);
 }
 
 Action.prototype=new Act();
@@ -414,12 +415,14 @@ Jump.prototype.check=function() {
 }
 
 Jump.prototype.act = function() {
+	console.log("Jump "+this.jumpCount);
 	this.jumpCount--;
 	if (!this.lemming.againstWall()) {
 		if (this.jumpCount>1)
 			this.lemming.y-=this.lemming.getDY();	
 		else {
 			this.lemming.y-=((this.jumpCount+10)/2);
+			this.lemming.floor=-1;
 			if (this.lemming.hasFloor() || this.jumpCount<-17)
 				this.lemming.setAction(new Walk());
 		}

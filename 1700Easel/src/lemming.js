@@ -185,6 +185,8 @@ Lemming.prototype.getWall=function() {
 	return this.wall;
 }
 
+
+
 Lemming.prototype.hasFloor=function(){
 	var result = this.getFloor();
 	if (result==DEADLY)
