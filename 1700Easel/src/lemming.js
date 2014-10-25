@@ -202,7 +202,8 @@ Lemming.prototype.isDeadly=function() {
 }
 
 Lemming.prototype.canBash=function(){
-	var result = this.getWall();
+	var result = game.level.world.canWalk(this.frontFootX()+(5*this.direction),this.y,this.height,this.maxDY/2);
+	console.log(result);
 	if (result==DEADLY)
 		this.kill();
 	return (result!=EVERBLOCK && result!=POLICE);
