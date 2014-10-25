@@ -97,6 +97,9 @@ Lemming.prototype.create=function() {
 Lemming.prototype.frontFootX = function() {
 		return this.x+(this.width/2)+((this.width/8)*(this.direction));
 }
+Lemming.prototype.backFootX = function() {
+	return this.x+(this.width/2)-((this.width/8)*(this.direction));
+}
 Lemming.prototype.frontFootY = function() {
 	return this.y+this.height;
 }
@@ -185,7 +188,12 @@ Lemming.prototype.getWall=function() {
 	return this.wall;
 }
 
-
+Lemming.prototype.hasRoof=function(){
+	var result = game.level.world.canFall(this.backFootX(),this.y-1,this.width/3);
+	if (result==DEADLY)
+		this.kill();
+	return (result!=FREE);
+}
 
 Lemming.prototype.hasFloor=function(){
 	var result = this.getFloor();

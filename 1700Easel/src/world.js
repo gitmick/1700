@@ -4,7 +4,7 @@
 
 //var FREE=16777215;10592129
 var FREE=10592129;
-var INVISIBLE_FREE=16777215;
+var INVISIBLE_FREE=10592131;
 var DEADLY=4;
 
 var EVERBLOCK=3;
@@ -139,6 +139,9 @@ World.prototype.drawRect = function(px,py,w,h,color){
 }
 
 World.prototype.canFall = function(x,y,width) {
+	x=parseInt(x);
+	y=parseInt(y);
+	width=parseInt(width);
 	var border = width/4;
 	var openSize=0;
 	var dead=false;

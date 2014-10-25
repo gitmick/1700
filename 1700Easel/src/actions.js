@@ -17,6 +17,18 @@ Act.prototype.act = function() {
 	
 };
 
+Act.prototype.effect3 = function(name1,name2,name3,probabl) {
+	if (Math.random()>probabl) {
+		ran = Math.random();
+		if (ran<0.34)
+			this.effect(name1);
+		else if (ran<0.68)
+			this.effect(name2);
+		else
+			this.effect(name3);
+	}
+}
+
 Act.prototype.effect = function(name,loopN,loopPause) {
 	if (!this.effectStarted) {
 		//this.effectInstance=createjs.Sound.play(name);
@@ -44,6 +56,7 @@ Act.prototype.actionPossible = function(action) {
 Act.prototype.stop = function() {
 	if (this.effectInstance) {
 		soundPlayer.stop(this.effectInstance);
+		this.effectStarted=false;
 	}
 }
 
@@ -290,6 +303,9 @@ Walk.prototype.check=function() {
 	}
 	if (this.lemming.againstWall()  && 
 			(!this.lemming.canClimb  || this.lemming.x<30 || this.lemming.isPolice())) {
+		if (this.lemming.isPolice()) {
+			this.effect3("Ausweis","Momenterl","Ha",0.3);
+		}
 		this.lemming.direction*=-1;
 		if (this.lemming.direction>0)
 			this.lemming.circle.gotoAndPlay("run");
@@ -317,7 +333,14 @@ function ClimbUp() {
 ClimbUp.prototype = new Action();
 
 ClimbUp.prototype.check = function () {
+	if (this.lemming.hasRoof()) {
+		if (this.lemming.dead)return false;
+		this.lemming.direction*=-1;
+		this.lemming.setAction(new Fall());
+		return false;
+	}
 	if (!this.lemming.againstWall()) {
+		if (this.lemming.dead)return false;
 		this.lemming.setAction(new Walk());
 		this.lemming.x+=3*this.lemming.direction;
 		return false;

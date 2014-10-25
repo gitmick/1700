@@ -34,7 +34,9 @@ MainLevel.prototype.init = function () {
 		this.loader.loadSound("fx/climb_jodel2.mp3","ClimbUp");
 		this.loader.loadSound("fx/gen_uhoh.mp3","Juhu");
 		this.loader.loadSound("fx/block_hoppala.mp3","hoppala");
-		 
+		this.loader.loadSound("fx/block_ausweis.mp3","Ausweis");
+		this.loader.loadSound("fx/block_momenterl.mp3","Momenterl");
+		this.loader.loadSound("fx/block_ha.mp3","Ha");
 	};
 	this.levelInitialize.fire = function () {
 		var bitmap = new createjs.Bitmap(this.level.mainScreen);
