@@ -3,8 +3,8 @@
 	level.load = function() {
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";
-		level.actionCount[Float]=10;
-		level.actionCount[Climb]=10;
+		level.actionCount[Float]=1;
+		level.actionCount[Climb]=0;
 		level.actionCount[Bomb]=10;
 		level.actionCount[Block]=10;
 		level.actionCount[Build]=10;

@@ -52,6 +52,7 @@ Control.prototype.addControl = function(x,y,action_,picName) {
 	cE = new ControlElement();
 	this.showEntityPic(x,y,picName,cE.displayEntity);
 	cE.scaleBitmap = this.showEntityPic(x,y,picName,cE.displayEntity);
+	cE.scaleBitmap.alpha=0.5;
 	cE.selectionShape = cE.displayEntity.addShape(false).element;
 	
 	cE.selectionShape.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x,y,36,36);
@@ -66,34 +67,21 @@ Control.prototype.addControl = function(x,y,action_,picName) {
 	stage.addChild(cE.text);
 	
 	this.controlAction[action_]=cE;
+	
+	if(level.actionCount[action_]==0)
+		cE.select();
 }
 
 Control.prototype.addGlobalControl = function(x,y,action_,picName) {
-//	this.showPic(x,y,picName);
-//	
-//	control = new createjs.Shape();
-//	control.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x,y,40,40);
-//	
-//	
-//	var that = this;
-//	
-//	control.action=action_;
-//
-//	stage.addChild(control);
-//	control.addEventListener("click",function(evt) {
-//		selAction = evt.currentTarget.action;
-//		a = new selAction;
-//		a.execute();
-//	});
 
 	cE = new GlobalControlElement();
 	this.showEntityPic(x,y,picName,cE.displayEntity);
 	cE.scaleBitmap = this.showEntityPic(x,y,picName,cE.displayEntity);
+	cE.scaleBitmap.alpha=0.5;
 	cE.selectionShape = cE.displayEntity.addShape(false).element;
 	
 	cE.selectionShape.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x,y,36,36);
 	cE.action=action_;
-	
 	cE.displayEntity.addInteractionEntity(36, 36, cE, false);
 	cE.displayEntity.pos(x, y);
 	
@@ -117,6 +105,8 @@ Control.prototype.useAction = function() {
 	level.actionCount[this.selectedAction]=--count;
 	ce = this.controlAction[this.selectedAction]; 
 	ce.text.text=""+count;	
+	if (count==0)
+		ce.select();
 	return true;
 }
 
@@ -141,6 +131,7 @@ ControlElement.prototype.select = function(x,y){
 		this.selectionShape.graphics.beginFill("rgba(255,0,0,0.5)").drawRect(0,0,36,36);
 	}
 	else {
+		this.selectionShape.graphics.clear();
 		this.selectionShape.graphics.beginFill("rgba(100,100,100,0.5)").drawRect(0,0,36,36);
 	}
 };
