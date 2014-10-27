@@ -202,11 +202,13 @@ DesktopInteraction.prototype.init = function() {
     stage.on("stagemousemove", function(evt) {
     	game.mouseX=evt.stageX;
     	game.mouseY=evt.stageY;
+    	
     	if (evt.stageY<canvasWidth)
     		mouseX=evt.stageX;
     	else
     		mouseX=300;
-    	interactionHandler.explore(evt.stageX,evt.stageY);
+    	if (!mouseDown)
+    		interactionHandler.explore(evt.stageX,evt.stageY);
     });
 }
 

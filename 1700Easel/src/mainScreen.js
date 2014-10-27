@@ -72,7 +72,7 @@ SelectLevel.prototype.init = function () {
 	
 	startObject = new Button(200,200,100,100);
 	startObject.select = function(x, y) {
-		game.level = new FolderLevel("devLevel");
+		game.level = new FolderLevel("donkey1");
 		game.level.start(game.machine);
 	};
 	this.loadAction.load = function() {
