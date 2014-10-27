@@ -235,6 +235,13 @@ Lemming.prototype.canBash=function(){
 	return result;
 }
 
+Lemming.prototype.canMine=function(){
+	var result = game.level.world.canWalk(this.frontFootX()+(8*this.direction),this.y+this.height/2,this.height,this.maxDY/2);
+	if (result==DEADLY)
+		this.kill();
+	return result;
+}
+
 Lemming.prototype.canDig=function(){
 	var result = this.getFloor();
 	if (result==DEADLY)

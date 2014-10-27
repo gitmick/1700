@@ -413,7 +413,8 @@ function Mine() {
 Mine.prototype=new Action();
 
 Mine.prototype.check = function() {
-	if (!this.lemming.canBash()) {
+	mineResult = this.lemming.canMine();
+	if (mineResult==POLICE || mineResult==EVERBLOCK) {
 		this.lemming.direction*-1;
 		this.lemming.setAction(new Walk());
 		this.effectFull("hoppala");
@@ -434,7 +435,7 @@ Mine.prototype.check = function() {
 Mine.prototype.act= function() {
 	this.effect("Mine");
 	if (this.counter%3==0) {
-		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,12,FREE);
+		game.drawCircle(this.lemming.x+this.lemming.width/2+4*this.lemming.direction,this.lemming.y+this.lemming.height/2+4,12,FREE);
 		if (this.down)this.lemming.y+=this.lemming.speed;
 		this.down=!this.down;
 		this.lemming.x+=this.lemming.speed*this.lemming.direction;
