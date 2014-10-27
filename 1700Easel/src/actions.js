@@ -445,11 +445,13 @@ Mine.prototype.act= function() {
 
 function Jump() {
 	this.jumpCount;
+	this.startTime=Date.now();
+	this.jumpProcedure=2;
 }
 Jump.prototype=new Action();
 
 Jump.prototype.check=function() {
-	if (!this.lemming.hasFloor() && this.jumpCount>1) {
+	if (!this.lemming.hasFloor() && this.jumpProcedure>1) {
 		this.lemming.setAction(new Fall());
 		return false;
 	}
@@ -464,19 +466,18 @@ Jump.prototype.check=function() {
 }
 
 Jump.prototype.act = function() {
-	console.log("Jump "+this.jumpCount);
-	this.jumpCount--;
 	if (!this.lemming.againstWall()) {
-		if (this.jumpCount>1)
+		if (Date.now()-this.jumpCount<this.startTime)
 			this.lemming.y-=this.lemming.getDY();	
 		else {
-			this.lemming.y-=((this.jumpCount+10)/2);
+			this.jumpProcedure--;
+			this.lemming.y-=((this.jumpProcedure+10)/2);
 			this.lemming.floor=-1;
-			if (this.lemming.hasFloor() || this.jumpCount<-17)
+			if (this.lemming.hasFloor() || this.jumpProcedure<-17)
 				this.lemming.setAction(new Walk());
 		}
 		this.lemming.x+=this.lemming.direction*this.lemming.speed;
-		if (this.jumpCount<-17)
+		if (this.jumpProcedure<-17)
 			this.lemming.setAction(new Walk());
 	}
 }

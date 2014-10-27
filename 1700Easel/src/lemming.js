@@ -100,8 +100,8 @@ Lemming.prototype.create=function() {
 	
 	this.circle = this.displayEntity.addSprite(lemmingsSheet, "run",true).element;
 	this.circle.lemming=this;
-	this.selection = this.displayEntity.addShape().element;
-	this.progress = this.displayEntity.addShape().element;
+	this.selection = this.displayEntity.addShape(true).element;
+	this.progress = this.displayEntity.addShape(true).element;
 	this.mouseListener = this.displayEntity.addInteractionEntity(40, 40,this, true).element;
 	this.height=this.circle.getBounds().height*this.scale;
 	this.width=this.circle.getBounds().width*this.scale;
@@ -173,8 +173,8 @@ Lemming.prototype.draw=function(deFrame) {
 	if (this.dead || this.win)
 		return;
 	
-	if (this.selection.x<level.goalX && this.selection.x+this.width>level.goalX
-			&& this.selection.y<level.goalY && this.selection.y+this.height>level.goalY) {
+	if (this.displayEntity.x<level.goalX && this.displayEntity.x+this.width>level.goalX
+			&& this.displayEntity.y<level.goalY && this.displayEntity.y+this.height>level.goalY) {
 		this.won();
 		return;
 	}

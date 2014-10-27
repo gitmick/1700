@@ -242,10 +242,16 @@ DesktopInteraction.prototype.tick = function() {
 }
 
 DesktopInteraction.prototype.collect = function() {
-	var collected = interactionHandler.collect(game.mouseX,game.mouseY,this.time);
-	if (this.time==0 && collected)
-		this.time=1;
+	var t=0;
 	if (this.time>0)
-		this.time++;
+		t = Date.now()-this.time;
+	var collected = interactionHandler.collect(game.mouseX,game.mouseY,t);
+	if (collected)
+		console.log(this.time);
+	if (this.time==0 && collected)
+		this.time=Date.now();
+//	if (this.time>0)
+//		this.time++;
+
 }
 
