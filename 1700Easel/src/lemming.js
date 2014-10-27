@@ -64,7 +64,6 @@ Lemming.prototype.setAction=function(a) {
 }
 
 Lemming.prototype.setProgress=function(p) {
-	console.log(p);
 	this.clearProgress();
 	//this.progress.graphics.beginFill(createjs.Graphics.getRGB(255-255*p,255*p,0)).drawRect(5,5,22*p,5);
 	this.progress.graphics.beginFill(createjs.Graphics.getRGB(parseInt(255-255*p),parseInt(255*p),0)).drawRect(5,5,22*p,5);

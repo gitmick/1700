@@ -173,28 +173,28 @@ DesktopInteraction.prototype.init = function() {
     var that = this;
     stage.on("click", function(evt) {
     	console.log("mainClick");
-    	that.clickX=evt.stageX;
-    	that.clickY=evt.stageY;
+//    	that.clickX=evt.stageX;
+//    	that.clickY=evt.stageY;
+    	interactionHandler.select(evt.stageX,evt.stageY);
     	that.mouseDown=false;
     });
     stage.on("pressmove", function(evt) {
-    	console.log("pressMove");
-    	if (that.collectionDelay>5){
+    	if (game.control.selectedAction && game.control.selectedAction === JumpAll){
+    		console.log("collect");
 	    	game.mouseX=evt.stageX;
 	    	game.mouseY=evt.stageY;
-	    	that.collect();
+	    	that.collect(evt.stageX,evt.stageY);
     	}
     	that.mouseDown=true;
     });
     stage.on("pressup", function(evt) {
     	console.log("mainUp");
-    	if (that.time>0) {
+    	if (that.time>0 && game.control.selectedAction && game.control.selectedAction === JumpAll) {
     		interactionHandler.collected();
     		that.time=0;
     	}
     	else {
-    		that.clickX=evt.stageX;
-        	that.clickY=evt.stageY;
+    		interactionHandler.select(evt.stageX,evt.stageY);
     	}
     	that.mouseDown=false;
     });
@@ -207,30 +207,24 @@ DesktopInteraction.prototype.init = function() {
     		mouseX=evt.stageX;
     	else
     		mouseX=300;
-    	if (!mouseDown)
+    	if (!that.mouseDown)
     		interactionHandler.explore(evt.stageX,evt.stageY);
+    	else if (game.control.selectedAction && game.control.selectedAction === JumpAll) {
+    		that.collect(game.mouseX,game.mouseY);
+    	}
     });
 }
 
 DesktopInteraction.prototype.tick = function() {
-	if (this.mouseDown) {
-		this.collectionDelay++;
-	}
-	else
-		this.collectionDelay=0;
 	game.scrollLevel(mouseX);
 	
 	
 	if (!this.mouseDown) {
 		interactionHandler.explore(game.mouseX,game.mouseY);
 	}
-	else if (this.collectionDelay>5) {
-		this.collect();
+	else if (game.control.selectedAction && game.control.selectedAction.multiSelect) {
+		this.collect(game.mouseX,game.mouseY);
 	}
-	
-// if (this.mouseDown && this.collectionDelay>5) {
-//		this.collect();
-//	}
 	
 	if (this.clickX>-1) {
 		if (game.selectedLemming) {
@@ -243,11 +237,11 @@ DesktopInteraction.prototype.tick = function() {
 	
 }
 
-DesktopInteraction.prototype.collect = function() {
+DesktopInteraction.prototype.collect = function(x,y) {
 	var t=0;
 	if (this.time>0)
 		t = Date.now()-this.time;
-	var collected = interactionHandler.collect(game.mouseX,game.mouseY,t);
+	var collected = interactionHandler.collect(x,y,t);
 	if (collected)
 		console.log(this.time);
 	if (this.time==0 && collected)

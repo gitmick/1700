@@ -95,6 +95,7 @@ function FolderLevel(levelName) {
 	console.log("initializing level: "+this.dirPath);
 	this.worldHtmlImage= new Image();
 	this.backgroundHtmlImage = new Image();
+	this.repaintHtmlImage = new Image();
 	this.mapHtmlImage= new Image();
 	this.introImage= new Image();
 	this.world = new World();
@@ -121,6 +122,7 @@ FolderLevel.prototype.init = function() {
 		this.loader.loadScript(this.level.dirPath+"/level.js");
 		this.level.worldHtmlImage=this.loader.loadImage(this.level.dirPath+"/world.png",this.level.worldHtmlImage);
 		this.level.mapHtmlImage=this.loader.loadImage(this.level.dirPath+"/map.png",this.level.mapHtmlImage);
+		this.level.repaintHtmlImage=this.loader.loadImage(this.level.dirPath+"/repaint.png",this.level.repaintHtmlImage);
 		this.level.backgroundHtmlImage=this.loader.loadImage(this.level.dirPath+"/background.png",this.level.backgroundHtmlImage);
 		
 		this.loader.loadImage("img/actions/Bash.png",new Image());

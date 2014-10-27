@@ -141,7 +141,7 @@ PlayAction.prototype.act = function() {
 	game.level.world.setPoliceOut(game.lemmings.length);
 	game.level.world.setPoliceSaved(game.winCount);
 	game.level.world.updateText();
-	
+	game.level.world.updateCache();
 	return true;
 };
 
