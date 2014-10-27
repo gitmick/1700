@@ -69,7 +69,7 @@ World.prototype.updateText = function() {
 };
 
 World.prototype.init = function(lvl) {
-
+	this.foreGroundMask = this.displayEntity.addShape(true).element;
 	this.worldBitmapData = new createjs.BitmapData(lvl.mapHtmlImage);
 	this.width=lvl.worldHtmlImage.width;
 	
@@ -84,7 +84,7 @@ World.prototype.init = function(lvl) {
 	this.foreGround.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	
 	bitmap=this.displayEntity.addBitmap(lvl.repaintHtmlImage,true);
-	this.foreGroundMask = new createjs.Shape();
+	
 	this.foreGroundMask.graphics.beginFill("black").drawRect(0,0,1,1);
 	this.foreGroundMask.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	bitmap.element.mask=this.foreGroundMask;

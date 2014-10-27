@@ -98,7 +98,7 @@ DisplayEntity.prototype.addInteractionEntity = function(width,height,target,scro
 	this.deElements.push(ent);
 	interactionHandler.interactionEntities.push(ml);
 	ent.destroy = function() {
-		arrayWithout(interactionHandler.interactionEntities,ml);
+		arrayWithout(interactionHandler.interactionEntities,this.element);
 	};
 	return ent;
 }

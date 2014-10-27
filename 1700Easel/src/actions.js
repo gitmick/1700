@@ -473,6 +473,7 @@ Jump.prototype.act = function() {
 		else {
 			this.jumpProcedure--;
 			this.lemming.y-=((this.jumpProcedure+10)/2);
+			this.lemming.x+=this.lemming.direction*this.lemming.speed;
 			this.lemming.floor=-1;
 			if (this.lemming.hasFloor() || this.jumpProcedure<-17)
 				this.lemming.setAction(new Walk());

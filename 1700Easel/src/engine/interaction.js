@@ -98,7 +98,6 @@ InteractionHandler.prototype.collect = function(x,y,time) {
 		var val = iE.click(x,y);
 		//console.log("try collect"+time);
 		if (val && !(isIn(this.collectionIE,iE.target))) {
-			console.log("collect"+time);
 			this.collectionIE.push(iE.target);
 			this.collection.push(new CollectionItem(time,iE));
 			collected=true;
@@ -242,8 +241,6 @@ DesktopInteraction.prototype.collect = function(x,y) {
 	if (this.time>0)
 		t = Date.now()-this.time;
 	var collected = interactionHandler.collect(x,y,t);
-	if (collected)
-		console.log(this.time);
 	if (this.time==0 && collected)
 		this.time=Date.now();
 //	if (this.time>0)

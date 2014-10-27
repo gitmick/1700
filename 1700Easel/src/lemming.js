@@ -202,7 +202,7 @@ Lemming.prototype.getWall=function() {
 }
 
 Lemming.prototype.hasRoof=function(){
-	var result = game.level.world.canFall(this.backFootX(),this.y-1,this.width/3);
+	var result = game.level.world.canFall(this.backFootX(),this.y-1,this.width/4);
 	if (result==DEADLY)
 		this.kill();
 	return (result!=FREE);
