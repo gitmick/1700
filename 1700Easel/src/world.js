@@ -17,6 +17,7 @@ function World() {
 	this.s;
 	this.foreGround;
 	this.width=0;
+	this.height=0;
 	this.displayEntity = new DisplayEntity();
 	
 	this.gameText;
@@ -72,7 +73,7 @@ World.prototype.init = function(lvl) {
 	this.foreGroundMask = this.displayEntity.addShape(true).element;
 	this.worldBitmapData = new createjs.BitmapData(lvl.mapHtmlImage);
 	this.width=lvl.worldHtmlImage.width;
-	
+	this.height=lvl.worldHtmlImage.height;
 	this.displayEntity.addBitmap(lvl.worldHtmlImage,true);
 	
 //	this.s=this.displayEntity.addShape(true).element;
@@ -107,7 +108,7 @@ World.prototype.scroll = function(x) {
 }
 
 World.prototype.getWorldPixel = function(px,py){
-	if(py<0)return FREE;
+	if(py<0 || py>this.height || px<0 || px>width)return EVERBLOCK;
 	var col = this.worldBitmapData.getPixel(px,py);
 //	if (col>10000) return FREE;
 	return col;

@@ -192,6 +192,8 @@ DesktopInteraction.prototype.init = function() {
 	    	game.mouseY=evt.stageY;
 	    	that.collect(evt.stageX,evt.stageY);
     	}
+    	else
+    		interactionHandler.explore(evt.stageX,evt.stageY);
     	that.mouseDown=true;
     });
     stage.on("pressup", function(evt) {
@@ -201,7 +203,11 @@ DesktopInteraction.prototype.init = function() {
     		that.time=0;
     	}
     	else {
-    		interactionHandler.select(evt.stageX,evt.stageY);
+    		if (game.selectedLemming) {
+    			game.selectedLemming.select();
+    		}
+    		else
+    			interactionHandler.select(evt.stageX,evt.stageY);
     	}
     	that.mouseDown=false;
     });
