@@ -29,6 +29,9 @@ function Game(){
 	this.mouseX;
 	this.mouseY;
 	
+	this.dirX=0;
+	this.dirY=0;
+	
 	this.trigger = new Trigger();
 }
 

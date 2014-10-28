@@ -156,8 +156,18 @@ function DeviceInteraction() {
 
 
 
+
+
 function DesktopInteraction() {
-this.init();
+	this.init();
+	this.directionXHistory = new Array();
+	this.lastX=-1;
+	
+	this.directionYHistory = new Array();
+	this.lastY=-1;
+	
+	
+
 }
 DesktopInteraction.prototype.init = function() {
 	this.mouseDown=false;
@@ -172,8 +182,6 @@ DesktopInteraction.prototype.init = function() {
     var that = this;
     stage.on("click", function(evt) {
     	console.log("mainClick");
-//    	that.clickX=evt.stageX;
-//    	that.clickY=evt.stageY;
     	interactionHandler.select(evt.stageX,evt.stageY);
     	that.mouseDown=false;
     });
@@ -206,23 +214,25 @@ DesktopInteraction.prototype.init = function() {
     		mouseX=evt.stageX;
     	else
     		mouseX=300;
-    	if (!that.mouseDown)
-    		interactionHandler.explore(evt.stageX,evt.stageY);
-    	else if (game.control.selectedAction && game.control.selectedAction === JumpAll) {
+    	
+    	if (that.mouseDown && game.control.selectedAction && game.control.selectedAction === JumpAll) {
     		that.collect(game.mouseX,game.mouseY);
     	}
+    	else if (game.control.selectedAction && game.control.selectedAction.multiSelect) {
+    		interactionHandler.explore(evt.stageX,evt.stageY);
+    	}
+    	
     });
 }
 
 DesktopInteraction.prototype.tick = function() {
+	this.calculateDirection();
 	game.scrollLevel(mouseX);
-	
-	
-	if (!this.mouseDown) {
-		interactionHandler.explore(game.mouseX,game.mouseY);
-	}
-	else if (game.control.selectedAction && game.control.selectedAction.multiSelect) {
+	if (this.mouseDown && game.control.selectedAction && game.control.selectedAction === JumpAll) {
 		this.collect(game.mouseX,game.mouseY);
+	}
+	else  {
+		interactionHandler.explore(game.mouseX,game.mouseY);
 	}
 	
 	if (this.clickX>-1) {
@@ -235,6 +245,61 @@ DesktopInteraction.prototype.tick = function() {
 	}
 	
 }
+
+DesktopInteraction.prototype.calculateDirection = function() {
+	//sorry it was late, but it works a little bit
+	//wrong values directly when changing the direction
+	if (this.lastX>0) {
+		this.directionXHistory.push(game.mouseX-this.lastX);
+		if (this.directionXHistory.length>5)
+			this.directionXHistory.shift();
+		var direction =0;
+		for (var i=0;i<this.directionXHistory.length;i++) {
+			direction+=(this.directionXHistory[i]*(this.directionXHistory.length-i));
+		}
+		
+		this.directionYHistory.push(game.mouseY-this.lastY);
+		if (this.directionYHistory.length>5)
+			this.directionYHistory.shift();
+		var directiony =0;
+		for (var i=0;i<this.directionYHistory.length;i++) {
+			directiony+=(this.directionYHistory[i]*(this.directionYHistory.length-i));
+		}
+		game.dirX=-5;
+		game.dirY=-5;
+		if (direction==0)
+			game.dirX=0;
+		if (directiony==0)
+			game.dirY=0;
+		if (!game.dirX==0 && !game.dirY==0) {
+			absx=Math.abs(direction);
+			absy=Math.abs(directiony);
+			var lower=absy;
+			var upper=absx;
+			if (absy>absx) {
+				lower = absx;
+				upper = absy;
+			}
+			if (upper>lower*5) {
+				if (absy>absx)
+					game.dirX=0;
+				else
+					game.dirY=0;
+			}
+		}
+		if (game.dirX<0) {
+			game.dirX=direction/Math.abs(direction);
+		}
+		if (game.dirY<0) {
+			game.dirY=directiony/Math.abs(directiony);
+		}	
+		//console.log(game.dirX+" "+game.dirY);
+	}
+	this.lastX=game.mouseX;
+	this.lastY=game.mouseY;
+}
+
+
 
 DesktopInteraction.prototype.collect = function(x,y) {
 	var t=0;

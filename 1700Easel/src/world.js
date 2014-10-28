@@ -192,7 +192,7 @@ World.prototype.canWalk=function(x,y,height,maxDY){
 		}
 		else {
 			openSize=0;
-			if (result>block)
+			if (result!=DEADLY && result>block)
 				block = result;
 		}
 	}

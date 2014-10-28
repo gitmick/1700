@@ -102,6 +102,17 @@ Lemming.prototype.create=function() {
 	this.selection = this.displayEntity.addShape(true).element;
 	this.progress = this.displayEntity.addShape(true).element;
 	this.mouseListener = this.displayEntity.addInteractionEntity(40, 40,this, true).element;
+	this.mouseListener.compare = function(ml) {
+		if (ml.target instanceof Lemming) {
+			if (game.dirX!=0) {
+				var direction = game.dirX*this.target.direction - game.dirX*ml.target.direction;
+				if (direction!=0)
+					return direction;
+				console.log(direction);
+			}
+		}
+		return ml.selectionDistance-this.selectionDistance;
+	}
 	this.height=this.circle.getBounds().height*this.scale;
 	this.width=this.circle.getBounds().width*this.scale;
 	this.setAction(new Fall());
