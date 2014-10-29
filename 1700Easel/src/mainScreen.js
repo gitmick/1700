@@ -88,7 +88,11 @@ SelectLevel.prototype.init = function () {
 	};
 };
 
-
+var introSoundBlock = new MachineBlock();
+introSoundBlock.isBlock=true;
+introSoundBlock.block = function() {
+	return this.isBlock;
+}
 
 function FolderLevel(levelName) {
 	this.name=levelName;
@@ -143,7 +147,8 @@ FolderLevel.prototype.init = function() {
 		this.loader.loadImage("img/win.png",new Image());
 		this.loader.loadImage("img/lost.png",new Image());
 		
-		this.loader.loadSound(this.level.dirPath+"/track.mp3",this.name);
+		
+		this.loader.loadSound(this.level.dirPath+"/intro.mp3",this.level.name+"intro");
 		
 		var data = {
 				 framerate: 18,
@@ -155,23 +160,36 @@ FolderLevel.prototype.init = function() {
 		
 		//this.loader.loadSprites(lemmingsSheet);
 		
+		
 	};
 	this.loadLevelSpecific.load = function() {
-		stage.removeAllChildren();
-		this.level.world.init(this.level);
-		
+		effectInstance = soundPlayer.play(this.level.name+"intro");
+		effectInstance.addEventListener("complete",function() {
+			introSoundBlock.isBlock=false;
+		});
+		startObject = new Button(0,0,1024,386);
+		startObject.select = function(x, y) {
+			introSoundBlock.isBlock=false;
+			effectInstance.stop();
+		};
+		this.loader.loadSound(this.level.dirPath+"/track.mp3",this.level.name);
+		this.machine.addBlock(introSoundBlock);
 		level.load();
-		game.control.init();
-		soundPlayer.play(this.level.name,5);
 		level.name=this.level.name;
 
 	};
 	this.loadAssets.load = function() {
+		displayEntityHolder.destroy();
+		stage.removeAllChildren();
+		this.level.world.init(this.level);
+		game.control.init();
+		
 		level.initAssets();
 		trigger = new ExitChecker();
 		game.trigger.addTrigger(POLICEMAN_SAVED, trigger);
 		game.trigger.addTrigger(POLICEMAN_KILLED, trigger);
 		game.trigger.addTrigger(ADD_POLICEMEN_FINISHED, trigger);
+		soundPlayer.play(this.level.name,5,100);
 	};
 }
 
