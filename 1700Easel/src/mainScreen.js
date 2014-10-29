@@ -39,6 +39,8 @@ MainLevel.prototype.init = function () {
 		this.loader.loadSound("fx/block_ha.mp3","Ha");
 	};
 	this.levelInitialize.fire = function () {
+		gameText = new createjs.Text("Gugug", "20px VT323", "#ff7700");
+		stage.addChild(gameText);
 		var bitmap = new createjs.Bitmap(this.level.mainScreen);
 		stage.addChild(bitmap);
 	};

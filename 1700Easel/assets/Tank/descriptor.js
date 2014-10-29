@@ -14,7 +14,7 @@ function Tank() {
 	this.sprite;
 	this.collisionOffsetX=10;
 	this.collisionOffsetY=15;
-	this.collisionHeight=35;
+	this.collisionHeight=33;
 	this.collisionWidth=76;
 	this.collisionType=EVERBLOCK;
 	this.hitCount=0;

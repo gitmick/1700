@@ -34,9 +34,9 @@
 			
 			var tcopter = this.initAsset("Tank");
 			tcopter.startX=-100;
-			tcopter.startY=265;
+			tcopter.startY=264;
 			tcopter.targetX=500;
-			tcopter.targetY=265;
+			tcopter.targetY=264;
 			tcopter.show();
 			
 			

@@ -65,7 +65,7 @@ World.prototype.setMoneyLeft=function(left) {
 }
 
 World.prototype.updateText = function() {
-	if (false && this.dirty) {
+	if (this.dirty) {
 		this.gameText.text="Im Einsatz: "+this.policeOut+" Im Haus: "+this.policeSaved+" Geld verbraten: "+this.moneyLeft;
 		this.gameText.updateCache();
 		this.dirty=false;

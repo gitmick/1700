@@ -55,13 +55,13 @@ DisplayEntity.prototype.pos = function(x,y,deFrame) {
 	this.x=x;
 	this.y=y;
 	for (var i=0;i<this.deElements.length;i++) {
-		this.deElements[i].pos(x,y,deFrame);
+		this.deElements[i].pos(parseInt(x),parseInt(y),deFrame);
 	}
 };
 
 DisplayEntity.prototype.adjust = function(deFrame) {
 	for (var i=0;i<this.deElements.length;i++) {
-		this.deElements[i].pos(this.x,this.y,deFrame);
+		this.deElements[i].pos(parseInt(this.x),parseInt(this.y),deFrame);
 	}
 }
 DisplayEntity.prototype.addBitmap = function(img,scrollable) {

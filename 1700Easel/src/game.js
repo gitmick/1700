@@ -98,6 +98,7 @@ Game.prototype.scrollLevel = function(mouseX){
     		if (this.currentScroll>1)
     			this.currentScroll-=(100-mouseX)/8.0;
     	}
+		this.currentScroll=parseInt(this.currentScroll);
 		def = new DEFrame();
 		def.currentScroll = this.currentScroll;
 		this.level.world.scroll(def);
