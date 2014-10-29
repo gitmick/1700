@@ -182,7 +182,7 @@ DesktopInteraction.prototype.init = function() {
 	stage.mouseMoveOutside = false;
   
     var that = this;
-    stage.on("click", function(evt) {
+    stage.on("stagemousedown", function(evt) {
     	console.log("mainClick");
     	if (Date.now()-that.lastClick>30) {
 	    	if (game.selectedLemming  && game.selectedLemming.under(evt.stageX,evt.stageY)) {
@@ -194,17 +194,17 @@ DesktopInteraction.prototype.init = function() {
     	that.lastClick=Date.now();
     	that.mouseDown=false;
     });
-    stage.on("pressmove", function(evt) {
-    	if (game.control.selectedAction && game.control.selectedAction === JumpAll){
-	    	game.mouseX=evt.stageX;
-	    	game.mouseY=evt.stageY;
-	    	that.collect(evt.stageX,evt.stageY);
-    	}
-    	else
-    		interactionHandler.explore(evt.stageX,evt.stageY);
-    	that.mouseDown=true;
-    });
-    stage.on("pressup", function(evt) {
+//    stage.on("pressmove", function(evt) {
+//    	if (game.control.selectedAction && game.control.selectedAction === JumpAll){
+//	    	game.mouseX=evt.stageX;
+//	    	game.mouseY=evt.stageY;
+//	    	that.collect(evt.stageX,evt.stageY);
+//    	}
+//    	else
+//    		interactionHandler.explore(evt.stageX,evt.stageY);
+//    	that.mouseDown=true;
+//    });
+    stage.on("stagemouseup", function(evt) {
     	console.log("mainUp");
     	if (that.time>0 && game.control.selectedAction && game.control.selectedAction === JumpAll) {
     		interactionHandler.collected();
@@ -235,9 +235,9 @@ DesktopInteraction.prototype.init = function() {
     	if (that.mouseDown && game.control.selectedAction && game.control.selectedAction === JumpAll) {
     		that.collect(game.mouseX,game.mouseY);
     	}
-    	else if (game.control.selectedAction && game.control.selectedAction.multiSelect) {
-    		interactionHandler.explore(evt.stageX,evt.stageY);
-    	}
+//    	else if (game.control.selectedAction) {
+//    		interactionHandler.explore(evt.stageX,evt.stageY);
+//    	}
     	
     });
 }

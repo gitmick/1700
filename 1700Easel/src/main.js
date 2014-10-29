@@ -22,7 +22,8 @@ function init() {
 	    setSize();
 	};
 	stage = new createjs.Stage("canvas");
-    createjs.Touch.enable(stage);
+    //createjs.Touch.enable(stage);
+	stage.mouseChildren=false;
     deviceInteraction = new DesktopInteraction();
     
     game = new Game();
