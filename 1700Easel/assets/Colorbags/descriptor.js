@@ -32,8 +32,8 @@ function Colorbags() {
 }
 Colorbags.prototype = new Asset();
 Colorbags.prototype.load = function () {
-	this.loadImage("Thrower.png", this.thrower);
-	this.loadImage("bag.png", this.bag);
+	this.thrower=this.loadImage("Thrower.png", this.thrower);
+	this.bag=this.loadImage("bag.png", this.bag);
 };
 
 Colorbags.prototype.drawInitial = function() {

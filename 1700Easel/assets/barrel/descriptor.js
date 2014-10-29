@@ -9,7 +9,7 @@ BarrelInstance.prototype = new Asset();
 
 BarrelInstance.prototype.init = function(pic,x,y,dir) {
 	this.show();
-	this.displayEntity.addBitmapClone(pic, true);
+	this.displayEntity.addBitmap(pic, true);
 	this.startX=x;
 	this.startY=y;
 	this.width=12;
@@ -46,17 +46,15 @@ BarrelInstance.prototype.frontFootX = function() {
 function barrel() {
 	this.thrower = new Image();
 	this.bag = new Image();
-	this.bitmap;
 }
 barrel.prototype = new Asset();
 barrel.prototype.load = function () {
-	this.loadImage("Thrower.png", this.thrower);
-	this.loadImage("barrel.png", this.bag);
+	this.thrower=this.loadImage("Thrower.png", this.thrower);
+	this.bag=this.loadImage("barrel.png", this.bag);
 };
 
 barrel.prototype.drawInitial = function() {
 	//game.trigger.addTrigger(STOP_COLOR, this);
-	this.bitmap = new createjs.Bitmap(this.bag);
 	//this.displayEntity.addBitmap(this.thrower, true);
 	this.displayEntity.pos(this.startX, this.startY);
 	this.setAction(new StartBarrelAction());
@@ -74,7 +72,7 @@ StartBarrelAction.prototype = new AssetAction();
 StartBarrelAction.prototype.act = function () {
 	if (this.counter++%200==0) {
 		ba = new BarrelInstance();
-		ba.init(this.asset.bitmap,this.asset.startX,this.asset.startY,-1);
+		ba.init(this.asset.bag,this.asset.startX,this.asset.startY,-1);
 		level.assets.push(ba);
 	}
 }

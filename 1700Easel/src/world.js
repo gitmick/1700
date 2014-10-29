@@ -74,12 +74,12 @@ World.prototype.init = function(lvl) {
 	this.worldBitmapData = new createjs.BitmapData(lvl.mapHtmlImage);
 	this.width=lvl.worldHtmlImage.width;
 	this.height=lvl.worldHtmlImage.height;
-	this.displayEntity.addBitmap(lvl.worldHtmlImage,true);
+	this.displayEntity.addBitmap(lvl.worldHtmlImage,true).element.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	
 //	this.s=this.displayEntity.addShape(true).element;
 //	this.s.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	
-	this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
+	this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true).element.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	this.foreGround=this.displayEntity.addShape(true).element;
 	
 	this.foreGround.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);

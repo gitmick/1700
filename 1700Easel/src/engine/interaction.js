@@ -177,17 +177,25 @@ DesktopInteraction.prototype.init = function() {
 	this.clickX=-1;
 	this.clickY=-1;
 	
+	this.lastClick=Date.now();
+	
 	stage.mouseMoveOutside = false;
   
     var that = this;
     stage.on("click", function(evt) {
     	console.log("mainClick");
-    	interactionHandler.select(evt.stageX,evt.stageY);
+    	if (Date.now()-that.lastClick>30) {
+	    	if (game.selectedLemming  && game.selectedLemming.under(evt.stageX,evt.stageY)) {
+				game.selectedLemming.select();
+			}
+			else
+				interactionHandler.select(evt.stageX,evt.stageY);
+    	}
+    	that.lastClick=Date.now();
     	that.mouseDown=false;
     });
     stage.on("pressmove", function(evt) {
     	if (game.control.selectedAction && game.control.selectedAction === JumpAll){
-    		console.log("collect");
 	    	game.mouseX=evt.stageX;
 	    	game.mouseY=evt.stageY;
 	    	that.collect(evt.stageX,evt.stageY);
@@ -203,11 +211,14 @@ DesktopInteraction.prototype.init = function() {
     		that.time=0;
     	}
     	else {
-    		if (game.selectedLemming) {
-    			game.selectedLemming.select();
-    		}
-    		else
-    			interactionHandler.select(evt.stageX,evt.stageY);
+    		if (Date.now()-that.lastClick>30) {
+    	    	if (game.selectedLemming  && game.selectedLemming.under(evt.stageX,evt.stageY)) {
+    				game.selectedLemming.select();
+    			}
+    			else
+    				interactionHandler.select(evt.stageX,evt.stageY);
+        	}
+        	that.lastClick=Date.now();
     	}
     	that.mouseDown=false;
     });
@@ -240,16 +251,6 @@ DesktopInteraction.prototype.tick = function() {
 	else  {
 		interactionHandler.explore(game.mouseX,game.mouseY);
 	}
-	
-	if (this.clickX>-1) {
-		if (game.selectedLemming) {
-			game.selectedLemming.select();
-		}
-		else
-			interactionHandler.select(this.clickX,this.clickY);
-		this.clickX=-1;
-	}
-	
 }
 
 DesktopInteraction.prototype.calculateDirection = function() {
