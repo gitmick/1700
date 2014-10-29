@@ -183,6 +183,8 @@ DesktopInteraction.prototype.init = function() {
   
     var that = this;
     stage.on("stagemousedown", function(evt) {
+    	game.mouseX=evt.stageX;
+    	game.mouseY=evt.stageY;
     	console.log("mainClick");
     	if (Date.now()-that.lastClick>30) {
 	    	if (game.selectedLemming  && game.selectedLemming.under(evt.stageX,evt.stageY)) {
@@ -192,7 +194,7 @@ DesktopInteraction.prototype.init = function() {
 				interactionHandler.select(evt.stageX,evt.stageY);
     	}
     	that.lastClick=Date.now();
-    	that.mouseDown=false;
+    	that.mouseDown=true;
     });
 //    stage.on("pressmove", function(evt) {
 //    	if (game.control.selectedAction && game.control.selectedAction === JumpAll){
@@ -205,6 +207,8 @@ DesktopInteraction.prototype.init = function() {
 //    	that.mouseDown=true;
 //    });
     stage.on("stagemouseup", function(evt) {
+    	game.mouseX=evt.stageX;
+    	game.mouseY=evt.stageY;
     	console.log("mainUp");
     	if (that.time>0 && game.control.selectedAction && game.control.selectedAction === JumpAll) {
     		interactionHandler.collected();

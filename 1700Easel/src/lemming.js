@@ -98,6 +98,7 @@ Lemming.prototype.won=function() {
 Lemming.prototype.create=function() {
 	
 	this.circle = this.displayEntity.addSprite(lemmingsSheet, "run",true).element;
+	this.circle.currentAnimationFrame+=Math.random()*6;
 	this.circle.lemming=this;
 	this.selection = this.displayEntity.addShape(true).element;
 	this.progress = this.displayEntity.addShape(true).element;

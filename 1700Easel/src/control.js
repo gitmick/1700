@@ -64,6 +64,7 @@ Control.prototype.addControl = function(x,y,action_,picName) {
 	cE.text = new createjs.Text(""+level.actionCount[action_], "20px VT323", "#ff7700"); 
 	cE.text.x = x+10;
 	cE.text.y=y-20;
+	cE.text.cache(0,0,40,40);
 	stage.addChild(cE.text);
 	
 	this.controlAction[action_]=cE;
@@ -105,6 +106,7 @@ Control.prototype.useAction = function() {
 	level.actionCount[this.selectedAction]=--count;
 	ce = this.controlAction[this.selectedAction]; 
 	ce.text.text=""+count;	
+	ce.text.updateCache();
 	if (count==0)
 		ce.select();
 	return true;

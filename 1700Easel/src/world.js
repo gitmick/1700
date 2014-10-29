@@ -28,6 +28,7 @@ function World() {
 	this.dirty=true;
 	
 	this.foreGroundMask;
+	this.repaint;
 
 	this.equiq="";
 	
@@ -38,6 +39,7 @@ World.prototype.setEquipment=function(eq) {
 	if (this.equiq!=eq) {
 		this.equiq=eq;
 		this.policeText.text=eq;
+		this.policeText.updateCache();
 	}
 }
 
@@ -63,8 +65,9 @@ World.prototype.setMoneyLeft=function(left) {
 }
 
 World.prototype.updateText = function() {
-	if (this.dirty) {
+	if (false && this.dirty) {
 		this.gameText.text="Im Einsatz: "+this.policeOut+" Im Haus: "+this.policeSaved+" Geld verbraten: "+this.moneyLeft;
+		this.gameText.updateCache();
 		this.dirty=false;
 	}
 };
@@ -84,22 +87,24 @@ World.prototype.init = function(lvl) {
 	
 	this.foreGround.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	
-	bitmap=this.displayEntity.addBitmap(lvl.repaintHtmlImage,true);
+	this.repaint=this.displayEntity.addBitmap(lvl.repaintHtmlImage,true).element;
 	
 	this.foreGroundMask.graphics.beginFill("black").drawRect(0,0,1,1);
 	this.foreGroundMask.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
-	bitmap.element.mask=this.foreGroundMask;
-	
+	this.repaint.mask=this.foreGroundMask;
+	this.repaint.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	//stage.addChild(this.foreGroundMask);
 	
 	this.gameText = new createjs.Text("Gugug", "20px VT323", "#ff7700"); 
 	this.gameText.x=20;
 	this.gameText.y=20;
+	this.gameText.cache(0,0,1000,40);
 	stage.addChild(this.gameText);
 	
 	this.policeText= new createjs.Text("", "20px VT323", "#ff7700"); 
 	this.policeText.x=20;
 	this.policeText.y=60;
+	this.policeText.cache(0,0,300,40);
 	stage.addChild(this.policeText);
 }
 
@@ -137,6 +142,7 @@ World.prototype.drawRect = function(px,py,w,h,color){
 //		this.foreGround.mask=this.s;
 //		this.foreGround.updateCache("source-overlay");
 		this.foreGroundMask.graphics.beginFill("black").drawRect(px,py,w,h);
+		this.addForUpdate(this.repaint);
 		this.addForUpdate(this.foreGroundMask);
 	}
 	

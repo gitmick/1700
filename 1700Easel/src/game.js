@@ -224,7 +224,7 @@ function TimeKeeper() {
 }
 
 TimeKeeper.prototype.tick = function() {
-	if (this.counter++%25==0) {
+	if (this.counter++%125==0) {
 		this.moneyLeft-=100;
 		game.level.world.setMoneyLeft(this.moneyLeft);
 		if (this.moneyLeft<0) {

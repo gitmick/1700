@@ -3,7 +3,7 @@
  */
 
 
-var canvasWidth=800;
+var canvasWidth=1024;
 var canvasHeight=384;
 
 var mouseX;
@@ -29,7 +29,7 @@ function init() {
     game = new Game();
 	game.init();
     
-    createjs.Ticker.setFPS(30);
+    createjs.Ticker.setFPS(25);
     createjs.Ticker.addEventListener("tick", tick);
     
     
@@ -64,6 +64,7 @@ function width(){
 
 function tick() {
 	deviceInteraction.tick();
+	
 	game.update();
 	stage.update();
 }
