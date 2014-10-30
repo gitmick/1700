@@ -29,3 +29,26 @@ function contains(a, obj) {
     }
     return false;
 }
+
+function formatPrice(num) {
+	num=num.toFixed(2);
+	numStr = num+"";
+	euro = numStr.substring(0,numStr.length-3);
+	cent = numStr.substring(numStr.length-2);
+	eurNew="";
+	for (var i=0;i<euro.length;i++) {
+		if (i%3==0 && i!=0) {
+			eurNew="."+eurNew;
+		}
+		eurNew=euro.substring(euro.length-i-1,euro.length-i)+eurNew;
+	}
+	return eurNew+","+cent;
+}
+
+
+function fillString(string,length) {
+	for (var i=0;i<length-string.length;i++) {
+		string+=" ";
+	}
+	return string;
+}

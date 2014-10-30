@@ -192,7 +192,15 @@ WinAction.prototype.act = function() {
 			game.level.start(game.machine);
 		};
 		this.started=true;
-		console.log(timeKeeper.toString());
+		gameText = new createjs.Text(timeKeeper.toString(), "20px VT323", "#ff7700"); 
+		gameText.x=20;
+		gameText.y=20;
+		stage.addChild(gameText);
+		
+		gameText2 = new createjs.Text(timeKeeper.toString2(), "20px VT323", "#ff7700"); 
+		gameText2.x=300;
+		gameText2.y=20;
+		stage.addChild(gameText2);
 	}
 }
 
@@ -214,6 +222,16 @@ LostAction.prototype.act = function() {
 		game.level.start(game.machine);
 	};
 	this.started=true;
+	
+	gameText = new createjs.Text(timeKeeper.toString(), "20px VT323", "#ff7700"); 
+	gameText.x=20;
+	gameText.y=20;
+	stage.addChild(gameText);
+	
+	gameText2 = new createjs.Text(timeKeeper.toString2(), "20px VT323", "#ff7700"); 
+	gameText2.x=300;
+	gameText2.y=20;
+	stage.addChild(gameText2);
 	
 	console.log(timeKeeper.toString());
 	
@@ -257,13 +275,37 @@ TimeKeeper.prototype.registerAsset=function(name,value) {
 }
 
 TimeKeeper.prototype.toString = function() {
-	var string="Rechnung:\n";
-	string+=(this.counter/(25*60)) +" Minuten \n";
-	string+=this.policeCount+" Polizisten: "+(this.policeCount*this.pricePolice)+"\n";
+	var string="Rechnung:\n\n\n";
+	var sum =0;
+	var time = (this.counter/(25*60));
+	sum+=time*1200;
+	string+=time.toFixed(2) +" Minuten "+"\n\n";
+	string+=this.policeCount+" Polizisten: "+"\n\n";
+	sum+=(this.policeCount*this.pricePolice);
 	for (var i=0;i<this.pricedAssets.length;i++) {
 		pricedAsset = this.pricedAssets[i];
-		string+=pricedAsset.name+" "+pricedAsset.value+"\n";
+		sum+=pricedAsset.value;
+		string+=pricedAsset.name+" "+"\n\n";
 	}
+	string+="-------------------------------------------\n\n";
+	string+="Summe:";
+	return string;
+}
+TimeKeeper.prototype.toString2 = function() {
+	var string="\n\n\n";
+	var sum =0;
+	var time = (this.counter/(25*60));
+	sum+=time*1200;
+	string+=formatPrice(time*1200)+" €\n\n";
+	string+=formatPrice(this.policeCount*this.pricePolice)+" €\n\n";
+	sum+=(this.policeCount*this.pricePolice);
+	for (var i=0;i<this.pricedAssets.length;i++) {
+		pricedAsset = this.pricedAssets[i];
+		sum+=pricedAsset.value;
+		string+=formatPrice(pricedAsset.value)+" €\n\n";
+	}
+	string+="\n\n";
+	string+=formatPrice(sum)+" €";
 	return string;
 }
 
