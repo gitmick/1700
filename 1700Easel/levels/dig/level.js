@@ -21,14 +21,14 @@
 		level.minSafeCount=50;
 		level.soundFile="track.mp3";
 		level.nextLevel="devLevel";
-		level.registerAsset("Colorbags");
+		level.registerAsset("PeeingPunk");
 		level.initAssets=function(){
-			var bagthrower = this.initAsset("Colorbags");
+			var bagthrower = this.initAsset("PeeingPunk");
 			bagthrower.startX=190;
 			bagthrower.startY=115;
-			bagthrower.freq=20;
-			bagthrower.random=5;
-			bagthrower.power=0.2;
+			bagthrower.freq=1;
+			bagthrower.random=0.3;
+			bagthrower.power=2;
 			bagthrower.endState=DEADLY;
 			bagthrower.show();
 		}
