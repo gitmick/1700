@@ -19,6 +19,9 @@ function Tank() {
 	this.collisionType=EVERBLOCK;
 	this.hitCount=0;
 	
+	this.price=10000;
+	this.billName="Panzerwagen";
+	
 }
 Tank.prototype = new Asset();
 Tank.prototype.load = function() {

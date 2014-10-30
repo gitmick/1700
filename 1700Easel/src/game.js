@@ -192,6 +192,7 @@ WinAction.prototype.act = function() {
 			game.level.start(game.machine);
 		};
 		this.started=true;
+		console.log(timeKeeper.toString());
 	}
 }
 
@@ -213,6 +214,9 @@ LostAction.prototype.act = function() {
 		game.level.start(game.machine);
 	};
 	this.started=true;
+	
+	console.log(timeKeeper.toString());
+	
 }
 }
 
@@ -220,6 +224,9 @@ LostAction.prototype.act = function() {
 function TimeKeeper() {
 	this.moneyLeft=870000;
 	this.counter=0;
+	this.pricedAssets = new Array();
+	this.policeCount=0;
+	this.pricePolice=500;
 }
 
 TimeKeeper.prototype.tick = function() {
@@ -230,4 +237,37 @@ TimeKeeper.prototype.tick = function() {
 			game.trigger.bang(NO_MONEY_LEFT);
 		}
 	}
+}
+
+TimeKeeper.prototype.reset = function() {
+	this.pricedAssets = new Array();
+	this.policeCount=0;
+}
+
+TimeKeeper.prototype.bang = function(name) {
+	if (name == ADD_POLICEMEN) {
+		this.policeCount++;
+		this.moneyLeft-=this.pricePolice;
+	}
+}
+
+TimeKeeper.prototype.registerAsset=function(name,value) {
+	this.pricedAssets.push(new PricedAsset(name,value));
+	this.moneyLeft-=value;
+}
+
+TimeKeeper.prototype.toString = function() {
+	var string="Rechnung:\n";
+	string+=(this.counter/(25*60)) +" Minuten \n";
+	string+=this.policeCount+" Polizisten: "+(this.policeCount*this.pricePolice)+"\n";
+	for (var i=0;i<this.pricedAssets.length;i++) {
+		pricedAsset = this.pricedAssets[i];
+		string+=pricedAsset.name+" "+pricedAsset.value+"\n";
+	}
+	return string;
+}
+
+function PricedAsset(name,value) {
+	this.name=name;
+	this.value=value;
 }

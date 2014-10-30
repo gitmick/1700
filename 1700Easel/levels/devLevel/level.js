@@ -41,7 +41,7 @@
 			
 			
 			var bagthrower = this.initAsset("Colorbags");
-			bagthrower.startX=820;
+			bagthrower.startX=790;
 			bagthrower.startY=0;
 			bagthrower.show();
 			

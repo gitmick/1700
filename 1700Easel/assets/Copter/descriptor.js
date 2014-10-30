@@ -3,6 +3,8 @@ function Copter() {
 	this.targetX=0;
 	this.targetY=0;
 	this.steps=100;
+	this.price=10000;
+	this.billName="Hubschrauber";
 }
 Copter.prototype = new Asset();
 Copter.prototype.load = function() {

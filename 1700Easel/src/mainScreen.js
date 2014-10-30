@@ -181,6 +181,7 @@ FolderLevel.prototype.init = function() {
 
 	};
 	this.loadAssets.load = function() {
+		timeKeeper.reset();
 		displayEntityHolder.destroy();
 		stage.removeAllChildren();
 		this.level.world.init(this.level);
@@ -191,6 +192,8 @@ FolderLevel.prototype.init = function() {
 		game.trigger.addTrigger(POLICEMAN_SAVED, trigger);
 		game.trigger.addTrigger(POLICEMAN_KILLED, trigger);
 		game.trigger.addTrigger(ADD_POLICEMEN_FINISHED, trigger);
+		
+		game.trigger.addTrigger(ADD_POLICEMEN,timeKeeper);
 		soundPlayer.play(this.level.name,5,100);
 	};
 }

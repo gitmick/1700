@@ -16,6 +16,9 @@ function Asset() {
 	this.collisionSet=false;
 	this.collisionLastX=0;
 	this.collisionLastY=0;
+	
+	this.price=0;
+	this.billName;
 }
 
 Asset.prototype.merge = function(asset) {
@@ -95,6 +98,9 @@ Asset.prototype.loadSound = function(file,name) {
 
 Asset.prototype.show = function () {
 	this.displayEntity = new DisplayEntity();
+	if (this.billName && this.price>0) {
+		timeKeeper.registerAsset(this.billName, this.price);
+	}
 	this.showMe=true;
 };
 
