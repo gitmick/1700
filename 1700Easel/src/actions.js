@@ -107,7 +107,7 @@ Fall.prototype.act=function() {
 		speed=1;
 		this.effect("Float");
 	}
-	else
+	else if (height>50)
 		this.effect("FloatFall");
 	for (i=0;i<speed;i++) {
 		if (this.check()) {
@@ -175,8 +175,10 @@ Float.prototype.actionPossible = function(action) {
 	return true;
 }
 
-function Bomb() {
-	this.counter=100+parseInt(Math.random()*20);
+function Bomb(random) {
+	if (!random)
+		random=0;
+	this.counter=100+parseInt(Math.random()*random);
 }
 Bomb.prototype=new Action();
 
@@ -493,7 +495,7 @@ BombAll.prototype.execute=function() {
 	for(var i=0;i<game.lemmings.length;i++){
 		var lemming = game.lemmings[i];
 		if (!lemming.dead)
-			lemming.setAction(new Bomb());
+			lemming.setAction(new Bomb(20));
 	}
 	return true;
 }

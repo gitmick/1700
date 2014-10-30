@@ -288,7 +288,9 @@ TimeKeeper.prototype.toString = function() {
 		string+=pricedAsset.name+" "+"\n\n";
 	}
 	string+="-------------------------------------------\n\n";
-	string+="Summe:";
+	string+="Summe:\n\n\n\n";
+	string+="-------------------------------------------\n\n";
+	string+="Restbudget:";
 	return string;
 }
 TimeKeeper.prototype.toString2 = function() {
@@ -305,7 +307,9 @@ TimeKeeper.prototype.toString2 = function() {
 		string+=formatPrice(pricedAsset.value)+" €\n\n";
 	}
 	string+="\n\n";
-	string+=formatPrice(sum)+" €";
+	string+=formatPrice(sum)+" €\n\n\n\n";
+	string+="-------------------------------------------\n\n";
+	string+=formatPrice(this.moneyLeft);
 	return string;
 }
 
