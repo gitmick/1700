@@ -192,12 +192,12 @@ WinAction.prototype.act = function() {
 			game.level.start(game.machine);
 		};
 		this.started=true;
-		gameText = new createjs.Text(timeKeeper.toString(), "20px VT323", "#ff7700"); 
+		gameText = new createjs.Text(timeKeeper.toString(), "20px Visitor", "#ff7700"); 
 		gameText.x=20;
 		gameText.y=20;
 		stage.addChild(gameText);
 		
-		gameText2 = new createjs.Text(timeKeeper.toString2(), "20px VT323", "#ff7700"); 
+		gameText2 = new createjs.Text(timeKeeper.toString2(), "20px Visitor", "#ff7700"); 
 		gameText2.x=300;
 		gameText2.y=20;
 		stage.addChild(gameText2);
@@ -223,12 +223,13 @@ LostAction.prototype.act = function() {
 	};
 	this.started=true;
 	
-	gameText = new createjs.Text(timeKeeper.toString(), "20px VT323", "#ff7700"); 
+
+	gameText = new createjs.Text(timeKeeper.toString(), "20px Visitor", "#ff7700"); 
 	gameText.x=20;
 	gameText.y=20;
 	stage.addChild(gameText);
 	
-	gameText2 = new createjs.Text(timeKeeper.toString2(), "20px VT323", "#ff7700"); 
+	gameText2 = new createjs.Text(timeKeeper.toString2(), "20px Visitor", "#ff7700"); 
 	gameText2.x=300;
 	gameText2.y=20;
 	stage.addChild(gameText2);
@@ -298,18 +299,18 @@ TimeKeeper.prototype.toString2 = function() {
 	var sum =0;
 	var time = (this.counter/(25*60));
 	sum+=time*1200;
-	string+=formatPrice(time*1200)+" €\n\n";
-	string+=formatPrice(this.policeCount*this.pricePolice)+" €\n\n";
+	string+=formatPrice(time*1200)+" EUR\n\n";
+	string+=formatPrice(this.policeCount*this.pricePolice)+" EUR\n\n";
 	sum+=(this.policeCount*this.pricePolice);
 	for (var i=0;i<this.pricedAssets.length;i++) {
 		pricedAsset = this.pricedAssets[i];
 		sum+=pricedAsset.value;
-		string+=formatPrice(pricedAsset.value)+" €\n\n";
+		string+=formatPrice(pricedAsset.value)+" EUR\n\n";
 	}
 	string+="\n\n";
-	string+=formatPrice(sum)+" €\n\n\n\n";
+	string+=formatPrice(sum)+" EUR\n\n\n\n";
 	string+="-------------------------------------------\n\n";
-	string+=formatPrice(this.moneyLeft);
+	string+=formatPrice(this.moneyLeft)+" EUR" ;
 	return string;
 }
 

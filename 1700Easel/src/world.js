@@ -95,13 +95,13 @@ World.prototype.init = function(lvl) {
 	this.repaint.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	//stage.addChild(this.foreGroundMask);
 	
-	this.gameText = new createjs.Text("Gugug", "20px VT323", "#ff7700"); 
+	this.gameText = new createjs.Text("Gugug", "20px Visitor", "#ff7700"); 
 	this.gameText.x=20;
 	this.gameText.y=20;
 	this.gameText.cache(0,0,1000,40);
 	stage.addChild(this.gameText);
 	
-	this.policeText= new createjs.Text("", "20px VT323", "#ff7700"); 
+	this.policeText= new createjs.Text("", "20px Visitor", "#ff7700"); 
 	this.policeText.x=20;
 	this.policeText.y=60;
 	this.policeText.cache(0,0,300,40);
