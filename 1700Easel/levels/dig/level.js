@@ -21,12 +21,6 @@
 		level.minSafeCount=50;
 		level.soundFile="track.mp3";
 		level.nextLevel="devLevel";
-		level.registerAsset("Pee");
-		level.initAssets=function(){
-			p = this.initAsset("Pee");
-			p.startX=600;
-			p.startY=280;
-			p.show();
-		}
+		level.initAssets=function(){}
 		
 	}
