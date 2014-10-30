@@ -14,13 +14,22 @@
 		level.actionCount[JumpAll]=1;
 		level.maxPoliceMen=10;
 		level.policeDelay=50;
-		level.dropX=-10;
-		level.dropY=280;
+		level.dropX=27;
+		level.dropY=111;
 		level.goalX=814;
 		level.goalY=310;
 		level.minSafeCount=50;
 		level.soundFile="track.mp3";
 		level.nextLevel="devLevel";
-		level.initAssets=function(){}
-		
+		level.registerAsset("Colorbags");
+		level.initAssets=function(){
+			var bagthrower = this.initAsset("Colorbags");
+			bagthrower.startX=190;
+			bagthrower.startY=115;
+			bagthrower.freq=20;
+			bagthrower.random=5;
+			bagthrower.power=0.2;
+			bagthrower.endState=DEADLY;
+			bagthrower.show();
+		}
 	}

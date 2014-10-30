@@ -29,6 +29,10 @@ function Colorbags() {
 	this.thrower = new Image();
 	this.bag = new Image();
 	this.bitmap;
+	this.freq=200;
+	this.random=1;
+	this.power=4.2;
+	this.endState=INVISIBLE_BLOCK;
 }
 Colorbags.prototype = new Asset();
 Colorbags.prototype.load = function () {
@@ -54,9 +58,12 @@ function ThrowAction() {
 }
 ThrowAction.prototype = new AssetAction();
 ThrowAction.prototype.act = function () {
-	if (this.counter++%200==0) {
+	if (this.counter++%this.asset.freq==0) {
 		colorBag = new ColorBag();
 		colorBag.init(this.asset.bitmap,this.asset.startX,this.asset.startY,-1);
+		colorBag.power=this.asset.power;
+		colorBag.random=this.asset.random;
+		colorBag.endState=this.endState;
 		level.assets.push(colorBag);
 	}
 }
@@ -65,10 +72,12 @@ function BagFallAction() {
 	this.lastX=0;
 	this.lastY=0;
 	this.counter=0;
-	this.factor = Math.random()+4.2;
+	
 }
 BagFallAction.prototype = new AssetAction();
 BagFallAction.prototype.act = function() {
+	if (this.counter==0)
+		this.factor = this.asset.random*Math.random()+this.asset.power;
 	this.counter++;
 	
 	speedX=this.factor;
@@ -91,7 +100,7 @@ BagFallAction.prototype.act = function() {
 				this.asset.pos(this.asset.displayEntity.x+(1*this.asset.direction),this.asset.displayEntity.y+divider);
 			var collisionValue = this.asset.canFall(); 
 			if (collisionValue!=FREE && collisionValue!=DEADLY) {
-				this.asset.collisionType=INVISIBLE_BLOCK;
+				this.asset.collisionType=this.asset.endState;
 				if (collisionValue==EVERBLOCK) {
 					tank = this.asset.findCollidingItem();
 					if (tank && tank.bang) {
