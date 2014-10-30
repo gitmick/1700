@@ -324,12 +324,16 @@ Walk.prototype.check=function() {
 	}
 	if (this.lemming.againstWall()  && 
 			(!this.lemming.canClimb  || this.lemming.x<30 || this.lemming.isPolice())) {
+		if (this.lemming.dead)
+			return false;
 		if (this.lemming.isPolice()) {
 			this.effect3("Ausweis","Momenterl","Ha",0.3);
 		}
 		this.lemming.reverse();
 	}
 	else if (this.lemming.againstWall()) {
+		if (this.lemming.dead)
+			return false;
 		this.lemming.setAction(new ClimbUp());
 	}
 	return true;

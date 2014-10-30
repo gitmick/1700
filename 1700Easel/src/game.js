@@ -133,8 +133,6 @@ PlayAction.prototype.act = function() {
 	
 	for(var i=0;i<game.lemmings.length;i++){
 		var lemming = game.lemmings[i];
-		if (lemming.dead)
-			continue;
 		for(var s=0;s<game.speedFactor;s++){			
 				lemming.move();
 		}

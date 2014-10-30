@@ -103,6 +103,11 @@ Lemming.prototype.kill=function() {
 	this.left();
 }
 
+Lemming.prototype.showKill=function() {
+	this.dead=true;
+	this.setAction(new Kill());
+}
+
 Lemming.prototype.won=function() {
 	if (this.action)
 		this.action.stop();
@@ -235,48 +240,48 @@ Lemming.prototype.getWall=function() {
 Lemming.prototype.hasRoof=function(){
 	var result = game.level.world.canFall(this.backFootX(),this.y-1,this.width/4);
 	if (result==DEADLY)
-		this.kill();
+		this.showKill();
 	return (result!=FREE);
 }
 
 Lemming.prototype.hasFloor=function(){
 	var result = this.getFloor();
 	if (result==DEADLY)
-		this.kill();
+		this.showKill();
 	return (result!=FREE);
 }
 
 Lemming.prototype.againstWall=function(){
 	var result = this.getWall();
 	if (result==DEADLY)
-		this.kill();
+		this.showKill();
 	return (result!=FREE);
 }
 
 Lemming.prototype.isDeadly=function() {
 	var result = this.getWall();
 	if (result==DEADLY)
-		this.kill();
+		this.showKill();
 }
 
 Lemming.prototype.canBash=function(){
 	var result = game.level.world.canWalk(this.frontFootX()+(8*this.direction),this.y,this.height,this.maxDY/2);
 	if (result==DEADLY)
-		this.kill();
+		this.showKill();
 	return result;
 }
 
 Lemming.prototype.canMine=function(){
 	var result = game.level.world.canWalk(this.frontFootX()+(8*this.direction),this.y+this.height/2,this.height,this.maxDY/2);
 	if (result==DEADLY)
-		this.kill();
+		this.showKill();
 	return result;
 }
 
 Lemming.prototype.canDig=function(){
 	var result = this.getFloor();
 	if (result==DEADLY)
-		this.kill();
+		this.showKill();
 	return (result!=EVERBLOCK && result!=POLICE);
 }
 
