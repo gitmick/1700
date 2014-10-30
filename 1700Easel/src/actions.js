@@ -280,7 +280,7 @@ Bash.prototype.check=function() {
 	
 	bashResult = this.lemming.canBash();
 	if (bashResult==POLICE || bashResult==EVERBLOCK) {
-		this.lemming.direction*-1;
+		this.lemming.reverse();
 		this.lemming.setAction(new Walk());
 		this.effectFull("hoppala");
 		return false;
@@ -327,11 +327,7 @@ Walk.prototype.check=function() {
 		if (this.lemming.isPolice()) {
 			this.effect3("Ausweis","Momenterl","Ha",0.3);
 		}
-		this.lemming.direction*=-1;
-		if (this.lemming.direction>0)
-			this.lemming.circle.gotoAndPlay("run");
-		else
-			this.lemming.circle.gotoAndPlay("runR");
+		this.lemming.reverse();
 	}
 	else if (this.lemming.againstWall()) {
 		this.lemming.setAction(new ClimbUp());
@@ -356,7 +352,7 @@ ClimbUp.prototype = new Action();
 ClimbUp.prototype.check = function () {
 	if (this.lemming.hasRoof()) {
 		if (this.lemming.dead)return false;
-		this.lemming.direction*=-1;
+		this.lemming.reverse();
 		this.lemming.setAction(new Fall());
 		return false;
 	}
@@ -415,7 +411,7 @@ Mine.prototype=new Action();
 Mine.prototype.check = function() {
 	mineResult = this.lemming.canMine();
 	if (mineResult==POLICE || mineResult==EVERBLOCK) {
-		this.lemming.direction*-1;
+		this.lemming.reverse();
 		this.lemming.setAction(new Walk());
 		this.effectFull("hoppala");
 		return false;
@@ -457,11 +453,7 @@ Jump.prototype.check=function() {
 		return false;
 	}
 	if (this.lemming.againstWall()) {
-		this.lemming.direction*=-1;
-		if (this.lemming.direction>0)
-			this.lemming.circle.gotoAndPlay("run");
-		else
-			this.lemming.circle.gotoAndPlay("runR");
+		this.lemming.reverse();
 	}
 	return true;
 }

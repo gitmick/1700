@@ -15,9 +15,9 @@
 		level.maxPoliceMen=30;
 		level.policeDelay=50;
 		level.dropX=100;
-		level.dropY=230;
+		level.dropY=193;
 		level.goalX=814;
-		level.goalY=310;
+		level.goalY=273;
 		level.minSafeCount=20;
 		level.soundFile="track.mp3";
 		level.registerAsset("Copter");
@@ -27,16 +27,16 @@
 		level.initAssets = function() {
 			var copter = this.initAsset("Copter");
 			copter.startX=-200;
-			copter.startY=150;
+			copter.startY=127;
 			copter.targetX=0;
-			copter.targetY=150;
+			copter.targetY=127;
 			copter.show();
 			
 			var tcopter = this.initAsset("Tank");
 			tcopter.startX=-100;
-			tcopter.startY=264;
+			tcopter.startY=231;
 			tcopter.targetX=500;
-			tcopter.targetY=264;
+			tcopter.targetY=231;
 			tcopter.show();
 			
 			

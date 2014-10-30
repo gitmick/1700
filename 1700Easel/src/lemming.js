@@ -32,7 +32,26 @@ function Lemming() {
 	
 	this.floor=-1;
 	this.wall=-1;
+	
+	this.animationName="run";
+	
 }
+
+Lemming.prototype.reverse = function() {
+	this.direction*=-1;
+	this.updateAnimation();
+}
+
+Lemming.prototype.updateAnimation = function(a) {
+	if (a) {
+		this.animationName=a;
+	}
+	if (this.direction>0)
+		this.circle.gotoAndPlay(this.animationName);
+	else
+		this.circle.gotoAndPlay(this.animationName+"R");
+} 
+
 
 Lemming.prototype.checkAction=function(a) {
 	if (this.action) 
