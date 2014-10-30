@@ -388,6 +388,7 @@ Dig.prototype.check = function() {
 	}
 	if (this.counter--==0) {
 		this.lemming.setAction(new Walk());
+		return false;
 	}
 	this.lemming.setProgress(this.counter/this.counterStart);
 	return true;
