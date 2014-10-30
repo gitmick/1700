@@ -495,6 +495,7 @@ BombAll.prototype.execute=function() {
 		if (!lemming.dead)
 			lemming.setAction(new Bomb());
 	}
+	return true;
 }
 
 
@@ -503,6 +504,7 @@ function FinishSpeed() {
 
 FinishSpeed.prototype.execute=function() {
 	game.speedFactor=4;
+	return false;
 }
 
 
@@ -510,8 +512,14 @@ function MorePolicemen() {
 }
 
 MorePolicemen.prototype.execute=function() {
-	if (level.policeDelay>10)
+	if (level.policeDelay>10) {
 		level.policeDelay-=5;
+	}
+	return (level.policeDelay>10);
+}
+
+MorePolicemen.prototype.check = function() {
+	return (level.policeDelay>10);
 }
 
 function LessPolicemen() {
@@ -519,4 +527,5 @@ function LessPolicemen() {
 
 LessPolicemen.prototype.execute=function() {
 		level.policeDelay+=5;
+		return true;
 }

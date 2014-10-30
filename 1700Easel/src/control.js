@@ -119,6 +119,7 @@ function ControlElement() {
 	this.selectionShape;
 	this.scaleBitmap;
 	this.action;
+	this.active=true;
 }
 
 ControlElement.prototype.select = function(x,y){
@@ -130,18 +131,22 @@ ControlElement.prototype.select = function(x,y){
 			lastCE.selectionShape.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(lastCE.displayEntity.x,lastCE.displayEntity.y,36,36);
 		}
 		game.control.selectedAction=this.action;
+		this.selectionShape.graphics.clear();
 		this.selectionShape.graphics.beginFill("rgba(255,0,0,0.5)").drawRect(0,0,36,36);
 	}
 	else {
+		this.active=false;
 		this.selectionShape.graphics.clear();
 		this.selectionShape.graphics.beginFill("rgba(100,100,100,0.5)").drawRect(0,0,36,36);
 	}
 };
 ControlElement.prototype.explore = function(x,y){
-	this.scaleBitmap.setTransform(this.displayEntity.x-18,this.displayEntity.y-72,2,2);
+	if (this.active)
+		this.scaleBitmap.setTransform(this.displayEntity.x-18,this.displayEntity.y-72,2,2);
 };
 ControlElement.prototype.left = function(x,y){
-	this.scaleBitmap.setTransform(this.displayEntity.x,this.displayEntity.y,1,1);
+	if (this.active)
+		this.scaleBitmap.setTransform(this.displayEntity.x,this.displayEntity.y,1,1);
 };
 ControlElement.prototype.collect = function(x,y){};
 
@@ -151,17 +156,35 @@ function GlobalControlElement() {
 	this.selectionShape;
 	this.scaleBitmap;
 	this.action;
+	this.active=true;
 }
 
 GlobalControlElement.prototype.select = function(x,y){
 	a = new this.action;
-	a.execute();
+	if (a.check && a.check())
+		this.active=true;
+	if (this.active) {	
+		active = a.execute();
+		if (!active) {
+			this.selectionShape.graphics.clear();
+			this.selectionShape.graphics.beginFill("rgba(100,100,100,0.5)").drawRect(0,0,36,36);
+			this.left();
+		}
+		else {
+			this.selectionShape.graphics.clear();
+			this.selectionShape.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(0,0,36,36);
+			
+		}
+		this.active =active;
+	}
 };
 GlobalControlElement.prototype.explore = function(x,y){
-	this.scaleBitmap.setTransform(this.displayEntity.x-18,this.displayEntity.y-72,2,2);
+	if (this.active)
+		this.scaleBitmap.setTransform(this.displayEntity.x-18,this.displayEntity.y-72,2,2);
 };
 GlobalControlElement.prototype.left = function(x,y){
-	this.scaleBitmap.setTransform(this.displayEntity.x,this.displayEntity.y,1,1);
+	if (this.active)
+		this.scaleBitmap.setTransform(this.displayEntity.x,this.displayEntity.y,1,1);
 };
 
 
