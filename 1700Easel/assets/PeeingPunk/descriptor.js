@@ -31,6 +31,16 @@ Pipi.prototype.destroy = function() {
 };
 
 function PeeingPunk() {
+	
+	this.data = {
+			 framerate: 18,
+		     images: ["assets/PeeingPunk/pee.png"],
+		     frames: {width:32, height:32},
+		     animations: {hide:[0,0],pee:[1,1]}
+		 };
+	this.peeSheet;
+	this.sprite;
+	
 	this.thrower = new Image();
 	this.bag = new Image();
 	this.bitmap;
@@ -43,14 +53,14 @@ function PeeingPunk() {
 }
 PeeingPunk.prototype = new Asset();
 PeeingPunk.prototype.load = function () {
-	this.thrower=this.loadImage("Thrower.png", this.thrower);
+	this.peeSheet = new createjs.SpriteSheet(this.data);
 	this.bag=this.loadImage("pipi.png", this.bag);
 };
 
 PeeingPunk.prototype.drawInitial = function() {
 	game.trigger.addTrigger(STOP_COLOR, this);
 	this.bitmap = new createjs.Bitmap(this.bag);
-	this.displayEntity.addBitmap(this.thrower, true);
+	this.sprite=this.displayEntity.addSprite(this.peeSheet, "hide",true).element;
 	this.displayEntity.pos(this.startX, this.startY);
 	this.setAction(new PunkPeeAction());
 };
@@ -65,7 +75,35 @@ function PunkPeeAction() {
 }
 PunkPeeAction.prototype = new AssetAction();
 PunkPeeAction.prototype.act = function () {
-	if (this.counter++%this.asset.freq*Math.random()==0) {
+	this.counter++;
+	if (this.counter%100==0) {
+		this.asset.clearCollision();
+		this.asset.collisionOffsetX=10;
+		this.asset.collisionOffsetY=16;
+		this.asset.collisionHeight=16;
+		this.asset.collisionWidth=12;
+		this.asset.collisionType=EVERBLOCK;
+		this.asset.finish();
+		this.asset.sprite.gotoAndPlay("hide");
+	}
+	if (this.counter%100==50) {
+		this.asset.clearCollision();
+		this.asset.collisionOffsetX=0;
+		this.asset.collisionOffsetY=0;
+		this.asset.collisionHeight=32;
+		this.asset.collisionWidth=22;
+		this.asset.collisionType=DEADLY;
+		this.asset.finish();
+		this.asset.sprite.gotoAndPlay("pee");
+	}
+	if (this.counter%100>60) {
+		this.pee();
+	}
+	
+}
+
+PunkPeeAction.prototype.pee = function() {
+	if (this.counter%this.asset.freq*Math.random()==0) {
 		colorBag = new Pipi();
 		colorBag.init(this.asset.bitmap,this.asset.startX+5,this.asset.startY+24,-1);
 		colorBag.power=this.asset.power;
