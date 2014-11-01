@@ -1,8 +1,8 @@
 
 
 	level.load = function() {
-		level.title="Polizeipräsidententraum";
-		level.description="So war´s gedacht, \n\nrein ins Haus, \n\nMieter raus!";
+		level.title="I say jump!";
+		level.description="Springen wählen.\n\nMit gedrückter Maus durch die Polizisten fahren.\n\nSobald man die Maus loslässt springt der erste.";
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";
 		level.actionCount[Float]=10;
@@ -15,7 +15,7 @@
 		level.actionCount[Dig]=10;
 		level.actionCount[JumpAll]=1;
 		level.maxPoliceMen=10;
-		level.policeDelay=25;
+		level.policeDelay=10;
 		level.dropX=-10;
 		level.dropY=280;
 		level.goalX=814;
@@ -24,12 +24,26 @@
 		level.soundFile="track.mp3";
 		level.nextLevel="couch";
 		level.initAssets=function(){};
-		/*level.registerAsset("Pee");
+		level.registerAsset("PeeingPunk");
+		level.registerAsset("barrel");
 		level.initAssets=function(){
-			p = this.initAsset("Pee");
-			p.startX=600;
+			p = this.initAsset("PeeingPunk");
+			p.startX=300;
 			p.startY=280;
+			p.freq=1;
+			p.random=0.7;
+			p.power=2;
+			p.endState=DEADLY;
+			p.cycleLength=300;
+			p.pauseLength=250;
 			p.show();
-		}*/
+			
+			ba = level.initAsset("barrel");
+			ba.startX=800;
+			ba.startY=310;
+			ba.maxBarrels=2;
+			ba.show();
+		}
+		
 		
 	}

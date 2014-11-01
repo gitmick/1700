@@ -121,12 +121,15 @@ function StartLevel() {
 	this.loadAction = new LevelLoadAction();
 	this.levelInitialize = new OneShot();
 	this.loadAction.afterLoad = this.levelInitialize;
+	this.scrollAction = new MachineAction();
+	this.levelInitialize.followUp = this.scrollAction;
 }
 StartLevel.prototype.init = function(){};
 StartLevel.prototype.start = function(machine) {
 	interactionHandler.reset();
 	this.loadAction.level=this;
 	this.levelInitialize.level=this;
+	this.scrollAction.level=this;
 	this.init();
 	machine.addAction(this.loadAction);
 }

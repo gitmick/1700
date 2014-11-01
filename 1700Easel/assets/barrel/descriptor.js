@@ -46,10 +46,11 @@ BarrelInstance.prototype.frontFootX = function() {
 function barrel() {
 	this.thrower = new Image();
 	this.bag = new Image();
+	this.maxBarrels=1;
 }
 barrel.prototype = new Asset();
 barrel.prototype.load = function () {
-	this.thrower=this.loadImage("Thrower.png", this.thrower);
+	//this.thrower=this.loadImage("Thrower.png", this.thrower);
 	this.bag=this.loadImage("barrel.png", this.bag);
 };
 
@@ -66,14 +67,16 @@ barrel.prototype.bang=function(name) {
 
 
 function StartBarrelAction() {
+	this.barrelCount=0;
 	this.counter=0;
 }
 StartBarrelAction.prototype = new AssetAction();
 StartBarrelAction.prototype.act = function () {
-	if (this.counter++%200==0) {
+	if (this.counter++%200==0 && this.barrelCount<this.asset.maxBarrels) {
 		ba = new BarrelInstance();
 		ba.init(this.asset.bag,this.asset.startX,this.asset.startY,-1);
 		level.assets.push(ba);
+		this.barrelCount++;
 	}
 }
 

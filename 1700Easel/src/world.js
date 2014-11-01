@@ -66,11 +66,15 @@ World.prototype.setMoneyLeft=function(left) {
 
 World.prototype.updateText = function() {
 	if (this.dirty) {
-		this.gameText.text="Im Einsatz: "+this.policeOut+" Im Haus: "+this.policeSaved+" Geld verbraten: "+this.moneyLeft;
-		this.gameText.updateCache();
+		this.setText("Im Einsatz: "+this.policeOut+" Im Haus: "+this.policeSaved+" Geld verbraten: "+this.moneyLeft);
 		this.dirty=false;
 	}
 };
+
+World.prototype.setText = function(text) {
+	this.gameText.text=text;
+	this.gameText.updateCache();
+}
 
 World.prototype.init = function(lvl) {
 	this.foreGroundMask = this.displayEntity.addShape(true).element;

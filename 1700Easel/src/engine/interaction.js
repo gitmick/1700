@@ -43,6 +43,10 @@ function Button(x,y,w,h) {
 	this.displayEntity = new DisplayEntity();
 	this.displayEntity.addInteractionEntity(w, h, this, false);
 	this.displayEntity.pos(x, y);
+	this.time=Date.now();
+}
+Button.prototype.active = function(diff) {
+	return (Date.now()-this.time>diff);
 }
 
 

@@ -48,46 +48,69 @@ MainLevel.prototype.init = function () {
 
 
 function SelectLevel () {
-	this.levelScreen = new Image();
+	
+	this.worldHtmlImage= new Image();
+	this.backgroundHtmlImage = new Image();
+	this.repaintHtmlImage = new Image();
+	this.mapHtmlImage= new Image();
+
+	this.world = new World();
 	
 }
+
+function LevelButton(x,y,w,h,name) {
+	this.displayEntity = new DisplayEntity();
+	this.displayEntity.addInteractionEntity(w, h, this, true);
+	this.displayEntity.pos(x, y);
+	this.time=Date.now();
+	this.name=name;
+}
+LevelButton.prototype.active = function(diff) {
+	return (Date.now()-this.time>diff);
+}
+
+LevelButton.prototype.select=function(x,y) {
+	if (!this.active(100))
+		return;
+	game.level = new FolderLevel(this.name);
+	game.level.start(game.machine);
+}
+
 SelectLevel.prototype = new StartLevel();
 SelectLevel.prototype.init = function () {
-	
-	
+	this.buttons = new Array();
 	this.loadAction.load = function() {
-		this.level.mainScreen=this.loader.loadImage("img/levelScreen.png", this.level.levelScreen);
-		
-
-		 
+		this.level.worldHtmlImage=this.loader.loadImage("img/levelScreen.png", this.level.worldHtmlImage);
 	};
 	this.levelInitialize.fire = function () {
-		var bitmap = new createjs.Bitmap(this.level.levelScreen);
-		stage.addChild(bitmap);
-		startObject = new Button(50,50,100,100);
-		startObject.select = function(x, y) {
-			game.level = new FolderLevel("half");
-			game.level.start(game.machine);
-		};
+		this.backgroundHtmlImage = this.level.worldHtmlImage;
+		this.repaintHtmlImage = this.level.worldHtmlImage;
+		this.mapHtmlImage= this.level.worldHtmlImage;
+		this.level.world.init(this.level);
+		this.level.world.setText("Select Level");
+		this.level.buttons.push(new LevelButton(50,50,100,100,"buerstelDream"));
+		this.level.buttons.push(new LevelButton(200,50,100,100,"couch"));
+		this.level.buttons.push(new LevelButton(350,50,100,100,"jump"));
+		this.level.buttons.push(new LevelButton(500,50,100,100,"buerstelDream"));
+		this.level.buttons.push(new LevelButton(650,50,100,100,"buerstelDream"));
+		this.level.buttons.push(new LevelButton(800,50,100,100,"buerstelDream"));
+		this.level.buttons.push(new LevelButton(50,200,100,100,"dig"));
+		this.level.buttons.push(new LevelButton(200,200,100,100,""));
+		this.level.buttons.push(new LevelButton(350,200,100,100,""));
+		this.level.buttons.push(new LevelButton(500,200,100,100,""));
+		this.level.buttons.push(new LevelButton(650,200,100,100,""));
+		this.level.buttons.push(new LevelButton(800,200,100,100,""));
 		
-		startObject = new Button(200,50,100,100);
-		startObject.select = function(x, y) {
-			game.level = new FolderLevel("dig");
-			game.level.start(game.machine);
-		};
-		
-		startObject = new Button(50,200,100,100);
-		startObject.select = function(x, y) {
-			game.level = new FolderLevel("devLevel");
-			game.level.start(game.machine);
-		};
-		
-		startObject = new Button(200,200,100,100);
-		startObject.select = function(x, y) {
-			game.level = new FolderLevel("donkey1");
-			game.level.start(game.machine);
-		};
 	};
+	this.scrollAction.act = function() {
+		def = new DEFrame();
+		def.currentScroll = game.currentScroll;
+		
+		for (var i=0; i<this.level.buttons.length;i++) {
+			var asset = this.level.buttons[i];
+			asset.displayEntity.adjust(def);
+		}
+	}
 };
 
 var introSoundBlock = new MachineBlock();
@@ -116,6 +139,7 @@ FolderLevel.prototype.init = function() {
 	
 	this.loadIntroAction.load = function() {
 		this.level.introImage=this.loader.loadImage(this.level.dirPath+"/introScreen.png",this.level.introImage);
+		this.loader.loadScript(this.level.dirPath+"/level.js");
 	};
 	this.showIntroAction.load = function() {		
 		game.lemmings = [];
@@ -124,9 +148,19 @@ FolderLevel.prototype.init = function() {
 		
 		var bitmap = new createjs.Bitmap(this.level.introImage);
 		stage.addChild(bitmap);
+		level.load();
+		level.name=this.level.name;
 		
+		gameText = new createjs.Text(level.title, "20px Visitor", "#ff7700");
+		stage.addChild(gameText);
+		gameText.x=50;
+		gameText.y=50;
 		
-		this.loader.loadScript(this.level.dirPath+"/level.js");
+		gameText = new createjs.Text(level.description, "14px Visitor", "#ff7700");
+		stage.addChild(gameText);
+		gameText.x=50;
+		gameText.y=100;
+		
 		this.level.worldHtmlImage=this.loader.loadImage(this.level.dirPath+"/world.png",this.level.worldHtmlImage);
 		this.level.mapHtmlImage=this.loader.loadImage(this.level.dirPath+"/map.png",this.level.mapHtmlImage);
 		this.level.repaintHtmlImage=this.loader.loadImage(this.level.dirPath+"/repaint.png",this.level.repaintHtmlImage);
@@ -176,8 +210,7 @@ FolderLevel.prototype.init = function() {
 		};
 		this.loader.loadSound(this.level.dirPath+"/track.mp3",this.level.name);
 		this.machine.addBlock(introSoundBlock);
-		level.load();
-		level.name=this.level.name;
+		
 
 	};
 	this.loadAssets.load = function() {
@@ -194,7 +227,7 @@ FolderLevel.prototype.init = function() {
 		game.trigger.addTrigger(ADD_POLICEMEN_FINISHED, trigger);
 		
 		game.trigger.addTrigger(ADD_POLICEMEN,timeKeeper);
-		soundPlayer.play(this.level.name,5,100);
+		soundPlayer.play(this.level.name,1,100);
 	};
 }
 

@@ -1,6 +1,8 @@
 
 
 	level.load = function() {
+		level.title="In die Berg bin i gern.";
+		level.description="Wie am Wühltisch im Möbelhaus";
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";
 		level.actionCount[Float]=10;
@@ -12,15 +14,15 @@
 		level.actionCount[Mine]=10;
 		level.actionCount[Dig]=10;
 		level.actionCount[JumpAll]=1;
-		level.maxPoliceMen=100;
-		level.policeDelay=5;
+		level.maxPoliceMen=10;
+		level.policeDelay=25;
 		level.dropX=-10;
 		level.dropY=280;
 		level.goalX=814;
 		level.goalY=310;
-		level.minSafeCount=50;
+		level.minSafeCount=10;
 		level.soundFile="track.mp3";
-		level.nextLevel="devLevel";
+		level.nextLevel="jump";
 		level.initAssets=function(){}
 		
 	}
