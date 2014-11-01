@@ -24,6 +24,7 @@
 		level.registerAsset("Tank");
 		level.registerAsset("Colorbags");
 		level.registerAsset("Phil");
+		level.registerAsset("Sign");
 		level.initAssets = function() {
 			var copter = this.initAsset("Copter");
 			copter.startX=-200;
@@ -49,6 +50,12 @@
 			phil.startX=420;
 			phil.startY=200;
 			phil.show();
+			
+			var sign = this.initAsset("Sign");
+			sign.startX=120;
+			sign.startY=20;
+			sign.triggerName=STOP_COLOR;
+			sign.show();
 		};
 		
 		
