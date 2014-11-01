@@ -66,7 +66,7 @@ SelectLevel.prototype.init = function () {
 		stage.addChild(bitmap);
 		startObject = new Button(50,50,100,100);
 		startObject.select = function(x, y) {
-			game.level = new FolderLevel("buerstelDream");
+			game.level = new FolderLevel("half");
 			game.level.start(game.machine);
 		};
 		

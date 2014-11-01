@@ -19,11 +19,16 @@ Pipi.prototype.init = function(pic,x,y,dir) {
 	this.collisionWidth=2;
 	this.collisionType=DEADLY;
 	this.setAction(new PipiAction());
-}
+};
 Pipi.prototype.canFall=function(){
 	return game.level.world.canFall(this.displayEntity.x,this.displayEntity.y,2);
-	
-}
+};
+
+Pipi.prototype.destroy = function() {
+	this.setAction(false);
+	this.displayEntity.destroy();
+	arrayWithout(level.assets, this);
+};
 
 function PeeingPunk() {
 	this.thrower = new Image();
@@ -33,6 +38,8 @@ function PeeingPunk() {
 	this.random=1;
 	this.power=4.2;
 	this.endState=INVISIBLE_BLOCK;
+	
+	this.pipis = new Array();
 }
 PeeingPunk.prototype = new Asset();
 PeeingPunk.prototype.load = function () {
@@ -58,13 +65,19 @@ function PunkPeeAction() {
 }
 PunkPeeAction.prototype = new AssetAction();
 PunkPeeAction.prototype.act = function () {
-	if (this.counter++%this.asset.freq==0) {
+	if (this.counter++%this.asset.freq*Math.random()==0) {
 		colorBag = new Pipi();
 		colorBag.init(this.asset.bitmap,this.asset.startX+5,this.asset.startY+24,-1);
 		colorBag.power=this.asset.power;
 		colorBag.random=this.asset.random;
 		colorBag.endState=this.endState;
 		level.assets.push(colorBag);
+		
+		this.asset.pipis.push(colorBag);
+		if (this.asset.pipis.length>50) {
+			this.asset.pipis[0].destroy();
+			this.asset.pipis.shift();
+		}
 	}
 }
 

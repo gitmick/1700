@@ -27,7 +27,7 @@
 			bagthrower.startX=190;
 			bagthrower.startY=115;
 			bagthrower.freq=1;
-			bagthrower.random=0.3;
+			bagthrower.random=0.7;
 			bagthrower.power=2;
 			bagthrower.endState=DEADLY;
 			bagthrower.show();

@@ -2,9 +2,11 @@
  * 
  */
 
+//var fitHeight=200;
+var fitHeight=384;
 
 var canvasWidth=1024;
-var canvasHeight=384;
+var canvasHeight=fitHeight;
 
 var mouseX;
 
@@ -39,14 +41,14 @@ function setSize() {
 	var canvas = document.getElementById('canvas');
 
 	var h=height()*0.994;
-	var w=width()/(height()/384);
+	var w=width()/(height()/fitHeight);
 	
 	
 	if (w<512)
 		w=512;
 	canvas.width=w;
 	canvasWidth=w;
-	canvas.style.width = w*(height()/384)*0.994+'px';
+	canvas.style.width = w*(height()/fitHeight)*0.994+'px';
 	canvas.style.height = h*1.0+'px';
 
 	if (w<512)
