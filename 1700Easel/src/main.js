@@ -64,11 +64,11 @@ function width(){
 	}
 
 
-function tick() {
+function tick(evt) {
 	deviceInteraction.tick();
 	
 	game.update();
-	stage.update();
+	stage.update(evt);
 }
 
 

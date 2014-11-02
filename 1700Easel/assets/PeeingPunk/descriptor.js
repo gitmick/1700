@@ -35,10 +35,10 @@ Pipi.prototype.destroy = function() {
 function PeeingPunk() {
 	
 	this.data = {
-			 framerate: 18,
-		     images: ["assets/PeeingPunk/pee.png"],
-		     frames: {width:32, height:32},
-		     animations: {hide:[0,0],pee:[1,1]}
+			 framerate: 8,
+		     images: ["assets/PeeingPunk/pee3.png"],
+		     frames: {width:36, height:64},
+		     animations: {pee:[0,10],hide:[12,17],away:[17,17],appear:[18,36]}
 		 };
 	this.peeSheet;
 	this.sprite;
@@ -52,11 +52,11 @@ function PeeingPunk() {
 	this.endState=INVISIBLE_BLOCK;
 	
 	this.collisionOffsetX=10;
-	this.collisionOffsetY=16;
+	this.collisionOffsetY=46;
 	this.collisionHeight=16;
 	this.collisionWidth=12;
 	this.collisionType=EVERBLOCK;
-	
+	//this.collisionType=VISIBLE_BLOCK;
 	this.pipis = new Array();
 }
 PeeingPunk.prototype = new Asset();
@@ -68,7 +68,7 @@ PeeingPunk.prototype.load = function () {
 PeeingPunk.prototype.drawInitial = function() {
 	game.trigger.addTrigger(STOP_COLOR, this);
 	this.bitmap = new createjs.Bitmap(this.bag);
-	this.sprite=this.displayEntity.addSprite(this.peeSheet, "hide",true).element;
+	this.sprite=this.displayEntity.addSprite(this.peeSheet, "away",true).element;
 	this.displayEntity.pos(this.startX, this.startY);
 	this.setAction(new PunkPeeAction());
 	this.finish();
@@ -97,6 +97,18 @@ PunkPeeAction.prototype.act = function () {
 //		this.asset.finish();
 		this.asset.sprite.gotoAndPlay("hide");
 	}
+	if (this.counter%this.asset.cycleLength==4) {
+		this.effectInstance.stop();
+		this.effectStarted=false;
+//		this.asset.clearCollision();
+//		this.asset.collisionOffsetX=10;
+//		this.asset.collisionOffsetY=16;
+//		this.asset.collisionHeight=16;
+//		this.asset.collisionWidth=12;
+//		this.asset.collisionType=EVERBLOCK;
+//		this.asset.finish();
+		this.asset.sprite.gotoAndPlay("away");
+	}
 	if (this.counter%this.asset.cycleLength==this.asset.pauseLength) {
 //		this.asset.clearCollision();
 //		this.asset.collisionOffsetX=0;
@@ -105,10 +117,10 @@ PunkPeeAction.prototype.act = function () {
 //		this.asset.collisionWidth=22;
 //		this.asset.collisionType=DEADLY;
 //		this.asset.finish();
-		this.asset.sprite.gotoAndPlay("pee");
+		this.asset.sprite.gotoAndPlay("appear");
 	}
-	if (this.counter%this.asset.cycleLength>this.asset.pauseLength+10) {
-		
+	if (this.counter%this.asset.cycleLength>this.asset.pauseLength+15) {
+		this.asset.sprite.gotoAndPlay("pee");
 		this.effect("Piss");
 		this.pee();
 	}
@@ -118,7 +130,7 @@ PunkPeeAction.prototype.act = function () {
 PunkPeeAction.prototype.pee = function() {
 	if (this.counter%this.asset.freq*Math.random()==0) {
 		colorBag = new Pipi();
-		colorBag.init(this.asset.bitmap,this.asset.startX+5,this.asset.startY+8,-1);
+		colorBag.init(this.asset.bitmap,this.asset.startX+12,this.asset.startY+35,-1);
 		colorBag.power=this.asset.power;
 		colorBag.random=this.asset.random;
 		colorBag.endState=this.endState;

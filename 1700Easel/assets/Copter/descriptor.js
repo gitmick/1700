@@ -5,16 +5,25 @@ function Copter() {
 	this.steps=100;
 	this.price=10000;
 	this.billName="Hubschrauber";
+	this.data = {
+			 framerate: 8,
+		     images: ["assets/Copter/chopper_flying00.png"],
+		     frames: {width:140, height:140},
+		     animations: {fly:[0,21]}
+		 };
+	this.copterSheet;
 }
 Copter.prototype = new Asset();
 Copter.prototype.load = function() {
-	this.heliImage=this.loadImage("heli.png",this.heliImage);
+	this.copterSheet = new createjs.SpriteSheet(this.data);
+	//this.heliImage=this.loadImage("heli.png",this.heliImage);
 	this.loadSound("heli.mp3","heli");
 };
 
 Copter.prototype.drawInitial = function() {
 	game.trigger.addTrigger(ADD_POLICEMEN_FINISHED, this);
-	this.displayEntity.addBitmap(this.heliImage, true);
+	this.displayEntity.addSprite(this.copterSheet, "fly",true)
+	//this.displayEntity.addBitmap(this.heliImage, true);
 	this.displayEntity.pos(this.startX, this.startY);
 	this.setAction(new FlyIn());
 }

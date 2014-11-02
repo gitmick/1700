@@ -89,9 +89,9 @@ SelectLevel.prototype.init = function () {
 	};
 	this.levelInitialize.fire = function () {
 		
-		this.backgroundHtmlImage = this.level.worldHtmlImage;
-		this.repaintHtmlImage = this.level.worldHtmlImage;
-		this.mapHtmlImage= this.level.worldHtmlImage;
+		this.level.backgroundHtmlImage = this.level.worldHtmlImage;
+		this.level.repaintHtmlImage = this.level.worldHtmlImage;
+		this.level.mapHtmlImage= this.level.worldHtmlImage;
 		this.level.world.init(this.level);
 		this.level.world.setText("Select Level");
 		this.level.buttons.push(new LevelButton(50,50,100,100,"buerstelDream"));

@@ -27,10 +27,10 @@
 		level.registerAsset("Copter");
 		level.initAssets = function() {
 			var copter = this.initAsset("Copter");
-			copter.startX=-200;
-			copter.startY=37;
-			copter.targetX=0;
-			copter.targetY=27;
+			copter.startX=-140;
+			copter.startY=57;
+			copter.targetX=40;
+			copter.targetY=57;
 			copter.show();
 		};
 		

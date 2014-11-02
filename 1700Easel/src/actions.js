@@ -379,6 +379,7 @@ ClimbUp.prototype.act = function() {
 function Dig() {
 	this.counterStart=150;
 	this.counter=this.counterStart;
+	this.floorCount=0;
 }
 Dig.prototype=new Action();
 
@@ -389,8 +390,13 @@ Dig.prototype.check = function() {
 		return false;
 	}
 	if (!this.lemming.hasFloor()) {
-		this.lemming.setAction(new Fall());
-		return false;
+		if (this.floorCount++>24) {
+			this.lemming.setAction(new Fall());
+			return false;
+		}
+	}
+	else {
+		this.floorCount=0;
 	}
 	if (this.counter--==0) {
 		this.lemming.setAction(new Walk());
@@ -412,6 +418,7 @@ function Mine() {
 	this.counterStart=300;
 	this.counter=this.counterStart;
 	this.down=false;
+	this.goOn=0;
 }
 Mine.prototype=new Action();
 
@@ -424,9 +431,13 @@ Mine.prototype.check = function() {
 		return false;
 	}
 	if (!this.lemming.hasFloor()) {
-		this.lemming.setAction(new Fall());
-		return false;
+		if (this.goOn++>20) {
+			this.lemming.setAction(new Fall());
+			return false;
+		}
 	}
+	else
+		this.goOn=0;
 	if (this.counter--==0) {
 		this.lemming.setAction(new Walk());
 		return false;

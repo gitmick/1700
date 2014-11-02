@@ -46,6 +46,17 @@ function Colorbags() {
 	this.random=1;
 	this.power=4.2;
 	this.endState=INVISIBLE_BLOCK;
+	
+	this.sprite;
+	this.data = {
+			 framerate: 5,
+			 speed: 5,
+		     images: ["assets/Colorbags/throw.png"],
+		     frames: {width:32, height:32},
+		     animations: {thro:[0,11],idle:[12,19]}
+		 };
+	this.throwSheet;
+	
 }
 Colorbags.prototype = new Asset();
 Colorbags.prototype.load = function () {
@@ -56,11 +67,13 @@ Colorbags.prototype.load = function () {
 	this.bagPink = this.loadImage("farbbeutel_pink.png", this.bagPink);
 	this.green = this.loadImage("farbe_gruen.png", this.green);
 	this.pink = this.loadImage("farbe_pink.png", this.pink);
+	this.throwSheet = new createjs.SpriteSheet(this.data);
 };
 
 Colorbags.prototype.drawInitial = function() {
 	game.trigger.addTrigger(STOP_COLOR, this);
-	this.displayEntity.addBitmap(this.thrower, true);
+	//this.displayEntity.addBitmap(this.thrower, true);
+	this.sprite=this.displayEntity.addSprite(this.throwSheet, "idle",true).element;
 	this.displayEntity.pos(this.startX, this.startY);
 	this.setAction(new ThrowAction());
 };
@@ -75,15 +88,24 @@ function ThrowAction() {
 }
 ThrowAction.prototype = new AssetAction();
 ThrowAction.prototype.act = function () {
-	if (this.counter++%this.asset.freq==0) {
+	
+	if (this.counter%this.asset.freq==0) {
+		this.asset.sprite.gotoAndPlay("thro");
+	}
+	if (this.counter%this.asset.freq==38) {
 		colorBag = new ColorBag();
 		//colorBag.init(this.asset.bagGreen,this.asset.green,this.asset.startX,this.asset.startY,-1);
-		colorBag.init(this.asset.bagPink,this.asset.pink,this.asset.startX,this.asset.startY,-1);
+		colorBag.init(this.asset.bagPink,this.asset.pink,this.asset.startX-1,this.asset.startY+5,-1);
 		colorBag.power=this.asset.power;
 		colorBag.random=this.asset.random;
 		colorBag.endState=this.endState;
 		level.assets.push(colorBag);
+		
 	}
+	if (this.counter%this.asset.freq==54) {
+		this.asset.sprite.gotoAndPlay("idle");
+	}
+	this.counter++;
 }
 
 function BagFallAction() {

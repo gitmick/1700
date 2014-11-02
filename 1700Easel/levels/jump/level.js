@@ -30,7 +30,7 @@
 		level.initAssets=function(){
 			p = this.initAsset("PeeingPunk");
 			p.startX=310;
-			p.startY=250;
+			p.startY=224;
 			p.freq=1;
 			p.random=0.7;
 			p.power=2;

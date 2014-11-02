@@ -18,9 +18,9 @@
 		level.maxPoliceMen=20;
 		level.policeDelay=25;
 		level.dropX=-10;
-		level.dropY=280;
-		level.goalX=814;
-		level.goalY=310;
+		level.dropY=250;
+		level.goalX=732;
+		level.goalY=283;
 		level.minSafeCount=19;
 		level.soundFile="track.mp3";
 		level.nextLevel="devLevel";
@@ -29,12 +29,12 @@
 		level.initAssets=function(){
 			p = this.initAsset("Phil");
 			p.startX=300;
-			p.startY=280;
+			p.startY=257;
 			p.show();
 			
 			p = this.initAsset("Phil");
 			p.startX=400;
-			p.startY=280;
+			p.startY=257;
 			p.show();
 		}
 		
