@@ -76,6 +76,8 @@ function BagFallAction() {
 }
 BagFallAction.prototype = new AssetAction();
 BagFallAction.prototype.act = function() {
+	if (this.counter==25)
+		this.effect("Beidl");
 	if (this.counter==0)
 		this.factor = this.asset.random*Math.random()+this.asset.power;
 	this.counter++;
@@ -109,7 +111,7 @@ BagFallAction.prototype.act = function() {
 						this.asset.collisionType=INVISIBLE_FREE;
 					}
 				}
-					
+				this.effect("Beidl");
 				this.asset.setAction(false);
 				
 				again=false;

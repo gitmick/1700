@@ -2,6 +2,7 @@
 
 	level.load = function() {
 		level.title="Eine verfahrene Situation";
+		level.description="Gibt´s auch Panzerschokolade?";
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";
 		level.actionCount[Float]=0;

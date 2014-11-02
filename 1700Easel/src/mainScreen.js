@@ -20,15 +20,13 @@ MainLevel.prototype.init = function () {
 	this.loadAction.load = function() {
 		this.level.mainScreen=this.loader.loadImage("img/startScreen.png", this.level.mainScreen);
 		
-		this.loader.loadSound("fx/Bash.mp3","Bash");
+
 		this.loader.loadSound("fx/float_huuu.mp3","Float");
 		this.loader.loadSound("fx/float_naaa.mp3","FloatFall");
 		this.loader.loadSound("fx/Climb.mp3","Climb");
 		this.loader.loadSound("fx/Block.mp3","Block");
 		this.loader.loadSound("fx/bomb_jessas.mp3","Bomb");
 		this.loader.loadSound("fx/bomb_exp2.mp3","Exp");
-		this.loader.loadSound("fx/Mine.mp3","Mine");
-		this.loader.loadSound("fx/Dig.mp3","Dig");
 		this.loader.loadSound("fx/build_2.mp3","Build");
 		this.loader.loadSound("fx/gen_death3.mp3","Kill");
 		this.loader.loadSound("fx/climb_jodel2.mp3","ClimbUp");
@@ -37,6 +35,11 @@ MainLevel.prototype.init = function () {
 		this.loader.loadSound("fx/block_ausweis.mp3","Ausweis");
 		this.loader.loadSound("fx/block_momenterl.mp3","Momenterl");
 		this.loader.loadSound("fx/block_ha.mp3","Ha");
+		this.loader.loadSound("fx/bash_1.mp3","Mine");
+		this.loader.loadSound("fx/build_3.mp3","Dig");
+		this.loader.loadSound("fx/splash.mp3","Beidl");
+		this.loader.loadSound("fx/bash_2.mp3","Bash");
+		this.loader.loadSound("fx/pissen.mp3","Piss");
 	};
 	this.levelInitialize.fire = function () {
 		gameText = new createjs.Text("Gugug", "20px Visitor", "#ff7700");
@@ -91,12 +94,12 @@ SelectLevel.prototype.init = function () {
 		this.level.buttons.push(new LevelButton(50,50,100,100,"buerstelDream"));
 		this.level.buttons.push(new LevelButton(200,50,100,100,"couch"));
 		this.level.buttons.push(new LevelButton(350,50,100,100,"jump"));
-		this.level.buttons.push(new LevelButton(500,50,100,100,"buerstelDream"));
-		this.level.buttons.push(new LevelButton(650,50,100,100,"buerstelDream"));
-		this.level.buttons.push(new LevelButton(800,50,100,100,"buerstelDream"));
-		this.level.buttons.push(new LevelButton(50,200,100,100,"dig"));
-		this.level.buttons.push(new LevelButton(200,200,100,100,""));
-		this.level.buttons.push(new LevelButton(350,200,100,100,""));
+		this.level.buttons.push(new LevelButton(500,50,100,100,"heli"));
+		this.level.buttons.push(new LevelButton(650,50,100,100,""));
+		this.level.buttons.push(new LevelButton(800,50,100,100,""));
+		this.level.buttons.push(new LevelButton(50,200,100,100,"heliBridge"));
+		this.level.buttons.push(new LevelButton(200,200,100,100,"block"));
+		this.level.buttons.push(new LevelButton(350,200,100,100,"devLevel"));
 		this.level.buttons.push(new LevelButton(500,200,100,100,""));
 		this.level.buttons.push(new LevelButton(650,200,100,100,""));
 		this.level.buttons.push(new LevelButton(800,200,100,100,""));
@@ -227,7 +230,8 @@ FolderLevel.prototype.init = function() {
 		game.trigger.addTrigger(ADD_POLICEMEN_FINISHED, trigger);
 		
 		game.trigger.addTrigger(ADD_POLICEMEN,timeKeeper);
-		soundPlayer.play(this.level.name,1,100);
+		eff=soundPlayer.play(this.level.name,1,100);
+		eff.volume=1;
 	};
 }
 

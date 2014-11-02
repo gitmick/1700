@@ -107,7 +107,7 @@ Fall.prototype.act=function() {
 		speed=1;
 		this.effect("Float");
 	}
-	else if (height>50)
+	else if (this.height>32)
 		this.effect("FloatFall");
 	for (i=0;i<speed;i++) {
 		if (this.check()) {
@@ -309,7 +309,7 @@ Bash.prototype.check=function() {
 }
 
 Bash.prototype.act=function() {
-	this.effect("Bash");
+	this.effect("Bash",2,-1);
 	if (this.counter%3==0) {
 		game.drawCircle(this.lemming.x+this.lemming.width/2,this.lemming.y+this.lemming.height/2,16,FREE);
 		this.lemming.x+=this.lemming.speed*this.lemming.direction;
@@ -436,7 +436,7 @@ Mine.prototype.check = function() {
 }
 
 Mine.prototype.act= function() {
-	this.effect("Mine");
+	this.effect("Mine",2,-1);
 	if (this.counter%3==0) {
 		game.drawCircle(this.lemming.x+this.lemming.width/2+4*this.lemming.direction,this.lemming.y+this.lemming.height/2+4,12,FREE);
 		if (this.down)this.lemming.y+=this.lemming.speed;
@@ -470,6 +470,7 @@ Jump.prototype.act = function() {
 		if (Date.now()-this.jumpCount<this.startTime)
 			this.lemming.y-=this.lemming.getDY();	
 		else {
+			this.effect("Ha");
 			this.jumpProcedure--;
 			this.lemming.y-=((this.jumpProcedure+10)/2);
 			this.lemming.x+=this.lemming.direction*this.lemming.speed;
