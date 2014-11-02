@@ -117,7 +117,7 @@ World.prototype.scroll = function(x) {
 }
 
 World.prototype.getWorldPixel = function(px,py){
-	if(py<0 || py>this.height || px<0 || px>width)return EVERBLOCK;
+	if(py<0 || py>this.height-36 || px<0 || px>this.width)return EVERBLOCK;
 	var col = this.worldBitmapData.getPixel(px,py);
 //	if (col>10000) return FREE;
 	return col;

@@ -3,6 +3,7 @@
 	level.load = function() {
 		level.title="Eine verfahrene Situation";
 		level.description="Gibt´s auch Panzerschokolade?";
+		level.intro="atmoloopcopter.mp3";
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";
 		level.actionCount[Float]=0;
@@ -18,8 +19,8 @@
 		level.policeDelay=50;
 		level.dropX=100;
 		level.dropY=193;
-		level.goalX=814;
-		level.goalY=273;
+		level.goalX=732;
+		level.goalY=283;
 		level.minSafeCount=20;
 		level.soundFile="track.mp3";
 		level.registerAsset("Copter");
@@ -37,14 +38,14 @@
 			
 			var tcopter = this.initAsset("Tank");
 			tcopter.startX=-100;
-			tcopter.startY=231;
-			tcopter.targetX=500;
-			tcopter.targetY=231;
+			tcopter.startY=240;
+			tcopter.targetX=400;
+			tcopter.targetY=241;
 			tcopter.show();
 			
 			
 			var bagthrower = this.initAsset("Colorbags");
-			bagthrower.startX=790;
+			bagthrower.startX=690;
 			bagthrower.startY=0;
 			bagthrower.show();
 			

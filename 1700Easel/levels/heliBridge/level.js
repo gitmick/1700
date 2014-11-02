@@ -3,6 +3,7 @@
 	level.load = function() {
 		level.title="Stairways to Heaven";
 		level.description="Ein Königreich für die Strudlhofstiege.";
+		level.intro="atmoloopcopter.mp3";
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";
 		level.actionCount[Float]=10;
@@ -17,9 +18,9 @@
 		level.maxPoliceMen=20;
 		level.policeDelay=150;
 		level.dropX=100;
-		level.dropY=93;
-		level.goalX=814;
-		level.goalY=273;
+		level.dropY=103;
+		level.goalX=732;
+		level.goalY=283;
 		level.minSafeCount=11;
 		level.soundFile="track.mp3";
 		level.nextLevel="block";
@@ -27,7 +28,7 @@
 		level.initAssets = function() {
 			var copter = this.initAsset("Copter");
 			copter.startX=-200;
-			copter.startY=27;
+			copter.startY=37;
 			copter.targetX=0;
 			copter.targetY=27;
 			copter.show();

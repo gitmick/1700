@@ -3,6 +3,7 @@
 	level.load = function() {
 		level.title="I say jump!";
 		level.description="Springen wählen.\n\nMit gedrückter Maus durch die Polizisten fahren.\n\nSobald man die Maus loslässt springt der erste.";
+		level.intro="atmoloop.mp3";
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";
 		level.actionCount[Float]=10;
@@ -17,9 +18,9 @@
 		level.maxPoliceMen=10;
 		level.policeDelay=10;
 		level.dropX=-10;
-		level.dropY=280;
-		level.goalX=814;
-		level.goalY=310;
+		level.dropY=250;
+		level.goalX=732;
+		level.goalY=283;
 		level.minSafeCount=10;
 		level.soundFile="track.mp3";
 		level.nextLevel="heli";
@@ -28,8 +29,8 @@
 		level.registerAsset("barrel");
 		level.initAssets=function(){
 			p = this.initAsset("PeeingPunk");
-			p.startX=300;
-			p.startY=280;
+			p.startX=310;
+			p.startY=250;
 			p.freq=1;
 			p.random=0.7;
 			p.power=2;
@@ -39,8 +40,8 @@
 			p.show();
 			
 			ba = level.initAsset("barrel");
-			ba.startX=800;
-			ba.startY=310;
+			ba.startX=732;
+			ba.startY=280;
 			ba.maxBarrels=2;
 			ba.show();
 		}

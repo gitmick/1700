@@ -4,12 +4,15 @@
 
 function ColorBag() {
 	this.direction=-1;
+	this.entity;
+	this.color;
 }
 ColorBag.prototype = new Asset();
 
-ColorBag.prototype.init = function(pic,x,y,dir) {
+ColorBag.prototype.init = function(pic,color,x,y,dir) {
+	this.color=color;
 	this.show();
-	this.displayEntity.addBitmapClone(pic, true);
+	this.entity=this.displayEntity.addBitmap(pic, true);
 	this.startX=x;
 	this.startY=y;
 	if (dir) 
@@ -20,6 +23,12 @@ ColorBag.prototype.init = function(pic,x,y,dir) {
 	this.collisionType=DEADLY;
 	this.setAction(new BagFallAction());
 }
+
+ColorBag.prototype.explode=function() {
+	this.entity.destroy();
+	this.displayEntity.addBitmap(this.color, true);
+}
+
 ColorBag.prototype.canFall=function(){
 	return game.level.world.canFall(this.displayEntity.x+4,this.displayEntity.y+4,8);
 	
@@ -28,7 +37,11 @@ ColorBag.prototype.canFall=function(){
 function Colorbags() {
 	this.thrower = new Image();
 	this.bag = new Image();
-	this.bitmap;
+	
+	this.bagGreen = new Image();
+	this.bagPink = new Image();
+	this.green = new Image();
+	this.pink = new Image();
 	this.freq=200;
 	this.random=1;
 	this.power=4.2;
@@ -38,11 +51,15 @@ Colorbags.prototype = new Asset();
 Colorbags.prototype.load = function () {
 	this.thrower=this.loadImage("Thrower.png", this.thrower);
 	this.bag=this.loadImage("bag.png", this.bag);
+	
+	this.bagGreen = this.loadImage("farbbeutel_gruen.png", this.bagGreen);
+	this.bagPink = this.loadImage("farbbeutel_pink.png", this.bagPink);
+	this.green = this.loadImage("farbe_gruen.png", this.green);
+	this.pink = this.loadImage("farbe_pink.png", this.pink);
 };
 
 Colorbags.prototype.drawInitial = function() {
 	game.trigger.addTrigger(STOP_COLOR, this);
-	this.bitmap = new createjs.Bitmap(this.bag);
 	this.displayEntity.addBitmap(this.thrower, true);
 	this.displayEntity.pos(this.startX, this.startY);
 	this.setAction(new ThrowAction());
@@ -60,7 +77,8 @@ ThrowAction.prototype = new AssetAction();
 ThrowAction.prototype.act = function () {
 	if (this.counter++%this.asset.freq==0) {
 		colorBag = new ColorBag();
-		colorBag.init(this.asset.bitmap,this.asset.startX,this.asset.startY,-1);
+		//colorBag.init(this.asset.bagGreen,this.asset.green,this.asset.startX,this.asset.startY,-1);
+		colorBag.init(this.asset.bagPink,this.asset.pink,this.asset.startX,this.asset.startY,-1);
 		colorBag.power=this.asset.power;
 		colorBag.random=this.asset.random;
 		colorBag.endState=this.endState;
@@ -102,6 +120,7 @@ BagFallAction.prototype.act = function() {
 				this.asset.pos(this.asset.displayEntity.x+(1*this.asset.direction),this.asset.displayEntity.y+divider);
 			var collisionValue = this.asset.canFall(); 
 			if (collisionValue!=FREE && collisionValue!=DEADLY) {
+				this.asset.explode();
 				this.asset.collisionType=this.asset.endState;
 				if (collisionValue==EVERBLOCK) {
 					tank = this.asset.findCollidingItem();
@@ -111,9 +130,7 @@ BagFallAction.prototype.act = function() {
 						this.asset.collisionType=INVISIBLE_FREE;
 					}
 				}
-				this.effect("Beidl");
 				this.asset.setAction(false);
-				
 				again=false;
 			}
 			

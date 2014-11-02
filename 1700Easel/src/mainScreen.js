@@ -20,7 +20,7 @@ MainLevel.prototype.init = function () {
 	this.loadAction.load = function() {
 		this.level.mainScreen=this.loader.loadImage("img/startScreen.png", this.level.mainScreen);
 		
-
+		
 		this.loader.loadSound("fx/float_huuu.mp3","Float");
 		this.loader.loadSound("fx/float_naaa.mp3","FloatFall");
 		this.loader.loadSound("fx/Climb.mp3","Climb");
@@ -40,12 +40,14 @@ MainLevel.prototype.init = function () {
 		this.loader.loadSound("fx/splash.mp3","Beidl");
 		this.loader.loadSound("fx/bash_2.mp3","Bash");
 		this.loader.loadSound("fx/pissen.mp3","Piss");
+		this.loader.loadSound("fx/atmolong.mp3","atmolong");
 	};
 	this.levelInitialize.fire = function () {
 		gameText = new createjs.Text("Gugug", "20px Visitor", "#ff7700");
 		stage.addChild(gameText);
 		var bitmap = new createjs.Bitmap(this.level.mainScreen);
 		stage.addChild(bitmap);
+		
 	};
 };
 
@@ -86,6 +88,7 @@ SelectLevel.prototype.init = function () {
 		this.level.worldHtmlImage=this.loader.loadImage("img/levelScreen.png", this.level.worldHtmlImage);
 	};
 	this.levelInitialize.fire = function () {
+		
 		this.backgroundHtmlImage = this.level.worldHtmlImage;
 		this.repaintHtmlImage = this.level.worldHtmlImage;
 		this.mapHtmlImage= this.level.worldHtmlImage;
@@ -103,9 +106,10 @@ SelectLevel.prototype.init = function () {
 		this.level.buttons.push(new LevelButton(500,200,100,100,""));
 		this.level.buttons.push(new LevelButton(650,200,100,100,""));
 		this.level.buttons.push(new LevelButton(800,200,100,100,""));
-		
+		soundPlayer.play("atmolong");
 	};
 	this.scrollAction.act = function() {
+		
 		def = new DEFrame();
 		def.currentScroll = game.currentScroll;
 		
@@ -187,7 +191,8 @@ FolderLevel.prototype.init = function() {
 		this.loader.loadImage("img/lost.png",new Image());
 		
 		
-		this.loader.loadSound(this.level.dirPath+"/intro.mp3",this.level.name+"intro");
+		//this.loader.loadSound(this.level.dirPath+"/intro.mp3",this.level.name+"intro");
+		this.loader.loadSound("levels/"+level.intro,level.intro);
 		
 		var data = {
 				 framerate: 18,
@@ -202,7 +207,8 @@ FolderLevel.prototype.init = function() {
 		
 	};
 	this.loadLevelSpecific.load = function() {
-		effectInstance = soundPlayer.play(this.level.name+"intro");
+		//effectInstance = soundPlayer.play(this.level.name+"intro");
+		effectInstance = soundPlayer.play(level.intro);
 		effectInstance.addEventListener("complete",function() {
 			introSoundBlock.isBlock=false;
 		});
@@ -211,7 +217,8 @@ FolderLevel.prototype.init = function() {
 			introSoundBlock.isBlock=false;
 			effectInstance.stop();
 		};
-		this.loader.loadSound(this.level.dirPath+"/track.mp3",this.level.name);
+		//this.loader.loadSound(this.level.dirPath+"/track.mp3",this.level.name);
+		this.loader.loadSound("levels/track.mp3","track");
 		this.machine.addBlock(introSoundBlock);
 		
 
@@ -230,7 +237,8 @@ FolderLevel.prototype.init = function() {
 		game.trigger.addTrigger(ADD_POLICEMEN_FINISHED, trigger);
 		
 		game.trigger.addTrigger(ADD_POLICEMEN,timeKeeper);
-		eff=soundPlayer.play(this.level.name,1,100);
+		//eff=soundPlayer.play(this.level.name,1,100);
+		eff=soundPlayer.play("track",5,100);
 		eff.volume=1;
 	};
 }

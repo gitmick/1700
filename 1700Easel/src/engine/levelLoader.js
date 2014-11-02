@@ -10,6 +10,7 @@ function Loader() {
 	this.waitingForLoads=0;
 	this.debug=true;
 	this.queue = new Array();
+	this.initializedSoundHandle=false;
 }
 
 Loader.prototype.log = function(str) {
@@ -89,15 +90,20 @@ Loader.prototype.getImage = function(imgSrc) {
 var loadedSounds = new Array();
 
 Loader.prototype.loadSound = function(sndSrc,sndName) {
-	if (isIn(loadedSounds,sndSrc+sndName))
+	if (isIn(loadedSounds,sndName))
 		return;
-	this.queue.push(sndSrc);
+	this.queue.push(sndName);
 	createjs.Sound.registerSound({id:sndName, src:sndSrc+"?"+Math.random()});
 	var that=this;
-	createjs.Sound.addEventListener("fileload", function() {
-		loadedSounds.push(sndSrc+sndName);
-		arrayWithout(that.queue,sndSrc);
-	});
+	if (!this.initializedSoundHandle) {
+		createjs.Sound.addEventListener("fileload", function(evt) {
+			console.log(evt.eventPhase);
+			loadedSounds.push(evt.id);
+			console.log("loaded sound "+evt.id);
+			arrayWithout(that.queue,evt.id);
+		});
+		this.initializedSoundHandle=true;
+	}
 };
 
 
