@@ -81,6 +81,22 @@ LevelButton.prototype.select=function(x,y) {
 	game.level.start(game.machine);
 }
 
+function IntroButton(x,y,w,h) {
+	this.displayEntity = new DisplayEntity();
+	this.displayEntity.addInteractionEntity(w, h, this, true);
+	this.displayEntity.pos(x, y);
+	this.time=Date.now();
+}
+IntroButton.prototype.active = function(diff) {
+	return (Date.now()-this.time>diff);
+}
+
+IntroButton.prototype.select=function(x,y) {
+	if (!this.active(100))
+		return;
+	this.delaySelect();
+}
+
 SelectLevel.prototype = new StartLevel();
 SelectLevel.prototype.init = function () {
 	this.buttons = new Array();
@@ -163,7 +179,7 @@ FolderLevel.prototype.init = function() {
 		gameText.x=50;
 		gameText.y=50;
 		
-		gameText = new createjs.Text(level.description, "14px Visitor", "#ff7700");
+		gameText = new createjs.Text(level.description, "10px Visitor", "#ff7700");
 		stage.addChild(gameText);
 		gameText.x=50;
 		gameText.y=100;
@@ -187,6 +203,17 @@ FolderLevel.prototype.init = function() {
 		this.loader.loadImage("img/actions/Minus.png",new Image());
 		this.loader.loadImage("img/actions/Plus.png",new Image());
 		
+		this.loader.loadImage("img/actions/BashS.png",new Image());
+		this.loader.loadImage("img/actions/BlockS.png",new Image());
+		this.loader.loadImage("img/actions/BombS.png",new Image());
+		this.loader.loadImage("img/actions/BuildS.png",new Image());
+		this.loader.loadImage("img/actions/ClimbS.png",new Image());
+		this.loader.loadImage("img/actions/DigS.png",new Image());
+		this.loader.loadImage("img/actions/FloatS.png",new Image());
+		this.loader.loadImage("img/actions/JumpAllS.png",new Image());
+		this.loader.loadImage("img/actions/MineS.png",new Image());
+
+		
 		this.loader.loadImage("img/win.png",new Image());
 		this.loader.loadImage("img/lost.png",new Image());
 		
@@ -208,12 +235,13 @@ FolderLevel.prototype.init = function() {
 	};
 	this.loadLevelSpecific.load = function() {
 		//effectInstance = soundPlayer.play(this.level.name+"intro");
+		soundPlayer.reset();
 		effectInstance = soundPlayer.play(level.intro);
 		effectInstance.addEventListener("complete",function() {
 			introSoundBlock.isBlock=false;
 		});
-		startObject = new Button(0,0,1024,386);
-		startObject.select = function(x, y) {
+		startObject = new IntroButton(0,0,1024,386);
+		startObject.delaySelect = function(x, y) {
 			introSoundBlock.isBlock=false;
 			effectInstance.stop();
 		};
@@ -238,6 +266,7 @@ FolderLevel.prototype.init = function() {
 		
 		game.trigger.addTrigger(ADD_POLICEMEN,timeKeeper);
 		//eff=soundPlayer.play(this.level.name,1,100);
+		soundPlayer.reset();
 		eff=soundPlayer.play("track",5,100);
 		eff.volume=1;
 	};

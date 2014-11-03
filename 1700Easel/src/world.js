@@ -103,7 +103,7 @@ World.prototype.init = function(lvl) {
 	this.gameText.x=20;
 	this.gameText.y=20;
 	this.gameText.cache(0,0,1000,40);
-	stage.addChild(this.gameText);
+	//stage.addChild(this.gameText);
 	
 	this.policeText= new createjs.Text("", "20px Visitor", "#ff7700"); 
 	this.policeText.x=20;
