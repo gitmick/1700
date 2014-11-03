@@ -24,8 +24,8 @@ function World() {
 	this.policeText;
 	this.moneyLeft=870000;
 	this.policeOut=0;
-	this.policeSaved=0;
-	this.dirty=true;
+	this.policeSaved=1;
+
 	
 	this.foreGroundMask;
 	this.repaint;
@@ -45,28 +45,33 @@ World.prototype.setEquipment=function(eq) {
 
 World.prototype.setPoliceOut=function(out) {
 	if (out!=this.policeOut) {
+		this.gameText.text=out;
 		this.policeOut=out;
-		this.dirty=true;
+		this.gameText.updateCache();
 	}
 }
 
 World.prototype.setPoliceSaved=function(saved) {
 	if (saved!=this.policeSaved) {
 		this.policeSaved=saved;
-		this.dirty=true;
+		tt=saved+" / "+level.minSafeCount;
+		this.goalText.text=tt;
+		this.goalText.updateCache();
 	}
 }
 
 World.prototype.setMoneyLeft=function(left) {
 	if (left!=this.moneyLeft) {
 		this.moneyLeft=left;
-		this.dirty=true;
+		this.moneyText.text=left;
+		this.moneyText.updateCache();
 	}
 }
 
 World.prototype.updateText = function() {
 	if (this.dirty) {
-		this.setText("Im Einsatz: "+this.policeOut+" Im Haus: "+this.policeSaved+" Geld verbraten: "+this.moneyLeft);
+		//this.setText("Im Einsatz: "+this.policeOut+" Im Haus: "+this.policeSaved+" Geld verbraten: "+this.moneyLeft);
+		this.setText(this.policeOut);
 		this.dirty=false;
 	}
 };
@@ -99,11 +104,30 @@ World.prototype.init = function(lvl) {
 	this.repaint.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	//stage.addChild(this.foreGroundMask);
 	
-	this.gameText = new createjs.Text("Gugug", "20px Visitor", "#ff7700"); 
-	this.gameText.x=20;
-	this.gameText.y=20;
-	this.gameText.cache(0,0,1000,40);
-	//stage.addChild(this.gameText);
+	
+	if (lvl.scoreHtmlImage)
+		this.displayEntity.addBitmap(lvl.scoreHtmlImage, false);
+	
+	this.gameText = new createjs.Text("", "40px Visitor", "#fff600"); 
+	this.gameText.x=73;
+	this.gameText.y=6;
+	this.gameText.textAlign="center";
+	this.gameText.cache(-500,0,1000,40);
+	stage.addChild(this.gameText);
+	
+	this.moneyText = new createjs.Text("", "20px Visitor", "#ac6363"); 
+	this.moneyText.x=180;
+	this.moneyText.y=15;
+	this.moneyText.cache(0,0,1000,40);
+	stage.addChild(this.moneyText);
+	
+	//2b3642
+	this.goalText = new createjs.Text("", "10px Visitor", "#2b3642"); 
+	this.goalText.x=73;
+	this.goalText.y=58;
+	this.goalText.textAlign="center";
+	this.goalText.cache(-500,0,1000,40);
+	stage.addChild(this.goalText);
 	
 	this.policeText= new createjs.Text("", "20px Visitor", "#ff7700"); 
 	this.policeText.x=20;
@@ -117,7 +141,7 @@ World.prototype.scroll = function(x) {
 }
 
 World.prototype.getWorldPixel = function(px,py){
-	if(py<0 || py>this.height-36 || px<0 || px>this.width)return EVERBLOCK;
+	if(py<0 || py>this.height-26 || px<0 || px>this.width)return EVERBLOCK;
 	var col = this.worldBitmapData.getPixel(px,py);
 //	if (col>10000) return FREE;
 	return col;

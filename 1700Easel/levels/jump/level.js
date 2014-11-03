@@ -35,8 +35,8 @@
 			p.random=0.7;
 			p.power=2;
 			p.endState=DEADLY;
-			p.cycleLength=300;
-			p.pauseLength=250;
+			p.cycleLength=315;
+			p.pauseLength=230;
 			p.show();
 			
 			ba = level.initAsset("barrel");

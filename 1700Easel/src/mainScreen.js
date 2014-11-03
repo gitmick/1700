@@ -109,7 +109,9 @@ SelectLevel.prototype.init = function () {
 		this.level.repaintHtmlImage = this.level.worldHtmlImage;
 		this.level.mapHtmlImage= this.level.worldHtmlImage;
 		this.level.world.init(this.level);
+		this.level.world.gameText.textAlign="left";
 		this.level.world.setText("Select Level");
+		
 		this.level.buttons.push(new LevelButton(50,50,100,100,"buerstelDream"));
 		this.level.buttons.push(new LevelButton(200,50,100,100,"couch"));
 		this.level.buttons.push(new LevelButton(350,50,100,100,"jump"));
@@ -188,6 +190,8 @@ FolderLevel.prototype.init = function() {
 		this.level.mapHtmlImage=this.loader.loadImage(this.level.dirPath+"/map.png",this.level.mapHtmlImage);
 		this.level.repaintHtmlImage=this.loader.loadImage(this.level.dirPath+"/repaint.png",this.level.repaintHtmlImage);
 		this.level.backgroundHtmlImage=this.loader.loadImage(this.level.dirPath+"/background.png",this.level.backgroundHtmlImage);
+		
+		this.level.scoreHtmlImage=this.loader.loadImage("img/scoreImage.png",new Image());
 		
 		this.loader.loadImage("img/actions/Bash.png",new Image());
 		this.loader.loadImage("img/actions/Block.png",new Image());

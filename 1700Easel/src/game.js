@@ -77,15 +77,18 @@ Game.prototype.drawRect = function(px,py,w,h,color){
 }
 
 Game.prototype.addLemmings = function(){
+	hasadded=false;
 	if(this.added++<level.maxPoliceMen){
 		var lemming = new Lemming();
 		lemming.x=level.dropX;
 	    lemming.y=level.dropY;
 		lemming.create();
 	  	this.lemmings.push(lemming);
+	  	hasadded=true;
 	}
 	if (this.added==level.maxPoliceMen)
 		this.trigger.bang(ADD_POLICEMEN_FINISHED);
+	return hasadded;
 }
 
 Game.prototype.scrollLevel = function(mouseX){
@@ -117,8 +120,8 @@ PlayAction.prototype.act = function() {
 	if (!game.trigger.isIntercepted(ADD_POLICEMEN)) {
 		
 		if (game.delayCount++%level.policeDelay==2){
-			game.addLemmings();
-			game.trigger.bang(ADD_POLICEMEN);
+			if (game.addLemmings())
+				game.trigger.bang(ADD_POLICEMEN);
 		}
 	}
 	//game.selectedLemming=false;
@@ -140,7 +143,7 @@ PlayAction.prototype.act = function() {
 	}
 	timeKeeper.tick();
 	soundPlayer.tick();
-	game.level.world.setPoliceOut(game.lemmings.length);
+	game.level.world.setPoliceOut(timeKeeper.totalPolice);
 	game.level.world.setPoliceSaved(game.winCount);
 	game.level.world.updateText();
 	game.level.world.updateCache();
@@ -186,8 +189,8 @@ WinAction.prototype.act = function() {
 		img = globalLoader.getImage("img/win.png");
 		var dE = new DisplayEntity();
 		dE.addBitmap(img,false);
-		startObject = new Button(0,0,400,400);
-		startObject.select = function(x, y) {
+		startObject = new IntroButton(0,0,400,400);
+		startObject.delaySelect = function(x, y) {
 			game.level = new FolderLevel(level.nextLevel);
 			game.level.start(game.machine);
 		};
@@ -216,8 +219,8 @@ LostAction.prototype.act = function() {
 	img = globalLoader.getImage("img/lost.png");
 	var dE = new DisplayEntity();
 	dE.addBitmap(img,false);
-	startObject = new Button(0,0,400,700);
-	startObject.select = function(x, y) {
+	startObject = new IntroButton(0,0,400,700);
+	startObject.delaySelect = function(x, y) {
 		game.level = new FolderLevel(level.name);
 		game.level.start(game.machine);
 	};
@@ -246,6 +249,7 @@ function TimeKeeper() {
 	this.pricedAssets = new Array();
 	this.policeCount=0;
 	this.pricePolice=500;
+	this.totalPolice=0;
 }
 
 TimeKeeper.prototype.tick = function() {
@@ -267,6 +271,7 @@ TimeKeeper.prototype.bang = function(name) {
 	if (name == ADD_POLICEMEN) {
 		this.policeCount++;
 		this.moneyLeft-=this.pricePolice;
+		this.totalPolice++;
 	}
 }
 

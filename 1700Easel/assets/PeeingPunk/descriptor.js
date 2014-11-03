@@ -18,8 +18,8 @@ Pipi.prototype.init = function(pic,x,y,dir) {
 	this.collisionHeight=1;
 	this.collisionWidth=1;
 	this.collisionType=DEADLY;
-	this.cycleLength=100;
-	this.pauseLength=50;
+	this.cycleLength=180;
+	this.pauseLength=30;
 	this.setAction(new PipiAction());
 };
 Pipi.prototype.canFall=function(){
@@ -51,10 +51,10 @@ function PeeingPunk() {
 	this.power=4.2;
 	this.endState=INVISIBLE_BLOCK;
 	
-	this.collisionOffsetX=10;
-	this.collisionOffsetY=46;
-	this.collisionHeight=16;
-	this.collisionWidth=12;
+	this.collisionOffsetX=9;
+	this.collisionOffsetY=48;
+	this.collisionHeight=20;
+	this.collisionWidth=18;
 	this.collisionType=EVERBLOCK;
 	//this.collisionType=VISIBLE_BLOCK;
 	this.pipis = new Array();
@@ -97,7 +97,7 @@ PunkPeeAction.prototype.act = function () {
 //		this.asset.finish();
 		this.asset.sprite.gotoAndPlay("hide");
 	}
-	if (this.counter%this.asset.cycleLength==4) {
+	if (this.counter%this.asset.cycleLength==8) {
 		this.effectInstance.stop();
 		this.effectStarted=false;
 //		this.asset.clearCollision();
@@ -119,7 +119,7 @@ PunkPeeAction.prototype.act = function () {
 //		this.asset.finish();
 		this.asset.sprite.gotoAndPlay("appear");
 	}
-	if (this.counter%this.asset.cycleLength>this.asset.pauseLength+15) {
+	if (this.counter%this.asset.cycleLength>this.asset.pauseLength+46) {
 		this.asset.sprite.gotoAndPlay("pee");
 		this.effect("Piss");
 		this.pee();

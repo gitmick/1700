@@ -43,7 +43,7 @@ function Colorbags() {
 	this.green = new Image();
 	this.pink = new Image();
 	this.freq=200;
-	this.random=1;
+	this.random=0.8;
 	this.power=4.2;
 	this.endState=INVISIBLE_BLOCK;
 	

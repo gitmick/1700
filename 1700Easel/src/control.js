@@ -10,24 +10,24 @@ function Control() {
 }
 
 Control.prototype.init = function() {
-	this.addControl(0, 350, Climb,"Climb");
-	this.addControl(40, 350, Float,"Float");
-	this.addControl(80, 350, Bomb,"Bomb");
-	this.addControl(120, 350, Block,"Block");
-	this.addControl(160, 350, Build,"Build");
-	this.addControl(200, 350, Bash,"Bash");
-	this.addControl(240, 350, Mine,"Mine");
-	this.addControl(280, 350, Dig,"Dig");
+	this.addControl(1, 350, Climb,"Climb");
+	this.addControl(35, 350, Float,"Float");
+	this.addControl(69, 350, Bomb,"Bomb");
+	this.addControl(103, 350, Block,"Block");
+	this.addControl(137, 350, Build,"Build");
+	this.addControl(171, 350, Bash,"Bash");
+	this.addControl(204, 350, Mine,"Mine");
+	this.addControl(237, 350, Dig,"Dig");
 	
-	this.addControl(320, 350, JumpAll,"JumpAll");
+	this.addControl(271, 350, JumpAll,"JumpAll");
 	
-	this.addGlobalControl(360, 350, MorePolicemen,"Plus");
-	this.addGlobalControl(400, 350, LessPolicemen,"Minus");
+	this.addGlobalControl(305, 350, MorePolicemen,"Plus");
+	this.addGlobalControl(339, 350, LessPolicemen,"Minus");
 	
 	
 	
-	this.addGlobalControl(440, 350, FinishSpeed,"FastForward");
-	this.addGlobalControl(480, 350, BombAll,"BombAll");
+	this.addGlobalControl(373, 350, FinishSpeed,"FastForward");
+	this.addGlobalControl(407, 350, BombAll,"BombAll");
 }
 function JumpAll() {
 	this.multiSelect=true;
@@ -60,13 +60,13 @@ Control.prototype.addControl = function(x,y,action_,picName) {
 	cE.selectedBitmap.alpha=0;
 	cE.selectionShape = cE.displayEntity.addShape(false).element;
 	
-	cE.selectionShape.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x+1,y+12,34,34);
+	cE.selectionShape.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x+2,y+13,32,32);
 	cE.action=action_;
 	
 	cE.displayEntity.addInteractionEntity(36, 36, cE, false);
 	cE.displayEntity.pos(x, y);
 	
-	cE.text = new createjs.Text(""+level.actionCount[action_], "10px Visitor", "#ff7700"); 
+	cE.text = new createjs.Text(""+level.actionCount[action_], "10px Visitor", "white"); 
 	cE.text.x = x+12;
 	cE.text.y=y;
 	cE.text.cache(0,0,40,40);
@@ -86,7 +86,7 @@ Control.prototype.addGlobalControl = function(x,y,action_,picName) {
 	cE.scaleBitmap.alpha=0.5;
 	cE.selectionShape = cE.displayEntity.addShape(false).element;
 	
-	cE.selectionShape.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x+1,y+1,34,34);
+	cE.selectionShape.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(x+2,y+2,32,32);
 	cE.action=action_;
 	cE.displayEntity.addInteractionEntity(36, 36, cE, false);
 	cE.displayEntity.pos(x, y);
@@ -146,7 +146,7 @@ ControlElement.prototype.select = function(x,y){
 	else {
 		this.active=false;
 		this.selectionShape.graphics.clear();
-		this.selectionShape.graphics.beginFill("rgba(100,100,100,0.5)").drawRect(1,12,34,34);
+		this.selectionShape.graphics.beginFill("rgba(100,100,100,0.5)").drawRect(2,13,30,30);
 		this.selectedBitmap.alpha=0;
 	}
 };
@@ -177,12 +177,12 @@ GlobalControlElement.prototype.select = function(x,y){
 		active = a.execute();
 		if (!active) {
 			this.selectionShape.graphics.clear();
-			this.selectionShape.graphics.beginFill("rgba(100,100,100,0.5)").drawRect(1,1,34,34);
+			this.selectionShape.graphics.beginFill("rgba(100,100,100,0.5)").drawRect(2,2,32,32);
 			this.left();
 		}
 		else {
 			this.selectionShape.graphics.clear();
-			this.selectionShape.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(1,1,34,34);
+			this.selectionShape.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(2,2,32,32);
 			
 		}
 		this.active =active;
