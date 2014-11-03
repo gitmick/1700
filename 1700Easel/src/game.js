@@ -195,13 +195,13 @@ WinAction.prototype.act = function() {
 			game.level.start(game.machine);
 		};
 		this.started=true;
-		gameText = new createjs.Text(timeKeeper.toString(), "20px Visitor", "#ff7700"); 
+		gameText = new createjs.Text(timeKeeper.toString(), "10px Visitor", "#ff7700"); 
 		gameText.x=20;
 		gameText.y=20;
 		stage.addChild(gameText);
 		
-		gameText2 = new createjs.Text(timeKeeper.toString2(), "20px Visitor", "#ff7700"); 
-		gameText2.x=300;
+		gameText2 = new createjs.Text(timeKeeper.toString2(), "10px Visitor", "#ff7700"); 
+		gameText2.x=120;
 		gameText2.y=20;
 		stage.addChild(gameText2);
 	}
@@ -227,13 +227,13 @@ LostAction.prototype.act = function() {
 	this.started=true;
 	
 
-	gameText = new createjs.Text(timeKeeper.toString(), "20px Visitor", "#ff7700"); 
+	gameText = new createjs.Text(timeKeeper.toString(), "10px Visitor", "#ff7700"); 
 	gameText.x=20;
 	gameText.y=20;
 	stage.addChild(gameText);
 	
-	gameText2 = new createjs.Text(timeKeeper.toString2(), "20px Visitor", "#ff7700"); 
-	gameText2.x=300;
+	gameText2 = new createjs.Text(timeKeeper.toString2(), "10px Visitor", "#ff7700"); 
+	gameText2.x=120;
 	gameText2.y=20;
 	stage.addChild(gameText2);
 	
@@ -314,7 +314,7 @@ TimeKeeper.prototype.toString2 = function() {
 	}
 	string+="\n\n";
 	string+=formatPrice(sum)+" EUR\n\n\n\n";
-	string+="-------------------------------------------\n\n";
+	string+="\n\n";
 	string+=formatPrice(this.moneyLeft)+" EUR" ;
 	return string;
 }

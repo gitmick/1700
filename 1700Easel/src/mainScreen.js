@@ -18,7 +18,7 @@ MainLevel.prototype.init = function () {
 	};
 	
 	this.loadAction.load = function() {
-		this.level.mainScreen=this.loader.loadImage("img/startScreen.png", this.level.mainScreen);
+		this.level.mainScreen=this.loader.loadImage("img/titleScreen.png", this.level.mainScreen);
 		
 		
 		this.loader.loadSound("fx/float_huuu.mp3","Float");
@@ -39,13 +39,17 @@ MainLevel.prototype.init = function () {
 		this.loader.loadSound("fx/build_3.mp3","Dig");
 		this.loader.loadSound("fx/splash.mp3","Beidl");
 		this.loader.loadSound("fx/bash_2.mp3","Bash");
-		this.loader.loadSound("fx/pissen.mp3","Piss");
+		
 		this.loader.loadSound("fx/atmolong.mp3","atmolong");
 	};
 	this.levelInitialize.fire = function () {
-		gameText = new createjs.Text("Gugug", "20px Visitor", "#ff7700");
+		gameText = new createjs.Text("Gugug", "20px Visitor", "black");
 		stage.addChild(gameText);
 		var bitmap = new createjs.Bitmap(this.level.mainScreen);
+		
+		scaledWidth = (384/height())*width();
+		console.log(scaledWidth+" ");
+		bitmap.x=parseInt((scaledWidth-800)/2);
 		stage.addChild(bitmap);
 		
 	};
@@ -109,8 +113,8 @@ SelectLevel.prototype.init = function () {
 		this.level.repaintHtmlImage = this.level.worldHtmlImage;
 		this.level.mapHtmlImage= this.level.worldHtmlImage;
 		this.level.world.init(this.level);
-		this.level.world.gameText.textAlign="left";
-		this.level.world.setText("Select Level");
+//		this.level.world.gameText.textAlign="left";
+//		this.level.world.setText("Select Level");
 		
 		this.level.buttons.push(new LevelButton(50,50,100,100,"buerstelDream"));
 		this.level.buttons.push(new LevelButton(200,50,100,100,"couch"));
@@ -186,6 +190,9 @@ FolderLevel.prototype.init = function() {
 		gameText.x=50;
 		gameText.y=100;
 		
+		//TODO should move out here
+		this.loader.loadSound("fx/pissen.mp3","Piss");
+		
 		this.level.worldHtmlImage=this.loader.loadImage(this.level.dirPath+"/world.png",this.level.worldHtmlImage);
 		this.level.mapHtmlImage=this.loader.loadImage(this.level.dirPath+"/map.png",this.level.mapHtmlImage);
 		this.level.repaintHtmlImage=this.loader.loadImage(this.level.dirPath+"/repaint.png",this.level.repaintHtmlImage);
@@ -193,29 +200,29 @@ FolderLevel.prototype.init = function() {
 		
 		this.level.scoreHtmlImage=this.loader.loadImage("img/scoreImage.png",new Image());
 		
-		this.loader.loadImage("img/actions/Bash.png",new Image());
-		this.loader.loadImage("img/actions/Block.png",new Image());
-		this.loader.loadImage("img/actions/Bomb.png",new Image());
-		this.loader.loadImage("img/actions/BombAll.png",new Image());
-		this.loader.loadImage("img/actions/Build.png",new Image());
-		this.loader.loadImage("img/actions/Climb.png",new Image());
-		this.loader.loadImage("img/actions/Dig.png",new Image());
-		this.loader.loadImage("img/actions/FastForward.png",new Image());
-		this.loader.loadImage("img/actions/Float.png",new Image());
-		this.loader.loadImage("img/actions/JumpAll.png",new Image());
-		this.loader.loadImage("img/actions/Mine.png",new Image());
-		this.loader.loadImage("img/actions/Minus.png",new Image());
-		this.loader.loadImage("img/actions/Plus.png",new Image());
+		this.loader.loadImage("img/actions/bash.png",new Image());
+		this.loader.loadImage("img/actions/block.png",new Image());
+		this.loader.loadImage("img/actions/bomb.png",new Image());
+		this.loader.loadImage("img/actions/bombAll.png",new Image());
+		this.loader.loadImage("img/actions/build.png",new Image());
+		this.loader.loadImage("img/actions/climb.png",new Image());
+		this.loader.loadImage("img/actions/dig.png",new Image());
+		this.loader.loadImage("img/actions/fastForward.png",new Image());
+		this.loader.loadImage("img/actions/float.png",new Image());
+		this.loader.loadImage("img/actions/jumpAll.png",new Image());
+		this.loader.loadImage("img/actions/mine.png",new Image());
+		this.loader.loadImage("img/actions/minus.png",new Image());
+		this.loader.loadImage("img/actions/plus.png",new Image());
 		
-		this.loader.loadImage("img/actions/BashS.png",new Image());
-		this.loader.loadImage("img/actions/BlockS.png",new Image());
-		this.loader.loadImage("img/actions/BombS.png",new Image());
-		this.loader.loadImage("img/actions/BuildS.png",new Image());
-		this.loader.loadImage("img/actions/ClimbS.png",new Image());
-		this.loader.loadImage("img/actions/DigS.png",new Image());
-		this.loader.loadImage("img/actions/FloatS.png",new Image());
-		this.loader.loadImage("img/actions/JumpAllS.png",new Image());
-		this.loader.loadImage("img/actions/MineS.png",new Image());
+		this.loader.loadImage("img/actions/bashS.png",new Image());
+		this.loader.loadImage("img/actions/blockS.png",new Image());
+		this.loader.loadImage("img/actions/bombS.png",new Image());
+		this.loader.loadImage("img/actions/buildS.png",new Image());
+		this.loader.loadImage("img/actions/climbS.png",new Image());
+		this.loader.loadImage("img/actions/digS.png",new Image());
+		this.loader.loadImage("img/actions/floatS.png",new Image());
+		this.loader.loadImage("img/actions/jumpAllS.png",new Image());
+		this.loader.loadImage("img/actions/mineS.png",new Image());
 
 		
 		this.loader.loadImage("img/win.png",new Image());
@@ -246,6 +253,7 @@ FolderLevel.prototype.init = function() {
 		});
 		startObject = new IntroButton(0,0,1024,386);
 		startObject.delaySelect = function(x, y) {
+			console.log("delaySelect");
 			introSoundBlock.isBlock=false;
 			effectInstance.stop();
 		};

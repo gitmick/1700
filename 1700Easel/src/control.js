@@ -10,24 +10,24 @@ function Control() {
 }
 
 Control.prototype.init = function() {
-	this.addControl(1, 350, Climb,"Climb");
-	this.addControl(35, 350, Float,"Float");
-	this.addControl(69, 350, Bomb,"Bomb");
-	this.addControl(103, 350, Block,"Block");
-	this.addControl(137, 350, Build,"Build");
-	this.addControl(171, 350, Bash,"Bash");
-	this.addControl(204, 350, Mine,"Mine");
-	this.addControl(237, 350, Dig,"Dig");
+	this.addControl(1, 350, Climb,"climb");
+	this.addControl(35, 350, Float,"float");
+	this.addControl(69, 350, Bomb,"bomb");
+	this.addControl(103, 350, Block,"block");
+	this.addControl(137, 350, Build,"build");
+	this.addControl(171, 350, Bash,"bash");
+	this.addControl(204, 350, Mine,"mine");
+	this.addControl(237, 350, Dig,"dig");
 	
-	this.addControl(271, 350, JumpAll,"JumpAll");
+	this.addControl(271, 350, JumpAll,"jumpAll");
 	
-	this.addGlobalControl(305, 350, MorePolicemen,"Plus");
-	this.addGlobalControl(339, 350, LessPolicemen,"Minus");
+	this.addGlobalControl(305, 350, MorePolicemen,"plus");
+	this.addGlobalControl(339, 350, LessPolicemen,"minus");
 	
 	
 	
-	this.addGlobalControl(373, 350, FinishSpeed,"FastForward");
-	this.addGlobalControl(407, 350, BombAll,"BombAll");
+	this.addGlobalControl(373, 350, FinishSpeed,"fastForward");
+	this.addGlobalControl(407, 350, BombAll,"bombAll");
 }
 function JumpAll() {
 	this.multiSelect=true;

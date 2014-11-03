@@ -86,8 +86,8 @@ PunkPeeAction.prototype = new AssetAction();
 PunkPeeAction.prototype.act = function () {
 	this.counter++;
 	if (this.counter%this.asset.cycleLength==0) {
-		this.effectInstance.stop();
-		this.effectStarted=false;
+//		this.effectInstance.stop();
+//		this.effectStarted=false;
 //		this.asset.clearCollision();
 //		this.asset.collisionOffsetX=10;
 //		this.asset.collisionOffsetY=16;
