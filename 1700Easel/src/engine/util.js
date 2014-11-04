@@ -35,6 +35,11 @@ function formatPrice(num) {
 	numStr = num+"";
 	euro = numStr.substring(0,numStr.length-3);
 	cent = numStr.substring(numStr.length-2);
+	eurNew = formatEuro(euro);
+	return eurNew+","+cent;
+}
+
+function formatEuro(euro) {
 	eurNew="";
 	for (var i=0;i<euro.length;i++) {
 		if (i%3==0 && i!=0) {
@@ -42,9 +47,8 @@ function formatPrice(num) {
 		}
 		eurNew=euro.substring(euro.length-i-1,euro.length-i)+eurNew;
 	}
-	return eurNew+","+cent;
+	return eurNew;
 }
-
 
 function fillString(string,length) {
 	for (var i=0;i<length-string.length;i++) {

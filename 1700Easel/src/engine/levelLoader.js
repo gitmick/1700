@@ -8,9 +8,21 @@
 
 function Loader() {
 	this.waitingForLoads=0;
-	this.debug=true;
+	this.debug=false;
 	this.queue = new Array();
 	this.initializedSoundHandle=false;
+	this.dev="notInit";
+}
+
+
+Loader.prototype.random = function() {
+	if (this.dev=="notInit") {
+		this.dev=QueryString.dev;
+		this.log("dev mode, refresh: "+this.dev);
+	}
+	if (this.dev)
+		return Math.random();
+	return "";
 }
 
 Loader.prototype.log = function(str) {
@@ -34,7 +46,7 @@ Loader.prototype.isLoading = function() {
 
 Loader.prototype.loadSprites = function(sheet) {
 	if (!sheet.complete) {
-		var spriteName = "sheet"+Math.random();
+		var spriteName = "sheet"+this.random();
 		this.queue.push(spriteName);
 		var that=this;
 		sheet.addEventListener("complete",function(evt) {
@@ -50,7 +62,7 @@ Loader.prototype.loadScript = function(url)
     var head = document.getElementsByTagName('head')[0];
     var script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src = url+"?"+Math.random();
+    script.src = url+"?"+this.random();
     // Then bind the event to the callback function.
     // There are several events for cross browser compatibility.
     var that=this;
@@ -73,7 +85,7 @@ Loader.prototype.loadImage = function(imgSrc,img) {
 		return img;
 	}
 	this.queue.push(imgSrc);
-	img.src=imgSrc+"?"+Math.random();
+	img.src=imgSrc+"?"+this.random();
 	img.name=imgSrc;
 	var that=this;
 	img.onload=function() {
@@ -93,13 +105,12 @@ Loader.prototype.loadSound = function(sndSrc,sndName) {
 	if (isIn(loadedSounds,sndName))
 		return;
 	this.queue.push(sndName);
-	createjs.Sound.registerSound({id:sndName, src:sndSrc+"?"+Math.random()});
+	createjs.Sound.registerSound({id:sndName, src:sndSrc+"?"+this.random()});
 	var that=this;
 	if (!this.initializedSoundHandle) {
 		createjs.Sound.addEventListener("fileload", function(evt) {
-			console.log(evt.eventPhase);
 			loadedSounds.push(evt.id);
-			console.log("loaded sound "+evt.id);
+			that.log("loaded sound "+evt.id);
 			arrayWithout(that.queue,evt.id);
 		});
 		this.initializedSoundHandle=true;

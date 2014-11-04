@@ -39,7 +39,7 @@ function World() {
 World.prototype.setEquipment=function(eq) {
 	if (this.equiq!=eq) {
 		this.equiq=eq;
-		this.policeText.text=eq;
+		this.policeText.text=formatEuro(eq);
 		this.policeText.updateCache();
 	}
 }
@@ -64,7 +64,7 @@ World.prototype.setPoliceSaved=function(saved) {
 World.prototype.setMoneyLeft=function(left) {
 	if (left!=this.moneyLeft) {
 		this.moneyLeft=left;
-		this.moneyText.text=left;
+		this.moneyText.text=formatEuro(left+"");
 		this.moneyText.updateCache();
 	}
 }

@@ -201,9 +201,11 @@ DesktopInteraction.prototype.init = function() {
     	that.mouseDown=true;
     });
 //    stage.on("pressmove", function(evt) {
+//    	console.log("pressmove");
+//    	game.mouseX=evt.stageX;
+//    	game.mouseY=evt.stageY;
 //    	if (game.control.selectedAction && game.control.selectedAction === JumpAll){
-//	    	game.mouseX=evt.stageX;
-//	    	game.mouseY=evt.stageY;
+//	    	
 //	    	that.collect(evt.stageX,evt.stageY);
 //    	}
 //    	else
@@ -232,6 +234,7 @@ DesktopInteraction.prototype.init = function() {
     });
     
     stage.on("stagemousemove", function(evt) {
+    	console.log("move");
     	game.mouseX=evt.stageX;
     	game.mouseY=evt.stageY;
     	

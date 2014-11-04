@@ -39,7 +39,7 @@ MainLevel.prototype.init = function () {
 		this.loader.loadSound("fx/build_3.mp3","Dig");
 		this.loader.loadSound("fx/splash.mp3","Beidl");
 		this.loader.loadSound("fx/bash_2.mp3","Bash");
-		
+		this.loader.loadSound("fx/pisse.mp3","Piss");
 		this.loader.loadSound("fx/atmolong.mp3","atmolong");
 	};
 	this.levelInitialize.fire = function () {
@@ -191,8 +191,8 @@ FolderLevel.prototype.init = function() {
 		gameText.x=50;
 		gameText.y=100;
 		
-		//TODO should move out here
-		this.loader.loadSound("fx/pissen.mp3","Piss");
+
+		
 		
 		this.level.worldHtmlImage=this.loader.loadImage(this.level.dirPath+"/world.png",this.level.worldHtmlImage);
 		this.level.mapHtmlImage=this.loader.loadImage(this.level.dirPath+"/map.png",this.level.mapHtmlImage);
