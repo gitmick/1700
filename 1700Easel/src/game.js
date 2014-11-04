@@ -186,24 +186,44 @@ WinAction.prototype.act = function() {
 		soundPlayer.reset();
 		displayEntityHolder.destroy();
 		stage.removeAllChildren();
-		img = globalLoader.getImage("img/win.png");
+		img = globalLoader.getImage("img/background-Zib.png");
 		var dE = new DisplayEntity();
 		dE.addBitmap(img,false);
+		wolf = globalLoader.getImage("img/arminwolf.png");
+		d=dE.addBitmap(wolf, false);
+		d.xOff = 500;
+		d.pos = function(x,y,deFrame) {
+			scaledWidth = (384/height())*width()-336;
+			if (scaledWidth>800-336) {
+				scaledWidth=800-336;
+			}
+			console.log(scaledWidth);
+			if (deFrame)
+				this.element.x=x-deFrame.currentScroll+this.xOff;
+			else
+				this.element.x=parseInt(x+scaledWidth);
+		};
+		d.pos(0,0);
 		startObject = new IntroButton(0,0,400,400);
 		startObject.delaySelect = function(x, y) {
 			game.level = new FolderLevel(level.nextLevel);
 			game.level.start(game.machine);
 		};
 		this.started=true;
-		gameText = new createjs.Text(timeKeeper.toString(), "10px Visitor", "#ff7700"); 
-		gameText.x=20;
-		gameText.y=20;
+		gameText = new createjs.Text(timeKeeper.toString(), "10px Visitor", "#300300"); 
+		gameText.x=100;
+		gameText.y=60;
 		stage.addChild(gameText);
 		
-		gameText2 = new createjs.Text(timeKeeper.toString2(), "10px Visitor", "#ff7700"); 
-		gameText2.x=120;
-		gameText2.y=20;
+		gameText2 = new createjs.Text(timeKeeper.toString2(), "10px Visitor", "#300300"); 
+		gameText2.x=180;
+		gameText2.y=60;
 		stage.addChild(gameText2);
+		
+		gameText3 = new createjs.Text("Polizei hat es\ngeschafft!!", "20px Visitor", "#300300"); 
+		gameText3.x=120;
+		gameText3.y=239;
+		stage.addChild(gameText3);
 	}
 }
 
@@ -216,9 +236,24 @@ LostAction.prototype.act = function() {
 		stage.removeAllChildren();
 	
 	soundPlayer.reset();
-	img = globalLoader.getImage("img/lost.png");
+	img = globalLoader.getImage("img/background-Zib.png");
 	var dE = new DisplayEntity();
 	dE.addBitmap(img,false);
+	wolf = globalLoader.getImage("img/arminwolf.png");
+	d=dE.addBitmap(wolf, false);
+	d.xOff = 500;
+	d.pos = function(x,y,deFrame) {
+		scaledWidth = (384/height())*width()-336;
+		if (scaledWidth>800-336) {
+			scaledWidth=800-336;
+		}
+		console.log(scaledWidth);
+		if (deFrame)
+			this.element.x=x-deFrame.currentScroll+this.xOff;
+		else
+			this.element.x=parseInt(x+scaledWidth);
+	};
+	d.pos(0,0);
 	startObject = new IntroButton(0,0,400,700);
 	startObject.delaySelect = function(x, y) {
 		game.level = new FolderLevel(level.name);
@@ -227,17 +262,20 @@ LostAction.prototype.act = function() {
 	this.started=true;
 	
 
-	gameText = new createjs.Text(timeKeeper.toString(), "10px Visitor", "#ff7700"); 
-	gameText.x=20;
-	gameText.y=20;
+	gameText = new createjs.Text(timeKeeper.toString(), "10px Visitor", "#300300"); 
+	gameText.x=100;
+	gameText.y=60;
 	stage.addChild(gameText);
 	
-	gameText2 = new createjs.Text(timeKeeper.toString2(), "10px Visitor", "#ff7700"); 
-	gameText2.x=120;
-	gameText2.y=20;
+	gameText2 = new createjs.Text(timeKeeper.toString2(), "10px Visitor", "#300300"); 
+	gameText2.x=180;
+	gameText2.y=60;
 	stage.addChild(gameText2);
 	
-	console.log(timeKeeper.toString());
+	gameText3 = new createjs.Text("Polizei versagt\nschon wieder!!", "20px Visitor", "#300300"); 
+	gameText3.x=120;
+	gameText3.y=239;
+	stage.addChild(gameText3);
 	
 }
 }

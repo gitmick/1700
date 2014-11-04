@@ -147,17 +147,19 @@ World.prototype.init = function(lvl) {
 //			this.element.x=x+this.xOff;
 //		this.element.y=y+this.yOff;
 //	};
-	this.backButton = this.displayEntity.addShape(false);
-	this.backButton.element.graphics.beginFill("black").drawRect(0,0,10,10);
-	b = new Button(0,0,10,10);
-	b.select = function() {
-		game.machine.setAction(new MachineAction());
-		displayEntityHolder.destroy();
-		stage.removeAllChildren();
 	
-		soundPlayer.reset();
-		game.level = new SelectLevel();
-		game.level.start(game.machine);
+	if (lvl.mapHtmlImage!=lvl.worldHtmlImage) {
+		this.backButton = this.displayEntity.addBitmap(globalLoader.getImage("img/back.png"),false);
+		b = new Button(5,5,15,15);
+		b.select = function() {
+			game.machine.setAction(new MachineAction());
+			displayEntityHolder.destroy();
+			stage.removeAllChildren();
+		
+			soundPlayer.reset();
+			game.level = new SelectLevel();
+			game.level.start(game.machine);
+		}
 	}
 }
 

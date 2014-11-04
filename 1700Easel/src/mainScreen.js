@@ -226,9 +226,9 @@ FolderLevel.prototype.init = function() {
 		this.loader.loadImage("img/actions/mineS.png",new Image());
 
 		
-		this.loader.loadImage("img/win.png",new Image());
-		this.loader.loadImage("img/lost.png",new Image());
-		
+		this.loader.loadImage("img/background-Zib.png",new Image());
+		this.loader.loadImage("img/arminwolf.png",new Image());
+		this.loader.loadImage("img/back.png",new Image());
 		
 		//this.loader.loadSound(this.level.dirPath+"/intro.mp3",this.level.name+"intro");
 		this.loader.loadSound("levels/"+level.intro,level.intro);
