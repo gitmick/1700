@@ -15,13 +15,13 @@
 		level.actionCount[Mine]=10;
 		level.actionCount[Dig]=10;
 		level.actionCount[JumpAll]=1;
-		level.maxPoliceMen=20;
+		level.maxPoliceMen=30;
 		level.policeDelay=25;
 		level.dropX=-10;
 		level.dropY=250;
 		level.goalX=732;
 		level.goalY=283;
-		level.minSafeCount=19;
+		level.minSafeCount=20;
 		level.soundFile="track.mp3";
 		level.nextLevel="devLevel";
 		level.initAssets=function(){};

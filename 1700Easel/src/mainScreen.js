@@ -46,9 +46,7 @@ MainLevel.prototype.init = function () {
 		gameText = new createjs.Text("Gugug", "20px Visitor", "black");
 		stage.addChild(gameText);
 		var bitmap = new createjs.Bitmap(this.level.mainScreen);
-		
 		scaledWidth = (384/height())*width();
-		console.log(scaledWidth+" ");
 		bitmap.x=parseInt((scaledWidth-800)/2);
 		stage.addChild(bitmap);
 		
@@ -92,6 +90,8 @@ function IntroButton(x,y,w,h) {
 	this.time=Date.now();
 }
 IntroButton.prototype.active = function(diff) {
+	if (!this.time)
+		this.time=Date.now();
 	return (Date.now()-this.time>diff);
 }
 
@@ -116,18 +116,18 @@ SelectLevel.prototype.init = function () {
 //		this.level.world.gameText.textAlign="left";
 //		this.level.world.setText("Select Level");
 		
-		this.level.buttons.push(new LevelButton(50,50,100,100,"buerstelDream"));
-		this.level.buttons.push(new LevelButton(200,50,100,100,"couch"));
-		this.level.buttons.push(new LevelButton(350,50,100,100,"jump"));
-		this.level.buttons.push(new LevelButton(500,50,100,100,"heli"));
-		this.level.buttons.push(new LevelButton(650,50,100,100,""));
-		this.level.buttons.push(new LevelButton(800,50,100,100,""));
-		this.level.buttons.push(new LevelButton(50,200,100,100,"heliBridge"));
-		this.level.buttons.push(new LevelButton(200,200,100,100,"block"));
-		this.level.buttons.push(new LevelButton(350,200,100,100,"devLevel"));
-		this.level.buttons.push(new LevelButton(500,200,100,100,""));
-		this.level.buttons.push(new LevelButton(650,200,100,100,""));
-		this.level.buttons.push(new LevelButton(800,200,100,100,""));
+		this.level.buttons.push(new LevelButton(42,108,100,100,"buerstelDream"));
+		this.level.buttons.push(new LevelButton(162,108,100,100,"couch"));
+		this.level.buttons.push(new LevelButton(282,108,100,100,"jump"));
+		this.level.buttons.push(new LevelButton(402,108,100,100,"heli"));
+//		this.level.buttons.push(new LevelButton(650,50,100,100,""));
+//		this.level.buttons.push(new LevelButton(800,50,100,100,""));
+		this.level.buttons.push(new LevelButton(42,228,100,100,"heliBridge"));
+		this.level.buttons.push(new LevelButton(162,228,100,100,"block"));
+		this.level.buttons.push(new LevelButton(282,228,100,100,"devLevel"));
+//		this.level.buttons.push(new LevelButton(500,200,100,100,""));
+//		this.level.buttons.push(new LevelButton(650,200,100,100,""));
+//		this.level.buttons.push(new LevelButton(800,200,100,100,""));
 		soundPlayer.play("atmolong");
 	};
 	this.scrollAction.act = function() {
@@ -167,6 +167,7 @@ FolderLevel.prototype.init = function() {
 	level = new Level();
 	
 	this.loadIntroAction.load = function() {
+		soundPlayer.reset();
 		this.level.introImage=this.loader.loadImage(this.level.dirPath+"/introScreen.png",this.level.introImage);
 		this.loader.loadScript(this.level.dirPath+"/level.js");
 	};
@@ -247,15 +248,17 @@ FolderLevel.prototype.init = function() {
 	this.loadLevelSpecific.load = function() {
 		//effectInstance = soundPlayer.play(this.level.name+"intro");
 		soundPlayer.reset();
+		introSoundBlock.isBlock=true;
 		effectInstance = soundPlayer.play(level.intro);
 		effectInstance.addEventListener("complete",function() {
 			introSoundBlock.isBlock=false;
 		});
+		
 		startObject = new IntroButton(0,0,1024,386);
 		startObject.delaySelect = function(x, y) {
-			console.log("delaySelect");
 			introSoundBlock.isBlock=false;
 			effectInstance.stop();
+			this.time=false;
 		};
 		//this.loader.loadSound(this.level.dirPath+"/track.mp3",this.level.name);
 		this.loader.loadSound("levels/track.mp3","track");

@@ -26,6 +26,7 @@ function World() {
 	this.policeOut=0;
 	this.policeSaved=1;
 
+	this.backButton;
 	
 	this.foreGroundMask;
 	this.repaint;
@@ -134,6 +135,30 @@ World.prototype.init = function(lvl) {
 	this.policeText.y=60;
 	this.policeText.cache(0,0,300,40);
 	stage.addChild(this.policeText);
+	
+	
+	
+//	this.backButton.xOff = 500;
+//	this.backButton.yOff = 20;
+//	this.backButton.pos = function(x,y,deFrame) {
+//		if (deFrame)
+//			this.element.x=x-deFrame.currentScroll+this.xOff;
+//		else
+//			this.element.x=x+this.xOff;
+//		this.element.y=y+this.yOff;
+//	};
+	this.backButton = this.displayEntity.addShape(false);
+	this.backButton.element.graphics.beginFill("black").drawRect(0,0,10,10);
+	b = new Button(0,0,10,10);
+	b.select = function() {
+		game.machine.setAction(new MachineAction());
+		displayEntityHolder.destroy();
+		stage.removeAllChildren();
+	
+		soundPlayer.reset();
+		game.level = new SelectLevel();
+		game.level.start(game.machine);
+	}
 }
 
 World.prototype.scroll = function(x) {

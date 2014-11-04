@@ -21,7 +21,7 @@
 		level.dropY=43;
 		level.goalX=732;
 		level.goalY=283;
-		level.minSafeCount=20;
+		level.minSafeCount=10;
 		level.soundFile="track.mp3";
 		level.nextLevel="heliBridge";
 		level.registerAsset("Copter");

@@ -6,8 +6,8 @@
 		level.intro="atmoloopcopter.mp3";
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";
-		level.actionCount[Float]=0;
-		level.actionCount[Climb]=20;
+		level.actionCount[Float]=10;
+		level.actionCount[Climb]=10;
 		level.actionCount[Bomb]=10;
 		level.actionCount[Block]=10;
 		level.actionCount[Build]=10;
@@ -23,6 +23,7 @@
 		level.goalY=283;
 		level.minSafeCount=20;
 		level.soundFile="track.mp3";
+		level.nextLevel="buerstelDream";
 		level.registerAsset("Copter");
 		level.registerAsset("Tank");
 		level.registerAsset("Colorbags");
