@@ -344,10 +344,12 @@ TimeKeeper.prototype.toString2 = function() {
 	sum+=time*1200;
 	string+=formatPrice(time*1200)+" EUR\n\n";
 	string+=formatPrice(this.policeCount*this.pricePolice)+" EUR\n\n";
+	this.moneyLeft-=this.policeCount*this.pricePolice;
 	sum+=(this.policeCount*this.pricePolice);
 	for (var i=0;i<this.pricedAssets.length;i++) {
 		pricedAsset = this.pricedAssets[i];
 		sum+=pricedAsset.value;
+		this.moneyLeft-=pricedAsset.value;
 		string+=formatPrice(pricedAsset.value)+" EUR\n\n";
 	}
 	string+="\n\n";

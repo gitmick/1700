@@ -1,14 +1,16 @@
 function Phil(){
 	this.thrower = new Image();
-	this.collisionHeight=16;
+	this.collisionHeight=22;
 	this.collisionWidth=12;
+	this.collisionOffsetX=10;
 	this.collisionType=EVERBLOCK;
+	//this.collisionType=VISIBLE_BLOCK;
 }
 
 Phil.prototype = new Asset();
 
 Phil.prototype.load = function () {
-	this.loadImage("Thrower.png", this.thrower);
+	this.thrower=this.loadImage("sperre_32.png", this.thrower);
 };
 
 Phil.prototype.drawInitial = function() {
