@@ -83,6 +83,7 @@ Action.prototype=new Act();
 
 function Fall() {
 	this.height=0;
+	this.paraOpen=false;
 }
 Fall.prototype=new Action();
 
@@ -106,6 +107,10 @@ Fall.prototype.act=function() {
 	if (this.lemming.canFloat) {
 		speed=1;
 		this.effect("Float");
+		if (!this.paraOpen) {
+			this.lemming.circle.gotoAndPlay("par");
+			this.paraOpen=true;
+		}
 	}
 	else if (this.height>32)
 		this.effect("FloatFall");
@@ -316,7 +321,9 @@ Bash.prototype.act=function() {
 	}
 }
 
-function Walk() {}
+function Walk() {
+	this.init=false;
+}
 Walk.prototype=new Action();
 
 Walk.prototype.check=function() {
@@ -342,6 +349,11 @@ Walk.prototype.check=function() {
 }
 
 Walk.prototype.act = function() {
+	if (!this.init) {
+		this.init=true;
+		this.lemming.reverse();
+		this.lemming.reverse();
+	}
 	if (!this.lemming.againstWall()) {
 		this.lemming.y-=this.lemming.getDY();	
 		this.lemming.x+=this.lemming.direction*this.lemming.speed;

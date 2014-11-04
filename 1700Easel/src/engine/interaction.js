@@ -65,7 +65,7 @@ InteractionHandler.prototype.reset = function() {
 }
 
 InteractionHandler.prototype.select = function(x,y) {
-	console.log("try selecting");
+	//console.log("try selecting");
 	selected = false;
 	for (var i=0;i<this.interactionEntities.length;i++) {
 		var iE = this.interactionEntities[i];
@@ -189,7 +189,7 @@ DesktopInteraction.prototype.init = function() {
     stage.on("stagemousedown", function(evt) {
     	game.mouseX=evt.stageX;
     	game.mouseY=evt.stageY;
-    	console.log("mainClick");
+    	//console.log("mainClick");
     	if (Date.now()-that.lastClick>30) {
 	    	if (game.selectedLemming  && game.selectedLemming.under(evt.stageX,evt.stageY)) {
 				game.selectedLemming.select();
@@ -215,7 +215,7 @@ DesktopInteraction.prototype.init = function() {
     stage.on("stagemouseup", function(evt) {
     	game.mouseX=evt.stageX;
     	game.mouseY=evt.stageY;
-    	console.log("mainUp");
+    	//console.log("mainUp");
     	if (that.time>0 && game.control.selectedAction && game.control.selectedAction === JumpAll) {
     		interactionHandler.collected();
     		that.time=0;
@@ -234,7 +234,7 @@ DesktopInteraction.prototype.init = function() {
     });
     
     stage.on("stagemousemove", function(evt) {
-    	console.log("move");
+    	//console.log("move");
     	game.mouseX=evt.stageX;
     	game.mouseY=evt.stageY;
     	

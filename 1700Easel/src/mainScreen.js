@@ -235,9 +235,9 @@ FolderLevel.prototype.init = function() {
 		
 		var data = {
 				 framerate: 18,
-			     images: ["img/run.png"],
+			     images: ["img/run.png?21"],
 			     frames: {width:32, height:32},
-			     animations: {run:[0,9],runR:[10,19],stand:[20,35],exp:[36,49]}
+			     animations: {run:[0,9],runR:[10,19],stand:[20,35],exp:[36,49],par:[50,57]}
 			 };
 		lemmingsSheet = new createjs.SpriteSheet(data);
 		
