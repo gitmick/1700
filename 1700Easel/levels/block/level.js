@@ -26,6 +26,7 @@
 		level.nextLevel="devLevel";
 		level.initAssets=function(){};
 		level.registerAsset("Phil");
+		level.registerAsset("Drink");
 		level.initAssets=function(){
 			p = this.initAsset("Phil");
 			p.startX=300;
@@ -36,6 +37,11 @@
 			p.startX=400;
 			p.startY=257;
 			p.show();
+			
+			bagthrower = this.initAsset("Drink");
+			bagthrower.startX=480;
+			bagthrower.startY=18;
+			bagthrower.show();
 		}
 		
 		

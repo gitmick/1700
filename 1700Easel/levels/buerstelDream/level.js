@@ -25,6 +25,7 @@
 		level.soundFile="track.mp3";
 		level.nextLevel="jump";
 		level.registerAsset("Sign2");
+		level.registerAsset("Drink");
 		//level.initAssets=function(){};
 		/*level.registerAsset("Pee");
 		level.initAssets=function(){
@@ -40,6 +41,11 @@
 			sign.startY=20;
 			sign.triggerName=ADD_POLICEMEN_FINISHED;
 			sign.show();
+			
+			bagthrower = this.initAsset("Drink");
+			bagthrower.startX=480;
+			bagthrower.startY=18;
+			bagthrower.show();
 		};
 		
 		

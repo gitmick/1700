@@ -26,6 +26,7 @@
 		level.nextLevel="heli";
 		level.initAssets=function(){};
 		level.registerAsset("PeeingPunk");
+		level.registerAsset("Drink");
 		level.registerAsset("barrel");
 		level.initAssets=function(){
 			p = this.initAsset("PeeingPunk");
@@ -44,6 +45,11 @@
 			ba.startY=280;
 			ba.maxBarrels=2;
 			ba.show();
+			
+			bagthrower = this.initAsset("Drink");
+			bagthrower.startX=480;
+			bagthrower.startY=18;
+			bagthrower.show();
 		}
 		
 		

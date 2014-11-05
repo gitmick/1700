@@ -27,6 +27,7 @@
 		level.registerAsset("Copter");
 		level.registerAsset("Tank");
 		level.registerAsset("Colorbags");
+		level.registerAsset("Drink");
 		level.registerAsset("Sign");
 		level.initAssets = function() {
 			var copter = this.initAsset("Copter");
@@ -49,6 +50,10 @@
 			bagthrower.startY=10;
 			bagthrower.show();
 			
+			bagthrower = this.initAsset("Drink");
+			bagthrower.startX=480;
+			bagthrower.startY=18;
+			bagthrower.show();
 			
 			var sign = this.initAsset("Sign");
 			sign.startX=120;

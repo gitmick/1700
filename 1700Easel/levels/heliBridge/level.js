@@ -25,6 +25,7 @@
 		level.soundFile="track.mp3";
 		level.nextLevel="block";
 		level.registerAsset("Copter");
+		level.registerAsset("Drink");
 		level.initAssets = function() {
 			var copter = this.initAsset("Copter");
 			copter.startX=-140;
@@ -32,6 +33,11 @@
 			copter.targetX=40;
 			copter.targetY=57;
 			copter.show();
+			
+			bagthrower = this.initAsset("Drink");
+			bagthrower.startX=480;
+			bagthrower.startY=18;
+			bagthrower.show();
 		};
 		
 		
