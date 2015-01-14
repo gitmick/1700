@@ -2,7 +2,7 @@
 
 	level.load = function() {
 		level.title="Eine verfahrene Situation";
-		level.description="Gibt´s auch Panzerschokolade?";
+		level.description="Gibtï¿½s auch Panzerschokolade?";
 		level.intro="atmoloopcopter.mp3";
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";
@@ -23,7 +23,7 @@
 		level.goalY=283;
 		level.minSafeCount=20;
 		level.soundFile="track.mp3";
-		level.nextLevel="buerstelDream";
+		level.nextLevel="IvoLevel";
 		level.registerAsset("Copter");
 		level.registerAsset("Tank");
 		level.registerAsset("Colorbags");

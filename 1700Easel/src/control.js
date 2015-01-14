@@ -20,15 +20,15 @@ Control.prototype.init = function() {
 	this.addControl(237, 350, Dig,"dig");
 	
 	this.addControl(271, 350, JumpAll,"jumpAll");
+	this.addControl(305, 350, JumpSingle, "jumpSingle");  ///<-Einzel sprung
 	
-	this.addGlobalControl(305, 350, MorePolicemen,"plus");
-	this.addGlobalControl(339, 350, LessPolicemen,"minus");
+	this.addGlobalControl(339, 350, MorePolicemen,"plus");
+	this.addGlobalControl(373, 350, LessPolicemen,"minus");
 	
-	
-	
-	this.addGlobalControl(373, 350, FinishSpeed,"fastForward");
-	this.addGlobalControl(407, 350, BombAll,"bombAll");
+	this.addGlobalControl(407, 350, FinishSpeed,"fastForward");
+	this.addGlobalControl(441, 350, BombAll,"bombAll");
 }
+
 function JumpAll() {
 	this.multiSelect=true;
 }
@@ -36,6 +36,7 @@ function JumpAll() {
 
 Control.prototype.showPic = function(x,y,picName) {
 	picName = "img/actions/"+picName+".png";
+	
 	pic = globalLoader.getImage(picName);
 	bitmap= new createjs.Bitmap(pic);
 	bitmap.y=y;
@@ -44,7 +45,9 @@ Control.prototype.showPic = function(x,y,picName) {
 };
 
 Control.prototype.showEntityPic = function(x,y,picName,displayEntity) {
+	
 	picName = "img/actions/"+picName+".png";
+	console.log(picName);
 	pic = globalLoader.getImage(picName);
 	bitmap= displayEntity.addBitmap(pic,false).element;
 	return bitmap;

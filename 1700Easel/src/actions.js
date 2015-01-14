@@ -77,6 +77,7 @@ function Action() {
 	this.possibleActions.push( Bash);
 	this.possibleActions.push( Build);
 	this.possibleActions.push( Jump);
+	this.possibleActions.push( JumpSingle);
 }
 
 Action.prototype=new Act();
@@ -84,6 +85,12 @@ Action.prototype=new Act();
 function Fall() {
 	this.height=0;
 	this.paraOpen=false;
+	this.possibleActions = new Array();
+	this.possibleActions.push(Bomb);
+	this.possibleActions.push(Walk);
+	this.possibleActions.push(Kill);
+	this.possibleActions.push(Climb);
+	this.possibleActions.push(Float);
 }
 Fall.prototype=new Action();
 
@@ -508,6 +515,46 @@ Jump.prototype.act = function() {
 }
 
 
+/////////// JUMP SINGLE
+function JumpSingle() {
+	this.startTime=Date.now();
+	this.jumpProcedure=1;
+	this.height=0;
+	this.paraOpen=false;
+	this.possibleActions = new Array();
+	this.possibleActions.push(Bomb);
+	this.possibleActions.push(Walk);
+	this.possibleActions.push(Kill);
+	this.possibleActions.push(Climb);
+	this.possibleActions.push(Float);
+	//////
+}
+JumpSingle.prototype=new Action();
+
+JumpSingle.prototype.check=function() {
+	if (!this.lemming.hasFloor() && this.jumpProcedure>1) {
+		this.lemming.setAction(new Fall());
+		return false;
+	}
+	if (this.lemming.againstWall()) {
+		this.lemming.reverse();
+	}
+	return true;
+}
+
+JumpSingle.prototype.act = function() {
+		this.effect("Ha");
+		this.jumpProcedure--;
+		this.lemming.y-=((this.jumpProcedure+10)/2);
+		this.lemming.x+=this.lemming.direction*this.lemming.speed;
+		this.lemming.floor=-1;
+		if (this.lemming.hasFloor() || this.jumpProcedure<-17)
+			this.lemming.setAction(new Walk());
+		this.lemming.x+=this.lemming.direction*this.lemming.speed;
+		if (this.jumpProcedure<-17)
+			this.lemming.setAction(new Walk());
+}
+/////////////ENDE JUMP SINGLE
 
 
 

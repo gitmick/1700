@@ -125,7 +125,7 @@ SelectLevel.prototype.init = function () {
 		this.level.buttons.push(new LevelButton(42,228,100,100,"heliBridge"));
 		this.level.buttons.push(new LevelButton(162,228,100,100,"block"));
 		this.level.buttons.push(new LevelButton(282,228,100,100,"devLevel"));
-//		this.level.buttons.push(new LevelButton(500,200,100,100,""));
+  		this.level.buttons.push(new LevelButton(402,200,100,100,"IvoLevel"));
 //		this.level.buttons.push(new LevelButton(650,200,100,100,""));
 //		this.level.buttons.push(new LevelButton(800,200,100,100,""));
 		soundPlayer.play("atmolong");
@@ -211,6 +211,7 @@ FolderLevel.prototype.init = function() {
 		this.loader.loadImage("img/actions/fastForward.png",new Image());
 		this.loader.loadImage("img/actions/float.png",new Image());
 		this.loader.loadImage("img/actions/jumpAll.png",new Image());
+		this.loader.loadImage("img/actions/jumpSingle.png",new Image());
 		this.loader.loadImage("img/actions/mine.png",new Image());
 		this.loader.loadImage("img/actions/minus.png",new Image());
 		this.loader.loadImage("img/actions/plus.png",new Image());
@@ -223,6 +224,7 @@ FolderLevel.prototype.init = function() {
 		this.loader.loadImage("img/actions/digS.png",new Image());
 		this.loader.loadImage("img/actions/floatS.png",new Image());
 		this.loader.loadImage("img/actions/jumpAllS.png",new Image());
+		this.loader.loadImage("img/actions/jumpSingleS.png",new Image());
 		this.loader.loadImage("img/actions/mineS.png",new Image());
 
 		

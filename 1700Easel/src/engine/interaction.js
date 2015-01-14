@@ -190,14 +190,17 @@ DesktopInteraction.prototype.init = function() {
     	game.mouseX=evt.stageX;
     	game.mouseY=evt.stageY;
     	//console.log("mainClick");
-    	if (Date.now()-that.lastClick>30) {
-	    	if (game.selectedLemming  && game.selectedLemming.under(evt.stageX,evt.stageY)) {
-				game.selectedLemming.select();
-			}
-			else
-				interactionHandler.select(evt.stageX,evt.stageY);
-    	}
-    	that.lastClick=Date.now();
+    	
+    	
+    	//this is double functionality
+//    	if (Date.now()-that.lastClick>30) {
+//	    	if (game.selectedLemming  && game.selectedLemming.under(evt.stageX,evt.stageY)) {
+//				game.selectedLemming.select();
+//			}
+//			else
+//				interactionHandler.select(evt.stageX,evt.stageY);
+//    	}
+//    	that.lastClick=Date.now();	
     	that.mouseDown=true;
     });
 //    stage.on("pressmove", function(evt) {

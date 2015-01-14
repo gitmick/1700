@@ -185,6 +185,7 @@ Lemming.prototype.left=function(x,y) {
 }
 
 Lemming.prototype.collected=function(time) {
+	console.log("collected");
 	if (game.control.selectedAction === JumpAll) {
 		jump = new Jump();
 		jump.jumpCount=time;
