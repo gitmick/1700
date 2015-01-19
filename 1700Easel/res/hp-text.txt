@@ -1,0 +1,139 @@
+Play:
+Heldengeschichten müssen erzählt werden! Was 300 für Sparta ist 1700 für Wien. 
+Werde du zum Kommandanten der 1700, führe du sie durch die gefährlichen Welten der Pizzeria. 
+Hier geht es direkt zum Spiel, ein kurzes Tutorial findet sich hier ->Tutorial<-
+
+
+Support
+1700 ist ein Projekt, das von vielen Freiwilligen gemeinsam entwickelt wurde. Für unsere weitere Arbeit sind wir an jeder Form der Unterstützung interessiert.
+
+What
+1700 erzählt wahre Geschichten in Form eines Computerspiels. Begonnen hat alles mit der Pizzeria Anarchia, doch die Welt ist noch voll mit Material, das es gilt zu erzählen.
+
+
+
+
+
+Support:
+1700 wurde in unzähligen Stunden ehrenamtlicher Arbeit erstellt. 
+Und da sind wir natürlich über jede Form der Unterstützung glücklich. 
+Über unsere TShirts könnt ihr gleich doppelt gutes tun, ihr tragt die tapferen 1700 am Körper hinaus in die Welt 
+und ein paar EUR gehen an das Team, dann haben wir wenigstens Pizza beim arbeiten ;)
+Wir freuen uns natürlich auch, wenn ihr uns einfach verbreitet, ein Blog, ein Artikel, ein Facebook-Post ein Tweet...
+Für die Weiterentwicklung wird es auch wieder ein Spendensammlung geben .. Newsletter!
+
+What:
+1700 erzählt die reale Geschichte einer polizeilichen Räumung eines Hauses in Wien, Punks wurde Platz im Haus
+zur Verfügung gestellt, wohl mit dem Beweggrund dadurch die Altmieter schneller aus dem Haus zu bekommen. Als 
+die Hausbewohner sich jedoch solidarisierten wurde das Haus mit einem riesigen Polizeiaufgebot geräumt, 
+Stockwerk für Stockwerk kämpften sich die Polizisten gegen die Solidarisierung nach oben.
+Die schönsten Absurditäten werden in diesem Spiel zum Nacherleben angeboten.
+
+
+
+News:
+
+Am 30.1.2015 wird die Weiterentwicklung von 1700 präsentiert, 1700 3/4. Das Spiel hat sich in den 
+letzten 2 Monaten weiterentwickelt, mehr Spielvarianten, mehr Levels, mehr Geschichte.
+Freut euch auf die Mythen der 1700, das Erbe der 1700 und der Fluch der 1700.
+Die endgültige Fassung, auch als Apps für die beliebtesten Mobilsystem wird dann in der ersten Hälfte von 2015 veröffentlicht.
+
+
+30 Minuten 1700 bei Radio Stimme 
+
+Wien: Dienstag 20.1 20:00 Orange 94.0
+Innsbruck:	Donnerstag 29.1 12:00 FREIRAD
+Berlin:	Mittwoch 28.1. Radio Alex
+weitere Termine (andere Bundesländer), Livestream und Aufzeichnung -> radiostimme.at
+
+
+
+infotext
+
+Die erste Preview auf 1700 fand am 5. November (Guy Fawkes Day) statt, seitdem kann man es als HTML5 Browserspiel erleben.
+Es erzählt die reale Geschichte einer polizeilichen Räumung eines Hauses in Wien, Punks wurde Platz im Haus
+zur Verfügung gestellt, wohl mit dem Beweggrund dadurch die Altmieter schneller aus dem Haus zu bekommen. Als 
+die Hausbewohner sich jedoch solidarisierten wurde das Haus mit einem riesigen Polizeiaufgebot geräumt, 
+Stockwerk für Stockwerk kämpften sich die Polizisten gegen die Solidarisierung nach oben.
+Die schönsten Absurditäten werden in diesem Spiel zum Nacherleben angeboten.
+Das Spiel ist von Lemmings inspiriert, man steuert die unkoordinierte Menge an Polizisten, die zumeist an ihren eigenen Planungsfehlern scheitert. Es ist das Ziel
+ins Haus zu kommen und dabei möglichst wenig Geld zu verbrauchen.
+
+Am 30.1.2015, passend zu den jährlichen Ballprotesten kommt die Vorschau auf das erweiterte 1700 3/4. Im Zuge dieser Proteste wurde 2014 nicht nur fast die ganze Innenstadt
+in eine Sperrzone verwandelt, Journalisten ausgesperrt und Bekleidungsvorschriften verhängt, sogar den Holocaustüberlebenden wurden ihre Gedenkreden am Heldenplatz verboten.
+Im Spiel kämpft nun ein Polizist dafür, dass es dazu nie wieder kommen kann und besänfigt seine Kollegen mit weinseeliger Walzerseeligkeit.
+
+In weiterer Folge entwickelt sich 1700 zu einem regelmäßigen Magazin, das politische und gesellschaftliche Ereignisse in kleine Casual Games verpackt, untereinander verknüpft und
+so neue Formen des Kommentars und der Satire entwickelt.
+
+Technisch:
+In der jetzigen Version funktioniert das Spiel als HTML5 Implementierung, getestet auf Firefox und Chrome. Ab dem endgültigen Release von 1700 3/4 wird es als App für die 
+wesentlichsten Mobilplattformen zu Verfügung stehen.
+
+
+If I wanted to tell you the story, I would have written it. But I made a game.
+
+Aber zum Glück gibt es Journalisten, die diesen Job für uns übernehmen:
+
+The Gap
+http://www.thegap.at/gamestories/artikel/die-letzte-schlacht-gewinnen-wir/
+Die letzte Schlacht gewinnen wir, Thomas Nussbaumer, 3.11.2014
+
+Vice Magacine
+https://www.vice.com/alps/read/games-das-pizzeria-anarchia-game-ist-wie-300-zum-nachspielen-672
+Das Pizzeria Anarchia-Game: "300" trifft auf die "Lemmings", Adrian Aranyos, 4.11.2014
+
+derStandard
+http://derstandard.at/2000007690412/1700-Das-Spiel-zur-Pizzeria-Anarchia
+"1700": Das Spiel zur Pizzeria Anarchia, 4.11.2014
+
+FM4-Web
+http://fm4.orf.at/stories/1749002/
+Wie die Lemminge!, Alex Wagner, 5.11.2014
+
+FM4
+https://soundcloud.com/michael-hackl-1/1700-interview-fm4-connected-gerlinde-lang
+1700 Interview, Gerlinde Lang
+
+Futurezone
+http://futurezone.at/games/1700-raeumung-der-pizzeria-anarchia-als-computerspiel/95.238.011
+"1700" - Räumung der Pizzeria Anarchia als Computerspiel, 5.11.2014
+
+
+credits
+
+Michael Hackl
+
+
+Raimund Schumacher
+Art Direction
+
+Ivo Francx
+Project Management
+
+Mimu Merz
+Sound Effects, Story Development
+
+Andreas Pils
+Sound Engineer
+
+Philipp Lammer
+Development Support
+
+Paul Pant
+Original Soundtrack
+
+drama und stern
+Music
+
+Firnwald
+Music
+
+Matthias LeBoucher
+Musical Interludes
+
+Hansi Raber
+App Support
+
+Georg Hobmeier
+Development Support

@@ -10,7 +10,7 @@
 		level.actionCount[Climb]=10;
 		level.actionCount[Bomb]=10;
 		level.actionCount[Block]=10;
-		level.actionCount[Build]=10;
+		level.actionCount[Build]=0;
 		level.actionCount[Bash]=10;
 		level.actionCount[Mine]=10;
 		level.actionCount[Dig]=10;

@@ -2,14 +2,12 @@
  * 
  */
 
-function Control() {
-	this.selectedAction;
-	this.controlAction=new Object();
-	this.selectedControl;
-	
+function LemmingControl() {
 }
 
-Control.prototype.init = function() {
+LemmingControl.prototype = new Control();
+
+LemmingControl.prototype.init = function() {
 	this.addControl(1, 350, Climb,"climb");
 	this.addControl(35, 350, Float,"float");
 	this.addControl(69, 350, Bomb,"bomb");
@@ -34,26 +32,7 @@ function JumpAll() {
 }
 
 
-Control.prototype.showPic = function(x,y,picName) {
-	picName = "img/actions/"+picName+".png";
-	
-	pic = globalLoader.getImage(picName);
-	bitmap= new createjs.Bitmap(pic);
-	bitmap.y=y;
-	bitmap.x=x;
-	stage.addChild(bitmap);
-};
-
-Control.prototype.showEntityPic = function(x,y,picName,displayEntity) {
-	
-	picName = "img/actions/"+picName+".png";
-	console.log(picName);
-	pic = globalLoader.getImage(picName);
-	bitmap= displayEntity.addBitmap(pic,false).element;
-	return bitmap;
-};
-
-Control.prototype.addControl = function(x,y,action_,picName) {
+LemmingControl.prototype.addControl = function(x,y,action_,picName) {
 	y=y-11;
 	cE = new ControlElement();
 	this.showEntityPic(x,y,picName,cE.displayEntity);
@@ -81,7 +60,7 @@ Control.prototype.addControl = function(x,y,action_,picName) {
 		cE.select();
 }
 
-Control.prototype.addGlobalControl = function(x,y,action_,picName) {
+LemmingControl.prototype.addGlobalControl = function(x,y,action_,picName) {
 
 	cE = new GlobalControlElement();
 	this.showEntityPic(x,y,picName,cE.displayEntity);
@@ -95,30 +74,17 @@ Control.prototype.addGlobalControl = function(x,y,action_,picName) {
 	cE.displayEntity.pos(x, y);
 	
 	this.controlAction[action_]=cE;
-	
-}
+};
 
-Control.prototype.actionAvailable = function() {
-	if (!this.selectedAction)
-		return false;
-	var count = level.actionCount[this.selectedAction];
-	if (count==0)
-		return false;
-	return true;
-}
 
-Control.prototype.useAction = function() {
-	if (!this.actionAvailable())
-		return false;
-	var count = level.actionCount[this.selectedAction];
-	level.actionCount[this.selectedAction]=--count;
+
+LemmingControl.prototype.displayUseAction = function(count) {
 	ce = this.controlAction[this.selectedAction]; 
 	ce.text.text=""+count;	
 	ce.text.updateCache();
 	if (count==0)
 		ce.select();
-	return true;
-}
+};
 
 
 function ControlElement() {
@@ -136,14 +102,10 @@ ControlElement.prototype.select = function(x,y){
 	if (leftActions>0) {
 		if (game.control.selectedAction) {
 			lastCE=game.control.controlAction[game.control.selectedAction];
-//			lastCE.selectionShape.graphics.clear();
-//			lastCE.selectionShape.graphics.beginFill("rgba(10,10,10,0.1)").drawRect(lastCE.displayEntity.x,lastCE.displayEntity.y,36,36);
 			if (lastCE.selectedBitmap)
 				lastCE.selectedBitmap.alpha=0;
 		}
 		game.control.selectedAction=this.action;
-//		this.selectionShape.graphics.clear();
-//		this.selectionShape.graphics.beginFill("rgba(255,0,0,0.5)").drawRect(0,0,36,36);
 		this.selectedBitmap.alpha=1;
 	}
 	else {
@@ -170,7 +132,7 @@ function GlobalControlElement() {
 	this.scaleBitmap;
 	this.action;
 	this.active=true;
-}
+};
 
 GlobalControlElement.prototype.select = function(x,y){
 	a = new this.action;

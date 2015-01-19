@@ -12,8 +12,9 @@ var mouseX;
 
 var bmp;
 var stage;
-var game;
 
+var flavor;
+var game;
 var deviceInteraction;
 
 var QueryString = function () {
@@ -49,10 +50,8 @@ function init() {
 	stage = new createjs.Stage("canvas");
     createjs.Touch.enable(stage);
 	stage.mouseChildren=false;
-    deviceInteraction = new DesktopInteraction();
-    
-    game = new Game();
-	game.init();
+    flavor = new LemmingFlavor();
+    flavor.init();
     
     createjs.Ticker.setFPS(25);
     createjs.Ticker.addEventListener("tick", tick);
