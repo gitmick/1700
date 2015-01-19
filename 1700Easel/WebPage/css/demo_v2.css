@@ -6,6 +6,22 @@ body {
   padding-bottom: 20px;
 }
 
+a {
+	color: black;
+	text-decoration: none;
+}
+
+a:hover {
+	color: black;
+	text-decoration: none;
+}
+
+p {
+  overflow: hidden;
+  padding: 10px 0;
+  text-align: block;
+}
+
 #firstform {
 	color: #999;
 	background-color: #222;
@@ -17,14 +33,20 @@ body {
 	text-align: center;
 }
 
+.blocktext p {
+	text-align: justify;
+	text-justify: inter-word;
+}
+
 .btn p {
 	text-align: center;
 	margin-top: 12px;
+	margin-left: 45px;
 	padding-bottom: 17px;
 	padding-left: 20px;
-	padding-right: 25px;
+	padding-right: 20px;
 	position: relative;
-	left: 40px;
+	text-align: center;
 	width: 120px;
 	height: 20px;
 	background-color: yellow;
@@ -38,7 +60,7 @@ body {
 }
 
 .btn a {
-	margin: 50px;
+	color: black;
 }
 
 .content_lower {
@@ -79,6 +101,10 @@ body {
 	padding-bottom: 20px;
 }
 
+div.socialmedia {
+	height: 343px;
+}
+
 p.termine {
 	font-size: 18px;
 	margin-bottom: -7px;
@@ -89,19 +115,8 @@ p.termine {
 	width: 620px;
 }
 
-#socialmedia ul li{
-	position: relative;
-	top: 10px;
-	list-style: none;
-	display: inline-block;
-	margin: 10px;
-	padding-bottom:5px;
-}
-
-#socialmedia ul  li img {
-	-webkit-box-shadow: 5px 5px 5px  rgba(180, 180, 180, 0.59);
-	-moz-box-shadow:    5px 5px 5px  rgba(180, 180, 180, 0.59);
-	box-shadow:         5px 5px 5px  rgba(180, 180, 180, 0.59);
+div.newselement {
+	height: 300px;
 }
 
 .newsfeed img {
@@ -111,10 +126,11 @@ p.termine {
 	margin-top: 3px;
 }
 
-.newsfeed h5 {
+.newsfeed h4 {
 	text-align: center;
 	color:black;
 	padding-bottom: 0px;
+	margin-top: -1px;
 	margin-bottom: 0px;
 	background-color: yellow;
 }
@@ -122,42 +138,132 @@ p.termine {
 .newselement {
 	background-color: #222;
 	margin-bottom: 20px;
-	padding-bottom: -1px;
+	padding-bottom: 0px;
+}
+
+.supportgame h5 {
+	text-align: center;
+	color:black;
+	padding-bottom: 0px;
+	margin: 0px 10px 10px 10px;
+	background-color: yellow;
 }
 
 .support p {
 	position: relative;
 	padding: 6px;
-	top: -75px;
+	padding-top: 0px;
+	margin-top: 5px;
+	top: -82px;
 	z-index: 1;
 	background-color: yellow;
 	font-size: 20px;
-	height: 40px;
+	height: 44px;
 }
 
 .support h4 {
 	color: black;
 	position: relative;
-	padding: 6px;
-	top: -50px;
+	padding: 3px 6px 0px 6px;
+	top: -77px;
 	z-index: 1;
 	background-color: yellow;
 	font-size: 20px;
-	height: 40px;
+	height: 25px;
 }
 
-a {
-  color: #fff;
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: none;
+.support_klein h4 {
+	color: black;
+	position: relative;
+	float: left;
+	width: 288px;
+	padding: 3px 6px 0px 6px;
+	top: -77px;
+	z-index: 1;
+	background-color: yellow;
+	font-size: 20px;
+	height: 25px;
 }
 
-p {
-  overflow: hidden;
-  padding: 10px 0;
-  text-align: block;
+.support_klein p {
+	position: relative;
+	float: left;
+	width: 288px;
+	padding: 6px;
+	padding-top: 0px;
+	margin-top: 5px;
+	top: -82px;
+	z-index: 1;
+	background-color: yellow;
+	font-size: 20px;
+	height: 44px;
+}
+
+
+.support_klein img {
+	position: relative;
+	height: 140px;
+	z-index: 0;
+}
+
+div.support_klein {
+	height: 160px;
+}
+
+div.supportgame {
+	height: 410px;
+}
+
+/* .support_klein_unten p {
+	position: relative;
+	padding: 6px;
+	padding-top: 0px;
+	margin-top: 5px;
+	top: -145px;
+	z-index: 1;
+	background-color: yellow;
+	font-size: 20px;
+	height: 44px;
+
+}
+
+.support_klein_unten h4 {
+	color: black;
+	position: relative;
+	float: left;
+	width: 288px;
+	clear: both;
+	padding: 3px 6px 0px 6px;
+	top: -140px;
+	z-index: 1;
+	background-color: yellow;
+	font-size: 20px;
+	height: 25px;
+}
+
+.support_klein_unten img {
+	position: relative;
+	top: -62px;
+	height: 140px;
+	z-index: 0;
+}
+ */
+
+
+
+.support_klein h4, .support_klein p, .support_klein_unten h4, .support_klein_unten p, .support h4, .support p {
+	opacity: 0.6;
+    filter: alpha(opacity=60);
+}
+
+
+
+.gameinfo h5 {
+	text-align: center;
+	color:black;
+	padding-bottom: 0px;
+	margin: 0px 10px 10px 10px;
+	background-color: yellow;
 }
 
 span.artikel  h4 {
@@ -170,13 +276,17 @@ span.artikel  h4 {
 
 span.artikel p  {
 	position: relative;
-	padding: 6px;
 	top: -75px;
+	padding: 6px;
+	margin-top:0px;
+	margin-bottom: 10px;
 	z-index: 1;
 	background-color: yellow;
 	font-size: 20px;
-	height: 40px;
+	height: 42px;
 }
+
+
 
 span.artikel  p , span.artikel h4 {
 	color: black;
