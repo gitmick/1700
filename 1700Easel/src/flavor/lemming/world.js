@@ -34,6 +34,11 @@ function World() {
 	this.equiq="";
 	
 	this.updateShapes = new Array();
+	
+	
+	//Paralax
+	this.clouds;
+	this.clouds2;
 }
 
 World.prototype.setEquipment=function(eq) {
@@ -83,6 +88,11 @@ World.prototype.setText = function(text) {
 }
 
 World.prototype.init = function(lvl) {
+	
+	//blueSky
+	sky=this.displayEntity.addShape(true).element;
+	sky.graphics.beginFill("#D0EEf3").drawRect(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
+	
 	this.foreGroundMask = this.displayEntity.addShape(true).element;
 	this.worldBitmapData = new createjs.BitmapData(lvl.mapHtmlImage);
 	this.width=lvl.worldHtmlImage.width;
@@ -92,7 +102,124 @@ World.prototype.init = function(lvl) {
 //	this.s=this.displayEntity.addShape(true).element;
 //	this.s.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	
-	this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true).element.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
+	
+	
+	
+	//Paralax
+	if (lvl.cloudImage) {
+		this.clouds = this.displayEntity.addBitmap(lvl.cloudImage,true);
+		this.clouds.width=lvl.cloudImage.width;
+		this.clouds.xOff=0;
+		this.clouds.yOff=-70;
+		this.clouds.pos = function(x,y,deFrame) {
+			if (deFrame)
+				this.element.x=x-deFrame.currentScroll*0.2+this.xOff;
+			else
+				this.element.x=x+this.xOff;
+			this.element.y=y+this.yOff;
+		};
+		this.clouds2 = this.displayEntity.addBitmap(lvl.cloudImage,true);
+		this.clouds2.width=lvl.cloudImage.width;
+		this.clouds2.xOff=-lvl.cloudImage.width;
+		this.clouds2.yOff=-60;
+		this.clouds2.pos = function(x,y,deFrame) {
+			if (deFrame)
+				this.element.x=x-deFrame.currentScroll*0.2+this.xOff;
+			else
+				this.element.x=x+this.xOff;
+			this.element.y=y+this.yOff;
+		};
+	}
+	
+	bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
+	//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
+	bg.width=lvl.worldHtmlImage.width;
+	bg.xOff=0;
+	bg.yOff=67;
+	bg.pos = function(x,y,deFrame) {
+		if (deFrame){
+//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
+//			console.log(deFrame.currentScroll);
+//			console.log((this.width/2-deFrame.currentScroll)*0.1);
+			this.element.x=x-deFrame.currentScroll*0.6+this.xOff;
+			console.log(deFrame.currentScroll);
+		}
+		else
+			this.element.x=x;
+		this.element.y=y+this.yOff;
+	};
+	
+	bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
+	//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
+	bg.width=lvl.worldHtmlImage.width;
+	bg.xOff=lvl.backgroundHtmlImage.width;
+	bg.yOff=67;
+	bg.pos = function(x,y,deFrame) {
+		if (deFrame){
+//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
+//			console.log(deFrame.currentScroll);
+//			console.log((this.width/2-deFrame.currentScroll)*0.1);
+			this.element.x=x-deFrame.currentScroll*0.6+this.xOff;
+			console.log(deFrame.currentScroll);
+		}
+		else
+			this.element.x=x;
+		this.element.y=y+this.yOff;
+	};
+	
+	if (lvl.backgroundHtmlImage2) {
+		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage2,true);
+		//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
+		bg.width=lvl.worldHtmlImage.width;
+		bg.yOff=84;
+		bg.xOff=0;
+		bg.pos = function(x,y,deFrame) {
+			if (deFrame){
+	//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
+	//			console.log(deFrame.currentScroll);
+	//			console.log((this.width/2-deFrame.currentScroll)*0.1);
+				this.element.x=x-deFrame.currentScroll*0.9+this.xOff;
+			}
+			else
+				this.element.x=x;
+			this.element.y=y+this.yOff;
+		};
+		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage2,true);
+		//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
+		bg.width=lvl.worldHtmlImage.width;
+		bg.yOff=84;
+		bg.xOff=lvl.backgroundHtmlImage2.width;
+		bg.pos = function(x,y,deFrame) {
+			if (deFrame){
+	//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
+	//			console.log(deFrame.currentScroll);
+	//			console.log((this.width/2-deFrame.currentScroll)*0.1);
+				this.element.x=x-deFrame.currentScroll*0.9+this.xOff;
+			}
+			else
+				this.element.x=x;
+			this.element.y=y+this.yOff;
+		};
+		
+		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage3,true);
+		//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
+		bg.width=lvl.worldHtmlImage.width;
+		bg.yOff=10;
+		bg.xOff=460;
+		bg.pos = function(x,y,deFrame) {
+			if (deFrame){
+	//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
+	//			console.log(deFrame.currentScroll);
+	//			console.log((this.width/2-deFrame.currentScroll)*0.1);
+				this.element.x=x-deFrame.currentScroll*1+this.xOff;
+			}
+			else
+				this.element.x=x;
+			this.element.y=y+this.yOff;
+		};
+		
+	}
+	
 	this.foreGround=this.displayEntity.addShape(true).element;
 	
 	this.foreGround.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
@@ -106,8 +233,12 @@ World.prototype.init = function(lvl) {
 	//stage.addChild(this.foreGroundMask);
 	
 	
+
+	
 	if (lvl.scoreHtmlImage)
 		this.displayEntity.addBitmap(lvl.scoreHtmlImage, false);
+	
+	
 	
 	this.gameText = new createjs.Text("", "40px Visitor", "#fff600"); 
 	this.gameText.x=73;
@@ -164,7 +295,22 @@ World.prototype.init = function(lvl) {
 }
 
 World.prototype.scroll = function(x) {
+	
 	this.displayEntity.adjust(x);
+}
+
+World.prototype.tick = function() {
+	if (this.clouds) {
+		console.log("move clouds "+this.clouds.element.x);
+		this.clouds.xOff-=0.3;
+		if (this.clouds.xOff<-this.clouds.width) {
+			this.clouds.xOff=this.clouds.width
+		}
+		this.clouds2.xOff-=0.3;
+		if (this.clouds2.xOff<-this.clouds2.width) {
+			this.clouds2.xOff=this.clouds2.width
+		}
+	}
 }
 
 World.prototype.getWorldPixel = function(px,py){
