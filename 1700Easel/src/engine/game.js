@@ -27,7 +27,6 @@ Game.prototype.flavorReset = function() {
 };
 
 Game.prototype.init = function(){
-	this.level = new MainLevel();
 	this.level.start(this.machine);
 	this.click=this.level.click;
 };

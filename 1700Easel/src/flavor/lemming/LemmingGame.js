@@ -14,6 +14,7 @@ var timeKeeper = new TimeKeeper();
 
 function LemmingGame() {
 	
+	this.level = new MainLevel();
 	
 	this.control = new LemmingControl();
 	
@@ -44,19 +45,19 @@ LemmingGame.flavorReset = function() {
 };
 
 
-Game.prototype.getWorldPixel = function(px,py){
+LemmingGame.prototype.getWorldPixel = function(px,py){
 	return this.level.world.getWorldPixel(px,py);
 };
 
-Game.prototype.drawCircle = function(px,py,radius,color){
+LemmingGame.prototype.drawCircle = function(px,py,radius,color){
 	return this.level.world.drawCircle(px,py,radius,color);
 };
 
-Game.prototype.drawRect = function(px,py,w,h,color){
+LemmingGame.prototype.drawRect = function(px,py,w,h,color){
 	return this.level.world.drawRect(px,py,w,h,color);
 };
 
-Game.prototype.addLemmings = function(){
+LemmingGame.prototype.addLemmings = function(){
 	hasadded=false;
 	if(this.added++<level.maxPoliceMen){
 		var lemming = new Lemming();
@@ -71,7 +72,7 @@ Game.prototype.addLemmings = function(){
 	return hasadded;
 };
 
-Game.prototype.scrollLevel = function(mouseX){
+LemmingGame.prototype.scrollLevel = function(mouseX){
 	if (this.level && this.level.world) {
 		if (mouseX>canvasWidth-100) {
     		if (this.currentScroll<=this.level.world.width-canvasWidth)

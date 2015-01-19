@@ -50,8 +50,12 @@ function init() {
 	stage = new createjs.Stage("canvas");
     createjs.Touch.enable(stage);
 	stage.mouseChildren=false;
-    flavor = new LemmingFlavor();
-    flavor.init();
+   
+	
+	flavor = new FluchFlavor();
+	flavor.init();
+//	flavor = new LemmingFlavor();
+//    flavor.init();
     
     createjs.Ticker.setFPS(25);
     createjs.Ticker.addEventListener("tick", tick);

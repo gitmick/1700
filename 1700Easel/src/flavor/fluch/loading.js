@@ -1,152 +1,4 @@
-/** huhu
- * 
- */
-
-
-
-function MainLevel () {
-	this.mainScreen = new Image();
-	
-}
-MainLevel.prototype = new StartLevel();
-MainLevel.prototype.init = function () {
-	
-	startObject = new Button(0,0,1024,386);
-	startObject.select = function(x, y) {
-		game.level = new SelectLevel();
-		game.level.start(game.machine);
-	};
-	
-	this.loadAction.load = function() {
-		this.level.mainScreen=this.loader.loadImage("img/titleScreen.png", this.level.mainScreen);
-		this.loader.loadSound("fx/float_huuu.mp3","Float");
-		this.loader.loadSound("fx/float_naaa.mp3","FloatFall");
-		this.loader.loadSound("fx/Climb.mp3","Climb");
-		this.loader.loadSound("fx/Block.mp3","Block");
-		this.loader.loadSound("fx/bomb_jessas.mp3","Bomb");
-		this.loader.loadSound("fx/bomb_exp2.mp3","Exp");
-		this.loader.loadSound("fx/build_2.mp3","Build");
-		this.loader.loadSound("fx/gen_death3.mp3","Kill");
-		this.loader.loadSound("fx/climb_jodel2.mp3","ClimbUp");
-		this.loader.loadSound("fx/gen_uhoh.mp3","Juhu");
-		this.loader.loadSound("fx/block_hoppala.mp3","hoppala");
-		this.loader.loadSound("fx/block_ausweis.mp3","Ausweis");
-		this.loader.loadSound("fx/block_momenterl.mp3","Momenterl");
-		this.loader.loadSound("fx/block_ha.mp3","Ha");
-		this.loader.loadSound("fx/bash_1.mp3","Mine");
-		this.loader.loadSound("fx/build_3.mp3","Dig");
-		this.loader.loadSound("fx/splash.mp3","Beidl");
-		this.loader.loadSound("fx/bash_2.mp3","Bash");
-		this.loader.loadSound("fx/pisse.mp3","Piss");
-		this.loader.loadSound("fx/atmolong.mp3","atmolong");
-	};
-	this.levelInitialize.fire = function () {
-		gameText = new createjs.Text("Gugug", "20px Visitor", "black");
-		stage.addChild(gameText);
-		var bitmap = new createjs.Bitmap(this.level.mainScreen);
-		scaledWidth = (384/height())*width();
-		bitmap.x=parseInt((scaledWidth-800)/2);
-		stage.addChild(bitmap);
-		
-	};
-};
-
-
-function SelectLevel () {
-	
-	this.worldHtmlImage= new Image();
-	this.backgroundHtmlImage = new Image();
-	this.repaintHtmlImage = new Image();
-	this.mapHtmlImage= new Image();
-
-	this.world = new World();
-	
-}
-
-function LevelButton(x,y,w,h,name) {
-	this.displayEntity = new DisplayEntity();
-	this.displayEntity.addInteractionEntity(w, h, this, true);
-	this.displayEntity.pos(x, y);
-	this.time=Date.now();
-	this.name=name;
-}
-LevelButton.prototype.active = function(diff) {
-	return (Date.now()-this.time>diff);
-}
-
-LevelButton.prototype.select=function(x,y) {
-	if (!this.active(100))
-		return;
-	game.level = new FolderLevel(this.name);
-	game.level.start(game.machine);
-}
-
-function IntroButton(x,y,w,h) {
-	this.displayEntity = new DisplayEntity();
-	this.displayEntity.addInteractionEntity(w, h, this, true);
-	this.displayEntity.pos(x, y);
-	this.time=Date.now();
-}
-IntroButton.prototype.active = function(diff) {
-	if (!this.time)
-		this.time=Date.now();
-	return (Date.now()-this.time>diff);
-}
-
-IntroButton.prototype.select=function(x,y) {
-	if (!this.active(100))
-		return;
-	this.delaySelect();
-}
-
-SelectLevel.prototype = new StartLevel();
-SelectLevel.prototype.init = function () {
-	this.buttons = new Array();
-	this.loadAction.load = function() {
-		this.level.worldHtmlImage=this.loader.loadImage("img/levelScreen.png", this.level.worldHtmlImage);
-	};
-	this.levelInitialize.fire = function () {
-		
-		this.level.backgroundHtmlImage = this.level.worldHtmlImage;
-		this.level.repaintHtmlImage = this.level.worldHtmlImage;
-		this.level.mapHtmlImage= this.level.worldHtmlImage;
-		this.level.world.init(this.level);
-//		this.level.world.gameText.textAlign="left";
-//		this.level.world.setText("Select Level");
-		
-		this.level.buttons.push(new LevelButton(42,108,100,100,"buerstelDream"));
-		this.level.buttons.push(new LevelButton(162,108,100,100,"couch"));
-		this.level.buttons.push(new LevelButton(282,108,100,100,"jump"));
-		this.level.buttons.push(new LevelButton(402,108,100,100,"heli"));
-//		this.level.buttons.push(new LevelButton(650,50,100,100,""));
-//		this.level.buttons.push(new LevelButton(800,50,100,100,""));
-		this.level.buttons.push(new LevelButton(42,228,100,100,"heliBridge"));
-		this.level.buttons.push(new LevelButton(162,228,100,100,"block"));
-		this.level.buttons.push(new LevelButton(282,228,100,100,"devLevel"));
-  		this.level.buttons.push(new LevelButton(402,200,100,100,"IvoLevel"));
-//		this.level.buttons.push(new LevelButton(650,200,100,100,""));
-//		this.level.buttons.push(new LevelButton(800,200,100,100,""));
-		soundPlayer.play("atmolong");
-	};
-	this.scrollAction.act = function() {
-		
-		def = new DEFrame();
-		def.currentScroll = game.currentScroll;
-		
-		for (var i=0; i<this.level.buttons.length;i++) {
-			var asset = this.level.buttons[i];
-			asset.displayEntity.adjust(def);
-		}
-	}
-};
-
-var introSoundBlock = new MachineBlock();
-introSoundBlock.isBlock=true;
-introSoundBlock.block = function() {
-	return this.isBlock;
-}
-
-function FolderLevel(levelName) {
+function FluchLevel(levelName) {
 	this.name=levelName;
 	this.dirPath = "levels/"+this.name;
 	console.log("initializing level: "+this.dirPath);
@@ -154,11 +6,13 @@ function FolderLevel(levelName) {
 	this.backgroundHtmlImage = new Image();
 	this.repaintHtmlImage = new Image();
 	this.mapHtmlImage= new Image();
-	this.introImage= new Image();
+	
+	
+	this.introImage= new Image(); //Check
 	this.world = new World();
 }
-FolderLevel.prototype = new IntroLevel();
-FolderLevel.prototype.init = function() {
+FluchLevel.prototype = new IntroLevel();
+FluchLevel.prototype.init = function() {
 	
 	stage.removeAllChildren();
 	//stage.removeAllEventListeners();
@@ -286,4 +140,3 @@ FolderLevel.prototype.init = function() {
 		eff.volume=1;
 	};
 };
-
