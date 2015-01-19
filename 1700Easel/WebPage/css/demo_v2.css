@@ -214,49 +214,10 @@ div.supportgame {
 	height: 410px;
 }
 
-/* .support_klein_unten p {
-	position: relative;
-	padding: 6px;
-	padding-top: 0px;
-	margin-top: 5px;
-	top: -145px;
-	z-index: 1;
-	background-color: yellow;
-	font-size: 20px;
-	height: 44px;
-
-}
-
-.support_klein_unten h4 {
-	color: black;
-	position: relative;
-	float: left;
-	width: 288px;
-	clear: both;
-	padding: 3px 6px 0px 6px;
-	top: -140px;
-	z-index: 1;
-	background-color: yellow;
-	font-size: 20px;
-	height: 25px;
-}
-
-.support_klein_unten img {
-	position: relative;
-	top: -62px;
-	height: 140px;
-	z-index: 0;
-}
- */
-
-
-
 .support_klein h4, .support_klein p, .support_klein_unten h4, .support_klein_unten p, .support h4, .support p {
 	opacity: 0.6;
     filter: alpha(opacity=60);
 }
-
-
 
 .gameinfo h5 {
 	text-align: center;
@@ -302,11 +263,35 @@ div.hoverable:hover p, div.hoverable:hover h4, div.hoverable:hover img {
 	box-shadow:         3px -3px 18px 0px rgba(180, 180, 180, 0.59);*/
 }
 
+/* #bg {
+  position: fixed; 
+  top: -50%; 
+  left: -50%; 
+  width: 200%; 
+  height: 200%;
+  z-index: -1;
+  transform: translateZ(-1px);
+  
+}
+#bg img {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 50%;
+  min-height: 50%;
+  z-index: -1;
+} */
+
+.about_content {
+	color: white;
+}
+
 
 .container_12,
 .container_16,
 .container_24 {
-  background-color: black;
-  background-repeat: repeat-y;
   margin-bottom: 20px;
 }
