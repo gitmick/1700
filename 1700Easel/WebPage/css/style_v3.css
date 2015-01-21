@@ -12,7 +12,7 @@ a {
 }
 
 a:hover {
-	color: black;
+	color: grey;
 	text-decoration: none;
 }
 
@@ -126,6 +126,9 @@ p.termine {
 }
 
 /****************************************/
+.hiddenNews {
+	display: none;
+}
 
 .subsection_news {
 	width: 620px;
@@ -134,10 +137,11 @@ p.termine {
 div.newselement {
 	height: 300px;
 	overflow: hidden;
+	visibility: visible;
 }
 
 .newselement {
-	background-color: #222;
+	background-color: white;
 	margin-bottom: 20px;
 }
 
@@ -288,30 +292,40 @@ div.hoverable:hover p, div.hoverable:hover h4, div.hoverable:hover img {
 	box-shadow:         3px -3px 18px 0px rgba(180, 180, 180, 0.59);*/
 }
 
-/* #bg {
-  position: fixed; 
-  top: -50%; 
-  left: -50%; 
-  width: 200%; 
-  height: 200%;
-  z-index: -1;
-  transform: translateZ(-1px);
-  
+.greywrapper {
+	background-color: #222;
+	width: 100%;
+	margin: 60px 0px;
+	padding: 30px 0px;
 }
-#bg img {
-  position: absolute; 
-  top: 0; 
-  left: 0; 
-  right: 0; 
-  bottom: 0; 
-  margin: auto; 
-  min-width: 50%;
-  min-height: 50%;
-  z-index: -1;
-} */
 
 .about_content {
+	margin-top: 24px;
 	color: white;
+	height: 300px;
+	text-align: left;
+}
+
+.pressestimmen p {
+	height: 54px;
+	margin-bottom: -36px;
+}
+
+.pressestimmen a {
+	color: white;
+}
+
+.pressestimmen a:hover {
+	color: grey;
+}
+
+.credits_content {
+	color: white;
+}
+
+.credits_content p {
+	height: 78px;
+	text-align: center;
 }
 
 
