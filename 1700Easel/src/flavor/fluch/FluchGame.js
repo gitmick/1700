@@ -41,7 +41,7 @@ FluchGame.flavorReset = function() {
 FluchGame.prototype.addLemmings = function(){
 	hasadded=false;
 	if(this.added++<1){
-		var lemming = new Lemming();
+		var lemming = new Demonstrant();
 		lemming.x=level.dropX;
 	    lemming.y=level.dropY;
 		lemming.create();
@@ -54,5 +54,8 @@ FluchGame.prototype.addLemmings = function(){
 };
 
 FluchGame.prototype.scrollLevel = function(mouseX){
-	
+	if (this.level && this.level.world) {
+		this.level.world.tick();
+		
+	}
 };

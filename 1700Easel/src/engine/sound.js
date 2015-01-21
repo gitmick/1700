@@ -80,3 +80,40 @@ SoundPlayer.prototype.reset = function() {
 }
 
 soundPlayer = new SoundPlayer();
+
+
+function Fader(ef,from,to,steps) {
+	this.ef=ef;
+	this.from=from;
+	this.to=to;
+	this.steps=steps;
+	this.current=from;
+	this.stepLength = (to-from)/steps;
+	this.faders;
+};
+
+Fader.prototype.tick = function() {
+	this.current+=this.stepLength;
+	
+	this.ef.volume=this.current;
+	if ((this.stepLength<0 && this.current<this.to)|| (this.stepLength>0 && this.current>this.to)) {
+		console.log(this.current+" "+this.stepLength+" "+this.to);
+		arrayWithout(this.faders.faders, this);
+	}
+};
+
+function FaderArray() {
+	this.faders = new Array();
+};
+
+FaderArray.prototype.add = function(ef,from,to,steps) {
+	fader = new Fader(ef,from,to,steps);
+	this.faders.push(fader);
+	fader.faders=this;
+};
+
+FaderArray.prototype.tick = function() {
+	for (var i=0;i<this.faders.length;i++) {
+		this.faders[i].tick();
+	}
+};
