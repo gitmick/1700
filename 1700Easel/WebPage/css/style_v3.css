@@ -80,22 +80,34 @@ p {
 
 
 .sidebar ul {
-	position: relative;
-	padding: 45px 2px;
+	width: 300px;
 }
 
 .sidebar li {
- 	display: inline;
-	vertical-align: center;
-	margin-left: 3px;
+	float: left;
+	margin:0px;
+	padding:0px;
+	padding-bottom: 15px;
+}
+
+.sidebar li p {
+	float: right;
+	width: 200px;
+	margin-top: 12px;
+	margin-left: 6px;
+	padding-left: 12px;
+	padding: 6px 12px;
+	background-color: yellow;
+	border: 2px solid;
+    border-radius: 15px;
 }
 
 .sidebar h4 {
-	text-align: center;
+	position: relative;
+	clear: both;
+	top: 0px;
 	color:black;
 	padding-bottom: 0px;
-	margin-bottom: -30px;
-	background-color: yellow;
 }
 
 .sidebar p  {
@@ -103,7 +115,8 @@ p {
 }
 
 div.socialmedia {
-	height: 343px;
+	height: 300px;
+	margin-bottom: 21px;
 }
 
 p.termine {
@@ -111,6 +124,8 @@ p.termine {
 	margin-bottom: -7px;
 	padding-bottom: 0px;
 }
+
+/****************************************/
 
 .subsection_news {
 	width: 620px;
@@ -124,34 +139,68 @@ div.newselement {
 .newselement {
 	background-color: #222;
 	margin-bottom: 20px;
-	padding-bottom: 0px;
+}
+
+.textbox {
+	height: 300px;
 }
 
 .textbox p {
 	position: relative;
-	top: -100px;
-	height: 120px;
+	top: -400px;
 	margin-left: 0px;
 	width: 620px;
-	background-color: yellow;
-	opacity: 0.7;
-    filter: alpha(opacity=70);
+	background: rgba(255, 240, 0, 0.4);
+/*     opacity: 0.7;
+    filter: alpha(opacity=70); */
     -webkit-transition: all 0.7s;
+	transition: all 0.7s;
+	padding: 6px 6px 20px 6px;
+}
+
+p.head {
+	font-size: 30px;
+	height: 15px;
+}
+
+.overlay {
+	position: relative;
+	top:-300px;
+	visibility: visible;
+	z-index: 1;
+	opacity: 1;
+    filter: alpha(opacity=100);
+	-webkit-transition: all 0.7s;
 	transition: all 0.7s;
 }
 
-div.textbox::after {
-	content: url(../img/trans620x300.png);
-	position: relative;
-	top:-580px;
+.newselement:hover .textbox p {
+ 	top: -600px;
+ 	background: rgba(255, 240, 0, 1);
+/*  	opacity: 1;
+    filter: alpha(opacity=100); */
+ }
+ 
+ .newselement:hover .overlay {
+ 	opacity: 0;
+    filter: alpha(opacity=0);
+ }
+
+.timeline a {
+	background-color: yellow;
+	margin-bottom: 10px;
+	padding: 6px;
 }
 
-.newselement:hover .textbox p {
- 	top: -300px;
- 	opacity: 1;
-    filter: alpha(opacity=100);
-    padding-bottom: 20px;
- }
+.timeline #older {
+	float: left;
+}
+
+.timeline #newer {
+	float: right;
+}
+
+/****************************************/
 
 .gamelinks h5 {
 	text-align: center;
