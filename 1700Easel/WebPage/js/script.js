@@ -32,7 +32,9 @@ function getDisplayedNewsArticles() {
 	}
 	
 	for (var i = a; i<a+4; i++) {
-		document.getElementById("news_" + i).classList.remove("hidden");
+		if(document.getElementById("news_" + i) != null) {
+			document.getElementById("news_" + i).classList.remove("hidden");
+		}		
 	}
 }
 
@@ -42,6 +44,12 @@ function showOlder() {
 	getDisplayedNewsArticles();
 	if(newsPage>1) {
 		document.getElementById("newer").classList.remove("hidden");
+	}
+	if(newsPage==4) {
+		var x = document.getElementById("older");
+		x.classList.add("hidden");
+		x.className = x.className + " hidden";
+	    x.classList.add("hidden");
 	}
 }
 
@@ -53,6 +61,9 @@ function showNewer() {
 		x.classList.add("hidden");
 		x.className = x.className + " hidden";
 	    x.classList.add("hidden");
+	}
+	if (newsPage<4) {
+		document.getElementById("older").classList.remove("hidden");
 	}
 }
 

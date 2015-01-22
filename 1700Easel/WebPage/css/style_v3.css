@@ -24,7 +24,7 @@ p {
 
 #firstform {
 	color: #999;
-	background-color: #222;
+	background-color: #222; /*ingame logo farbe: #00355a*/
 	padding-bottom: 8px;
 	padding-top: 15px;
 }
@@ -36,7 +36,7 @@ p {
 .blocktext p {
 	text-align: justify;
 	text-justify: inter-word;
-	height: 180px;
+	height: 150px;
 }
 
 .btn p {
@@ -134,6 +134,10 @@ p.termine {
 	width: 620px;
 }
 
+.newsfeed {
+	height: 1340px;
+}
+
 div.newselement {
 	height: 300px;
 	overflow: hidden;
@@ -208,6 +212,11 @@ p.head {
 .timeline #newer {
 	
 	float: right;
+	border: 2px solid;
+    border-radius: 15px;
+	-moz-box-shadow: 5px 5px 5px #111;
+	-webkit-box-shadow: 5px 5px 5px #111;
+	box-shadow: 5px 5px 5px #111;
 }
 
 /****************************************/
@@ -327,6 +336,7 @@ div.hoverable:hover p, div.hoverable:hover h4, div.hoverable:hover img {
 
 .credits_content {
 	text-align: center;
+	color: white;
 }
 
 .credits_content p {
