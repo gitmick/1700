@@ -1,15 +1,23 @@
+var eff1;
+var eff2;
+var eff3;
+var eff4;
+var eff5;
+
 function FluchLevel(levelName) {
 	this.name=levelName;
 	this.dirPath = "levels/"+this.name;
 	console.log("initializing level: "+this.dirPath);
 	this.worldHtmlImage= new Image();
 	this.backgroundHtmlImage = new Image();
+	this.backgroundHtmlImage2 = new Image();
+	this.backgroundHtmlImage3 = new Image();
 	this.repaintHtmlImage = new Image();
 	this.mapHtmlImage= new Image();
 	
-	
+	this.cloudImage= new Image();
 	this.introImage= new Image(); //Check
-	this.world = new World();
+	this.world = new FluchWorld();
 }
 FluchLevel.prototype = new IntroLevel();
 FluchLevel.prototype.init = function() {
@@ -49,7 +57,12 @@ FluchLevel.prototype.init = function() {
 		this.level.worldHtmlImage=this.loader.loadImage(this.level.dirPath+"/world.png",this.level.worldHtmlImage);
 		this.level.mapHtmlImage=this.loader.loadImage(this.level.dirPath+"/map.png",this.level.mapHtmlImage);
 		this.level.repaintHtmlImage=this.loader.loadImage(this.level.dirPath+"/repaint.png",this.level.repaintHtmlImage);
-		this.level.backgroundHtmlImage=this.loader.loadImage(this.level.dirPath+"/background.png",this.level.backgroundHtmlImage);
+		this.level.backgroundHtmlImage=this.loader.loadImage(this.level.dirPath+"/day_houses_02.png",this.level.backgroundHtmlImage);
+		this.level.backgroundHtmlImage2=this.loader.loadImage(this.level.dirPath+"/day_houses_01.png",this.level.backgroundHtmlImage2);
+		this.level.backgroundHtmlImage3=this.loader.loadImage(this.level.dirPath+"/pizzeria.png",this.level.backgroundHtmlImage3);
+		
+		//PARALAX
+		this.level.cloudImage = this.loader.loadImage(this.level.dirPath+"/cloud.png",this.level.cloudImage);
 		
 		this.level.scoreHtmlImage=this.loader.loadImage("img/scoreImage.png",new Image());
 		
@@ -79,7 +92,7 @@ FluchLevel.prototype.init = function() {
 		this.loader.loadImage("img/actions/jumpSingleS.png",new Image());
 		this.loader.loadImage("img/actions/mineS.png",new Image());
 
-		
+		this.loader.loadSound("fx/block_ha.mp3","Ha");
 		this.loader.loadImage("img/background-Zib.png",new Image());
 		this.loader.loadImage("img/arminwolf.png",new Image());
 		this.loader.loadImage("img/back.png",new Image());
@@ -116,6 +129,13 @@ FluchLevel.prototype.init = function() {
 		};
 		//this.loader.loadSound(this.level.dirPath+"/track.mp3",this.level.name);
 		this.loader.loadSound("levels/track.mp3","track");
+		
+		this.loader.loadSound("sound/walzertest1.mp3","track1");
+		this.loader.loadSound("sound/walzertest2.mp3","track2");
+		this.loader.loadSound("sound/walzertest3.mp3","track3");
+		this.loader.loadSound("sound/walzertest4.mp3","track4");
+		this.loader.loadSound("sound/walzertest5.mp3","track5");
+		
 		this.machine.addBlock(introSoundBlock);
 		
 
@@ -136,7 +156,11 @@ FluchLevel.prototype.init = function() {
 		game.trigger.addTrigger(ADD_POLICEMEN,timeKeeper);
 		//eff=soundPlayer.play(this.level.name,1,100);
 		soundPlayer.reset();
-		eff=soundPlayer.play("track",5,100);
-		eff.volume=1;
+		eff1=soundPlayer.play("track1",5,100);
+		eff2=soundPlayer.play("track2",5,100);
+		eff3=soundPlayer.play("track3",5,100);
+		eff4=soundPlayer.play("track4",5,100);
+		eff5=soundPlayer.play("track5",5,100);
+
 	};
 };

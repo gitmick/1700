@@ -74,6 +74,7 @@ LemmingGame.prototype.addLemmings = function(){
 
 LemmingGame.prototype.scrollLevel = function(mouseX){
 	if (this.level && this.level.world) {
+		this.level.world.tick();
 		if (mouseX>canvasWidth-100) {
     		if (this.currentScroll<=this.level.world.width-canvasWidth)
     			this.currentScroll+=(mouseX-(canvasWidth-100))/8.0;

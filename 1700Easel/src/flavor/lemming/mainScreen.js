@@ -152,9 +152,12 @@ function FolderLevel(levelName) {
 	console.log("initializing level: "+this.dirPath);
 	this.worldHtmlImage= new Image();
 	this.backgroundHtmlImage = new Image();
+	this.backgroundHtmlImage2 = new Image();
+	this.backgroundHtmlImage3 = new Image();
 	this.repaintHtmlImage = new Image();
 	this.mapHtmlImage= new Image();
 	this.introImage= new Image();
+	this.cloudImage= new Image();
 	this.world = new World();
 }
 FolderLevel.prototype = new IntroLevel();
@@ -195,7 +198,12 @@ FolderLevel.prototype.init = function() {
 		this.level.worldHtmlImage=this.loader.loadImage(this.level.dirPath+"/world.png",this.level.worldHtmlImage);
 		this.level.mapHtmlImage=this.loader.loadImage(this.level.dirPath+"/map.png",this.level.mapHtmlImage);
 		this.level.repaintHtmlImage=this.loader.loadImage(this.level.dirPath+"/repaint.png",this.level.repaintHtmlImage);
-		this.level.backgroundHtmlImage=this.loader.loadImage(this.level.dirPath+"/background.png",this.level.backgroundHtmlImage);
+		this.level.backgroundHtmlImage=this.loader.loadImage(this.level.dirPath+"/day_houses_02.png",this.level.backgroundHtmlImage);
+		this.level.backgroundHtmlImage2=this.loader.loadImage(this.level.dirPath+"/day_houses_01.png",this.level.backgroundHtmlImage2);
+		this.level.backgroundHtmlImage3=this.loader.loadImage(this.level.dirPath+"/pizzeria.png",this.level.backgroundHtmlImage3);
+		
+		//PARALAX
+		this.level.cloudImage = this.loader.loadImage(this.level.dirPath+"/cloud.png",this.level.cloudImage);
 		
 		this.level.scoreHtmlImage=this.loader.loadImage("img/scoreImage.png",new Image());
 		

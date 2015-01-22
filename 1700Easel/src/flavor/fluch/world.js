@@ -12,7 +12,7 @@ var POLICE=2;
 var VISIBLE_BLOCK=1;
 var INVISIBLE_BLOCK=0;
 
-function World() {
+function FluchWorld() {
 	this.worldBitmapData;
 	this.s;
 	this.foreGround;
@@ -34,14 +34,14 @@ function World() {
 	this.equiq="";
 	
 	this.updateShapes = new Array();
-	
+	this.scrollState=0;
 	
 	//Paralax
 	this.clouds;
 	this.clouds2;
 }
 
-World.prototype.setEquipment=function(eq) {
+FluchWorld.prototype.setEquipment=function(eq) {
 	if (this.equiq!=eq) {
 		this.equiq=eq;
 		this.policeText.text=formatEuro(eq);
@@ -49,7 +49,7 @@ World.prototype.setEquipment=function(eq) {
 	}
 }
 
-World.prototype.setPoliceOut=function(out) {
+FluchWorld.prototype.setPoliceOut=function(out) {
 	if (out!=this.policeOut) {
 		this.gameText.text=out;
 		this.policeOut=out;
@@ -57,7 +57,7 @@ World.prototype.setPoliceOut=function(out) {
 	}
 }
 
-World.prototype.setPoliceSaved=function(saved) {
+FluchWorld.prototype.setPoliceSaved=function(saved) {
 	if (saved!=this.policeSaved) {
 		this.policeSaved=saved;
 		tt=saved+" / "+level.minSafeCount;
@@ -66,7 +66,7 @@ World.prototype.setPoliceSaved=function(saved) {
 	}
 }
 
-World.prototype.setMoneyLeft=function(left) {
+FluchWorld.prototype.setMoneyLeft=function(left) {
 	if (left!=this.moneyLeft) {
 		this.moneyLeft=left;
 		this.moneyText.text=formatEuro(left+"");
@@ -74,7 +74,7 @@ World.prototype.setMoneyLeft=function(left) {
 	}
 }
 
-World.prototype.updateText = function() {
+FluchWorld.prototype.updateText = function() {
 	if (this.dirty) {
 		//this.setText("Im Einsatz: "+this.policeOut+" Im Haus: "+this.policeSaved+" Geld verbraten: "+this.moneyLeft);
 		this.setText(this.policeOut);
@@ -82,16 +82,16 @@ World.prototype.updateText = function() {
 	}
 };
 
-World.prototype.setText = function(text) {
+FluchWorld.prototype.setText = function(text) {
 	this.gameText.text=text;
 	this.gameText.updateCache();
 }
 
-World.prototype.init = function(lvl) {
+FluchWorld.prototype.init = function(lvl) {
 	
 	//blueSky
 	sky=this.displayEntity.addShape(true).element;
-	sky.graphics.beginFill("#D0EEf3").drawRect(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
+	sky.graphics.beginFill("#000000").drawRect(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	
 	this.foreGroundMask = this.displayEntity.addShape(true).element;
 	this.worldBitmapData = new createjs.BitmapData(lvl.mapHtmlImage);
@@ -113,7 +113,7 @@ World.prototype.init = function(lvl) {
 		this.clouds.yOff=-70;
 		this.clouds.pos = function(x,y,deFrame) {
 			if (deFrame)
-				this.element.x=x-deFrame.currentScroll*0.2+this.xOff;
+				this.element.x=(x-deFrame.currentScroll*0.2+this.xOff)%this.width;
 			else
 				this.element.x=x+this.xOff;
 			this.element.y=y+this.yOff;
@@ -124,7 +124,7 @@ World.prototype.init = function(lvl) {
 		this.clouds2.yOff=-60;
 		this.clouds2.pos = function(x,y,deFrame) {
 			if (deFrame)
-				this.element.x=x-deFrame.currentScroll*0.2+this.xOff;
+				this.element.x=(x-deFrame.currentScroll*0.2+this.xOff)%this.width+this.width;
 			else
 				this.element.x=x+this.xOff;
 			this.element.y=y+this.yOff;
@@ -133,7 +133,7 @@ World.prototype.init = function(lvl) {
 	
 	bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
 	//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
-	bg.width=lvl.worldHtmlImage.width;
+	bg.width=lvl.backgroundHtmlImage.width;
 	bg.xOff=0;
 	bg.yOff=67;
 	bg.pos = function(x,y,deFrame) {
@@ -141,8 +141,8 @@ World.prototype.init = function(lvl) {
 //			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
 //			console.log(deFrame.currentScroll);
 //			console.log((this.width/2-deFrame.currentScroll)*0.1);
-			this.element.x=x-deFrame.currentScroll*0.6+this.xOff;
-			console.log(deFrame.currentScroll);
+			this.element.x=(x-deFrame.currentScroll*0.6+this.xOff)%this.width;
+
 		}
 		else
 			this.element.x=x;
@@ -151,7 +151,7 @@ World.prototype.init = function(lvl) {
 	
 	bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
 	//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
-	bg.width=lvl.worldHtmlImage.width;
+	bg.width=lvl.backgroundHtmlImage.width;
 	bg.xOff=lvl.backgroundHtmlImage.width;
 	bg.yOff=67;
 	bg.pos = function(x,y,deFrame) {
@@ -159,8 +159,8 @@ World.prototype.init = function(lvl) {
 //			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
 //			console.log(deFrame.currentScroll);
 //			console.log((this.width/2-deFrame.currentScroll)*0.1);
-			this.element.x=x-deFrame.currentScroll*0.6+this.xOff;
-			console.log(deFrame.currentScroll);
+			this.element.x=(x-deFrame.currentScroll*0.6+this.xOff)%this.width+this.width;
+
 		}
 		else
 			this.element.x=x;
@@ -170,7 +170,7 @@ World.prototype.init = function(lvl) {
 	if (lvl.backgroundHtmlImage2) {
 		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage2,true);
 		//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
-		bg.width=lvl.worldHtmlImage.width;
+		bg.width=lvl.backgroundHtmlImage2.width;
 		bg.yOff=84;
 		bg.xOff=0;
 		bg.pos = function(x,y,deFrame) {
@@ -178,7 +178,7 @@ World.prototype.init = function(lvl) {
 	//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
 	//			console.log(deFrame.currentScroll);
 	//			console.log((this.width/2-deFrame.currentScroll)*0.1);
-				this.element.x=x-deFrame.currentScroll*0.9+this.xOff;
+				this.element.x=(x-deFrame.currentScroll*0.9+this.xOff)%this.width;
 			}
 			else
 				this.element.x=x;
@@ -186,7 +186,7 @@ World.prototype.init = function(lvl) {
 		};
 		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage2,true);
 		//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
-		bg.width=lvl.worldHtmlImage.width;
+		bg.width=lvl.backgroundHtmlImage2.width;
 		bg.yOff=84;
 		bg.xOff=lvl.backgroundHtmlImage2.width;
 		bg.pos = function(x,y,deFrame) {
@@ -194,7 +194,7 @@ World.prototype.init = function(lvl) {
 	//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
 	//			console.log(deFrame.currentScroll);
 	//			console.log((this.width/2-deFrame.currentScroll)*0.1);
-				this.element.x=x-deFrame.currentScroll*0.9+this.xOff;
+				this.element.x=(x-deFrame.currentScroll*0.9+this.xOff)%this.width+this.width;
 			}
 			else
 				this.element.x=x;
@@ -211,13 +211,12 @@ World.prototype.init = function(lvl) {
 	//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
 	//			console.log(deFrame.currentScroll);
 	//			console.log((this.width/2-deFrame.currentScroll)*0.1);
-				this.element.x=x-deFrame.currentScroll*1+this.xOff;
+				this.element.x=(x-deFrame.currentScroll*1+this.xOff)%this.width+500;
 			}
 			else
 				this.element.x=x;
 			this.element.y=y+this.yOff;
 		};
-		
 	}
 	
 	this.foreGround=this.displayEntity.addShape(true).element;
@@ -292,16 +291,22 @@ World.prototype.init = function(lvl) {
 			game.level.start(game.machine);
 		}
 	}
-}
+};
 
-World.prototype.scroll = function(x) {
-	
+FluchWorld.prototype.scroll = function(x) {
 	this.displayEntity.adjust(x);
 }
 
-World.prototype.tick = function() {
+mixCount=0;
+faders = new FaderArray();
+scrollPlus=3;
+FluchWorld.prototype.tick = function() {
+	def = new DEFrame();
+	scrollPlus+=0.01;
+	def.currentScroll = this.scrollState+=scrollPlus;
+	
+	this.scroll(def);
 	if (this.clouds) {
-		console.log("move clouds "+this.clouds.element.x);
 		this.clouds.xOff-=0.3;
 		if (this.clouds.xOff<-this.clouds.width) {
 			this.clouds.xOff=this.clouds.width
@@ -311,9 +316,30 @@ World.prototype.tick = function() {
 			this.clouds2.xOff=this.clouds2.width
 		}
 	}
+	faders.tick();
+	if (mixCount++%120==0) {
+		
+//		for (i=2;i<6;i++) {
+//			eval("eff"+i).volume=0;
+//		}
+	for (i=1;i<6;i++) {
+		e = eval("eff"+i);
+
+		if (e) {
+			if (Math.random()>0.7) {
+				faders.add(e, e.volume,1,40);
+			}
+			else {
+				faders.add(e, e.volume,0,40);
+				console.log("mute");
+			}
+		}
+	}
+	}
 }
 
-World.prototype.getWorldPixel = function(px,py){
+
+FluchWorld.prototype.getWorldPixel = function(px,py){
 	if(py<0 || py>this.height-26 || px<0 || px>this.width)return EVERBLOCK;
 	var col = this.worldBitmapData.getPixel(px,py);
 //	if (col>10000) return FREE;
@@ -321,13 +347,13 @@ World.prototype.getWorldPixel = function(px,py){
 }
 
 
-World.prototype.drawCircle = function(px,py,radius,color){	
+FluchWorld.prototype.drawCircle = function(px,py,radius,color){	
 	this.drawRect(px-radius/2,py-radius,radius,radius*2,color);
 	this.drawRect(px-radius,py-radius/2,radius*2,radius,color);
 	this.drawRect(px-radius*3/4,py-radius*3/4,radius*3/2,radius*3/2,color);
 }
 
-World.prototype.drawRect = function(px,py,w,h,color){	
+FluchWorld.prototype.drawRect = function(px,py,w,h,color){	
 	for (xi=-1;xi<=w;xi++) {
 		for (yi=-1;yi<=h;yi++) {
 			this.worldBitmapData.setPixel(px+xi,py+yi,color);
@@ -349,20 +375,20 @@ World.prototype.drawRect = function(px,py,w,h,color){
 	
 }
 
-World.prototype.addForUpdate = function(shape) {
+FluchWorld.prototype.addForUpdate = function(shape) {
 	if (!isIn(this.updateShapes,shape)) {
 		this.updateShapes.push(shape);
 	}
 }
 
-World.prototype.updateCache = function() {
+FluchWorld.prototype.updateCache = function() {
 	for (var i=0;i<this.updateShapes.length;i++) {
 		this.updateShapes[i].updateCache("source-overlay");
 	}
 	this.updateShapes = new Array();
 }
 
-World.prototype.canFall = function(x,y,width) {
+FluchWorld.prototype.canFall = function(x,y,width) {
 	var border = width/4;
 	var openSize=0;
 	var dead=false;
@@ -386,7 +412,7 @@ World.prototype.canFall = function(x,y,width) {
 	return block;
 }
 
-World.prototype.canWalk=function(x,y,height,maxDY){
+FluchWorld.prototype.canWalk=function(x,y,height,maxDY){
 	
 	var openSize=0;
 	var block = INVISIBLE_BLOCK;
@@ -408,7 +434,7 @@ World.prototype.canWalk=function(x,y,height,maxDY){
 }
 
 
-World.prototype.getDY=function(x,y,height,maxDY,direction){
+FluchWorld.prototype.getDY=function(x,y,height,maxDY,direction){
 	var openSize=0;
 		
 		for(var aw=-maxDY;aw<height+maxDY;aw++){

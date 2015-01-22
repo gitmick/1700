@@ -5,6 +5,8 @@
 
 
 
+//TODO generalize and change to actor
+
 function Action() {
 	this.lemming;
 	this.multiSelect=false;

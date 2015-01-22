@@ -32,14 +32,14 @@ function Demonstrant() {
 	this.displayEntity = new DisplayEntity();
 }
 
-Lemming.prototype = new Actor();
+Demonstrant.prototype = new Actor();
 
-Lemming.prototype.reverse = function() {
+Demonstrant.prototype.reverse = function() {
 	this.direction*=-1;
 	this.updateAnimation();
 };
 
-Lemming.prototype.updateAnimation = function(a) {
+Demonstrant.prototype.updateAnimation = function(a) {
 	if (a) {
 		this.animationName=a;
 	}
@@ -50,17 +50,17 @@ Lemming.prototype.updateAnimation = function(a) {
 }; 
 
 
-Lemming.prototype.setProgress=function(p) {
+Demonstrant.prototype.setProgress=function(p) {
 	this.clearProgress();
 	//this.progress.graphics.beginFill(createjs.Graphics.getRGB(255-255*p,255*p,0)).drawRect(5,5,22*p,5);
 	this.progress.graphics.beginFill(createjs.Graphics.getRGB(parseInt(255-255*p),parseInt(255*p),0)).drawRect(5,5,22*p,5);
 };
 
-Lemming.prototype.clearProgress=function() {
+Demonstrant.prototype.clearProgress=function() {
 	this.progress.graphics.clear();
 };
 
-Lemming.prototype.kill=function() {
+Demonstrant.prototype.kill=function() {
 	if (this.action)
 		this.action.stop();
 	soundPlayer.play("Kill");
@@ -71,12 +71,12 @@ Lemming.prototype.kill=function() {
 	this.left();
 };
 
-Lemming.prototype.showKill=function() {
+Demonstrant.prototype.showKill=function() {
 	this.dead=true;
 	this.setAction(new Kill());
 };
 
-Lemming.prototype.won=function() {
+Demonstrant.prototype.won=function() {
 	if (this.action)
 		this.action.stop();
 	soundPlayer.play("Juhu");
@@ -87,13 +87,13 @@ Lemming.prototype.won=function() {
 	game.trigger.bang(POLICEMAN_SAVED);
 };
 
-Lemming.prototype.create=function() {
+Demonstrant.prototype.create=function() {
 	this.circle = this.displayEntity.addSprite(lemmingsSheet, "run",true).element;
 	this.circle.currentAnimationFrame+=Math.random()*6;
 	this.circle.lemming=this;
 	this.selection = this.displayEntity.addShape(true).element;
 	this.progress = this.displayEntity.addShape(true).element;
-	this.mouseListener = this.displayEntity.addInteractionEntity(40, 40,this, true).element;
+	this.mouseListener = new DisplayEntity().addInteractionEntity(800, 500,this, false).element;
 	this.mouseListener.compare = function(ml) {
 		if (ml.target instanceof Lemming) {
 			if (game.dirX!=0) {
@@ -107,53 +107,40 @@ Lemming.prototype.create=function() {
 	}
 	this.height=this.circle.getBounds().height*this.scale;
 	this.width=this.circle.getBounds().width*this.scale;
-	this.setAction(new Fall());
+	this.setAction(new FluchFall());
 };
 
-Lemming.prototype.frontFootX = function() {
+Demonstrant.prototype.frontFootX = function() {
 		return this.x+(this.width/2)+((this.width/8)*(this.direction));
 };
 
-Lemming.prototype.backFootX = function() {
+Demonstrant.prototype.backFootX = function() {
 	return this.x+(this.width/2)-((this.width/8)*(this.direction));
 };
 
-Lemming.prototype.frontFootY = function() {
+Demonstrant.prototype.frontFootY = function() {
 	return this.y+this.height;
 };
 
-Lemming.prototype.select = function(x,y) {
-	if (this.checkSelectedAction()){
-		this.control.useAction();
-		this.setAction(new this.control.selectedAction);
-	}
+Demonstrant.prototype.select = function(x,y) {
+//	if (this.checkSelectedAction()){
+//		this.control.useAction();
+//		this.setAction(new this.control.selectedAction);
+//	}
+	console.log("select");
+	this.setAction(new FluchJump());
 };
 
 
-Lemming.prototype.explore=function(x,y) {
-	if (this.canClimb && this.canFloat) {
-		game.level.world.setEquipment("Extremsportler");
-	}
-	else if (this.canClimb) {
-		game.level.world.setEquipment("Klettermaxe");
-	}
-	else if (this.canFloat) {
-		game.level.world.setEquipment("Basejumper");
-	}
-	if (this.checkSelectedAction()){
-		this.drawSelectable("green");
-	}
-	else
-		this.drawSelectable("orange");
+Demonstrant.prototype.explore=function(x,y) {
+
 };
 
-Lemming.prototype.left=function(x,y) {
-	this.selection.graphics.clear();
-	game.selectedLemming=false;
-	game.level.world.setEquipment("");
+Demonstrant.prototype.left=function(x,y) {
+
 };
 
-Lemming.prototype.collected=function(time) {
+Demonstrant.prototype.collected=function(time) {
 	console.log("collected");
 	if (game.control.selectedAction === JumpAll) {
 		jump = new Jump();
@@ -163,17 +150,17 @@ Lemming.prototype.collected=function(time) {
 };
 
 
-Lemming.prototype.drawSelectable = function(color) {
+Demonstrant.prototype.drawSelectable = function(color) {
 	this.selection.graphics.beginStroke(color).drawRect(2,2,this.height,this.width);
 	game.selectedLemming=this;
 };
 
 
-Lemming.prototype.under=function(x,y) {
+Demonstrant.prototype.under=function(x,y) {
 	return (this.mouseListener.click(game.mouseX, game.mouseY));
 };
 
-Lemming.prototype.draw=function(deFrame) {
+Demonstrant.prototype.draw=function(deFrame) {
 	if (this.dead || this.win)
 		return;
 	
@@ -187,77 +174,77 @@ Lemming.prototype.draw=function(deFrame) {
 };
 
 
-Lemming.prototype.startMove=function(){
+Demonstrant.prototype.startMove=function(){
 	this.floor=-1;
 	this.wall=-1;
 };
 
-Lemming.prototype.getFloor=function() {
+Demonstrant.prototype.getFloor=function() {
 	if (this.floor==-1)
 		this.floor = game.level.world.canFall(this.x,this.y+this.height+1,this.width);
 	return this.floor;
 };
 
-Lemming.prototype.getWall=function() {
+Demonstrant.prototype.getWall=function() {
 	if (this.wall==-1)
 		this.wall = game.level.world.canWalk(this.frontFootX(),this.y,this.height,this.maxDY);
 	return this.wall;
 };
 
-Lemming.prototype.hasRoof=function(){
+Demonstrant.prototype.hasRoof=function(){
 	var result = game.level.world.canFall(this.backFootX(),this.y-1,this.width/4);
 	if (result==DEADLY)
 		this.showKill();
 	return (result!=FREE);
 };
 
-Lemming.prototype.hasFloor=function(){
+Demonstrant.prototype.hasFloor=function(){
 	var result = this.getFloor();
 	if (result==DEADLY)
 		this.showKill();
 	return (result!=FREE);
 };
 
-Lemming.prototype.againstWall=function(){
+Demonstrant.prototype.againstWall=function(){
 	var result = this.getWall();
 	if (result==DEADLY)
 		this.showKill();
 	return (result!=FREE);
 };
 
-Lemming.prototype.isDeadly=function() {
+Demonstrant.prototype.isDeadly=function() {
 	var result = this.getWall();
 	if (result==DEADLY)
 		this.showKill();
 };
 
-Lemming.prototype.canBash=function(){
+Demonstrant.prototype.canBash=function(){
 	var result = game.level.world.canWalk(this.frontFootX()+(8*this.direction),this.y,this.height,this.maxDY/2);
 	if (result==DEADLY)
 		this.showKill();
 	return result;
 };
 
-Lemming.prototype.canMine=function(){
+Demonstrant.prototype.canMine=function(){
 	var result = game.level.world.canWalk(this.frontFootX()+(8*this.direction),this.y+this.height/2,this.height,this.maxDY/2);
 	if (result==DEADLY)
 		this.showKill();
 	return result;
 };
 
-Lemming.prototype.canDig=function(){
+Demonstrant.prototype.canDig=function(){
 	var result = this.getFloor();
 	if (result==DEADLY)
 		this.showKill();
 	return (result!=EVERBLOCK && result!=POLICE);
 };
 
-Lemming.prototype.isPolice=function(){
+Demonstrant.prototype.isPolice=function(){
 	var result = this.getWall();
 	return (result==POLICE);
 };
 
-Lemming.prototype.getDY=function(){
+Demonstrant.prototype.getDY=function(){
 	return game.level.world.getDY(this.frontFootX(),this.y,this.height,this.maxDY,this.direction);
 };
 
