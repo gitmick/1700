@@ -126,7 +126,7 @@ p.termine {
 }
 
 /****************************************/
-.hiddenNews {
+.hidden {
 	display: none;
 }
 
@@ -189,6 +189,11 @@ p.head {
  	opacity: 0;
     filter: alpha(opacity=0);
  }
+ 
+.timeline {
+	position: relative;
+	height: 42px;
+}
 
 .timeline a {
 	background-color: yellow;
@@ -201,6 +206,7 @@ p.head {
 }
 
 .timeline #newer {
+	
 	float: right;
 }
 
@@ -320,13 +326,23 @@ div.hoverable:hover p, div.hoverable:hover h4, div.hoverable:hover img {
 }
 
 .credits_content {
-	color: white;
+	text-align: center;
 }
 
 .credits_content p {
-	height: 78px;
+	height: 54px;
+	margin-bottom: -36px;
 	text-align: center;
 }
+
+.credits_content a {
+	color: white;
+}
+
+.credits_content a:hover {
+	color: grey;
+}
+
 
 
 .container_12,
