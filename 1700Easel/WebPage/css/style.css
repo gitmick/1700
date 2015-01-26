@@ -40,6 +40,21 @@ h2.right a {
 	color: grey;
 }
 
+.header {
+	width: 100%;
+}
+
+.header span {
+	display: inline-block;
+	float: right;
+	clear: left;
+	margin-right:30px;
+}
+
+.header a:hover {
+	color: white;
+}
+
 #firstform {
 	color: #999;
 	background-color: #222; /*ingame logo farbe: #00355a*/
@@ -227,13 +242,16 @@ p.head {
 }
 
 .timeline #newer {
-	
 	float: right;
-	border: 2px solid;
+}
+
+.timeline #older, .timeline #newer {
+	border: 2px solid black;
     border-radius: 15px;
-	-moz-box-shadow: 5px 5px 5px #111;
-	-webkit-box-shadow: 5px 5px 5px #111;
-	box-shadow: 5px 5px 5px #111;
+    padding-top:3px;
+	-moz-box-shadow: 3px 3px 3px #999;
+	-webkit-box-shadow: 3px 3px 3px #999;
+	box-shadow: 3px 3px 3px #999;
 }
 
 /****************************************/

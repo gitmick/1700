@@ -17,6 +17,12 @@
 
 	<div class="parallax-window" data-parallax="scroll" data-image-src="img/backgr_1920x1080.png" naturalWidth="1920" naturalHeight="1080px">
 		<!-- http://pixelcog.com/parallax.js/ -->
+		
+<!-- 		<div class="container_12 header" id="heading">
+			<span><a href="#null">In english please</a></span>
+		</div>
+		<div class="clear"></div> -->
+		
 		<div class="container_12">
 			<h1 id="logopic">
 				<a href=""><img src="img/logo_ingame_big.png" alt="logo" width="448" height="448"></a>
@@ -28,7 +34,7 @@
 			<div class="container_12" id="firstform">
 				
 				<div class="grid_1">
-						<img src="img/polizist_39x60.png" alt="polizist" width="39" height="60">
+						<img src="img/Punk1_39x60.png" alt="polizist" width="39" height="60">
 				</div>
 				<div class="grid_3">
 						<h3>Spielen</h3>
@@ -44,7 +50,7 @@
 				
 				
 				<div class="grid_1">
-						<img src="img/polizist_39x60.png" alt="polizist" width="39" height="60">
+						<img src="img/Punk2_39x60.png" alt="polizist" width="39" height="60">
 				</div>
 				<div class="grid_3">
 						<h3>Worum gehts?</h3>
@@ -78,7 +84,7 @@
 				</div>
 			
 				<div class="grid_4">
-					<a href="#null" onclick="goToSupport()" class="btn">
+					<a href="#null" onclick="goToSupport('logopic')" class="btn">
 						<span class="btn">
 						Unterstützen!
 						</span>
@@ -86,7 +92,7 @@
 				</div>
 			
 				<div class="grid_4">
-					<a href="#null" onclick="goToInfo()" class="btn">
+					<a href="#null" onclick="goToInfo('logopic')" class="btn">
 						<span class="btn">
 						Informieren!
 						</span>
@@ -154,7 +160,7 @@
 			<div class="subsection_news" id="startNews">
 				<h2>Neuigkeiten</h2>
 					<div class="newsfeed">
-
+<!-- 
 						<div class="newselement" id="news_14">
 							<img src="img/bagthrower_620x300.png" alt="" width="630" height="300">
 							<img src="img/trans620x300.png" alt="" class="overlay" width="630" height="300">
@@ -336,8 +342,8 @@
 									at, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum do
 									</p>
 								</div>
-						</div>
-					
+						</div> 
+					-->
 						<div class="newselement" id="news_5">
 							<img src="img/pizzeria_620x300.png" alt="" width="630" height="300">
 							<img src="img/trans620x300.png" alt="" class="overlay" width="630" height="300">
@@ -438,80 +444,90 @@
 					
 					</div>
 			</div>
-	</div>
+		</div>
 		
 		<div class="clear"></div>
 		
 		<div class="container_12 gamelinks" id="linklist">
 			<span class="h2split">
 				<h2 class="left">Das Spiel unterstützen</h2>
-				<h2 class="right"><a href="#null" onclick="goToTop()">Top</a></h2>	
+				<h2 class="right"><a href="#null" onclick="goBack()">Zurück</a></h2>	
 			</span>
-				<div class="grid_4 square_300 hoverable">
-					<a href="http://subotron.com/" target="_blank"><img src="img/shirt_300x300.png" width="300" height="300" onmouseover="this.src='img/shirt_300x300_bw.png'" onmouseout="this.src='img/shirt_300x300.png'" /></a>
+			<div class="grid_4 square_300 hoverable">
+				<a href="http://subotron.com/" target="_blank"><img src="img/shirt_300x300.png" width="300" height="300" onmouseover="this.src='img/shirt_300x300_bw.png'" onmouseout="this.src='img/shirt_300x300.png'" />
 					<h4>Get a shirt!</h4>
 					<p>
-					<a href="http://subotron.com/" target="_blank">Subotron</a> im Museumsquartier.
+					 Subotron im Museumsquartier.
 					</p>
-				</div>
-				<div class="grid_4 square_300 hoverable">
-					<a href="http://1-7-0-0.spreadshirt.de/" target="_blank"><img src="img/polizist_300x300.png" width="300" height="300"  onmouseover="this.src='img/polizist_300x300_bw.png'" onmouseout="this.src='img/polizist_300x300.png'" /></a>
+				</a>
+			</div>
+			<div class="grid_4 square_300 hoverable">
+				<a href="http://1-7-0-0.spreadshirt.de/" target="_blank"><img src="img/polizist_300x300.png" width="300" height="300"  onmouseover="this.src='img/polizist_300x300_bw.png'" onmouseout="this.src='img/polizist_300x300.png'" />
 					<h4>Achtung! Polizei!</h4>
-					<p><a href="http://1-7-0-0.spreadshirt.de/" target="_blank">1700 Online Shop</a> mit Shirts und Tassen.<br>
-					
+					<p>1700 Online Shop mit Shirts und Tassen.
 					</p>
-				</div>
-				
-				<div class="grid_4 square_klein hoverable">
-					<a href="https://www.indiegogo.com/projects/1700" target="_blank"><img src="img/panzer_300x140.png" width="300" height="300"  onmouseover="this.src='img/panzer_300x140_bw.png'" onmouseout="this.src='img/panzer_300x140.png'" /></a>
+				</a>
+			</div>
+			
+			<div class="grid_4 square_klein hoverable">
+				<a href="https://www.indiegogo.com/projects/1700" target="_blank"><img src="img/panzer_300x140.png" width="300" height="300"  onmouseover="this.src='img/panzer_300x140_bw.png'" onmouseout="this.src='img/panzer_300x140.png'" />
 					<h4>Support the Indygogo Project</h4>
 					<p>The best way to support us, is to send us $$$</p>
-				</div>
-				
-				<div class="grid_4 square_klein hoverable">
-					<a href="www.schiss.de" target="_blank"><img src="img/panzer_300x140.png" width="300" height="300"  onmouseover="this.src='img/panzer_300x140_bw.png'" onmouseout="this.src='img/panzer_300x140.png'" /></a>
+				</a>
+			</div>
+			
+			<div class="grid_4 square_klein hoverable">
+				<a href="www.schiss.de" target="_blank"><img src="img/panzer_300x140.png" width="300" height="300"  onmouseover="this.src='img/panzer_300x140_bw.png'" onmouseout="this.src='img/panzer_300x140.png'" />
 					<h4>Spenden</h4>
 					<p>Jedes bisschen hilft!</p>
-				</div>
+				</a>
+			</div>
+		</div>
+			
+		<div class="clear"></div>
+			
+		<div class="container_12 infolinks" id="infolist">
+			<span class="h2split">
+				<h2 class="left">Info über das Spiel</h2>
+				<h2 class="right"><a href="#null" onclick="goBack()">Zurück</a></h2>	
+			</span>
 				
-				<div class="clear"></div>
-				
-				<div class="grid_3 square_220 hoverable">
-					<a href="https://www.youtube.com/channel/UCPb4pkrwz9P2X2phi6F2jsg" target="_blank"><img src="img/punks.png" width="220" height="300"  onmouseover="this.src='img/punks_bw.png'" onmouseout="this.src='img/punks.png'" /></a>
-						<h4>Tutorials</h4>
-						<p>Watch the video tutorials!</p>
-				</div>	
-				
-				<div class="grid_3 square_220 hoverable">
-					<a href="presskit.zip"><img src="img/ArminWolf.png" width="220" height="300" onmouseover="this.src='img/ArminWolf_bw.png'" onmouseout="this.src='img/ArminWolf.png'" /></a>
-						<h4>presskit</h4>
-						<p>Material for the press</p>
-				</div>
-				
-				<div class="grid_3 square_220 hoverable">
-					<a href="#null" onclick="goToInfo()"><img src="img/Pizzeria.png" width="220" height="300" onmouseover="this.src='img/Pizzeria_bw.png'" onmouseout="this.src='img/Pizzeria.png'" /></a>
-						<h4>the story</h4>
-						<p>check out what 1700 is all about</p>
-				</div>
-				
-				<div class="grid_3 square_220 hoverable">
-					<a href="#null" onclick="goToCredits()"><img src="img/bagthrower.png" width="220" height="300" onmouseover="this.src='img/bagthrower_bw.png'" onmouseout="this.src='img/bagthrower.png'" /></a>
-						<h4>credits</h4>
-						<p>everyone who worked on this project</p>
-	 			</div> 
+			<div class="grid_3 square_220 hoverable">
+				<a href="https://www.youtube.com/channel/UCPb4pkrwz9P2X2phi6F2jsg" target="_blank"><img src="img/punks.png" width="220" height="300"  onmouseover="this.src='img/punks_bw.png'" onmouseout="this.src='img/punks.png'" /></a>
+					<h4>Tutorials</h4>
+					<p>Watch the video tutorials!</p>
+			</div>	
+			
+			<div class="grid_3 square_220 hoverable">
+				<a href="presskit.zip"><img src="img/ArminWolf.png" width="220" height="300" onmouseover="this.src='img/ArminWolf_bw.png'" onmouseout="this.src='img/ArminWolf.png'" /></a>
+					<h4>Presse-kit</h4>
+					<p>Material für die Presse,<br/> (Zip-Archiv).</p>
+			</div>
+			
+			<div class="grid_3 square_220 hoverable">
+				<a href="#null" onclick="goToInfo('infolist')"><img src="img/Pizzeria.png" width="220" height="300" onmouseover="this.src='img/Pizzeria_bw.png'" onmouseout="this.src='img/Pizzeria.png'" /></a>
+					<h4>Die Geschichte zum Spiel</h4>
+					<p>Worum gehts überhaupt bei 1700?</p>
+			</div>
+			
+			<div class="grid_3 square_220 hoverable">
+				<a href="#null" onclick="goToCredits('infolist')"><img src="img/bagthrower.png" width="220" height="300" onmouseover="this.src='img/bagthrower_bw.png'" onmouseout="this.src='img/bagthrower.png'" /></a>
+					<h4>Credits</h4>
+					<p>Alle Mitwirkenden</p>
+ 			</div> 
 	 			
 		</div>
 		
 		<div class="clear"></div>
 		
 		<div class="greywrapper">
-			<div class="container_12 about" id="infolist">
+			<div class="container_12 about" id="aboutlist">
 				<span class="h2split">
 					<h2 class="left">
 					About the game
 					</h2>
 					<h2 class="right">
-						<a href="#null" onclick="goToTop()">Top</a>
+						<a href="#null" onclick="goBack()">Zurück</a>
 					</h2>
 				</span>
 				
@@ -585,7 +601,7 @@
 					Pressestimmen
 					</h2>
 					<h2 class="right">
-						<a href="#null" onclick="goToTop()">Top</a>
+						<a href="#null" onclick="goBack()">Zurück</a>
 					</h2>
 				</span>
 				
@@ -651,7 +667,7 @@
 						Credits
 					</h2>
 					<h2 class="right">
-						<a href="#null" onclick="goToTop()">Top</a>
+						<a href="#null" onclick="goBack()">Zurück</a>
 					</h2>
 				</span>
 				
@@ -753,5 +769,6 @@
 		<div class="clear"></div>
 	</div>
 	<script src="js/script.js"></script>
+	<script>init();</script>
 </body>
 </html>

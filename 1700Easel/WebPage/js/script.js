@@ -1,35 +1,36 @@
-//$(function(){
-//    $('a[href*=#]').click(function() {
-//    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
-//        &amp;amp;&amp;amp; location.hostname == this.hostname) {
-//            var $target = $(this.hash);
-//            $target = $target.length &amp;amp;&amp;amp; $target || $('[name=' + this.hash.slice(1) +']');
-//            if ($target.length) {
-//                var targetOffset = $target.offset().top;
-//                $('html,body').animate({scrollTop: targetOffset}, 1000);
-//                return false;
-//            }
-//        }
-//    });
-//});
-
-
-
-
 var allNewsArticles = [];
+var allNewsArticlesPage = [];
 var displayedNewsArticles = [];
 var newsPage = 1;
+var lastElement = '#logopic';
+var numberOfPages;
 
-getAllNewsArticles();
-showNewsArticles();
-getDisplayedNewsArticles();
+function init() {
+	getAllNewsArticles();
+	showNewsArticles();
+	getDisplayedNewsArticles();
+}
+
+
+
+
 
 
 function getAllNewsArticles() {
+	var p = 1;
 	for (var i=1 ; document.getElementById("news_" + i) != null; i++) {
-		 allNewsArticles.push(document.getElementById("news_" + i))
+		
+		allNewsArticles.push(document.getElementById("news_" + i));
+		allNewsArticlesPage.push(p);
+		if (i%4==0) p++;
 	}
 	
+	if (allNewsArticles.length<5) {
+		var x = document.getElementById("older");
+		x.classList.add("hidden");
+		x.className = x.className + " hidden";
+	    x.classList.add("hidden");
+	}
 }
 
 function showNewsArticles() {
@@ -54,8 +55,6 @@ function getDisplayedNewsArticles() {
 			document.getElementById("news_" + i).classList.remove("hidden");
 		}		
 	}
-	
-	
 }
 
 
@@ -65,7 +64,7 @@ function showOlder() {
 	if(newsPage>1) {
 		document.getElementById("newer").classList.remove("hidden");
 	}
-	if(newsPage==4) {
+	if(newsPage==allNewsArticlesPage[allNewsArticlesPage.length-1]) {
 		var x = document.getElementById("older");
 		x.classList.add("hidden");
 		x.className = x.className + " hidden";
@@ -89,18 +88,21 @@ function showNewer() {
 	$('html,body').animate({'scrollTop':   $('#startNews').offset().top}, 300);
 }
 
-function goToTop() {
-	$('html,body').animate({'scrollTop':  0}, 1000);
+function goBack(fromWhere) {
+	$('html,body').animate({'scrollTop':   $(lastElement).offset().top}, 1000);
 }
 
-function goToSupport() {
+function goToSupport(fromWhere) {
 	$('html,body').animate({'scrollTop':   $('#linklist').offset().top}, 1000);
+	lastElement = "#" + fromWhere;
 }
 
-function goToCredits() {
+function goToCredits(fromWhere) {
 	$('html,body').animate({'scrollTop':   $('#creditlist').offset().top}, 1000);
+	lastElement = "#" + fromWhere;
 }
 
-function goToInfo() {
+function goToInfo(fromWhere) {
 	$('html,body').animate({'scrollTop':   $('#infolist').offset().top}, 1000);
+	lastElement = "#" + fromWhere;
 }
