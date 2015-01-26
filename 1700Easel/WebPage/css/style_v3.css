@@ -22,6 +22,24 @@ p {
   text-align: block;
 }
 
+
+h2.left {
+	float: left;
+	width: 400px;
+}
+
+h2.right {
+	color: grey;
+	text-align: right;
+	margin-right: 12px;
+	float: right;
+	width: 400px;
+}
+
+h2.right a {
+	color: grey;
+}
+
 #firstform {
 	color: #999;
 	background-color: #222; /*ingame logo farbe: #00355a*/
@@ -39,17 +57,16 @@ p {
 	height: 150px;
 }
 
-.btn p {
+.btn span {
+	display: inline-block;
+	width: 120px;
 	text-align: center;
-	margin-top: 12px;
-	margin-left: 45px;
+	margin: 12px 70px;
 	padding-bottom: 17px;
-	padding-left: 20px;
-	padding-right: 20px;
+	padding: 10px 20px 14px 20px;
 	position: relative;
 	text-align: center;
-	width: 120px;
-	height: 20px;
+	
 	background-color: yellow;
 	border: 2px solid;
     border-radius: 15px;
@@ -321,13 +338,17 @@ div.hoverable:hover p, div.hoverable:hover h4, div.hoverable:hover img {
 	text-align: left;
 }
 
-.pressestimmen p {
-	height: 54px;
-	margin-bottom: -36px;
+.pressestimmen span {
+	display:inline-block;
+	height: 120px;
+	margin-top: 24px;
 }
 
 .pressestimmen a {
+	display: inline-block;
+	margin-top: 6px;
 	color: white;
+	
 }
 
 .pressestimmen a:hover {
@@ -339,9 +360,10 @@ div.hoverable:hover p, div.hoverable:hover h4, div.hoverable:hover img {
 	color: white;
 }
 
-.credits_content p {
-	height: 54px;
-	margin-bottom: -36px;
+.credits_content span {
+	display: inline-block;
+	margin-top: 24px;
+	height: 120px;
 	text-align: center;
 }
 
