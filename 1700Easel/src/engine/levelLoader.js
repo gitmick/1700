@@ -8,7 +8,7 @@
 
 function Loader() {
 	this.waitingForLoads=0;
-	this.debug=false;
+	this.debug=true;
 	this.queue = new Array();
 	this.initializedSoundHandle=false;
 	this.dev="notInit";

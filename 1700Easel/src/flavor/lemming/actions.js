@@ -199,7 +199,7 @@ function Build() {
 Build.prototype=new Action();
 
 Build.prototype.check=function() {
-	if (this.lemming.againstWall()) {
+	if (game.level.world.canWalk(this.lemming.frontFootX(),this.lemming.y,8,4)!=FREE) {
 		this.lemming.setAction(new Walk());
 		return false;
 	}
