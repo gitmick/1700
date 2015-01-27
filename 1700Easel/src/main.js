@@ -53,10 +53,10 @@ function init() {
 	stage.mouseChildren=false;
    
 	
-//	flavor = new FluchFlavor();
-//	flavor.init();
-    flavor = new LemmingFlavor();
+	flavor = new FluchFlavor();
 	flavor.init();
+//    flavor = new LemmingFlavor();
+//	flavor.init();
     
     createjs.Ticker.setFPS(25);
     createjs.Ticker.addEventListener("tick", tick);

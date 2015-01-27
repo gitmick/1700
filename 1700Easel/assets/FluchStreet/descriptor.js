@@ -17,7 +17,33 @@ function FluchStreet() {
 		 };
 	this.binSheet;
 	this.anim="run";
+
+
+	this.gap = {
+		trash:[0,40,80,120,160,240,280],
+		bin:[]
+	};
+
+	this.gap2 = {
+			trash:[],
+			bin:[120,240]
+		};
+	
+	this.gap3 = {
+			trash:[40,320],
+			bin:[200]
+		};
+	
+	this.gaps = new Array();
+	this.gaps.push(this.gap);
+	this.gaps.push(this.gap2);
+	this.gaps.push(this.gap3);
+	
 };
+
+
+
+
 
 FluchStreet.prototype = new Asset();
 
@@ -33,34 +59,56 @@ FluchStreet.prototype.drawInitial= function() {
 
 
 function FluchStreetAddAction() {
+	this.nextAdd=0;
 };
 
 FluchStreetAddAction.prototype = new MultiAssetAction();
 
+
+
 FluchStreetAddAction.prototype.act = function() {
-	if (this.asset.count++%400 == 0) {
+	if (game.currentScroll>this.nextAdd) {
+		if (this.nextAdd==0)
+			this.addElement(new Trash(),this.asset.binSheet,143);
+		else {
+			num = parseInt(Math.random()*3.0);
+			this.playModule(this.asset.gaps[num]);
+		}
+		this.nextAdd+=400;
+	}
+	
+//	if (this.asset.count++%400 == 0) {
 //		for (i=0;i<10;i++) {
 //			this.addTrash(40*i);
 //		}
-		for (i=0;i<10;i++) {
-			this.addBin(460+60*i);
-		}
+//		for (i=0;i<10;i++) {
+//			this.addBin(460+60*i);
+//		}
+//	}
+};
+
+FluchStreetAddAction.prototype.playModule = function(module) {
+	for (i=0;i<module.trash.length;i++) {
+		this.addTrash(module.trash[i]);
+	}
+	for (i=0;i<module.bin.length;i++) {
+		this.addBin(module.bin[i]);
 	}
 }
 
 FluchStreetAddAction.prototype.addBin = function(offset) {
-	this.addElement(new Trash(),this.asset.binSheet,offset);
+	this.addElement(new Trash(),this.asset.binSheet,offset+800);
 };
 
 FluchStreetAddAction.prototype.addTrash = function(offset) {
-	this.addElement(new FluchStreetElement(),this.asset.trashSheet,offset);
+	this.addElement(new FluchStreetElement(),this.asset.trashSheet,offset+800);
 }
 
 FluchStreetAddAction.prototype.addElement = function(element,sheet,offset) {
 	element.trashSheet=sheet;
 	element.startX=this.asset.startX;
 	element.startY=this.asset.startY;
-	element.xOff=game.currentScroll+800+offset;
+	element.xOff=game.currentScroll+offset;
 	element.show();
 	element.initialized=false;
 	this.addAsset(element);
@@ -84,7 +132,7 @@ function FluchStreetElement(){
 	this.displayEntity = new DisplayEntity();
 	this.sprite ;
 	this.trashSheet;
-	this.collisionHeight=26;
+	this.collisionHeight=16;
 	this.collisionWidth=36;
 	this.collisionOffsetX=2;
 	this.collisionOffsetY=12;
@@ -195,7 +243,7 @@ function Trash(){
 	this.currentScroll=0;
 	this.sprite;
 	this.xOff;
-	this.anim="run";
+	this.anim;
 }
 
 Trash.prototype = new Asset();
@@ -215,7 +263,6 @@ Trash.prototype.setAnimation = function(a) {
 		}
 		else if(a=='run')
 			a+=parseInt(Math.random()*3.0);
-		console.log(a);
 		this.sprite.gotoAndPlay(a);
 	}
 };
@@ -249,7 +296,6 @@ Trash.prototype.drawInitial = function() {
 		
 		if (deFrame){
 			this.currentScroll=deFrame.currentScroll;
-			console.log(x+" "+deFrame.currentScroll);
 		}
 	};
 	
@@ -266,13 +312,15 @@ Trash.prototype.finish = function() {
 		
 		if (!this.displayEntity.currentScroll)
 			this.displayEntity.currentScroll=0;
-		correctedX = parseInt(this.x-this.displayEntity.currentScroll+this.xOff);
+		correctedX = parseInt((this.displayEntity.x-this.displayEntity.currentScroll+this.displayEntity.xOff));
 		//console.log("this: "+correctedX+" "+this.displayEntity.y);
 		this.setCollision(correctedX,this.displayEntity.y,this.collisionType);
 		this.collisionLastX=correctedX;
 		this.collisionLastY=this.displayEntity.y;
 	}
 };
+
+
 
 function TrashAction() {
 

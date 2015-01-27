@@ -60,6 +60,8 @@ FluchGame.prototype.addLemmings = function(){
 	return hasadded;
 };
 
+var stillAcc=true;
+
 FluchGame.prototype.scrollLevel = function(mouseX){
 	if (this.level && this.level.world) {
 		this.level.world.tick();
@@ -72,7 +74,13 @@ FluchGame.prototype.scrollLevel = function(mouseX){
 				faders.add(eff2, eff2.volume,1,40);
 				this.startedRun=true;
 			}
-			this.scrollPlus+=0.01;
+			if (this.scrollPlus<3 && stillAcc) {
+				this.scrollPlus+=0.01;
+			}
+			else {
+				stillAcc=false;
+				
+			}
 			this.currentScroll=parseInt(this.scrollState+=this.scrollPlus);
 			def = new DEFrame();
 			def.currentScroll = this.currentScroll;

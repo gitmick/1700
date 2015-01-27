@@ -161,8 +161,9 @@ Demonstrant.prototype.under=function(x,y) {
 };
 
 Demonstrant.prototype.draw=function(deFrame) {
-	if (this.dead || this.win)
-		return;
+	//console.log(this.x+" "+this.dead+" "+this.win);
+//	if (this.dead || this.win)
+//		return;
 	
 	if (this.displayEntity.x<level.goalX && this.displayEntity.x+this.width>level.goalX
 			&& this.displayEntity.y<level.goalY && this.displayEntity.y+this.height>level.goalY) {
@@ -170,6 +171,7 @@ Demonstrant.prototype.draw=function(deFrame) {
 		return;
 	}
 	this.circle.setTransform(0, 0, this.scale, this.scale);
+	console.log(this.x);
 	this.displayEntity.pos(this.x,this.y,deFrame);
 };
 

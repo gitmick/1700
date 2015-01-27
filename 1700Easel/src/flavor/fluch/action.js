@@ -71,6 +71,7 @@ if (this.lemming.againstWall()) {
 }
 
 FluchWalk.prototype.act = function() {
+	this.effect("Polizei1",5);
 	if (!this.init) {
 		this.init=true;
 		this.lemming.reverse();
@@ -96,13 +97,19 @@ FluchKill.prototype.actionPossible = function(action) {
 	return false;
 };
 FluchKill.prototype.act = function() {
-	this.effect("Kill");
+	this.effect("Ja");
 	if (this.count++==0) {
-		this.lemming.circle.gotoAndPlay("exp");
+		this.lemming.circle.gotoAndPlay("stand");
+		stillAcc=false;
 	}
-	if (this.count==13) {
+	if (this.count==45) {
+		game.scrollPlus=0;
 		this.lemming.kill();
 		this.effectInstance.stop();
+	}
+	else if (this.count<45){
+		game.scrollPlus=1;
+		this.lemming.x-=1;
 	}
 };
 

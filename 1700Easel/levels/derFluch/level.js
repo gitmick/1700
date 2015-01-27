@@ -17,7 +17,7 @@
 		level.actionCount[JumpAll]=1;
 		level.maxPoliceMen=30;
 		level.policeDelay=50;
-		level.dropX=150;
+		level.dropX=157;
 		level.dropY=253;
 		level.goalX=732;
 		level.goalY=283;
@@ -29,7 +29,7 @@
 		level.registerAsset("Drink");
 		level.initAssets=function(){
 			p = this.initAsset("FluchStreet");
-			p.startX=300;
+			p.startX=0;
 			p.startY=257;
 			//p.startY=277;
 			p.show();
