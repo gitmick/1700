@@ -7,6 +7,7 @@ function ColorBag() {
 	this.entity;
 	this.color;
 }
+
 ColorBag.prototype = new Asset();
 
 ColorBag.prototype.init = function(pic,color,x,y,dir) {

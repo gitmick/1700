@@ -232,6 +232,10 @@ DesktopInteraction.prototype.init = function() {
     				interactionHandler.select(evt.stageX,evt.stageY);
         	}
         	that.lastClick=Date.now();
+
+        	if (QueryString.dev) {
+        		console.log("x: "+parseInt(game.mouseX)+" y: "+ parseInt(game.mouseY));
+        	}
     	}
     	that.mouseDown=false;
     });

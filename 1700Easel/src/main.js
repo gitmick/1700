@@ -37,6 +37,7 @@ var QueryString = function () {
 	      query_string[pair[0]].push(pair[1]);
 	    }
 	  } 
+	    console.log("test:" + query_string.dev);
 	    return query_string;
 	} ();
 
