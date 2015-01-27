@@ -5,6 +5,7 @@
 
 var timeKeeper = new TimeKeeper();
 var FLUCH_STARTED="fluchStarted";
+var COPS_ENTERED="copsEntered";
 
 function FluchGame() {
 	
@@ -29,6 +30,12 @@ function FluchGame() {
 	this.dirY=0;
 	
 	this.trigger = new Trigger();
+	
+	this.scrollPlus=0;
+	this.scrollState=0;
+	
+	this.demonstrant;
+	this.startedRun=false;
 };
 
 FluchGame.prototype = new Game();
@@ -41,11 +48,11 @@ FluchGame.flavorReset = function() {
 FluchGame.prototype.addLemmings = function(){
 	hasadded=false;
 	if(this.added++<1){
-		var lemming = new Demonstrant();
-		lemming.x=level.dropX;
-	    lemming.y=level.dropY;
-		lemming.create();
-	  	this.lemmings.push(lemming);
+		this.demonstrant = new Demonstrant();
+		this.demonstrant.x=level.dropX;
+		this.demonstrant.y=level.dropY;
+		this.demonstrant.create();
+	  	this.lemmings.push(this.demonstrant);
 	  	hasadded=true;
 	}
 	if (this.added==1)
@@ -57,5 +64,19 @@ FluchGame.prototype.scrollLevel = function(mouseX){
 	if (this.level && this.level.world) {
 		this.level.world.tick();
 		
+		if (!game.trigger.isIntercepted(COPS_ENTERED)) {
+			if (this.demonstrant && !this.startedRun) {
+				this.demonstrant.updateAnimation("run");
+				new Act().effect("Ja");
+				faders.add(eff1, eff1.volume,0,40);
+				faders.add(eff2, eff2.volume,1,40);
+				this.startedRun=true;
+			}
+			this.scrollPlus+=0.01;
+			this.currentScroll=parseInt(this.scrollState+=this.scrollPlus);
+			def = new DEFrame();
+			def.currentScroll = this.currentScroll;
+			this.level.world.scroll(def);
+		}
 	}
 };

@@ -86,37 +86,14 @@ PunkPeeAction.prototype = new AssetAction();
 PunkPeeAction.prototype.act = function () {
 	this.counter++;
 	if (this.counter%this.asset.cycleLength==0) {
-//		this.effectInstance.stop();
-//		this.effectStarted=false;
-//		this.asset.clearCollision();
-//		this.asset.collisionOffsetX=10;
-//		this.asset.collisionOffsetY=16;
-//		this.asset.collisionHeight=16;
-//		this.asset.collisionWidth=12;
-//		this.asset.collisionType=EVERBLOCK;
-//		this.asset.finish();
 		this.asset.sprite.gotoAndPlay("hide");
 	}
 	if (this.counter%this.asset.cycleLength==8) {
 		this.effectInstance.stop();
 		this.effectStarted=false;
-//		this.asset.clearCollision();
-//		this.asset.collisionOffsetX=10;
-//		this.asset.collisionOffsetY=16;
-//		this.asset.collisionHeight=16;
-//		this.asset.collisionWidth=12;
-//		this.asset.collisionType=EVERBLOCK;
-//		this.asset.finish();
 		this.asset.sprite.gotoAndPlay("away");
 	}
 	if (this.counter%this.asset.cycleLength==this.asset.pauseLength) {
-//		this.asset.clearCollision();
-//		this.asset.collisionOffsetX=0;
-//		this.asset.collisionOffsetY=0;
-//		this.asset.collisionHeight=32;
-//		this.asset.collisionWidth=22;
-//		this.asset.collisionType=DEADLY;
-//		this.asset.finish();
 		this.asset.sprite.gotoAndPlay("appear");
 	}
 	if (this.counter%this.asset.cycleLength>this.asset.pauseLength+46) {

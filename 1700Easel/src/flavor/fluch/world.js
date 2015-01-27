@@ -93,7 +93,7 @@ FluchWorld.prototype.init = function(lvl) {
 	sky=this.displayEntity.addShape(true).element;
 	sky.graphics.beginFill("#000000").drawRect(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	
-	this.foreGroundMask = this.displayEntity.addShape(true).element;
+	this.foreGroundMask = this.displayEntity.addShape(false).element;
 	this.worldBitmapData = new createjs.BitmapData(lvl.mapHtmlImage);
 	this.width=lvl.worldHtmlImage.width;
 	this.height=lvl.worldHtmlImage.height;
@@ -113,7 +113,7 @@ FluchWorld.prototype.init = function(lvl) {
 		this.clouds.yOff=-70;
 		this.clouds.pos = function(x,y,deFrame) {
 			if (deFrame)
-				this.element.x=(x-deFrame.currentScroll*0.2+this.xOff)%this.width;
+				this.element.x=parseInt((x-deFrame.currentScroll*0.2+this.xOff)%this.width);
 			else
 				this.element.x=x+this.xOff;
 			this.element.y=y+this.yOff;
@@ -121,97 +121,27 @@ FluchWorld.prototype.init = function(lvl) {
 		this.clouds2 = this.displayEntity.addBitmap(lvl.cloudImage,true);
 		this.clouds2.width=lvl.cloudImage.width;
 		this.clouds2.xOff=-lvl.cloudImage.width;
-		this.clouds2.yOff=-60;
+		this.clouds2.yOff=-70;
 		this.clouds2.pos = function(x,y,deFrame) {
 			if (deFrame)
-				this.element.x=(x-deFrame.currentScroll*0.2+this.xOff)%this.width+this.width;
+				this.element.x=parseInt((x-deFrame.currentScroll*0.2+this.xOff)%this.width+this.width);
 			else
 				this.element.x=x+this.xOff;
 			this.element.y=y+this.yOff;
 		};
 	}
 	
-	bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
-	//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
-	bg.width=lvl.backgroundHtmlImage.width;
-	bg.xOff=0;
-	bg.yOff=67;
-	bg.pos = function(x,y,deFrame) {
-		if (deFrame){
-//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
-//			console.log(deFrame.currentScroll);
-//			console.log((this.width/2-deFrame.currentScroll)*0.1);
-			this.element.x=(x-deFrame.currentScroll*0.6+this.xOff)%this.width;
-
-		}
-		else
-			this.element.x=x;
-		this.element.y=y+this.yOff;
-	};
-	
-	bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
-	//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
-	bg.width=lvl.backgroundHtmlImage.width;
-	bg.xOff=lvl.backgroundHtmlImage.width;
-	bg.yOff=67;
-	bg.pos = function(x,y,deFrame) {
-		if (deFrame){
-//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
-//			console.log(deFrame.currentScroll);
-//			console.log((this.width/2-deFrame.currentScroll)*0.1);
-			this.element.x=(x-deFrame.currentScroll*0.6+this.xOff)%this.width+this.width;
-
-		}
-		else
-			this.element.x=x;
-		this.element.y=y+this.yOff;
-	};
-	
+	this.addTiledBackground(lvl.backgroundHtmlImage, 67, 0.6, 4);
 	if (lvl.backgroundHtmlImage2) {
-		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage2,true);
-		//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
-		bg.width=lvl.backgroundHtmlImage2.width;
-		bg.yOff=84;
-		bg.xOff=0;
-		bg.pos = function(x,y,deFrame) {
-			if (deFrame){
-	//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
-	//			console.log(deFrame.currentScroll);
-	//			console.log((this.width/2-deFrame.currentScroll)*0.1);
-				this.element.x=(x-deFrame.currentScroll*0.9+this.xOff)%this.width;
-			}
-			else
-				this.element.x=x;
-			this.element.y=y+this.yOff;
-		};
-		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage2,true);
-		//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
-		bg.width=lvl.backgroundHtmlImage2.width;
-		bg.yOff=84;
-		bg.xOff=lvl.backgroundHtmlImage2.width;
-		bg.pos = function(x,y,deFrame) {
-			if (deFrame){
-	//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
-	//			console.log(deFrame.currentScroll);
-	//			console.log((this.width/2-deFrame.currentScroll)*0.1);
-				this.element.x=(x-deFrame.currentScroll*0.9+this.xOff)%this.width+this.width;
-			}
-			else
-				this.element.x=x;
-			this.element.y=y+this.yOff;
-		};
-		
+		this.addTiledBackground(lvl.backgroundHtmlImage2, 84, 0.9, 4);
+	
 		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage3,true);
-		//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
 		bg.width=lvl.worldHtmlImage.width;
 		bg.yOff=10;
 		bg.xOff=460;
 		bg.pos = function(x,y,deFrame) {
 			if (deFrame){
-	//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
-	//			console.log(deFrame.currentScroll);
-	//			console.log((this.width/2-deFrame.currentScroll)*0.1);
-				this.element.x=(x-deFrame.currentScroll*1+this.xOff)%this.width+500;
+				this.element.x=parseInt((x-deFrame.currentScroll*1+this.xOff)%1000+700);
 			}
 			else
 				this.element.x=x;
@@ -219,11 +149,11 @@ FluchWorld.prototype.init = function(lvl) {
 		};
 	}
 	
-	this.foreGround=this.displayEntity.addShape(true).element;
+	this.foreGround=this.displayEntity.addShape(false).element;
 	
 	this.foreGround.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	
-	this.repaint=this.displayEntity.addBitmap(lvl.repaintHtmlImage,true).element;
+	this.repaint=this.displayEntity.addBitmap(lvl.repaintHtmlImage,false).element;
 	
 	this.foreGroundMask.graphics.beginFill("black").drawRect(0,0,1,1);
 	this.foreGroundMask.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
@@ -266,17 +196,7 @@ FluchWorld.prototype.init = function(lvl) {
 	this.policeText.cache(0,0,300,40);
 	stage.addChild(this.policeText);
 	
-	
-	
-//	this.backButton.xOff = 500;
-//	this.backButton.yOff = 20;
-//	this.backButton.pos = function(x,y,deFrame) {
-//		if (deFrame)
-//			this.element.x=x-deFrame.currentScroll+this.xOff;
-//		else
-//			this.element.x=x+this.xOff;
-//		this.element.y=y+this.yOff;
-//	};
+
 	
 	if (lvl.mapHtmlImage!=lvl.worldHtmlImage) {
 		this.backButton = this.displayEntity.addBitmap(globalLoader.getImage("img/back.png"),false);
@@ -293,19 +213,38 @@ FluchWorld.prototype.init = function(lvl) {
 	}
 };
 
+
+FluchWorld.prototype.addTiledBackground = function(image,yOff,paralax,iterations) {
+	for (var i=0;i<iterations;i++) {
+		var bg=this.displayEntity.addBitmap(image,true);
+		//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
+		bg.width=image.width;
+		bg.xOff=0;
+		bg.yOff=yOff;
+		bg.paralax=paralax;
+		bg.i=i;
+		bg.pos = function(x,y,deFrame) {
+			if (deFrame){
+				this.element.x=parseInt((x-deFrame.currentScroll*this.paralax+this.xOff)%this.width+this.width*this.i);
+	
+			}
+			else
+				this.element.x=x;
+			this.element.y=y+this.yOff;
+		};
+	}
+};
+
+
 FluchWorld.prototype.scroll = function(x) {
 	this.displayEntity.adjust(x);
 }
 
 mixCount=0;
 faders = new FaderArray();
-scrollPlus=3;
+
 FluchWorld.prototype.tick = function() {
-	def = new DEFrame();
-	scrollPlus+=0.01;
-	def.currentScroll = this.scrollState+=scrollPlus;
-	
-	this.scroll(def);
+
 	if (this.clouds) {
 		this.clouds.xOff-=0.3;
 		if (this.clouds.xOff<-this.clouds.width) {
@@ -317,25 +256,25 @@ FluchWorld.prototype.tick = function() {
 		}
 	}
 	faders.tick();
-	if (mixCount++%120==0) {
-		
-//		for (i=2;i<6;i++) {
-//			eval("eff"+i).volume=0;
+//	if (mixCount++%120==0) {
+//		
+////		for (i=2;i<6;i++) {
+////			eval("eff"+i).volume=0;
+////		}
+//	for (i=1;i<6;i++) {
+//		e = eval("eff"+i);
+//
+//		if (e) {
+//			if (Math.random()>0.7) {
+//				faders.add(e, e.volume,1,40);
+//			}
+//			else {
+//				faders.add(e, e.volume,0,40);
+//				console.log("mute");
+//			}
 //		}
-	for (i=1;i<6;i++) {
-		e = eval("eff"+i);
-
-		if (e) {
-			if (Math.random()>0.7) {
-				faders.add(e, e.volume,1,40);
-			}
-			else {
-				faders.add(e, e.volume,0,40);
-				console.log("mute");
-			}
-		}
-	}
-	}
+//	}
+//	}
 }
 
 

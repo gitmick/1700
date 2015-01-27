@@ -22,6 +22,7 @@ function Asset() {
 	
 	this.price=0;
 	this.billName;
+	console.log("Asset");
 }
 
 Asset.prototype.merge = function(asset) {
@@ -75,8 +76,11 @@ Asset.prototype.setCollision = function(x,y,type) {
 }
 
 Asset.prototype.clearCollision = function() {
-	if (this.collisionHeight>0 && this.collisionSet) 
+	if (this.collisionHeight>0 && this.collisionSet) {
+		//console.log("last: "+this.collisionLastX+" "+this.collisionLastY);
 		this.setCollision(this.collisionLastX,this.collisionLastY,INVISIBLE_FREE);
+		//this.setCollision(this.collisionLastX,this.collisionLastY,VISIBLE_BLOCK);
+	}
 }
 
 Asset.prototype.pos = function(x,y) {
@@ -85,6 +89,7 @@ Asset.prototype.pos = function(x,y) {
 
 Asset.prototype.finish = function() {
 	if (this.collisionHeight>0) {
+		//console.log("this: "+this.displayEntity.x+" "+this.displayEntity.y);
 		this.setCollision(this.displayEntity.x,this.displayEntity.y,this.collisionType);
 		this.collisionLastX=this.displayEntity.x;
 		this.collisionLastY=this.displayEntity.y;
@@ -151,4 +156,31 @@ AssetAction.prototype = new Act();
 
 AssetAction.prototype.check = function() {
 	return true;
+};
+
+
+
+function MultiAsset() {
+	this.assets = new Array();
+	console.log("MultiAsset");
+};
+
+MultiAsset.prototype = new Asset();
+
+
+function MultiAssetAction() {
+	this.maxAssets=5;
+};
+
+MultiAssetAction.prototype = new AssetAction();
+
+MultiAssetAction.prototype.addAsset = function(a) {
+	level.assets.push(a);
+	this.asset.assets.push(a);
+	if (this.asset.assets.length>this.maxAssets) {
+		this.asset.assets[0].destroy();
+		this.asset.assets.shift();
+	}
 }
+
+

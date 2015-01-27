@@ -106,6 +106,15 @@ FluchLevel.prototype.init = function() {
 			     frames: {width:32, height:32},
 			     animations: {run:[0,9],runR:[10,19],stand:[20,35],exp:[36,49],par:[50,57]}
 			 };
+		followerSheet = new createjs.SpriteSheet(data);
+		
+		
+		data = {
+				 framerate: 18,
+			     images: ["img/josef.png?21"],
+			     frames: {width:32, height:31},
+			     animations: {stand:[0,41],run:[42,53],exp:[54,67]}
+			 };
 		lemmingsSheet = new createjs.SpriteSheet(data);
 		
 		//this.loader.loadSprites(lemmingsSheet);
@@ -128,13 +137,26 @@ FluchLevel.prototype.init = function() {
 			this.time=false;
 		};
 		//this.loader.loadSound(this.level.dirPath+"/track.mp3",this.level.name);
-		this.loader.loadSound("levels/track.mp3","track");
+		//this.loader.loadSound("levels/track.mp3","track");
 		
-		this.loader.loadSound("sound/walzertest1.mp3","track1");
-		this.loader.loadSound("sound/walzertest2.mp3","track2");
-		this.loader.loadSound("sound/walzertest3.mp3","track3");
-		this.loader.loadSound("sound/walzertest4.mp3","track4");
-		this.loader.loadSound("sound/walzertest5.mp3","track5");
+		this.loader.loadSound("sound/wirrerbatz-walzer_final.mp3","track1");
+		this.loader.loadSound("sound/1700-pre2.mp3","track2");
+		
+		this.loader.loadSound("fx/block_ausweis.mp3","Polizei0");
+		this.loader.loadSound("fx/block_tap.mp3","Polizei1");
+		this.loader.loadSound("fx/gen_death4.mp3","Polizei2");
+		this.loader.loadSound("fx/gen_polizeigrufn.mp3","Polizei3");
+		
+		this.loader.loadSound("fx/gen_jaaa.mp3","Ja");
+		
+		this.loader.loadSound("fx/bomb_exp1.mp3","Bomb");
+		
+		
+//		this.loader.loadSound("sound/walzertest1.mp3","track1");
+//		this.loader.loadSound("sound/walzertest2.mp3","track2");
+//		this.loader.loadSound("sound/walzertest3.mp3","track3");
+//		this.loader.loadSound("sound/walzertest4.mp3","track4");
+//		this.loader.loadSound("sound/walzertest5.mp3","track5");
 		
 		this.machine.addBlock(introSoundBlock);
 		
@@ -156,11 +178,12 @@ FluchLevel.prototype.init = function() {
 		game.trigger.addTrigger(ADD_POLICEMEN,timeKeeper);
 		//eff=soundPlayer.play(this.level.name,1,100);
 		soundPlayer.reset();
-		eff1=soundPlayer.play("track1",5,100);
-		eff2=soundPlayer.play("track2",5,100);
-		eff3=soundPlayer.play("track3",5,100);
-		eff4=soundPlayer.play("track4",5,100);
-		eff5=soundPlayer.play("track5",5,100);
+		eff1=soundPlayer.play("track2",5,100);
+		eff2=soundPlayer.play("track1",5,100);
+		eff2.volume=0;
+//		eff3=soundPlayer.play("track3",5,100);
+//		eff4=soundPlayer.play("track4",5,100);
+//		eff5=soundPlayer.play("track5",5,100);
 
 	};
 };

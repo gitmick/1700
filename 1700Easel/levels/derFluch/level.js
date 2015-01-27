@@ -24,9 +24,27 @@
 		level.minSafeCount=20;
 		level.soundFile="track.mp3";
 		level.nextLevel="IvoLevel";
-		level.initAssets = function() {
+		level.registerAsset("FluchStreet");
+		level.registerAsset("FollowerCop");
+		level.registerAsset("Drink");
+		level.initAssets=function(){
+			p = this.initAsset("FluchStreet");
+			p.startX=300;
+			p.startY=257;
+			//p.startY=277;
+			p.show();
+			for (i=0;i<9;i++) {
+				p = this.initAsset("FollowerCop");
+				p.startX=-190+i*12;
+				p.startY=257;
+				
+				p.targetX=2+i*12;
+				p.targetY=257;
+				//p.startY=277;
+				p.show();
+			}
 			
-		};
+		}
 		
 		
 		

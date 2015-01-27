@@ -62,8 +62,10 @@ FluchWalk.prototype.check=function() {
 		return false;
 	}
 if (this.lemming.againstWall()) {
-		if (this.lemming.dead)
+		if (this.lemming.dead) {
+			console.log("DEAD!!!!");
 			return false;
+		}
 	}
 	return true;
 }
@@ -124,7 +126,10 @@ FluchJump.prototype.check=function() {
 		return false;
 	}
 	if (this.lemming.againstWall()) {
-		this.lemming.reverse();
+		if (this.lemming.dead) {
+			console.log("DEAD!!!!");
+			return false;
+		}
 	}
 	return true;
 };

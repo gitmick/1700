@@ -14,7 +14,7 @@ function Demonstrant() {
 	
 	this.scale=1;
 	
-	this.maxDY=12; //maximum pitch/slope (should be smaller than this.height)
+	this.maxDY=2; //maximum pitch/slope (should be smaller than this.height)
 	this.speed=1.0; //might break collision if different than 1.0 
 
 
@@ -28,7 +28,7 @@ function Demonstrant() {
 	this.floor=-1;
 	this.wall=-1;
 	
-	this.animationName="run";
+	this.animationName="stand";
 	this.displayEntity = new DisplayEntity();
 }
 
@@ -73,7 +73,7 @@ Demonstrant.prototype.kill=function() {
 
 Demonstrant.prototype.showKill=function() {
 	this.dead=true;
-	this.setAction(new Kill());
+	this.setAction(new FluchKill());
 };
 
 Demonstrant.prototype.won=function() {
@@ -88,11 +88,11 @@ Demonstrant.prototype.won=function() {
 };
 
 Demonstrant.prototype.create=function() {
-	this.circle = this.displayEntity.addSprite(lemmingsSheet, "run",true).element;
+	this.circle = this.displayEntity.addSprite(lemmingsSheet, "run",false).element;
 	this.circle.currentAnimationFrame+=Math.random()*6;
 	this.circle.lemming=this;
-	this.selection = this.displayEntity.addShape(true).element;
-	this.progress = this.displayEntity.addShape(true).element;
+	this.selection = this.displayEntity.addShape(false).element;
+	this.progress = this.displayEntity.addShape(false).element;
 	this.mouseListener = new DisplayEntity().addInteractionEntity(800, 500,this, false).element;
 	this.mouseListener.compare = function(ml) {
 		if (ml.target instanceof Lemming) {
@@ -207,7 +207,7 @@ Demonstrant.prototype.hasFloor=function(){
 
 Demonstrant.prototype.againstWall=function(){
 	var result = this.getWall();
-	if (result==DEADLY)
+	if (result==DEADLY || result==INVISIBLE_BLOCK)
 		this.showKill();
 	return (result!=FREE);
 };
