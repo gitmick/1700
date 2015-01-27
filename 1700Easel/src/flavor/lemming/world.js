@@ -142,7 +142,7 @@ World.prototype.init = function(lvl) {
 //			console.log(deFrame.currentScroll);
 //			console.log((this.width/2-deFrame.currentScroll)*0.1);
 			this.element.x=x-deFrame.currentScroll*0.6+this.xOff;
-			console.log(deFrame.currentScroll);
+//			console.log(deFrame.currentScroll);
 		}
 		else
 			this.element.x=x;
@@ -160,7 +160,7 @@ World.prototype.init = function(lvl) {
 //			console.log(deFrame.currentScroll);
 //			console.log((this.width/2-deFrame.currentScroll)*0.1);
 			this.element.x=x-deFrame.currentScroll*0.6+this.xOff;
-			console.log(deFrame.currentScroll);
+//			console.log(deFrame.currentScroll);
 		}
 		else
 			this.element.x=x;
@@ -301,7 +301,7 @@ World.prototype.scroll = function(x) {
 
 World.prototype.tick = function() {
 	if (this.clouds) {
-		console.log("move clouds "+this.clouds.element.x);
+//		console.log("move clouds "+this.clouds.element.x);
 		this.clouds.xOff-=0.3;
 		if (this.clouds.xOff<-this.clouds.width) {
 			this.clouds.xOff=this.clouds.width

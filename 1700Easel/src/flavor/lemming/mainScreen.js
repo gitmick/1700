@@ -121,7 +121,7 @@ SelectLevel.prototype.init = function () {
 //		this.level.buttons.push(new LevelButton(650,50,100,100,""));
 //		this.level.buttons.push(new LevelButton(800,50,100,100,""));
 		this.level.buttons.push(new LevelButton(42,228,100,100,"heliBridge"));
-		this.level.buttons.push(new LevelButton(162,228,100,100,"block"));
+		this.level.buttons.push(new LevelButton(162,228,100,100,"Mullberg"));
 		this.level.buttons.push(new LevelButton(282,228,100,100,"devLevel"));
   		this.level.buttons.push(new LevelButton(402,200,100,100,"subterra"));
 //		this.level.buttons.push(new LevelButton(650,200,100,100,""));
