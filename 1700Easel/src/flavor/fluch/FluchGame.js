@@ -6,6 +6,7 @@
 var timeKeeper = new TimeKeeper();
 var FLUCH_STARTED="fluchStarted";
 var COPS_ENTERED="copsEntered";
+var JOSEF_CAUGHT="josefCaught";
 
 function FluchGame() {
 	
