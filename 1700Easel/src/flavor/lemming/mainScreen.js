@@ -103,7 +103,7 @@ SelectLevel.prototype = new StartLevel();
 SelectLevel.prototype.init = function () {
 	this.buttons = new Array();
 	this.loadAction.load = function() {
-		this.level.worldHtmlImage=this.loader.loadImage("img/levelScreen.png", this.level.worldHtmlImage);
+		this.level.worldHtmlImage=this.loader.loadImage("img/levelScreenNeu.png", this.level.worldHtmlImage);
 	};
 	this.levelInitialize.fire = function () {
 		
@@ -116,16 +116,17 @@ SelectLevel.prototype.init = function () {
 		
 		this.level.buttons.push(new LevelButton(42,108,100,100,"buerstelDream"));
 		this.level.buttons.push(new LevelButton(162,108,100,100,"couch"));
-		this.level.buttons.push(new LevelButton(282,108,100,100,"jump"));
+		this.level.buttons.push(new LevelButton(282,108,100,100,"block"));
 		this.level.buttons.push(new LevelButton(402,108,100,100,"heli"));
-//		this.level.buttons.push(new LevelButton(650,50,100,100,""));
+		this.level.buttons.push(new LevelButton(650,50,100,100,"heliBridge"));
 //		this.level.buttons.push(new LevelButton(800,50,100,100,""));
-		this.level.buttons.push(new LevelButton(42,228,100,100,"heliBridge"));
+		
+		this.level.buttons.push(new LevelButton(42,228,100,100,"jump"));
 		this.level.buttons.push(new LevelButton(162,228,100,100,"Mullberg"));
 		this.level.buttons.push(new LevelButton(282,228,100,100,"devLevel"));
   		this.level.buttons.push(new LevelButton(402,200,100,100,"subterra"));
-//		this.level.buttons.push(new LevelButton(650,200,100,100,""));
-//		this.level.buttons.push(new LevelButton(800,200,100,100,""));
+		this.level.buttons.push(new LevelButton(650,200,100,100,""));
+		this.level.buttons.push(new LevelButton(800,200,100,100,"IvoLevel"));
 		soundPlayer.play("atmolong");
 	};
 	this.scrollAction.act = function() {

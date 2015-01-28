@@ -234,7 +234,7 @@ DesktopInteraction.prototype.init = function() {
         	that.lastClick=Date.now();
 
         	if (QueryString.dev) {
-        		console.log("x: "+parseInt(game.mouseX)+" y: "+ parseInt(game.mouseY));
+        		console.log("x: "+parseInt(game.mouseX+game.currentScroll)+" y: "+ parseInt(game.mouseY));
         	}
     	}
     	that.mouseDown=false;
