@@ -130,43 +130,43 @@ World.prototype.init = function(lvl) {
 			this.element.y=y+this.yOff;
 		};
 	}
-	
-	bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
-	//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
-	bg.width=lvl.worldHtmlImage.width;
-	bg.xOff=0;
-	bg.yOff=67;
-	bg.pos = function(x,y,deFrame) {
-		if (deFrame){
-//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
-//			console.log(deFrame.currentScroll);
-//			console.log((this.width/2-deFrame.currentScroll)*0.1);
-			this.element.x=x-deFrame.currentScroll*0.6+this.xOff;
-//			console.log(deFrame.currentScroll);
-		}
-		else
-			this.element.x=x;
-		this.element.y=y+this.yOff;
-	};
-	
-	bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
-	//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
-	bg.width=lvl.worldHtmlImage.width;
-	bg.xOff=lvl.backgroundHtmlImage.width;
-	bg.yOff=67;
-	bg.pos = function(x,y,deFrame) {
-		if (deFrame){
-//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
-//			console.log(deFrame.currentScroll);
-//			console.log((this.width/2-deFrame.currentScroll)*0.1);
-			this.element.x=x-deFrame.currentScroll*0.6+this.xOff;
-//			console.log(deFrame.currentScroll);
-		}
-		else
-			this.element.x=x;
-		this.element.y=y+this.yOff;
-	};
-	
+	if (lvl.backgroundHtmlImage) {
+		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
+		//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
+		bg.width=lvl.worldHtmlImage.width;
+		bg.xOff=0;
+		bg.yOff=67;
+		bg.pos = function(x,y,deFrame) {
+			if (deFrame){
+	//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
+	//			console.log(deFrame.currentScroll);
+	//			console.log((this.width/2-deFrame.currentScroll)*0.1);
+				this.element.x=x-deFrame.currentScroll*0.6+this.xOff;
+	//			console.log(deFrame.currentScroll);
+			}
+			else
+				this.element.x=x;
+			this.element.y=y+this.yOff;
+		};
+		
+		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
+		//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
+		bg.width=lvl.worldHtmlImage.width;
+		bg.xOff=lvl.backgroundHtmlImage.width;
+		bg.yOff=67;
+		bg.pos = function(x,y,deFrame) {
+			if (deFrame){
+	//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
+	//			console.log(deFrame.currentScroll);
+	//			console.log((this.width/2-deFrame.currentScroll)*0.1);
+				this.element.x=x-deFrame.currentScroll*0.6+this.xOff;
+	//			console.log(deFrame.currentScroll);
+			}
+			else
+				this.element.x=x;
+			this.element.y=y+this.yOff;
+		};
+	}
 	if (lvl.backgroundHtmlImage2) {
 		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage2,true);
 		//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);

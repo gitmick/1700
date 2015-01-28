@@ -107,7 +107,7 @@ SelectLevel.prototype.init = function () {
 	};
 	this.levelInitialize.fire = function () {
 		
-		this.level.backgroundHtmlImage = this.level.worldHtmlImage;
+		//this.level.backgroundHtmlImage = this.level.worldHtmlImage;
 		this.level.repaintHtmlImage = this.level.worldHtmlImage;
 		this.level.mapHtmlImage= this.level.worldHtmlImage;
 		this.level.world.init(this.level);
@@ -118,7 +118,7 @@ SelectLevel.prototype.init = function () {
 		this.level.buttons.push(new LevelButton(162,108,100,100,"couch"));
 		this.level.buttons.push(new LevelButton(282,108,100,100,"block"));
 		this.level.buttons.push(new LevelButton(402,108,100,100,"heli"));
-		this.level.buttons.push(new LevelButton(650,50,100,100,"heliBridge"));
+		this.level.buttons.push(new LevelButton(522,108,100,100,"heliBridge"));
 //		this.level.buttons.push(new LevelButton(800,50,100,100,""));
 		
 		this.level.buttons.push(new LevelButton(42,228,100,100,"jump"));
@@ -126,7 +126,7 @@ SelectLevel.prototype.init = function () {
 		this.level.buttons.push(new LevelButton(282,228,100,100,"devLevel"));
   		this.level.buttons.push(new LevelButton(402,200,100,100,"subterra"));
 		this.level.buttons.push(new LevelButton(650,200,100,100,""));
-		this.level.buttons.push(new LevelButton(800,200,100,100,"IvoLevel"));
+		this.level.buttons.push(new LevelButton(800,200,100,100,"Mullberg2"));
 		soundPlayer.play("atmolong");
 	};
 	this.scrollAction.act = function() {
