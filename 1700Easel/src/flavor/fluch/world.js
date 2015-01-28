@@ -97,8 +97,8 @@ FluchWorld.prototype.init = function(lvl) {
 	this.worldBitmapData = new createjs.BitmapData(lvl.mapHtmlImage);
 	this.width=lvl.worldHtmlImage.width;
 	this.height=lvl.worldHtmlImage.height;
-	this.displayEntity.addBitmap(lvl.worldHtmlImage,true).element.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
-	
+	//this.displayEntity.addBitmap(lvl.worldHtmlImage,false).element.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
+	this.addTiledBackground(lvl.worldHtmlImage, 0, 1, 4);
 //	this.s=this.displayEntity.addShape(true).element;
 //	this.s.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	

@@ -26,7 +26,7 @@
 		level.nextLevel="IvoLevel";
 		level.registerAsset("FluchStreet");
 		level.registerAsset("FollowerCop");
-		level.registerAsset("Drink");
+		level.registerAsset("Censor");
 		level.initAssets=function(){
 			p = this.initAsset("FluchStreet");
 			p.startX=0;
@@ -43,6 +43,11 @@
 				//p.startY=277;
 				p.show();
 			}
+			
+			p = this.initAsset("Censor");
+			p.startX=0;
+			p.startY=257;
+			p.show();
 			
 		}
 		

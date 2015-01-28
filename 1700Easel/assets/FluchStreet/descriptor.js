@@ -30,7 +30,7 @@ function FluchStreet() {
 		};
 	
 	this.gap3 = {
-			trash:[40,320],
+			trash:[40,280],
 			bin:[200]
 		};
 	
