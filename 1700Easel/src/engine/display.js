@@ -57,7 +57,7 @@ DisplayEntity.prototype.pos = function(x,y,deFrame) {
 //	for (var i=0;i<this.deElements.length;i++) {
 //		this.deElements[i].pos(parseInt(x),parseInt(y),deFrame);
 //	}
-	this.adjust();
+	this.adjust(deFrame);
 };
 
 DisplayEntity.prototype.adjust = function(deFrame) {

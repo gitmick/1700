@@ -103,10 +103,13 @@ FluchKill.prototype.act = function() {
 		stillAcc=false;
 		game.trigger.bang(JOSEF_CAUGHT);
 	}
+	if (this.count==10) {
+		this.lemming.circle.gotoAndPlay("exp");
+	}
 	if (this.count==45) {
 		game.scrollPlus=0;
-		this.lemming.circle.gotoAndPlay("exp");
-		this.lemming.kill();
+		//this.lemming.circle.gotoAndPlay("exp");
+		//this.lemming.kill();
 		this.effectInstance.stop();
 	}
 	else if (this.count<45){

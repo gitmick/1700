@@ -21,7 +21,7 @@ Censor.prototype.drawInitial = function() {
 };
 
 Censor.prototype.bang = function (name) {
-	
+	this.setAction(new CensorAction());
 	
 };
 
@@ -30,14 +30,16 @@ function CensorAction() {
 	this.count=0;
 }
 
+CensorAction.prototype = new AssetAction();
+
 CensorAction.prototype.act = function() {
 	if (this.count++==0) {
-		this.shape.graphics.beginFill("black").drawRect(70,240,100,50);
+		this.asset.shape.graphics.beginFill("black").drawRect(55,240,130,50);
 	}
 	if (this.count==45) {
 
 	}
 	else if (this.count<45){
-		this.asset.shape.x-=1;
+		this.asset.displayEntity.x-=1;
 	}
 }
