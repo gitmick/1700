@@ -67,31 +67,37 @@
 	
 		
 		p = this.initAsset("MetBox");
+		p.which=3;
 		p.startX=368;
 		p.startY=188;
 		p.show();
 		
 		p = this.initAsset("MetBox");
+		p.which=1;
 		p.startX=549;
 		p.startY=226;
 		p.show();
 		
 		p = this.initAsset("MetBox");
+		p.which=3;
 		p.startX=372;
 		p.startY=221;
 		p.show();
 		
 		p = this.initAsset("MetBox");
+		p.which=3;
 		p.startX=295;
 		p.startY=176;
 		p.show();
 		
 		p = this.initAsset("MetBox");
+		p.which=3;
 		p.startX=303;
 		p.startY=255;
 		p.show();
 		
 		p = this.initAsset("MetBox");
+		p.which=2;
 		p.startX=335;
 		p.startY=129;
 		p.show();

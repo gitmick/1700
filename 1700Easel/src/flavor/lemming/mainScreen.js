@@ -18,7 +18,7 @@ MainLevel.prototype.init = function () {
 	};
 	
 	this.loadAction.load = function() {
-		this.level.mainScreen=this.loader.loadImage("img/titleScreen.png", this.level.mainScreen);
+		this.level.mainScreen=this.loader.loadImage("img/titleScreen_neu.png", this.level.mainScreen);
 		this.loader.loadSound("fx/float_huuu.mp3","Float");
 		this.loader.loadSound("fx/float_naaa.mp3","FloatFall");
 		this.loader.loadSound("fx/Climb.mp3","Climb");
