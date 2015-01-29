@@ -2,7 +2,7 @@
 
 	level.load = function() {
 		level.title="Stairways to Heaven";
-		level.description="Ein Königreich für die Strudlhofstiege.";
+		level.description="Ein Kï¿½nigreich fï¿½r die Strudlhofstiege.";
 		level.intro="atmoloopcopter.mp3";
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";
@@ -15,6 +15,7 @@
 		level.actionCount[Mine]=10;
 		level.actionCount[Dig]=10;
 		level.actionCount[JumpAll]=1;
+		level.actionCount[JumpSingle]=0;
 		level.maxPoliceMen=20;
 		level.policeDelay=150;
 		level.dropX=100;

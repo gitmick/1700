@@ -9,6 +9,7 @@
 	level.actionCount[Bash]=10;
 	level.actionCount[Mine]=10;
 	level.actionCount[Dig]=10;
+	level.actionCount[JumpSingle]=0;
 	level.maxPoliceMen=100;
 	level.policeDelay=50;
 	level.dropX=170;

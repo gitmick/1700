@@ -1,7 +1,7 @@
 
 
 	level.load = function() {
-		level.title="Absperrungen sorgen für Sicherheit";
+		level.title="Absperrungen sorgen fï¿½r Sicherheit";
 		level.description="Im Weg steht man sich meist selbst. ";
 		level.intro="atmoloop.mp3";
 		level.backgroundColor=16777215;
@@ -15,6 +15,7 @@
 		level.actionCount[Mine]=10;
 		level.actionCount[Dig]=10;
 		level.actionCount[JumpAll]=1;
+		level.actionCount[JumpSingle]=0;
 		level.maxPoliceMen=30;
 		level.policeDelay=25;
 		level.dropX=-10;

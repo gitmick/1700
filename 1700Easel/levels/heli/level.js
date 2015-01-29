@@ -1,7 +1,7 @@
 
 
 	level.load = function() {
-		level.title="Baumgartner Höhe";
+		level.title="Baumgartner Hï¿½he";
 		level.description="Wahrscheinlich von Redbull gesponsort.";
 		level.intro="atmoloopcopter.mp3";
 		level.backgroundColor=16777215;
@@ -15,6 +15,7 @@
 		level.actionCount[Mine]=10;
 		level.actionCount[Dig]=10;
 		level.actionCount[JumpAll]=1;
+		level.actionCount[JumpSingle]=0;
 		level.maxPoliceMen=10;
 		level.policeDelay=50;
 		level.dropX=100;
