@@ -2,7 +2,7 @@
 
 	level.load = function() {
 		level.title="Investorentraum";
-		level.description="So w�rs gedacht, \n\nrein ins Haus, \n\nMieter raus!";
+		level.description="So wars gedacht, \n\nrein ins Haus, \n\nMieter raus!";
 		level.intro="atmoloop.mp3";
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";

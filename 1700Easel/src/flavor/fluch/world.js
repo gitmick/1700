@@ -23,7 +23,7 @@ function FluchWorld() {
 	this.gameText;
 	this.policeText;
 	this.moneyLeft=870000;
-	this.policeOut=0;
+	this.policeOut=1;
 	this.policeSaved=1;
 
 	this.backButton;
@@ -65,8 +65,7 @@ FluchWorld.prototype.setPoliceOut=function(out) {
 }
 
 FluchWorld.prototype.setRounds=function(out) {
-	console.log(out);
-	if (out!=this.policeOut) {
+	if (this.gameText && out!=this.policeOut) {
 		this.gameText.text=out;
 		this.policeOut=out;
 		this.gameText.updateCache();
@@ -85,6 +84,15 @@ FluchWorld.prototype.setPoliceSaved=function(saved) {
 }
 
 FluchWorld.prototype.setMoneyLeft=function(left) {
+//	if (left!=this.moneyLeft) {
+//		this.moneyLeft=left;
+//		this.moneyText.text=left;
+//		this.moneyText.updateCache();
+//	}
+}
+
+
+FluchWorld.prototype.setIntro=function(left) {
 	if (left!=this.moneyLeft) {
 		this.moneyLeft=left;
 		this.moneyText.text=left;
@@ -198,10 +206,10 @@ FluchWorld.prototype.init = function(lvl) {
 	this.gameText.cache(-500,0,1000,40);
 	stage.addChild(this.gameText);
 	
-	this.moneyText = new createjs.Text("", "20px Visitor", "#ac6363"); 
+	this.moneyText = new createjs.Text("Und da erwacht unser kleiner Polizist \nplötzlich als wütender Demonstrant. \nJetzt halte dich aber schnell von den \nMüllkübeln fern, sonst geht´s dir an den Kragen.", "20px Visitor", "#ac6363"); 
 	this.moneyText.x=180;
 	this.moneyText.y=15;
-	this.moneyText.cache(0,0,1000,40);
+	this.moneyText.cache(0,0,1000,400);
 	stage.addChild(this.moneyText);
 	
 	//2b3642
@@ -281,7 +289,13 @@ FluchWorld.prototype.tick = function() {
 	}
 	faders.tick();
 	this.setRounds(parseInt(game.currentScroll/4000));
-//	console.log("currentScroll "+game.currentScroll+" "+parseInt(game.currentScroll/4000.0));
+	if (game.currentScroll<800) {
+		this.setIntro("Und da erwacht unser kleiner Polizist \nplötzlich als wütender Demonstrant. \nJetzt halte dich aber schnell von den \nMüllkübeln fern, sonst geht´s dir an den Kragen.");
+	}
+	else {
+		this.setIntro(game.outro);
+	}
+		//	console.log("currentScroll "+game.currentScroll+" "+parseInt(game.currentScroll/4000.0));
 //	if (mixCount++%120==0) {
 //		
 ////		for (i=2;i<6;i++) {

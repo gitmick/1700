@@ -2,7 +2,7 @@
 
 	level.load = function() {
 		level.title="I say jump!";
-		level.description="Springen wï¿½hlen.\n\nMit gedrï¿½ckter Maus durch die Polizisten fahren.\n\nSobald man die Maus loslï¿½sst springt der erste.";
+		level.description="Springen wählen.\n\nMit gedrückter Maus durch die Polizisten fahren.\n\nSobald man die Maus loslässt springt der erste.";
 		level.intro="atmoloop.mp3";
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";

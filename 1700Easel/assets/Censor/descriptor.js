@@ -35,9 +35,18 @@ CensorAction.prototype = new AssetAction();
 CensorAction.prototype.act = function() {
 	if (this.count++==0) {
 		this.asset.shape.graphics.beginFill("black").drawRect(55,240,130,50);
+		game.outro="Ja das wars, \nein Polizist hat genau gesehen, \nwie du mit dem Mistkübel \ndie Hofburg zerstören wolltest.";
 	}
-	if (this.count==45) {
-
+	if (this.count==300) {
+		game.machine.setAction(new MachineAction());
+		displayEntityHolder.destroy();
+		stage.removeAllChildren();
+	
+		soundPlayer.reset();
+//		game.level = new SelectLevel();
+//		game.level.start(game.machine);
+		flavor = new LemmingFlavor();
+		flavor.init();
 	}
 	else if (this.count<45){
 		this.asset.displayEntity.x-=1;
