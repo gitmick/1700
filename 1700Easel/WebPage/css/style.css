@@ -247,6 +247,12 @@ p.head {
 	height: 15px;
 }
 
+a.head {
+	font-size: 30px;
+	height: 15px;
+	padding-top: 6px;
+}
+
 .overlay {
 	position: relative;
 	top:-300px;
@@ -270,13 +276,13 @@ p.head {
  
 .timeline {
 	position: relative;
-	height: 42px;
+	height: 55px;
 }
 
 .timeline a {
-	background-color: yellow;
+	/* background-color: yellow; */
 	margin-bottom: 10px;
-	padding: 6px;
+	padding: 2px 12px 12px 6px;
 }
 
 .timeline #older {
@@ -288,12 +294,8 @@ p.head {
 }
 
 .timeline #older, .timeline #newer {
-	border: 2px solid black;
-    border-radius: 15px;
-    padding-top:3px;
-	-moz-box-shadow: 3px 3px 3px #999;
-	-webkit-box-shadow: 3px 3px 3px #999;
-	box-shadow: 3px 3px 3px #999;
+	background-image: url("../img/buttons/newold.png");
+	background-repeat: no-repeat;
 }
 
 /****************************************/

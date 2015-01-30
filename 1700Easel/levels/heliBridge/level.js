@@ -2,7 +2,7 @@
 
 	level.load = function() {
 		level.title="Stairways to Heaven";
-		level.description="Ein Königreich für die Strudlhofstiege.";
+		level.description="Ein Kï¿½nigreich fï¿½r die Strudlhofstiege.";
 		level.intro="atmoloopcopter.mp3";
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";
@@ -24,7 +24,7 @@
 		level.goalY=283;
 		level.minSafeCount=11;
 		level.soundFile="track.mp3";
-		level.nextLevel="block";
+		level.nextLevel="devLevel";
 		level.registerAsset("Copter");
 		level.registerAsset("Drink");
 		level.initAssets = function() {
