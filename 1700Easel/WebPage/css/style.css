@@ -22,10 +22,10 @@ p {
   text-align: block;
 }
 
-
 h2.left {
 	float: left;
 	width: 600px;
+	height: 40px;
 }
 
 h2.right {
@@ -34,10 +34,11 @@ h2.right {
 	margin-right: 12px;
 	float: right;
 	width: 200px;
+	height: 40px;
 }
 
 h2.right a {
-	color: grey;
+	color: #125676;
 }
 
 .header {
@@ -125,23 +126,35 @@ h2.right a {
 }
 
 .sidebar h4 {
+	font-family: "TIBITTO_", sans-serif;
+	font-size: 48px;
 	position: relative;
 	clear: both;
 	top: 0px;
-	color:black;
+	color: #d4ca9d;
 	padding-bottom: 0px;
+	margin-left: 12px;
 }
 
 .sidebar p  {
 	padding-bottom: 20px;
+	color: #d4ca9d;
 }
 
 span.sidebox {
 	display: inline-block;
 	position: relative;
-	background-color: rgba(255, 255, 0, 0.7);
+	background-color: rgba(143, 52, 52, 1);
 	width: 300px;
 	margin-bottom: 20px;
+}
+
+.sidebox a {
+	color: #d4ca9d;
+}
+
+.sidebox a:hover {
+	color: black;
 }
 
 div.socialmedia {
@@ -155,8 +168,18 @@ div.socialmedia {
 
 p.termine {
 	font-size: 18px;
-	margin-bottom: -7px;
+	margin: 15px, 12px -7px, 12px; 
 	padding-bottom: 0px;
+	
+}
+
+div.line {
+	display: block;
+	margin-top: 15px;
+	margin-left:auto;
+	margin-right:auto;
+	width: 279px;
+	border-top: 4px solid #d4ca9d;
 }
 
 /****************************************/
@@ -193,7 +216,7 @@ div.newselement {
 	top: -400px;
 	margin-left: 0px;
 	width: 620px;
-	background: rgba(255, 240, 0, 0.4);
+	background: rgba(255, 255, 255, 0.8);
     -webkit-transition: all 0.7s;
 	transition: all 0.7s;
 	padding: 6px 6px 20px 6px;
@@ -206,7 +229,7 @@ div.newselement {
 	width: 620px;
 	color: #777;
 	
-	background: rgba(255, 240, 0, 0.4);
+	background: rgba(255, 255, 255, 0.8);
 	z-index: 2;
     -webkit-transition: all 0.7s;
 	transition: all 0.7s;
@@ -237,7 +260,7 @@ p.head {
 
 .newselement:hover .textbox p, .newselement:hover .textbox a {
  	top: -600px;
- 	background: rgba(255, 240, 0, 1);
+ 	background: rgba(255, 255, 255, 1);
  }
  
  .newselement:hover .overlay {
@@ -280,7 +303,7 @@ p.head {
 	color:black;
 	padding-bottom: 0px;
 	margin: 0px 10px 10px 10px;
-	background-color: yellow;
+	background-color: white;
 }
 
 .square_300 img {
@@ -294,7 +317,7 @@ p.head {
 	padding: 3px 6px 0px 6px;
 	top: -15px;
 	z-index: 1;
-	background-color: yellow;
+	background-color: white;
 	font-size: 20px;
 	height: 25px;
 }
@@ -306,7 +329,7 @@ p.head {
 	margin-bottom: 0px;
 	top: -20px;
 	z-index: 1;
-	background-color: yellow;
+	background-color: white;
 	font-size: 20px;
 	height: 44px;
 }
@@ -317,7 +340,7 @@ p.head {
 	padding: 3px 6px 0px 6px;
 	top: -77px;
 	z-index: 1;
-	background-color: yellow;
+	background-color: white;
 	font-size: 20px;
 	height: 25px;
 }
@@ -329,7 +352,7 @@ p.head {
 	margin-top: 5px;
 	top: -82px;
 	z-index: 1;
-	background-color: yellow;
+	background-color: white;
 	font-size: 20px;
 	height: 44px;
 }
@@ -374,7 +397,7 @@ div.hoverable:hover p, div.hoverable:hover h4, div.hoverable:hover img {
 	height: 300px;
 	text-align: left;
 }
-.pressestimmen h4, .transparentwrapper h2 {
+.pressestimmen h4 {
 	color: black;
 }
 
@@ -411,8 +434,18 @@ div.hoverable:hover p, div.hoverable:hover h4, div.hoverable:hover img {
 }
 
 .credits_content h4 {
+	position: relative;
+	padding-top: 40px;
 	font-size:20px;
 }
+
+.credits_content p {
+	position: relative;
+	margin-top: -10px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:12px;
+}
+
 
 .credits_content span {
 	display: inline-block;
