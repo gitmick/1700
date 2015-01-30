@@ -50,25 +50,46 @@ FluchWorld.prototype.setEquipment=function(eq) {
 }
 
 FluchWorld.prototype.setPoliceOut=function(out) {
+//	if (out!=this.policeOut) {
+//		console.log(out);
+//		this.gameText.text=out;
+//		this.policeOut=out;
+//		this.gameText.updateCache();
+//	}
+//	if (out!=this.policeSaved) {
+//		this.policeSaved=out;
+//		tt=out+" / "+level.minSafeCount;
+//		this.goalText.text=tt;
+//		this.goalText.updateCache();
+//	}
+}
+
+FluchWorld.prototype.setRounds=function(out) {
+	console.log(out);
 	if (out!=this.policeOut) {
 		this.gameText.text=out;
 		this.policeOut=out;
 		this.gameText.updateCache();
 	}
-	if (out!=this.policeSaved) {
-		this.policeSaved=out;
-		tt=out+" / "+level.minSafeCount;
-		this.goalText.text=tt;
-		this.goalText.updateCache();
-	}
+//	if (out!=this.policeSaved) {
+//		this.policeSaved=out;
+//		tt=out+" / "+level.minSafeCount;
+//		this.goalText.text=tt;
+//		this.goalText.updateCache();
+//	}
 }
+
 
 FluchWorld.prototype.setPoliceSaved=function(saved) {
 	
 }
 
 FluchWorld.prototype.setMoneyLeft=function(left) {
-	
+	if (left!=this.moneyLeft) {
+		this.moneyLeft=left;
+		this.moneyText.text=left;
+		this.moneyText.updateCache();
+	}
 }
 
 FluchWorld.prototype.updateText = function() {
@@ -175,13 +196,13 @@ FluchWorld.prototype.init = function(lvl) {
 	this.gameText.y=6;
 	this.gameText.textAlign="center";
 	this.gameText.cache(-500,0,1000,40);
-//	stage.addChild(this.gameText);
+	stage.addChild(this.gameText);
 	
 	this.moneyText = new createjs.Text("", "20px Visitor", "#ac6363"); 
 	this.moneyText.x=180;
 	this.moneyText.y=15;
 	this.moneyText.cache(0,0,1000,40);
-//	stage.addChild(this.moneyText);
+	stage.addChild(this.moneyText);
 	
 	//2b3642
 	this.goalText = new createjs.Text("", "10px Visitor", "#2b3642"); 
@@ -259,7 +280,8 @@ FluchWorld.prototype.tick = function() {
 		}
 	}
 	faders.tick();
-	this.setPoliceOut(parseInt(game.currentScroll/4000));
+	this.setRounds(parseInt(game.currentScroll/4000));
+//	console.log("currentScroll "+game.currentScroll+" "+parseInt(game.currentScroll/4000.0));
 //	if (mixCount++%120==0) {
 //		
 ////		for (i=2;i<6;i++) {

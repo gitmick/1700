@@ -171,7 +171,7 @@ Demonstrant.prototype.draw=function(deFrame) {
 		return;
 	}
 	this.circle.setTransform(0, 0, this.scale, this.scale);
-	console.log(this.x);
+//	console.log(this.x);
 	this.displayEntity.pos(this.x,this.y,deFrame);
 };
 
