@@ -1,7 +1,7 @@
 
 
 	level.load = function() {
-		level.title="Müllberg 3000";
+		level.title="Mï¿½llberg 3000";
 		level.description="Alles voll mit Zeug!";
 		level.intro="atmoloop.mp3";
 		level.backgroundColor=16777215;
@@ -24,7 +24,7 @@
 		level.goalY=283;
 		level.minSafeCount=10;
 		level.soundFile="track.mp3";
-		level.nextLevel="jump";
+		level.nextLevel="Mullberg2";
 		level.initAssets=function(){};
 		level.registerAsset("Phil");
 		level.registerAsset("PeeingPunk");

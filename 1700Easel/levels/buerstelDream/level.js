@@ -2,7 +2,7 @@
 
 	level.load = function() {
 		level.title="Investorentraum";
-		level.description="So wärs gedacht, \n\nrein ins Haus, \n\nMieter raus!";
+		level.description="So wï¿½rs gedacht, \n\nrein ins Haus, \n\nMieter raus!";
 		level.intro="atmoloop.mp3";
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";
@@ -24,7 +24,7 @@
 		level.goalY=283;
 		level.minSafeCount=10;
 		level.soundFile="track.mp3";
-		level.nextLevel="jump";
+		level.nextLevel="couch";
 		level.registerAsset("Sign2");
 		level.registerAsset("Drink");
 		//level.initAssets=function(){};

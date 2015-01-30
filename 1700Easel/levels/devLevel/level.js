@@ -24,7 +24,7 @@
 		level.goalY=283;
 		level.minSafeCount=20;
 		level.soundFile="track.mp3";
-		level.nextLevel="IvoLevel";
+		level.nextLevel="jump";
 		level.registerAsset("Copter");
 		level.registerAsset("Tank");
 		level.registerAsset("Colorbags");

@@ -24,7 +24,7 @@
 		level.goalY=105;
 		level.minSafeCount=10;
 		level.soundFile="track.mp3";
-		level.nextLevel="jump";
+		level.nextLevel="Mullberg2";
 		level.registerAsset("Drink");
 		//level.initAssets=function(){};
 		/*level.registerAsset("Pee");

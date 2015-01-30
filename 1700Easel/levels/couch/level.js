@@ -2,7 +2,7 @@
 
 	level.load = function() {
 		level.title="In die Berg bin i gern.";
-		level.description="Wie am Wühltisch im Möbelhaus";
+		level.description="Wie am Wï¿½hltisch im Mï¿½belhaus";
 		level.intro="atmoloop.mp3";
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";
@@ -24,7 +24,7 @@
 		level.goalY=285;
 		level.minSafeCount=20;
 		level.soundFile="track.mp3";
-		level.nextLevel="jump";
+		level.nextLevel="block";
 		level.initAssets=function(){}
 		
 	}
