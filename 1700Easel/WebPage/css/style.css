@@ -25,7 +25,7 @@ p {
 
 h2.left {
 	float: left;
-	width: 400px;
+	width: 600px;
 }
 
 h2.right {
@@ -33,7 +33,7 @@ h2.right {
 	text-align: right;
 	margin-right: 12px;
 	float: right;
-	width: 400px;
+	width: 200px;
 }
 
 h2.right a {
@@ -57,9 +57,11 @@ h2.right a {
 
 #firstform {
 	color: #999;
-	background-color: #222; /*ingame logo farbe: #00355a*/
+	background-color: #255870; /*ingame logo farbe: #00355a*/
 	padding-bottom: 8px;
 	padding-top: 15px;
+	opacity: 0.9;
+	filter: alpha(opacity=90);
 }
 
 #logopic {
@@ -72,24 +74,12 @@ h2.right a {
 	height: 150px;
 }
 
-.btn span {
-	display: inline-block;
-	width: 120px;
+.btn img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 	text-align: center;
-	margin: 12px 70px;
-	padding-bottom: 17px;
-	padding: 10px 20px 14px 20px;
-	position: relative;
-	text-align: center;
-	
-	background-color: yellow;
-	border: 2px solid;
-    border-radius: 15px;
-	-moz-box-shadow: 5px 5px 5px #111;
-	-webkit-box-shadow: 5px 5px 5px #111;
-	box-shadow: 5px 5px 5px #111;
-	color: black;
-	font-weight: bold;
+	padding: 0px;
 }
 
 .btn a {
@@ -405,16 +395,30 @@ div.hoverable:hover p, div.hoverable:hover h4, div.hoverable:hover img {
 	color: grey;
 }
 
+.creditsWrapper {
+	background-color: #7da9a5;
+	background-image: url("../img/lowerWrapper.png");
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 647px;
+	margin: 0px 0px;
+	padding: 30px 0px;
+}
+
 .credits_content {
-	text-align: center;
+	text-align: left;
 	color: white;
+}
+
+.credits_content h4 {
+	font-size:20px;
 }
 
 .credits_content span {
 	display: inline-block;
-	margin-top: 24px;
+	margin-top: 0px;
 	height: 120px;
-	text-align: center;
+	text-align: left;
 }
 
 .credits_content a {

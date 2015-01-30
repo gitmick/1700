@@ -9,14 +9,22 @@
 ----------------------------------------------------------------------------------------------------*/
 
 body {
-  /*font: 13px/1.5 "Helvetica Neue", Arial, "Liberation Sans", FreeSans, sans-serif;
-  font-family: 'Press Start 2P', cursive;*/
-  font: 13px "VT323";
+	/*font: 13px/1.5 "Helvetica Neue", Arial, "Liberation Sans", FreeSans, sans-serif;
+	font-family: 'Press Start 2P', cursive;*/
+	font: 13px "VT323";
+}
+
+@font-face {
+	font-family: "TIBITTO_";
+	src: url('../fonts/TIBITTO_.otf');
+	format('opentype');
+	src: url('../fonts/TIBITTO_.ttf');
+	format('truetype');
 }
 
 pre,
 code {
-  font-family: "DejaVu Sans Mono", Menlo, Consolas, monospace;
+	font-family: "DejaVu Sans Mono", Menlo, Consolas, monospace;
 }
 
 hr {
@@ -37,11 +45,15 @@ h1 {
 }
 
 h2 {
-  font-size: 38px;
-  padding-top: 20px;
-  margin-left: 10px;
-  text-align: left;
-  color: white;
+	font-family: "TIBITTO_", sans-serif;
+	font-size: 48px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	margin-left: 10px;
+	margin-bottom: 7px;
+	text-align: left;
+	color: #125676;
+	
 }
 
 h3 {
