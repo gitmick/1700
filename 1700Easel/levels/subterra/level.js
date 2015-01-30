@@ -2,7 +2,7 @@
 
 	level.load = function() {
 		level.title="subterra";
-		level.description="So war�s gedacht, \n\nrein ins Haus, \n\nMieter raus!";
+		level.description="So war's gedacht, \n\nrein ins Haus, \n\nMieter raus!";
 		level.intro="atmoloop.mp3";
 		level.backgroundColor=16777215;
 		level.backgroundColorName="black";

@@ -1,7 +1,7 @@
 
 
 	level.load = function() {
-		level.title="MÃ¼llberg 3000";
+		level.title="Müllberg 3000";
 		level.description="Alles voll mit Zeug!";
 		level.intro="atmoloop.mp3";
 		level.backgroundColor=16777215;

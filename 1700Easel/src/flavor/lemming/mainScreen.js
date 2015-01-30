@@ -11,10 +11,18 @@ function MainLevel () {
 MainLevel.prototype = new StartLevel();
 MainLevel.prototype.init = function () {
 	
-	startObject = new Button(0,0,1024,386);
+	startObject = new Button(87,266,211,31);
 	startObject.select = function(x, y) {
+		console.log(1);
 		game.level = new SelectLevel();
 		game.level.start(game.machine);
+	};
+	
+	startObject = new Button(372,266,211,31);
+	startObject.select = function(x, y) {
+		console.log(2);
+		flavor = new FluchFlavor();
+		flavor.init();
 	};
 	
 	this.loadAction.load = function() {
@@ -244,9 +252,9 @@ FolderLevel.prototype.init = function() {
 		
 		var data = {
 				 framerate: 18,
-			     images: ["img/run.png?21"],
+			     images: ["img/run.png?22"],
 			     frames: {width:32, height:32},
-			     animations: {run:[0,9],runR:[10,19],stand:[20,35],exp:[36,49],par:[50,57]}
+			     animations: {run:[0,9],runR:[10,19],stand:[20,35],exp:[36,49],par:[50,57],dig:[58,67],digR:[68,77],climb:[78,87],climbR:[88,97]}
 			 };
 		lemmingsSheet = new createjs.SpriteSheet(data);
 		

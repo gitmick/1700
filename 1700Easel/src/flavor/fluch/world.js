@@ -42,11 +42,11 @@ function FluchWorld() {
 }
 
 FluchWorld.prototype.setEquipment=function(eq) {
-	if (this.equiq!=eq) {
-		this.equiq=eq;
-		this.policeText.text=formatEuro(eq);
-		this.policeText.updateCache();
-	}
+//	if (this.equiq!=eq) {
+//		this.equiq=eq;
+//		this.policeText.text=formatEuro(eq);
+//		this.policeText.updateCache();
+//	}
 }
 
 FluchWorld.prototype.setPoliceOut=function(out) {
@@ -55,23 +55,20 @@ FluchWorld.prototype.setPoliceOut=function(out) {
 		this.policeOut=out;
 		this.gameText.updateCache();
 	}
-}
-
-FluchWorld.prototype.setPoliceSaved=function(saved) {
-	if (saved!=this.policeSaved) {
-		this.policeSaved=saved;
+	if (out!=this.policeSaved) {
+		this.policeSaved=out;
 		tt=saved+" / "+level.minSafeCount;
 		this.goalText.text=tt;
 		this.goalText.updateCache();
 	}
 }
 
+FluchWorld.prototype.setPoliceSaved=function(saved) {
+	
+}
+
 FluchWorld.prototype.setMoneyLeft=function(left) {
-	if (left!=this.moneyLeft) {
-		this.moneyLeft=left;
-		this.moneyText.text=formatEuro(left+"");
-		this.moneyText.updateCache();
-	}
+	
 }
 
 FluchWorld.prototype.updateText = function() {
@@ -90,9 +87,13 @@ FluchWorld.prototype.setText = function(text) {
 FluchWorld.prototype.init = function(lvl) {
 	
 	//blueSky
-	sky=this.displayEntity.addShape(true).element;
-	sky.graphics.beginFill("#000000").drawRect(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
-	
+	if (lvl.skyImage) {
+		 this.displayEntity.addBitmap(lvl.skyImage,false);
+	}
+	else {
+		sky=this.displayEntity.addShape(true).element;
+		sky.graphics.beginFill("#000000").drawRect(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
+	}
 	this.foreGroundMask = this.displayEntity.addShape(false).element;
 	this.worldBitmapData = new createjs.BitmapData(lvl.mapHtmlImage);
 	this.width=lvl.worldHtmlImage.width;
@@ -110,7 +111,7 @@ FluchWorld.prototype.init = function(lvl) {
 		this.clouds = this.displayEntity.addBitmap(lvl.cloudImage,true);
 		this.clouds.width=lvl.cloudImage.width;
 		this.clouds.xOff=0;
-		this.clouds.yOff=-70;
+		this.clouds.yOff=-20;
 		this.clouds.pos = function(x,y,deFrame) {
 			if (deFrame)
 				this.element.x=parseInt((x-deFrame.currentScroll*0.2+this.xOff)%this.width);
@@ -121,7 +122,7 @@ FluchWorld.prototype.init = function(lvl) {
 		this.clouds2 = this.displayEntity.addBitmap(lvl.cloudImage,true);
 		this.clouds2.width=lvl.cloudImage.width;
 		this.clouds2.xOff=-lvl.cloudImage.width;
-		this.clouds2.yOff=-70;
+		this.clouds2.yOff=-20;
 		this.clouds2.pos = function(x,y,deFrame) {
 			if (deFrame)
 				this.element.x=parseInt((x-deFrame.currentScroll*0.2+this.xOff)%this.width+this.width);
@@ -137,11 +138,11 @@ FluchWorld.prototype.init = function(lvl) {
 	
 		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage3,true);
 		bg.width=lvl.worldHtmlImage.width;
-		bg.yOff=10;
+		bg.yOff=0;
 		bg.xOff=460;
 		bg.pos = function(x,y,deFrame) {
 			if (deFrame){
-				this.element.x=parseInt((x-deFrame.currentScroll*1+this.xOff)%1000+700);
+				this.element.x=parseInt((x-deFrame.currentScroll*1+this.xOff)%4000+700);
 			}
 			else
 				this.element.x=x;
@@ -174,13 +175,13 @@ FluchWorld.prototype.init = function(lvl) {
 	this.gameText.y=6;
 	this.gameText.textAlign="center";
 	this.gameText.cache(-500,0,1000,40);
-	stage.addChild(this.gameText);
+//	stage.addChild(this.gameText);
 	
 	this.moneyText = new createjs.Text("", "20px Visitor", "#ac6363"); 
 	this.moneyText.x=180;
 	this.moneyText.y=15;
 	this.moneyText.cache(0,0,1000,40);
-	stage.addChild(this.moneyText);
+//	stage.addChild(this.moneyText);
 	
 	//2b3642
 	this.goalText = new createjs.Text("", "10px Visitor", "#2b3642"); 
@@ -207,8 +208,10 @@ FluchWorld.prototype.init = function(lvl) {
 			stage.removeAllChildren();
 		
 			soundPlayer.reset();
-			game.level = new SelectLevel();
-			game.level.start(game.machine);
+//			game.level = new SelectLevel();
+//			game.level.start(game.machine);
+			flavor = new LemmingFlavor();
+			flavor.init();
 		}
 	}
 };

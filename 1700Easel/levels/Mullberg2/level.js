@@ -1,7 +1,7 @@
 
 
 	level.load = function() {
-		level.title="MÃ¼llberg, Teil zwei";
+		level.title="Müllberg, Teil zwei";
 		level.description="Kein Ende mit dem Glump";
 		level.intro="atmoloop.mp3";
 		level.backgroundColor=16777215;
