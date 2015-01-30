@@ -37,6 +37,7 @@ function FluchGame() {
 	
 	this.demonstrant;
 	this.startedRun=false;
+	this.stillAcc=true;
 };
 
 FluchGame.prototype = new Game();
@@ -61,7 +62,7 @@ FluchGame.prototype.addLemmings = function(){
 	return hasadded;
 };
 
-var stillAcc=true;
+
 
 FluchGame.prototype.scrollLevel = function(mouseX){
 	if (this.level && this.level.world) {
@@ -75,11 +76,11 @@ FluchGame.prototype.scrollLevel = function(mouseX){
 				faders.add(eff2, eff2.volume,1,40);
 				this.startedRun=true;
 			}
-			if (this.scrollPlus<3 && stillAcc) {
+			if (this.scrollPlus<3 && this.stillAcc) {
 				this.scrollPlus+=0.01;
 			}
 			else {
-				stillAcc=false;
+				this.stillAcc=false;
 				
 			}
 			this.currentScroll=parseInt(this.scrollState+=this.scrollPlus);

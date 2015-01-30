@@ -31,7 +31,7 @@ function FluchStreet() {
 	
 	this.gap3 = {
 			trash:[40,280],
-			bin:[200]
+			bin:[170]
 		};
 	
 	this.gaps = new Array();
@@ -68,13 +68,18 @@ FluchStreetAddAction.prototype = new MultiAssetAction();
 
 FluchStreetAddAction.prototype.act = function() {
 	if (game.currentScroll>this.nextAdd) {
-		if (this.nextAdd==0)
+		if (this.nextAdd==0) {
 			this.addElement(new Trash(),this.asset.binSheet,143);
+			this.playModule({
+				trash:[-300,-260,-220,-180,-140,-60,-20],
+				bin:[]
+			});
+		}
 		else {
 			num = parseInt(Math.random()*3.0);
 			this.playModule(this.asset.gaps[num]);
 		}
-		this.nextAdd+=400;
+		this.nextAdd+=500;
 	}
 	
 //	if (this.asset.count++%400 == 0) {
@@ -97,11 +102,11 @@ FluchStreetAddAction.prototype.playModule = function(module) {
 }
 
 FluchStreetAddAction.prototype.addBin = function(offset) {
-	this.addElement(new Trash(),this.asset.binSheet,offset+800);
+	this.addElement(new Trash(),this.asset.binSheet,offset+600);
 };
 
 FluchStreetAddAction.prototype.addTrash = function(offset) {
-	this.addElement(new FluchStreetElement(),this.asset.trashSheet,offset+800);
+	this.addElement(new FluchStreetElement(),this.asset.trashSheet,offset+600);
 }
 
 FluchStreetAddAction.prototype.addElement = function(element,sheet,offset) {
@@ -191,7 +196,7 @@ FluchStreetElement.prototype.setAnimation = function(a) {
 		
 		if (a=='exp') {
 			
-			new Act().effect("Bomb");
+			new Act().effect("Bombe");
 		}
 		else if(a=='run')
 			a+=parseInt(Math.random()*3.0);
@@ -234,9 +239,9 @@ function Trash(){
 
 	this.trashSheet;
 	this.collisionHeight=15;
-	this.collisionWidth=10;
+	this.collisionWidth=3;
 	this.collisionOffsetX=10;
-	this.collisionOffsetY=14;
+	this.collisionOffsetY=18;
 	this.collisionType=DEADLY;
 	//this.collisionType=VISIBLE_BLOCK;
 	//this.collisionType=FREE;
@@ -259,7 +264,7 @@ Trash.prototype.setAnimation = function(a) {
 		
 		if (a=='exp') {
 			
-			new Act().effect("Bomb");
+			new Act().effect("Bombe");
 		}
 		else if(a=='run')
 			a+=parseInt(Math.random()*3.0);

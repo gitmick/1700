@@ -57,7 +57,7 @@ FluchWorld.prototype.setPoliceOut=function(out) {
 	}
 	if (out!=this.policeSaved) {
 		this.policeSaved=out;
-		tt=saved+" / "+level.minSafeCount;
+		tt=out+" / "+level.minSafeCount;
 		this.goalText.text=tt;
 		this.goalText.updateCache();
 	}
@@ -137,8 +137,8 @@ FluchWorld.prototype.init = function(lvl) {
 		this.addTiledBackground(lvl.backgroundHtmlImage2, 84, 0.9, 4);
 	
 		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage3,true);
-		bg.width=lvl.worldHtmlImage.width;
-		bg.yOff=0;
+		bg.width=lvl.backgroundHtmlImage3.width;
+		bg.yOff=-10;
 		bg.xOff=460;
 		bg.pos = function(x,y,deFrame) {
 			if (deFrame){
@@ -165,7 +165,7 @@ FluchWorld.prototype.init = function(lvl) {
 	
 
 	
-	if (lvl.scoreHtmlImage)
+	if (false && lvl.scoreHtmlImage)
 		this.displayEntity.addBitmap(lvl.scoreHtmlImage, false);
 	
 	

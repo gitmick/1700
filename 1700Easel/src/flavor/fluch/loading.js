@@ -151,7 +151,7 @@ FluchLevel.prototype.init = function() {
 		
 		this.loader.loadSound("fx/gen_jaaa.mp3","Ja");
 		
-		this.loader.loadSound("fx/bomb_exp1.mp3","Bomb");
+		this.loader.loadSound("fx/bomb_exp1.mp3","Bombe");
 		
 		
 //		this.loader.loadSound("sound/walzertest1.mp3","track1");
