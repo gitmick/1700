@@ -259,6 +259,7 @@ FluchWorld.prototype.tick = function() {
 		}
 	}
 	faders.tick();
+	this.setPoliceOut(parseInt(game.currentScroll/4000));
 //	if (mixCount++%120==0) {
 //		
 ////		for (i=2;i<6;i++) {

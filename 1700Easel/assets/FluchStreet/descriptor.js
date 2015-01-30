@@ -4,7 +4,7 @@ function FluchStreet() {
 			 framerate: 18,
 		     images: ["assets/FluchStreet/streetSprite.png?11"],
 		     frames: {width:40, height:31},
-		     animations: {run0:[0,0],run1:[1,1],run2:[2,2],run3:[3,3],exp:[4,11]}
+		     animations: {run0:[0,0],run1:[1,1],run2:[2,2],run3:[3,3],exp:[5,12]}
 		 };
 	this.trashSheet;
 	
@@ -13,7 +13,7 @@ function FluchStreet() {
 			 framerate: 18,
 		     images: ["assets/Trash/trashSprite.png?11"],
 		     frames: {width:32, height:31},
-		     animations: {run0:[0,0],run1:[1,1],run2:[2,2],run3:[3,3],exp:[4,11]}
+		     animations: {run0:[0,0],run1:[1,1],run2:[2,2],run3:[3,3],exp:[5,12]}
 		 };
 	this.binSheet;
 	this.anim="run";
@@ -71,7 +71,7 @@ FluchStreetAddAction.prototype.act = function() {
 		if (this.nextAdd==0) {
 			this.addElement(new Trash(),this.asset.binSheet,143);
 			this.playModule({
-				trash:[-300,-260,-220,-180,-140,-60,-20],
+				trash:[-200,-160,-120,-80,-40,40,80],
 				bin:[]
 			});
 		}
@@ -140,7 +140,7 @@ function FluchStreetElement(){
 	this.collisionHeight=16;
 	this.collisionWidth=36;
 	this.collisionOffsetX=2;
-	this.collisionOffsetY=12;
+	this.collisionOffsetY=8;
 	//this.collisionType=DEADLY;
 	this.collisionType=INVISIBLE_BLOCK;
 	//this.collisionType=FREE;
@@ -191,7 +191,7 @@ FluchStreetElement.prototype.drawInitial = function() {
 
 FluchStreetElement.prototype.setAnimation = function(a) {
 	if (a!=this.anim) {
-		
+
 		this.anim=a;
 		
 		if (a=='exp') {
