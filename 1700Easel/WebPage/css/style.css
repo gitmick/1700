@@ -192,7 +192,7 @@ div.line {
 }
 
 .newsfeed {
-	height: 1340px;
+	height: auto;
 }
 
 div.newselement {
