@@ -39,6 +39,7 @@ function FluchGame() {
 	this.startedRun=false;
 	this.stillAcc=true;
 	this.outro="";
+	this.fluch=true;
 };
 
 FluchGame.prototype = new Game();

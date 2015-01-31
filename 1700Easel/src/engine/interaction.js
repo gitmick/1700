@@ -189,6 +189,9 @@ DesktopInteraction.prototype.init = function() {
     stage.on("stagemousedown", function(evt) {
     	game.mouseX=evt.stageX;
     	game.mouseY=evt.stageY;
+    	if (game.fluch)
+    	interactionHandler.select(evt.stageX,evt.stageY);
+    	
     	//console.log("mainClick");
     	
     	
@@ -218,6 +221,9 @@ DesktopInteraction.prototype.init = function() {
     stage.on("stagemouseup", function(evt) {
     	game.mouseX=evt.stageX;
     	game.mouseY=evt.stageY;
+    	if (game.fluch)
+    		return;
+    	
     	//console.log("mainUp");
     	if (that.time>0 && game.control.selectedAction && game.control.selectedAction === JumpAll) {
     		interactionHandler.collected();

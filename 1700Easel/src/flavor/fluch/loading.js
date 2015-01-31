@@ -144,7 +144,7 @@ FluchLevel.prototype.init = function() {
 		this.loader.loadSound("sound/wirrerbatz-walzer_final.mp3","track1");
 		this.loader.loadSound("sound/1700-pre2.mp3","track2");
 		
-		this.loader.loadSound("fx/block_ausweis.mp3","Polizei0");
+		this.loader.loadSound("fx/block_ausweis.mp3?21","Polizei0");
 		this.loader.loadSound("fx/block_tap.mp3","Polizei1");
 		this.loader.loadSound("fx/gen_death4.mp3","Polizei2");
 		this.loader.loadSound("fx/gen_polizeigrufn.mp3","Polizei3");
