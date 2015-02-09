@@ -15,10 +15,10 @@ body {
 }
 
 @font-face {
-	font-family: "TIBITTO_";
-	src: url('../fonts/TIBITTO_.otf');
+	font-family: "TIBITTO";
+	src: url('../fonts/TIBITTO.otf');
 	format('opentype');
-	src: url('../fonts/TIBITTO_.ttf');
+	src: url('../fonts/TIBITTO.ttf');
 	format('truetype');
 }
 
@@ -45,7 +45,7 @@ h1 {
 }
 
 h2 {
-	font-family: "TIBITTO_", sans-serif;
+	font-family: "TIBITTO", sans-serif;
 	font-size: 48px;
 	padding-top: 20px;
 	padding-bottom: 20px;

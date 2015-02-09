@@ -24,7 +24,7 @@ p {
 
 h2.left {
 	float: left;
-	width: 600px;
+	width: 700px;
 	height: 40px;
 }
 
@@ -126,7 +126,7 @@ h2.right a {
 }
 
 .sidebar h4 {
-	font-family: "TIBITTO_", sans-serif;
+	font-family: "TIBITTO", sans-serif;
 	font-size: 48px;
 	position: relative;
 	clear: both;
@@ -423,7 +423,9 @@ div.hoverable:hover p, div.hoverable:hover h4, div.hoverable:hover img {
 .creditsWrapper {
 	background-color: #7da9a5;
 	background-image: url("../img/lowerWrapper.png");
+	background-size:   cover;  
 	background-repeat: no-repeat;
+	background-position: center center;  
 	width: 100%;
 	height: 647px;
 	margin: 0px 0px;
