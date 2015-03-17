@@ -15,11 +15,15 @@ body {
 }
 
 @font-face {
-	font-family: "TIBITTO";
-	src: url('../fonts/TIBITTO.otf');
-	format('opentype');
-	src: url('../fonts/TIBITTO.ttf');
-	format('truetype');
+	font-family: "tibitto";
+	src: 
+		url('http://1700.at/fonts/tibitto_font.otf'),
+		url('../fonts/tibitto_font.otf')
+		format('opentype');
+	src: 
+		url('http://1700.at/fonts/tibitto_font.ttf'),
+		url('../fonts/tibitto_font.ttf')
+		format('truetype');
 }
 
 pre,
@@ -45,7 +49,7 @@ h1 {
 }
 
 h2 {
-	font-family: "TIBITTO", sans-serif;
+	font-family: "tibitto", sans-serif;
 	font-size: 48px;
 	padding-top: 20px;
 	padding-bottom: 20px;
