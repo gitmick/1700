@@ -1,0 +1,20 @@
+
+	level.backgroundColor=0;
+	level.backgroundColorName="black";
+	level.actionCount[Float]=10;
+	level.actionCount[Climb]=20;
+	level.actionCount[Bomb]=10;
+	level.actionCount[Block]=10;
+	level.actionCount[Build]=10;
+	level.actionCount[Bash]=10;
+	level.actionCount[Mine]=10;
+	level.actionCount[Dig]=10;
+	level.actionCount[JumpSingle]=0;
+	level.maxPoliceMen=100;
+	level.policeDelay=50;
+	level.dropX=170;
+	level.dropY=350;
+	level.goalX=0;
+	level.goalY=0;
+	level.minSafeCount=0;
+	level.soundFile="track.mp3";
