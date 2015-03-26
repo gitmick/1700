@@ -22,7 +22,6 @@ function World() {
 	
 	this.gameText;
 	this.policeText;
-	this.moneyLeft=870000;
 	this.policeOut=0;
 	this.policeSaved=1;
 
@@ -49,43 +48,35 @@ World.prototype.setEquipment=function(eq) {
 	}
 }
 
-World.prototype.setPoliceOut=function(out) {
-	if (out!=this.policeOut) {
-		this.gameText.text=out;
-		this.policeOut=out;
-		this.gameText.updateCache();
-	}
-}
-
-World.prototype.setPoliceSaved=function(saved) {
-	if (saved!=this.policeSaved) {
-		this.policeSaved=saved;
-		tt=saved+" / "+level.minSafeCount;
-		this.goalText.text=tt;
-		this.goalText.updateCache();
-	}
-}
-
-World.prototype.setMoneyLeft=function(left) {
-	if (left!=this.moneyLeft) {
-		this.moneyLeft=left;
-		this.moneyText.text=formatEuro(left+"");
-		this.moneyText.updateCache();
-	}
-}
-
-World.prototype.updateText = function() {
-	if (this.dirty) {
-		//this.setText("Im Einsatz: "+this.policeOut+" Im Haus: "+this.policeSaved+" Geld verbraten: "+this.moneyLeft);
-		this.setText(this.policeOut);
-		this.dirty=false;
-	}
-};
-
-World.prototype.setText = function(text) {
-	this.gameText.text=text;
-	this.gameText.updateCache();
-}
+//World.prototype.setPoliceOut=function(out) {
+//	if (out!=this.policeOut) {
+//		this.gameText.text=out;
+//		this.policeOut=out;
+//		this.gameText.updateCache();
+//	}
+//}
+//
+//World.prototype.setPoliceSaved=function(saved) {
+//	if (saved!=this.policeSaved) {
+//		this.policeSaved=saved;
+//		tt=saved+" / "+level.minSafeCount;
+//		this.goalText.text=tt;
+//		this.goalText.updateCache();
+//	}
+//}
+//
+//World.prototype.updateText = function() {
+//	if (this.dirty) {
+//		//this.setText("Im Einsatz: "+this.policeOut+" Im Haus: "+this.policeSaved+" Geld verbraten: "+this.moneyLeft);
+//		this.setText(this.policeOut);
+//		this.dirty=false;
+//	}
+//};
+//
+//World.prototype.setText = function(text) {
+//	this.gameText.text=text;
+//	this.gameText.updateCache();
+//}
 
 World.prototype.init = function(lvl) {
 	
@@ -93,17 +84,14 @@ World.prototype.init = function(lvl) {
 	sky=this.displayEntity.addShape(true).element;
 	sky.graphics.beginFill("#D0EEf3").drawRect(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	
+	
+	
+	
 	this.foreGroundMask = this.displayEntity.addShape(true).element;
 	this.worldBitmapData = new createjs.BitmapData(lvl.mapHtmlImage);
 	this.width=lvl.worldHtmlImage.width;
 	this.height=lvl.worldHtmlImage.height;
 	this.displayEntity.addBitmap(lvl.worldHtmlImage,true).element.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
-	
-//	this.s=this.displayEntity.addShape(true).element;
-//	this.s.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
-	
-	
-	
 	
 	//Paralax
 	if (lvl.cloudImage) {
@@ -175,9 +163,6 @@ World.prototype.init = function(lvl) {
 		bg.xOff=0;
 		bg.pos = function(x,y,deFrame) {
 			if (deFrame){
-	//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
-	//			console.log(deFrame.currentScroll);
-	//			console.log((this.width/2-deFrame.currentScroll)*0.1);
 				this.element.x=x-deFrame.currentScroll*0.9+this.xOff;
 			}
 			else
@@ -185,15 +170,11 @@ World.prototype.init = function(lvl) {
 			this.element.y=y+this.yOff;
 		};
 		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage2,true);
-		//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
 		bg.width=lvl.worldHtmlImage.width;
 		bg.yOff=84;
 		bg.xOff=lvl.backgroundHtmlImage2.width;
 		bg.pos = function(x,y,deFrame) {
 			if (deFrame){
-	//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
-	//			console.log(deFrame.currentScroll);
-	//			console.log((this.width/2-deFrame.currentScroll)*0.1);
 				this.element.x=x-deFrame.currentScroll*0.9+this.xOff;
 			}
 			else
@@ -202,15 +183,11 @@ World.prototype.init = function(lvl) {
 		};
 		
 		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage3,true);
-		//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
 		bg.width=lvl.worldHtmlImage.width;
 		bg.yOff=10;
 		bg.xOff=460;
 		bg.pos = function(x,y,deFrame) {
 			if (deFrame){
-	//			this.element.x=x-deFrame.currentScroll-(this.width/2-deFrame.currentScroll)*0.1;
-	//			console.log(deFrame.currentScroll);
-	//			console.log((this.width/2-deFrame.currentScroll)*0.1);
 				this.element.x=x-deFrame.currentScroll*1+this.xOff;
 			}
 			else
@@ -235,31 +212,26 @@ World.prototype.init = function(lvl) {
 	
 
 	
-	if (lvl.scoreHtmlImage)
-		this.displayEntity.addBitmap(lvl.scoreHtmlImage, false);
+//	if (lvl.scoreHtmlImage)
+//		this.displayEntity.addBitmap(lvl.scoreHtmlImage, false);
 	
-	
-	
-	this.gameText = new createjs.Text("", "40px Visitor", "#fff600"); 
-	this.gameText.x=73;
-	this.gameText.y=6;
-	this.gameText.textAlign="center";
-	this.gameText.cache(-500,0,1000,40);
-	stage.addChild(this.gameText);
-	
-	this.moneyText = new createjs.Text("", "20px Visitor", "#ac6363"); 
-	this.moneyText.x=180;
-	this.moneyText.y=15;
-	this.moneyText.cache(0,0,1000,40);
-	stage.addChild(this.moneyText);
-	
-	//2b3642
-	this.goalText = new createjs.Text("", "10px Visitor", "#2b3642"); 
-	this.goalText.x=73;
-	this.goalText.y=58;
-	this.goalText.textAlign="center";
-	this.goalText.cache(-500,0,1000,40);
-	stage.addChild(this.goalText);
+//	
+//	
+//	this.gameText = new createjs.Text("", "40px Visitor", "#fff600"); 
+//	this.gameText.x=73;
+//	this.gameText.y=6;
+//	this.gameText.textAlign="center";
+//	this.gameText.cache(-500,0,1000,40);
+//	stage.addChild(this.gameText);
+//	
+//	
+//	//2b3642
+//	this.goalText = new createjs.Text("", "10px Visitor", "#2b3642"); 
+//	this.goalText.x=73;
+//	this.goalText.y=58;
+//	this.goalText.textAlign="center";
+//	this.goalText.cache(-500,0,1000,40);
+//	stage.addChild(this.goalText);
 	
 	this.policeText= new createjs.Text("", "20px Visitor", "#ff7700"); 
 	this.policeText.x=20;
@@ -267,17 +239,6 @@ World.prototype.init = function(lvl) {
 	this.policeText.cache(0,0,300,40);
 	stage.addChild(this.policeText);
 	
-	
-	
-//	this.backButton.xOff = 500;
-//	this.backButton.yOff = 20;
-//	this.backButton.pos = function(x,y,deFrame) {
-//		if (deFrame)
-//			this.element.x=x-deFrame.currentScroll+this.xOff;
-//		else
-//			this.element.x=x+this.xOff;
-//		this.element.y=y+this.yOff;
-//	};
 	
 	if (lvl.mapHtmlImage!=lvl.worldHtmlImage) {
 		this.backButton = this.displayEntity.addBitmap(globalLoader.getImage("img/back.png"),false);

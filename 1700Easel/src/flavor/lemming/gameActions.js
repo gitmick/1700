@@ -28,9 +28,9 @@ PlayAction.prototype.act = function() {
 	}
 	timeKeeper.tick();
 	soundPlayer.tick();
-	game.level.world.setPoliceOut(timeKeeper.totalPolice);
-	game.level.world.setPoliceSaved(game.winCount);
-	game.level.world.updateText();
+//	game.level.world.setPoliceOut(timeKeeper.totalPolice);
+//	game.level.world.setPoliceSaved(game.winCount);
+//	game.level.world.updateText();
 	game.level.world.updateCache();
 	return true;
 };
@@ -178,7 +178,7 @@ function TimeKeeper() {
 TimeKeeper.prototype.tick = function() {
 	if (this.counter++%125==0) {
 		this.moneyLeft-=100;
-		game.level.world.setMoneyLeft(this.moneyLeft);
+		game.trigger.bang(MONEY,this.moneyLeft);
 		if (this.moneyLeft<0) {
 			game.trigger.bang(NO_MONEY_LEFT);
 		}
