@@ -201,12 +201,12 @@ Trigger.prototype.isIntercepted = function(name) {
 	}
 	return false;
 }
-Trigger.prototype.bang = function(name,value) {
+Trigger.prototype.bang = function(name) {
 	var list = this.triggers[name];
 	if (list) {
 		for (var i=0;i<list.length;i++) {
 			var trigger = list[i];
-			trigger.bang(name,value);
+			trigger.bang(name);
 		}
 	}
 }

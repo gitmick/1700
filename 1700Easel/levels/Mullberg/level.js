@@ -1,7 +1,7 @@
 
 
 	level.load = function() {
-		level.title="Mï¿½llberg 3000";
+		level.title="Müllberg 3000";
 		level.description="Alles voll mit Zeug!";
 		level.intro="atmoloop.mp3";
 		level.backgroundColor=16777215;
@@ -30,13 +30,7 @@
 		level.registerAsset("PeeingPunk");
 		level.registerAsset("Colorbags");
 		level.registerAsset("MetBox");
-		level.registerAsset("points");
 		level.initAssets=function(){
-			
-		p = this.initAsset("points");
-		p.startX=0;
-		p.startY=0;
-		p.show();
 			
 		p = this.initAsset("PeeingPunk");
 		p.startX=490;
