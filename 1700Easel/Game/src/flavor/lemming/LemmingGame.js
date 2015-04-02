@@ -36,7 +36,7 @@ function LemmingGame() {
 	this.dirX=0;
 	this.dirY=0;
 	
-	this.trigger = new Trigger();
+	//this.trigger = new Trigger();
 };
 
 LemmingGame.prototype = new Game();

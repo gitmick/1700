@@ -2,6 +2,19 @@
  * 
  */
 
+
+function Engine() {
+	this.bus;
+}
+
+Engine.prototype.reset = function() {
+	//store class for resets
+	this.bus = new net_asifism_engine_core_Messages.Bus();
+}
+
+var A=new Engine();
+
+
 //var fitHeight=200;
 var fitHeight=384;
 
@@ -43,6 +56,9 @@ var QueryString = function () {
 
 function init() {
 
+	A.bus=new net_asifism_engine_core_Messages.Bus();
+	
+	
 	setSize();
 	
 	window.onresize = function(event) {

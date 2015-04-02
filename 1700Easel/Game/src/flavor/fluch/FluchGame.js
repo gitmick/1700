@@ -30,7 +30,7 @@ function FluchGame() {
 	this.dirX=0;
 	this.dirY=0;
 	
-	this.trigger = new Trigger();
+	//this.trigger = new Trigger();
 	
 	this.scrollPlus=0;
 	this.scrollState=0;
@@ -70,7 +70,7 @@ FluchGame.prototype.scrollLevel = function(mouseX){
 	if (this.level && this.level.world) {
 		this.level.world.tick();
 		
-		if (!game.trigger.isIntercepted(COPS_ENTERED)) {
+		if (A.bus.bang(COPS_ENTERED)) {
 			if (this.demonstrant && !this.startedRun) {
 				this.demonstrant.updateAnimation("run");
 				new Act().effect("Ja");

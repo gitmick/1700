@@ -173,11 +173,11 @@ FluchLevel.prototype.init = function() {
 		
 		level.initAssets();
 		trigger = new ExitChecker();
-		game.trigger.addTrigger(POLICEMAN_SAVED, trigger);
-		game.trigger.addTrigger(POLICEMAN_KILLED, trigger);
-		game.trigger.addTrigger(ADD_POLICEMEN_FINISHED, trigger);
+		A.bus.addTrigger(POLICEMAN_SAVED, trigger);
+		A.bus.addTrigger(POLICEMAN_KILLED, trigger);
+		A.bus.addTrigger(ADD_POLICEMEN_FINISHED, trigger);
 		
-		game.trigger.addTrigger(ADD_POLICEMEN,timeKeeper);
+		A.bus.addTrigger(ADD_POLICEMEN,timeKeeper);
 		//eff=soundPlayer.play(this.level.name,1,100);
 		soundPlayer.reset();
 		eff1=soundPlayer.play("track2",5,100);

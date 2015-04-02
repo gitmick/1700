@@ -37,9 +37,10 @@ function WalkIn() {
 	this.stepX=false;
 	this.stepY=false;
 	this.counter=0;
+	A.bus.initBangDispatch(this,[COPS_ENTERED]);
 } 
 WalkIn.prototype = new AssetAction();
-WalkIn.prototype.wait = function() {
+WalkIn.prototype[COPS_ENTERED] = function() {
 	return true;
 }
 WalkIn.prototype.act = function() {
@@ -47,14 +48,13 @@ WalkIn.prototype.act = function() {
 	if (!this.stepX) {
 		this.stepX = (this.asset.targetX-this.asset.startX)/this.asset.steps;
 		this.stepY = (this.asset.targetY-this.asset.startY)/this.asset.steps;
-		game.trigger.addInterceptor(COPS_ENTERED,this.wait);
 	}
 	this.counter++;
 	if (this.counter>this.asset.steps) {
 		this.effectInstance.stop();
 		//this.asset.sprite.gotoAndPlay("idle");
 		this.asset.setAction(new TalkingPoliceman());
-		game.trigger.removeInterceptor(COPS_ENTERED,this.wait);
+		A.bus.removeTrigger(COPS_ENTERED,this);
 	}
 	this.asset.clearCollision();
 	this.asset.pos(this.asset.startX+(this.counter*this.stepX),

@@ -19,7 +19,7 @@ Game.prototype.reset = function(){
 	this.digControl;
 	this.mouseX;
 	this.mouseY;
-	this.trigger = new Trigger();
+	A.reset();
 };
 
 Game.prototype.flavorReset = function() {

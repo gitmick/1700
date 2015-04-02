@@ -58,6 +58,9 @@ function Colorbags() {
 		 };
 	this.throwSheet;
 	
+	
+	A.bus.initBangDispatch(cb,[STOP_COLOR]);
+	
 }
 Colorbags.prototype = new Asset();
 Colorbags.prototype.load = function () {
@@ -72,13 +75,12 @@ Colorbags.prototype.load = function () {
 };
 
 Colorbags.prototype.drawInitial = function() {
-	game.trigger.addTrigger(STOP_COLOR, this);
 	//this.displayEntity.addBitmap(this.thrower, true);
 	this.sprite=this.displayEntity.addSprite(this.throwSheet, "idle",true).element;
 	this.displayEntity.pos(this.startX, this.startY);
 	this.setAction(new ThrowAction());
 };
-Colorbags.prototype.bang=function(name) {
+Colorbags.prototype[STOP_COLOR]=function() {
 	console.log("stop me");
 	this.setAction(false);
 }

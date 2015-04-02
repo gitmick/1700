@@ -101,7 +101,7 @@ FluchKill.prototype.act = function() {
 	if (this.count++==0) {
 		this.lemming.circle.gotoAndPlay("stand");
 		stillAcc=false;
-		game.trigger.bang(JOSEF_CAUGHT);
+		A.bus.bang(JOSEF_CAUGHT);
 	}
 	if (this.count==10) {
 		this.lemming.circle.gotoAndPlay("exp");

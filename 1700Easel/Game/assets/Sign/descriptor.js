@@ -12,7 +12,7 @@ Sign.prototype.load = function () {
 };
 
 Sign.prototype.drawInitial = function() {
-	game.trigger.addTrigger(this.triggerName, this);
+	A.bus.addTrigger(this.triggerName, this);
 };
 
 Sign.prototype.bang = function(name) {

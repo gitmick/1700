@@ -5,6 +5,9 @@ function Censor(){
 	this.collisionType=FREE;
 	//this.collisionType=VISIBLE_BLOCK;
 	this.shape;
+	
+	bus.initBangDispatch(cb,[JOSEF_CAUGHT]);
+	
 }
 
 Censor.prototype = new Asset();
@@ -16,14 +19,12 @@ Censor.prototype.load = function () {
 Censor.prototype.drawInitial = function() {
 	this.shape = this.displayEntity.addShape( false).element;
 	this.displayEntity.pos(0, 0);
-
-	game.trigger.addTrigger(JOSEF_CAUGHT,this);
 };
 
-Censor.prototype.bang = function (name) {
+
+Censor.prototype[JOSEF_CAUGHT] = function () {
 	this.setAction(new CensorAction());
-	
-};
+}
 
 
 function CensorAction() {
@@ -35,7 +36,7 @@ CensorAction.prototype = new AssetAction();
 CensorAction.prototype.act = function() {
 	if (this.count++==0) {
 		this.asset.shape.graphics.beginFill("black").drawRect(55,240,130,50);
-		game.outro="Ja das wars, \nein Polizist hat genau gesehen, \nwie du mit dem Mistkübel \ndie Hofburg zerstören wolltest.";
+		game.outro="Ja das wars, \nein Polizist hat genau gesehen, \nwie du mit dem Mistkï¿½bel \ndie Hofburg zerstï¿½ren wolltest.";
 	}
 	if (this.count==300) {
 		game.machine.setAction(new MachineAction());

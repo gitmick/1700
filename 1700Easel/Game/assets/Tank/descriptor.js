@@ -30,7 +30,7 @@ Tank.prototype.load = function() {
 };
 
 Tank.prototype.drawInitial = function() {
-	game.trigger.addTrigger(COLOR_HIT, this);
+	A.bus.addTrigger(COLOR_HIT, this);
 	this.sprite=this.displayEntity.addSprite(this.tankSheet, "run",true).element;
 	this.displayEntity.pos(this.startX, this.startY);
 	this.setAction(new DriveIn());
@@ -39,7 +39,7 @@ Tank.prototype.drawInitial = function() {
 
 Tank.prototype.bang = function (name) {
 	if (this.hitCount++>2) {
-		game.trigger.bang(STOP_COLOR);
+		A.bus.bang(STOP_COLOR);
 		var s = this.startX;
 		this.startX=this.targetX;
 		this.targetX=s;

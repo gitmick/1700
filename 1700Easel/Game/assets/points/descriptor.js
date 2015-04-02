@@ -4,6 +4,9 @@ function points(){
 	this.moneyText;
 	this.policeOut=0;
 	this.policeSaved=0;
+	
+	A.bus.initBangDispatch(this,[MONEY,POLICEMAN_SAVED,ADD_POLICEMEN]);
+	
 }
 
 points.prototype = new Asset();
@@ -13,9 +16,6 @@ points.prototype.load = function () {
 };
 
 points.prototype.drawInitial = function() {
-	game.trigger.addTrigger(MONEY,this);
-	game.trigger.addTrigger(POLICEMAN_SAVED,this);
-	game.trigger.addTrigger(ADD_POLICEMEN,this);
 	
 	this.displayEntity.addBitmap(this.thrower, true);
 	this.displayEntity.pos(this.startX, this.startY);
@@ -90,14 +90,13 @@ points.prototype.setPoliceSaved=function(saved) {
 //}
 
 
-points.prototype.bang= function(name,value) {
-	if (name==MONEY) {
-		this.setMoneyLeft(value);
-	}
-	else if (name==POLICEMAN_SAVED) {
-		this.setPoliceSaved(++this.policeSaved);
-	}
-	else if (name==ADD_POLICEMEN) {
-		this.setPoliceOut(++this.policeOut);
-	}
-};
+points.prototype[MONEY]=function(value) {
+	this.setMoneyLeft(value);
+}
+points.prototype[POLICEMAN_SAVED]=function(value) {
+	this.setPoliceSaved(++this.policeSaved);
+}
+points.prototype[ADD_POLICEMEN]=function(value) {
+	this.setPoliceOut(++this.policeOut);
+}
+

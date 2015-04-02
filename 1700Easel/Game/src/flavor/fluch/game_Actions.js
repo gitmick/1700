@@ -6,11 +6,11 @@ PlayAction.prototype.act = function() {
 	game.speedFactor+=0.2;
 	
 	
-	if (!game.trigger.isIntercepted(ADD_POLICEMEN)) {
+	if (!A.bus.bang(ADD_POLICEMEN)) {
 		
 		if (game.delayCount++%level.policeDelay==2){
 			if (game.addLemmings())
-				game.trigger.bang(ADD_POLICEMEN);
+				A.bus.bang(ADD_POLICEMEN);
 		}
 	}
 	//game.selectedLemming=false;
@@ -184,7 +184,7 @@ TimeKeeper.prototype.tick = function() {
 		this.moneyLeft-=100;
 		game.level.world.setMoneyLeft(this.moneyLeft);
 		if (this.moneyLeft<0) {
-			game.trigger.bang(NO_MONEY_LEFT);
+			A.bus.bang(NO_MONEY_LEFT);
 		}
 	}
 }

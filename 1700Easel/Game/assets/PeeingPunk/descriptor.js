@@ -58,6 +58,8 @@ function PeeingPunk() {
 	this.collisionType=EVERBLOCK;
 	//this.collisionType=VISIBLE_BLOCK;
 	this.pipis = new Array();
+	
+	A.bus.initBangDispatch(this,[STOP_COLOR]);
 }
 PeeingPunk.prototype = new Asset();
 PeeingPunk.prototype.load = function () {
@@ -66,14 +68,13 @@ PeeingPunk.prototype.load = function () {
 };
 
 PeeingPunk.prototype.drawInitial = function() {
-	game.trigger.addTrigger(STOP_COLOR, this);
 	this.bitmap = new createjs.Bitmap(this.bag);
 	this.sprite=this.displayEntity.addSprite(this.peeSheet, "away",true).element;
 	this.displayEntity.pos(this.startX, this.startY);
 	this.setAction(new PunkPeeAction());
 	this.finish();
 };
-PeeingPunk.prototype.bang=function(name) {
+PeeingPunk.prototype[STOP_COLOR]=function(name) {
 	console.log("stop me");
 	this.setAction(false);
 }

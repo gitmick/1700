@@ -12,6 +12,9 @@ function Copter() {
 		     animations: {fly:[0,21]}
 		 };
 	this.copterSheet;
+	
+	A.bus.initBangDispatch(cb,[ADD_POLICEMEN_FINISHED]);
+	
 }
 Copter.prototype = new Asset();
 Copter.prototype.load = function() {
@@ -21,7 +24,6 @@ Copter.prototype.load = function() {
 };
 
 Copter.prototype.drawInitial = function() {
-	game.trigger.addTrigger(ADD_POLICEMEN_FINISHED, this);
 	this.displayEntity.addSprite(this.copterSheet, "fly",true)
 	//this.displayEntity.addBitmap(this.heliImage, true);
 	this.displayEntity.pos(this.startX, this.startY);
@@ -29,7 +31,7 @@ Copter.prototype.drawInitial = function() {
 }
 
 
-Copter.prototype.bang = function (name) {
+Copter.prototype[ADD_POLICEMEN_FINISHED] = function (name) {
 	var s = this.startX;
 	this.startX=this.targetX;
 	this.targetX=s;
@@ -43,9 +45,10 @@ function FlyIn() {
 	this.stepX=false;
 	this.stepY=false;
 	this.counter=0;
+	A.bus.initBangDispatch(cb,[ADD_POLICEMEN]);
 } 
 FlyIn.prototype = new AssetAction();
-FlyIn.prototype.wait = function() {
+FlyIn.prototype[ADD_POLICEMEN] = function() {
 	return true;
 }
 FlyIn.prototype.act = function() {
@@ -53,13 +56,12 @@ FlyIn.prototype.act = function() {
 	if (!this.stepX) {
 		this.stepX = (this.asset.targetX-this.asset.startX)/this.asset.steps;
 		this.stepY = (this.asset.targetY-this.asset.startY)/this.asset.steps;
-		game.trigger.addInterceptor(ADD_POLICEMEN,this.wait);
 	}
 	this.counter++;
 	if (this.counter>this.asset.steps) {
 		this.effectInstance.stop();
 		this.asset.setAction(false);
-		game.trigger.removeInterceptor(ADD_POLICEMEN,this.wait);
+		A.bus.removeTrigger(ADD_POLICEMEN,this);
 	}
 	this.asset.displayEntity.pos(this.asset.startX+(this.counter*this.stepX),
 			this.asset.startY+(this.counter*this.stepY) );

@@ -67,7 +67,7 @@ Demonstrant.prototype.kill=function() {
 	this.dead=true;
 	arrayWithout(game.lemmings,this);
 	this.displayEntity.destroy();
-	game.trigger.bang(POLICEMAN_KILLED);
+	A.bus.bang(POLICEMAN_KILLED);
 	this.left();
 };
 
@@ -84,7 +84,7 @@ Demonstrant.prototype.won=function() {
 	game.winCount++;
 	arrayWithout(game.lemmings,this);
 	this.displayEntity.destroy();
-	game.trigger.bang(POLICEMAN_SAVED);
+	A.bus.bang(POLICEMAN_SAVED);
 };
 
 Demonstrant.prototype.create=function() {
