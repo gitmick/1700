@@ -282,10 +282,28 @@ World.prototype.getWorldPixel = function(px,py){
 }
 
 
-World.prototype.drawCircle = function(px,py,radius,color){	
-	this.drawRect(px-radius/2,py-radius,radius,radius*2,color);
-	this.drawRect(px-radius,py-radius/2,radius*2,radius,color);
-	this.drawRect(px-radius*3/4,py-radius*3/4,radius*3/2,radius*3/2,color);
+World.prototype.drawCircle = function(px,py,radius,color){
+	for (var ii=px-radius; ii<=px+radius; ++ii) {
+		for (var jj=py-radius; jj<=py+radius; ++jj) {
+			if (Math.pow(px-ii, 2) + Math.pow(py-jj, 2) <= Math.pow(radius, 2)) {
+				this.worldBitmapData.setPixel(ii, jj, color);
+			}
+		}
+	}
+	this.worldBitmapData.updateContext();
+	if (color==VISIBLE_BLOCK) {
+		this.foreGround.graphics.beginFill("brown").drawCircle(px, py, radius);
+		this.addForUpdate(this.foreGround);
+	}
+	else if (color==FREE) {
+		console.debug(this.foreGroundMask.graphics);
+		this.foreGroundMask.graphics.beginFill("black").drawCircle(px, py, radius);
+		this.addForUpdate(this.repaint);
+		this.addForUpdate(this.foreGroundMask);
+	}
+// 	this.drawRect(px-radius/2,py-radius,radius,radius*2,color);
+// 	this.drawRect(px-radius,py-radius/2,radius*2,radius,color);
+// 	this.drawRect(px-radius*3/4,py-radius*3/4,radius*3/2,radius*3/2,color);
 }
 
 World.prototype.drawRect = function(px,py,w,h,color){	
