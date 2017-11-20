@@ -69,7 +69,7 @@ LemmingGame.prototype.addLemmings = function(){
 	  	hasadded=true;
 	}
 	if (this.added==level.maxPoliceMen)
-		this.trigger.bang(ADD_POLICEMEN_FINISHED);
+		A.bus.bang(ADD_POLICEMEN_FINISHED);
 	return hasadded;
 };
 

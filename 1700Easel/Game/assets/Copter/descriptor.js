@@ -13,7 +13,7 @@ function Copter() {
 		 };
 	this.copterSheet;
 	
-	A.bus.initBangDispatch(cb,[ADD_POLICEMEN_FINISHED]);
+	A.bus.initBangDispatch(this,[ADD_POLICEMEN_FINISHED]);
 	
 }
 Copter.prototype = new Asset();
@@ -45,7 +45,7 @@ function FlyIn() {
 	this.stepX=false;
 	this.stepY=false;
 	this.counter=0;
-	A.bus.initBangDispatch(cb,[ADD_POLICEMEN]);
+	A.bus.initBangDispatch(this, [ADD_POLICEMEN]);
 } 
 FlyIn.prototype = new AssetAction();
 FlyIn.prototype[ADD_POLICEMEN] = function() {

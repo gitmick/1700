@@ -180,7 +180,7 @@ TimeKeeper.prototype.tick = function() {
 		this.moneyLeft-=100;
 		A.bus.bang(MONEY,this.moneyLeft);
 		if (this.moneyLeft<0) {
-			game.trigger.bang(NO_MONEY_LEFT);
+			A.bus.bang(NO_MONEY_LEFT);
 		}
 	}
 }

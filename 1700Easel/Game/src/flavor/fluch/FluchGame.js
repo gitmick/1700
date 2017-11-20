@@ -60,7 +60,7 @@ FluchGame.prototype.addLemmings = function(){
 	  	hasadded=true;
 	}
 	if (this.added==1)
-		this.trigger.bang(FLUCH_STARTED);
+		A.bus.bang(FLUCH_STARTED);
 	return hasadded;
 };
 
