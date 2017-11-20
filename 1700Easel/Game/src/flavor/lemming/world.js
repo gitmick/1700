@@ -210,6 +210,8 @@ World.prototype.init = function(lvl) {
 	//stage.addChild(this.foreGroundMask);
 	
 	
+// 	this.displayEntity.addBitmap(lvl.mapHtmlImage);
+// 	this.displayEntity.addBitmap(this.worldBitmapData.canvas);
 
 	
 //	if (lvl.scoreHtmlImage)
@@ -239,6 +241,7 @@ World.prototype.init = function(lvl) {
 	this.policeText.cache(0,0,300,40);
 	stage.addChild(this.policeText);
 	
+// 	stage.addChild(lvl.mapHtmlImage);
 	
 	if (lvl.mapHtmlImage!=lvl.worldHtmlImage) {
 		this.backButton = this.displayEntity.addBitmap(globalLoader.getImage("img/back.png"),false);
@@ -253,6 +256,7 @@ World.prototype.init = function(lvl) {
 			game.level.start(game.machine);
 		}
 	}
+	this.stage = stage;
 }
 
 World.prototype.scroll = function(x) {
@@ -312,6 +316,7 @@ World.prototype.drawRect = function(px,py,w,h,color){
 			this.worldBitmapData.setPixel(px+xi,py+yi,color);
 		}
 	}
+	this.worldBitmapData.updateContext();
 	if (color==VISIBLE_BLOCK) {
 		this.foreGround.graphics.beginFill("brown").drawRect(px,py,w,h);
 		this.addForUpdate(this.foreGround);
@@ -325,7 +330,6 @@ World.prototype.drawRect = function(px,py,w,h,color){
 		this.addForUpdate(this.repaint);
 		this.addForUpdate(this.foreGroundMask);
 	}
-	
 }
 
 World.prototype.addForUpdate = function(shape) {
@@ -339,6 +343,26 @@ World.prototype.updateCache = function() {
 		this.updateShapes[i].updateCache("source-overlay");
 	}
 	this.updateShapes = new Array();
+	console.debug("this is a frame");
+// 	var bitmap = createjs.Bitmap(this.worldBitmapData.canvas);
+// 	this.worldBitmapData.updateImageData();
+// 	this.stage.addChild(this.worldBitmapData.canvas);
+	
+	// 	for (var ii = 0; ii<this.width; ii++) {
+// 		console.debug(ii);
+// 		for (var jj = 0; jj<this.height; jj++) {
+// // 			this.foreGroundMask
+// 			if (this.worldBitmapData.getPixel(ii, jj) == VISIBLE_BLOCK) {
+// // 				this.bg.graphics.beginFill("green").drawRect(
+// // 																ii, jj, 1, 1);
+// // 				this.foreGround.graphics.beginFill("green").drawRect(
+// // 																ii, jj, 1, 1);
+// 				console.debug(ii);
+// 				console.debug(jj);
+// 				
+// 			}
+// 		}
+// 	}
 }
 
 World.prototype.canFall = function(x,y,width) {
