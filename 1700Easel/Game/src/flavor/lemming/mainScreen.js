@@ -267,12 +267,12 @@ FolderLevel.prototype.init = function() {
 		//effectInstance = soundPlayer.play(this.level.name+"intro");
 		soundPlayer.reset();
 		introSoundBlock.isBlock=true;
-		effectInstance = soundPlayer.play(level.intro);
+		var effectInstance = soundPlayer.play(level.intro);
 		effectInstance.addEventListener("complete",function() {
 			introSoundBlock.isBlock=false;
 		});
-		
-		startObject = new IntroButton(0,0,1024,386);
+
+		var startObject = new IntroButton(0,0,1024,386);
 		startObject.delaySelect = function(x, y) {
 			introSoundBlock.isBlock=false;
 			effectInstance.stop();
