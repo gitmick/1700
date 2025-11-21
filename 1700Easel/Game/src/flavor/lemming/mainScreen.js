@@ -11,14 +11,14 @@ function MainLevel () {
 }
 MainLevel.prototype = new StartLevel();
 MainLevel.prototype.init = function () {
-	
-	startObject = new Button(87,266,211,31);
+
+	var startObject = new Button(87,266,211,31);
 	startObject.select = function(x, y) {
 		console.log(1);
 		game.level = new SelectLevel();
 		game.level.start(game.machine);
 	};
-	
+
 	startObject = new Button(372,266,211,31);
 	startObject.select = function(x, y) {
 		console.log(2);
