@@ -86,7 +86,7 @@ LoadBlocker.prototype.block = function () {
 	return false;
 }
 
-globalLoader = new Loader();
+var globalLoader = new Loader();
 function LoadAction() {
 	this.loader=globalLoader;
 	this.afterLoad;

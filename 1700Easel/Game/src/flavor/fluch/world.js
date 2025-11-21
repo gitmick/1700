@@ -207,7 +207,7 @@ FluchWorld.prototype.init = function(lvl) {
 	this.gameText.cache(-500,0,1000,40);
 	stage.addChild(this.gameText);
 	
-	this.moneyText = new createjs.Text("Und da erwacht unser kleiner Polizist \nplötzlich als wütender Demonstrant. \nJetzt halte dich aber schnell von den \nMüllkübeln fern, sonst geht´s dir an den Kragen.", "20px Visitor", "#ac6363"); 
+	this.moneyText = new createjs.Text("Und da erwacht unser kleiner Polizist \nplï¿½tzlich als wï¿½tender Demonstrant. \nJetzt halte dich aber schnell von den \nMï¿½llkï¿½beln fern, sonst gehtï¿½s dir an den Kragen.", "20px Visitor", "#ac6363"); 
 	this.moneyText.x=180;
 	this.moneyText.y=15;
 	this.moneyText.cache(0,0,1000,400);
@@ -273,8 +273,8 @@ FluchWorld.prototype.scroll = function(x) {
 	this.displayEntity.adjust(x);
 }
 
-mixCount=0;
-faders = new FaderArray();
+var mixCount = 0;
+var faders = new FaderArray();
 
 FluchWorld.prototype.tick = function() {
 
@@ -291,7 +291,7 @@ FluchWorld.prototype.tick = function() {
 	faders.tick();
 	this.setRounds(parseInt(game.currentScroll/4000));
 	if (game.currentScroll<800) {
-		this.setIntro("Und da erwacht unser kleiner Polizist \nplötzlich als wütender Demonstrant. \nJetzt halte dich aber schnell von den \nMüllkübeln fern, sonst geht´s dir an den Kragen.");
+		this.setIntro("Und da erwacht unser kleiner Polizist \nplï¿½tzlich als wï¿½tender Demonstrant. \nJetzt halte dich aber schnell von den \nMï¿½llkï¿½beln fern, sonst gehtï¿½s dir an den Kragen.");
 	}
 	else {
 		this.setIntro(game.outro);

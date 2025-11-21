@@ -1,5 +1,5 @@
 "use strict";
-net_asifism_utils_Collections = {
+var net_asifism_utils_Collections = {
 		remove:function (array,element) {
 			for(var i = array.length - 1; i >= 0; i--) {
 				if(array[i] === element) {

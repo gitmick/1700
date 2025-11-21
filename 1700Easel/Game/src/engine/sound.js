@@ -80,7 +80,7 @@ SoundPlayer.prototype.reset = function() {
 	this.currentInstances = {};
 }
 
-soundPlayer = new SoundPlayer();
+var soundPlayer = new SoundPlayer();
 
 
 function Fader(ef,from,to,steps) {
@@ -108,7 +108,7 @@ function FaderArray() {
 };
 
 FaderArray.prototype.add = function(ef,from,to,steps) {
-	fader = new Fader(ef,from,to,steps);
+	var fader = new Fader(ef,from,to,steps);
 	this.faders.push(fader);
 	fader.faders=this;
 };

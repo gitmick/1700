@@ -1,17 +1,9 @@
 "use strict";
 /**
- * 
+ *
  */
 
-//var FREE=16777215;10592129
-var FREE=10592129;
-var INVISIBLE_FREE=10592131;
-var DEADLY=4;
-
-var EVERBLOCK=3;
-var POLICE=2;
-var VISIBLE_BLOCK=1;
-var INVISIBLE_BLOCK=0;
+// Constants moved to levelLoader.js
 
 function World() {
 	this.worldBitmapData;

@@ -1,7 +1,7 @@
 "use strict";
-net_asifism_engine_core_Messages = (function() {
-	
-	collection = net_asifism_utils_Collections;
+var net_asifism_engine_core_Messages = (function() {
+
+	var collection = net_asifism_utils_Collections;
 	
 	var Bus = function() {
 		this.triggers = {};
@@ -60,8 +60,8 @@ net_asifism_engine_core_Messages = (function() {
 		}
 		dispatcher.bang=bangDispatch;
 		if (listOfTriggers) {
-			for (i=0;i<listOfTriggers.length;i++) {
-				item = listOfTriggers[i];
+			for (var i=0;i<listOfTriggers.length;i++) {
+				var item = listOfTriggers[i];
 				this.addTrigger(item,dispatcher);
 				if (!dispatcher[item])
 					console.log(dispatcher+" has no method "+item+" but adds it in initBangDispatch");
@@ -83,7 +83,7 @@ function test() {
 		console.log(v);
 		}
 	
-	cb = new TestCallBack();
+	var cb = new TestCallBack();
 	bus.initBangDispatch(cb,["test"]);
 	//bus.initBangDispatch(cb);
 	bus.addTrigger("test",cb);

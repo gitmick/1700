@@ -3,6 +3,15 @@
  * d-p-t-r was here
  */
 
+// World constants (needed by asset.js)
+var FREE = 10592129;
+var INVISIBLE_FREE = 10592131;
+var DEADLY = 4;
+var EVERBLOCK = 3;
+var POLICE = 2;
+var VISIBLE_BLOCK = 1;
+var INVISIBLE_BLOCK = 0;
+
 
 
 
@@ -149,4 +158,4 @@ Level.prototype.initAsset = function(folderName) {
 }
 Level.prototype.load = function() {};
 
-level = new Level();
+var level = new Level();
