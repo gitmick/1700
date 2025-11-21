@@ -11,8 +11,8 @@ PlayAction.prototype.act = function() {
 		}
 	}
 	//game.selectedLemming=false;
-	
-	def = new DEFrame();
+
+	var def = new DEFrame();
 	def.currentScroll = game.currentScroll;
 	
 	for (var i=0; i<level.assets.length;i++) {
