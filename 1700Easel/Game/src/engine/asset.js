@@ -132,7 +132,9 @@ Asset.prototype.drawInitial = function(deFrame) {
 
 Asset.prototype.setAction = function(a) {
 	this.action=a;
-	this.action.asset=this;
+	if (this.action) {
+		this.action.asset=this;
+	}
 }
 
 Asset.prototype.update = function(deFrame) {

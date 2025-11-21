@@ -100,17 +100,17 @@ WinAction.prototype.act = function() {
 			game.level.start(game.machine);
 		};
 		this.started=true;
-		gameText = new createjs.Text(timeKeeper.toString(), "10px Visitor", "#300300"); 
+		var gameText = new createjs.Text(timeKeeper.toString(), "10px Visitor", "#300300");
 		gameText.x=100;
 		gameText.y=60;
 		stage.addChild(gameText);
-		
-		gameText2 = new createjs.Text(timeKeeper.toString2(), "10px Visitor", "#300300"); 
+
+		var gameText2 = new createjs.Text(timeKeeper.toString2(), "10px Visitor", "#300300");
 		gameText2.x=180;
 		gameText2.y=60;
 		stage.addChild(gameText2);
-		
-		gameText3 = new createjs.Text("Polizei hat es\ngeschafft!!", "20px Visitor", "#300300"); 
+
+		var gameText3 = new createjs.Text("Polizei hat es\ngeschafft!!", "20px Visitor", "#300300");
 		gameText3.x=120;
 		gameText3.y=239;
 		stage.addChild(gameText3);
