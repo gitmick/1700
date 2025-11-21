@@ -149,7 +149,7 @@ Level.prototype.registerAsset = function(folderName) {
 	}
 }
 Level.prototype.initAsset = function(folderName) {
-	eval("var asset = new "+folderName+"();");
+	var asset = new window[folderName]();
 	asset.loader=globalLoader;
 	asset.dirPath = folderName;
 	asset.load();
