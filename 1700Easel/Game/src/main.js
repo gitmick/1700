@@ -73,6 +73,22 @@ function init() {
     createjs.Touch.enable(stage);
 	stage.mouseChildren=false;
 
+	// Add touch handler for mobile intro skip
+	if (isMobileDevice) {
+		var canvas = document.getElementById('canvas');
+		canvas.addEventListener('touchend', function(e) {
+			e.preventDefault();
+			// Trigger selection at touch point
+			if (e.changedTouches.length > 0) {
+				var touch = e.changedTouches[0];
+				var rect = canvas.getBoundingClientRect();
+				var x = (touch.clientX - rect.left) * (canvas.width / rect.width);
+				var y = (touch.clientY - rect.top) * (canvas.height / rect.height);
+				interactionHandler.select(x, y);
+			}
+		});
+	}
+
 	// Initialize mobile layout if on mobile
 	if (isMobileDevice) {
 		mobileLayout = new MobileLayout();
@@ -102,20 +118,32 @@ function init() {
 function setSize() {
 	var canvas = document.getElementById('canvas');
 
-	var h=height()*0.994;
-	var w=width()/(height()/fitHeight);
-	
-	
-	if (w<512)
-		w=512;
-	canvas.width=w;
-	canvasWidth=w;
-	canvas.style.width = w*(height()/fitHeight)*0.994+'px';
-	canvas.style.height = h*1.0+'px';
+	if (isMobileDevice) {
+		// Portrait mode: fit to screen width
+		var w = width();
+		var h = w * (384 / 800); // maintain aspect ratio
 
-	if (w<512)
-		w=512;
-	canvas.width=w;
+		canvas.width = 800;
+		canvas.height = 384;
+		canvas.style.width = w + 'px';
+		canvas.style.height = h + 'px';
+		canvasWidth = 800;
+	} else {
+		// Desktop: original landscape sizing
+		var h = height() * 0.994;
+		var w = width() / (height() / fitHeight);
+
+		if (w < 512)
+			w = 512;
+		canvas.width = w;
+		canvasWidth = w;
+		canvas.style.width = w * (height() / fitHeight) * 0.994 + 'px';
+		canvas.style.height = h * 1.0 + 'px';
+
+		if (w < 512)
+			w = 512;
+		canvas.width = w;
+	}
 }
 
 function width(){
