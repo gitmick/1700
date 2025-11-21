@@ -127,6 +127,11 @@ function tick(evt) {
 
 	game.update();
 	stage.update(evt);
+
+	// Render mobile views after stage update
+	if (isMobileDevice && mobileLayout) {
+		mobileLayout.render();
+	}
 }
 
 

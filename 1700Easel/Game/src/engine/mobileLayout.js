@@ -337,5 +337,193 @@ MobileLayout.prototype.destroy = function() {
     }
 };
 
+// --- Rendering Methods ---
+
+MobileLayout.prototype.render = function() {
+    if (!this.levelWidth || !this.levelHeight) return;
+
+    var sourceCanvas = document.getElementById('canvas');
+    if (!sourceCanvas) return;
+
+    this.renderMinimap(sourceCanvas);
+    this.renderZoomView(sourceCanvas);
+    this.renderOverlays();
+};
+
+MobileLayout.prototype.renderMinimap = function(sourceCanvas) {
+    var ctx = this.minimapCtx;
+
+    // Clear
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, this.screenWidth, this.minimapHeight);
+
+    // Calculate scale to fit entire level in minimap
+    var scaleX = this.screenWidth / this.levelWidth;
+    var scaleY = this.minimapHeight / this.levelHeight;
+    var scale = Math.min(scaleX, scaleY);
+
+    // Center the minimap
+    var offsetX = (this.screenWidth - this.levelWidth * scale) / 2;
+    var offsetY = (this.minimapHeight - this.levelHeight * scale) / 2;
+
+    // Draw scaled level
+    ctx.save();
+    ctx.translate(offsetX, offsetY);
+    ctx.scale(scale, scale);
+
+    // Draw from source canvas (which has scroll offset)
+    // We need to draw the full level, not just visible part
+    // For now, draw what's visible and indicate scroll position
+    ctx.drawImage(sourceCanvas, game.currentScroll, 0, sourceCanvas.width, sourceCanvas.height,
+                  game.currentScroll, 0, sourceCanvas.width, sourceCanvas.height);
+
+    ctx.restore();
+
+    // Draw viewport indicator
+    this.drawViewportIndicator(ctx, scale, offsetX, offsetY);
+
+    // Draw lemming positions
+    this.drawMinimapLemmings(ctx, scale, offsetX, offsetY);
+};
+
+MobileLayout.prototype.drawViewportIndicator = function(ctx, scale, offsetX, offsetY) {
+    var viewWidth = this.zoomWidth / this.zoomFactor;
+    var viewHeight = this.zoomHeight / this.zoomFactor;
+
+    ctx.strokeStyle = '#ff0';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(
+        offsetX + this.viewportX * scale,
+        offsetY + this.viewportY * scale,
+        viewWidth * scale,
+        viewHeight * scale
+    );
+};
+
+MobileLayout.prototype.drawMinimapLemmings = function(ctx, scale, offsetX, offsetY) {
+    if (!game.lemmings) return;
+
+    for (var i = 0; i < game.lemmings.length; i++) {
+        var lemming = game.lemmings[i];
+
+        // Draw lemming as colored dot
+        ctx.fillStyle = (lemming === this.selectedLemming) ? '#ff0' : '#0f0';
+        ctx.beginPath();
+        ctx.arc(
+            offsetX + lemming.x * scale,
+            offsetY + lemming.y * scale,
+            Math.max(2, 4 * scale),
+            0, Math.PI * 2
+        );
+        ctx.fill();
+    }
+};
+
+MobileLayout.prototype.renderZoomView = function(sourceCanvas) {
+    var ctx = this.zoomCtx;
+
+    // Clear with sky color
+    ctx.fillStyle = '#87CEEB';
+    ctx.fillRect(0, 0, this.zoomWidth, this.zoomHeight);
+
+    // Calculate source rectangle
+    var srcX = this.viewportX;
+    var srcY = this.viewportY;
+    var srcWidth = this.zoomWidth / this.zoomFactor;
+    var srcHeight = this.zoomHeight / this.zoomFactor;
+
+    // Clamp to level bounds
+    srcX = Math.max(0, Math.min(srcX, this.levelWidth - srcWidth));
+    srcY = Math.max(0, Math.min(srcY, this.levelHeight - srcHeight));
+
+    // The source canvas shows level from game.currentScroll
+    // We need to translate our viewport to canvas coordinates
+    var canvasX = srcX - game.currentScroll;
+
+    // Draw zoomed portion
+    ctx.save();
+    ctx.scale(this.zoomFactor, this.zoomFactor);
+
+    // Draw from source, accounting for scroll
+    if (canvasX >= 0 && canvasX + srcWidth <= sourceCanvas.width) {
+        ctx.drawImage(sourceCanvas, canvasX, srcY, srcWidth, srcHeight, 0, 0, srcWidth, srcHeight);
+    } else {
+        // Viewport extends beyond current canvas view
+        // Draw what we can
+        ctx.drawImage(sourceCanvas, Math.max(0, canvasX), srcY,
+                      Math.min(srcWidth, sourceCanvas.width), srcHeight,
+                      Math.max(0, -canvasX), 0,
+                      Math.min(srcWidth, sourceCanvas.width), srcHeight);
+    }
+
+    ctx.restore();
+
+    // Draw action arrows if lemming selected
+    if (this.selectedLemming) {
+        this.drawActionArrows(ctx);
+    }
+};
+
+MobileLayout.prototype.renderOverlays = function() {
+    // Additional overlays can be added here
+};
+
+MobileLayout.prototype.drawActionArrows = function(ctx) {
+    if (!this.selectedLemming) return;
+
+    // Convert lemming position to zoom view coordinates
+    var lx = (this.selectedLemming.x - this.viewportX) * this.zoomFactor;
+    var ly = (this.selectedLemming.y - this.viewportY) * this.zoomFactor;
+
+    // Arrow configuration
+    var arrowLength = 40;
+    var arrowWidth = 8;
+
+    var actions = [
+        { dir: 'down', angle: 90, action: Dig, label: '↓' },
+        { dir: 'down-right', angle: 45, action: Mine, label: '↘' },
+        { dir: 'right', angle: 0, action: Bash, label: '→' },
+        { dir: 'up-right', angle: -45, action: Build, label: '↗' },
+        { dir: 'up', angle: -90, action: Float, label: '↑' },
+        { dir: 'left', angle: 180, action: Block, label: '←' }
+    ];
+
+    ctx.save();
+    ctx.translate(lx, ly - 16); // Center on lemming
+
+    for (var i = 0; i < actions.length; i++) {
+        var a = actions[i];
+
+        // Check if action is available
+        var count = level.actionCount[a.action];
+        if (!count || count <= 0) continue;
+
+        // Determine alpha based on highlight
+        var alpha = (this.highlightedDirection === a.dir) ? 1.0 : this.arrowAlpha;
+
+        ctx.save();
+        ctx.rotate(a.angle * Math.PI / 180);
+
+        // Draw arrow
+        ctx.fillStyle = 'rgba(255, 255, 0, ' + alpha + ')';
+        ctx.beginPath();
+        ctx.moveTo(20, 0);
+        ctx.lineTo(20 + arrowLength, 0);
+        ctx.lineTo(20 + arrowLength - arrowWidth, -arrowWidth);
+        ctx.moveTo(20 + arrowLength, 0);
+        ctx.lineTo(20 + arrowLength - arrowWidth, arrowWidth);
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = 'rgba(255, 255, 0, ' + alpha + ')';
+        ctx.stroke();
+
+        ctx.restore();
+    }
+
+    ctx.restore();
+
+    // Reset highlight after drawing
+    this.highlightedDirection = null;
+};
+
 // Global instance
 var mobileLayout = null;

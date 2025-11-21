@@ -85,6 +85,11 @@ World.prototype.init = function(lvl) {
 	this.width=lvl.worldHtmlImage.width;
 	this.height=lvl.worldHtmlImage.height;
 	this.displayEntity.addBitmap(lvl.worldHtmlImage,true).element.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
+
+	// Set level dimensions for mobile layout
+	if (typeof mobileLayout !== 'undefined' && mobileLayout) {
+		mobileLayout.setLevelDimensions(this.width, this.height);
+	}
 	
 	//Paralax
 	if (lvl.cloudImage) {
