@@ -39,6 +39,9 @@ function MobileLayout() {
     // Gesture recognizers
     this.minimapGesture = null;
     this.zoomGesture = null;
+
+    // Visibility state
+    this.visible = false;
 }
 
 MobileLayout.prototype.init = function() {
@@ -99,11 +102,24 @@ MobileLayout.prototype.createCanvases = function() {
 MobileLayout.prototype.setupGestures = function() {
     var that = this;
 
-    // Minimap gestures
-    this.minimapGesture = new GestureRecognizer(this.minimapCanvas);
-    this.minimapGesture.onTap = function(x, y) {
-        that.handleMinimapTap(x, y);
-    };
+    // Minimap gestures - custom handling for drag
+    this.minimapCanvas.addEventListener('touchstart', function(e) {
+        if (e.touches.length === 1) {
+            e.preventDefault();
+            var touch = e.touches[0];
+            var rect = that.minimapCanvas.getBoundingClientRect();
+            that.handleMinimapTap(touch.clientX - rect.left, touch.clientY - rect.top);
+        }
+    }, {passive: false});
+
+    this.minimapCanvas.addEventListener('touchmove', function(e) {
+        if (e.touches.length === 1) {
+            e.preventDefault();
+            var touch = e.touches[0];
+            var rect = that.minimapCanvas.getBoundingClientRect();
+            that.handleMinimapDrag(touch.clientX - rect.left, touch.clientY - rect.top);
+        }
+    }, {passive: false});
 
     // Zoom view gestures
     this.zoomGesture = new GestureRecognizer(this.zoomCanvas);
@@ -178,20 +194,28 @@ MobileLayout.prototype.addControlButton = function(label, id, callback) {
 // --- Event Handlers ---
 
 MobileLayout.prototype.handleMinimapTap = function(x, y) {
+    this.moveViewportToMinimap(x, y);
+    // Deselect lemming on tap
+    this.selectedLemming = null;
+    game.selectedLemming = null;
+};
+
+MobileLayout.prototype.handleMinimapDrag = function(x, y) {
+    this.moveViewportToMinimap(x, y);
+    // Keep lemming selected during drag
+};
+
+MobileLayout.prototype.moveViewportToMinimap = function(x, y) {
     // Convert minimap coordinates to level coordinates
     var levelX = (x / this.screenWidth) * this.levelWidth;
     var levelY = (y / this.minimapHeight) * this.levelHeight;
 
-    // Center viewport on tapped position
+    // Center viewport on position
     this.viewportX = levelX - (this.zoomWidth / this.zoomFactor) / 2;
     this.viewportY = levelY - (this.zoomHeight / this.zoomFactor) / 2;
 
     // Clamp viewport
     this.clampViewport();
-
-    // Deselect lemming
-    this.selectedLemming = null;
-    game.selectedLemming = null;
 };
 
 MobileLayout.prototype.handleZoomTap = function(x, y) {
@@ -338,9 +362,39 @@ MobileLayout.prototype.destroy = function() {
     }
 };
 
+MobileLayout.prototype.show = function() {
+    var container = document.getElementById('mobile-container');
+    if (container) {
+        container.style.display = 'block';
+    }
+    var originalCanvas = document.getElementById('canvas');
+    if (originalCanvas) {
+        originalCanvas.style.display = 'none';
+    }
+    this.visible = true;
+};
+
+MobileLayout.prototype.hide = function() {
+    var container = document.getElementById('mobile-container');
+    if (container) {
+        container.style.display = 'none';
+    }
+    // Show original canvas for fullscreen content
+    var originalCanvas = document.getElementById('canvas');
+    if (originalCanvas) {
+        originalCanvas.style.display = 'block';
+    }
+    this.visible = false;
+};
+
+MobileLayout.prototype.isVisible = function() {
+    return this.visible;
+};
+
 // --- Rendering Methods ---
 
 MobileLayout.prototype.render = function() {
+    if (!this.visible) return;
     if (!this.levelWidth || !this.levelHeight) return;
 
     var sourceCanvas = document.getElementById('canvas');

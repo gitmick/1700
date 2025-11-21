@@ -149,9 +149,10 @@ var MobileNavigation = {
     },
 
     startLevel: function(levelName) {
-        // Show mobile container for gameplay
-        var mobileContainer = document.getElementById('mobile-container');
-        if (mobileContainer) mobileContainer.style.display = 'block';
+        // Show mobile layout for gameplay
+        if (mobileLayout) {
+            mobileLayout.show();
+        }
 
         game.level = new FolderLevel(levelName);
         game.level.start(game.machine);
