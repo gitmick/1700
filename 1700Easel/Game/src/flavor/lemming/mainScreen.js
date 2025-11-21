@@ -292,15 +292,15 @@ FolderLevel.prototype.init = function() {
 		game.control.init();
 		
 		level.initAssets();
-		trigger = new ExitChecker();
+		var trigger = new ExitChecker();
 		A.bus.addTrigger(POLICEMAN_SAVED, trigger);
 		A.bus.addTrigger(POLICEMAN_KILLED, trigger);
 		A.bus.addTrigger(ADD_POLICEMEN_FINISHED, trigger);
-		
+
 		A.bus.addTrigger(ADD_POLICEMEN,timeKeeper);
 		//eff=soundPlayer.play(this.level.name,1,100);
 		soundPlayer.reset();
-		eff=soundPlayer.play("track",5,100);
+		var eff=soundPlayer.play("track",5,100);
 		eff.volume=1;
 	};
 };
