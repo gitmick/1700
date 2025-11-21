@@ -53,15 +53,14 @@ MobileLayout.prototype.init = function() {
 
 MobileLayout.prototype.calculateDimensions = function() {
     // Minimap takes top portion
-    this.minimapHeight = Math.floor(this.screenHeight * 0.22);
+    this.minimapHeight = Math.floor(this.screenHeight * 0.20);
 
-    // Remaining height for zoom view
-    var remainingHeight = this.screenHeight - this.minimapHeight;
+    // Control panel at bottom
+    this.controlHeight = 60;
 
-    // Control panel on the right
-    this.controlWidth = 80;
-    this.zoomWidth = this.screenWidth - this.controlWidth;
-    this.zoomHeight = remainingHeight;
+    // Zoom view takes remaining space
+    this.zoomWidth = this.screenWidth;
+    this.zoomHeight = this.screenHeight - this.minimapHeight - this.controlHeight;
 };
 
 MobileLayout.prototype.createCanvases = function() {
@@ -130,23 +129,25 @@ MobileLayout.prototype.createControlPanel = function() {
     this.controlPanel.id = 'control-panel';
     this.controlPanel.style.cssText =
         'position:absolute;' +
-        'top:' + this.minimapHeight + 'px;' +
-        'left:' + this.zoomWidth + 'px;' +
-        'width:' + this.controlWidth + 'px;' +
-        'height:' + this.zoomHeight + 'px;' +
+        'top:' + (this.minimapHeight + this.zoomHeight) + 'px;' +
+        'left:0;' +
+        'width:100%;' +
+        'height:' + this.controlHeight + 'px;' +
         'background:#333;' +
         'display:flex;' +
-        'flex-direction:column;' +
+        'flex-direction:row;' +
+        'justify-content:space-around;' +
+        'align-items:center;' +
         'padding:5px;' +
         'box-sizing:border-box;';
 
     // Add control buttons
     this.addControlButton('Jump', 'jump-mode', this.toggleJumpMode.bind(this));
     this.addControlButton('Bomb', 'bomb-all', this.bombAll.bind(this));
-    this.addControlButton('Speed', 'speed', this.toggleSpeed.bind(this));
+    this.addControlButton('⚡', 'speed', this.toggleSpeed.bind(this));
     this.addControlButton('+', 'more', this.moreLemmings.bind(this));
     this.addControlButton('-', 'less', this.lessLemmings.bind(this));
-    this.addControlButton('Back', 'back', this.goBack.bind(this));
+    this.addControlButton('←', 'back', this.goBack.bind(this));
 
     document.getElementById('mobile-container').appendChild(this.controlPanel);
 };
@@ -156,15 +157,15 @@ MobileLayout.prototype.addControlButton = function(label, id, callback) {
     btn.id = 'ctrl-' + id;
     btn.textContent = label;
     btn.style.cssText =
-        'margin:3px 0;' +
-        'padding:8px 4px;' +
-        'font-size:12px;' +
+        'padding:8px 12px;' +
+        'font-size:14px;' +
         'font-family:Visitor,monospace;' +
         'background:#555;' +
         'color:#fff;' +
         'border:2px solid #777;' +
         'border-radius:4px;' +
-        'cursor:pointer;';
+        'cursor:pointer;' +
+        'min-width:40px;';
 
     btn.addEventListener('touchstart', function(e) {
         e.preventDefault();
