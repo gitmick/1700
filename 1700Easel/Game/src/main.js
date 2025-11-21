@@ -30,6 +30,7 @@ var stage;
 var flavor;
 var game;
 var deviceInteraction;
+var isMobileDevice = false;
 
 var QueryString = function () {
 	  // This function is anonymous, is executed immediately and 
@@ -58,27 +59,34 @@ var QueryString = function () {
 function init() {
 
 	A.bus=new net_asifism_engine_core_Messages.Bus();
-	
-	
+
+	// Check for mobile device
+	isMobileDevice = DeviceDetection.isMobile();
+
 	setSize();
-	
+
 	window.onresize = function(event) {
 	    setSize();
 	};
+
 	stage = new createjs.Stage("canvas");
     createjs.Touch.enable(stage);
 	stage.mouseChildren=false;
-   
-	
+
+	// Initialize mobile layout if on mobile
+	if (isMobileDevice) {
+		mobileLayout = new MobileLayout();
+		mobileLayout.init();
+		console.log("Mobile mode initialized");
+	}
+
 //	flavor = new FluchFlavor();
 //	flavor.init();
     flavor = new LemmingFlavor();
 	flavor.init();
-    
+
     createjs.Ticker.setFPS(25);
     createjs.Ticker.addEventListener("tick", tick);
-    
-    
 }
 
 function setSize() {
@@ -109,8 +117,14 @@ function width(){
 
 
 function tick(evt) {
-	deviceInteraction.tick();
-	
+	if (isMobileDevice && mobileLayout) {
+		mobileLayout.update();
+	}
+
+	if (deviceInteraction) {
+		deviceInteraction.tick();
+	}
+
 	game.update();
 	stage.update(evt);
 }
