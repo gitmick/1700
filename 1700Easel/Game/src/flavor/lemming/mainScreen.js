@@ -140,7 +140,7 @@ SelectLevel.prototype.init = function () {
 	};
 	this.scrollAction.act = function() {
 		
-		def = new DEFrame();
+		var def = new DEFrame();
 		def.currentScroll = game.currentScroll;
 		
 		for (var i=0; i<this.level.buttons.length;i++) {
@@ -192,15 +192,15 @@ FolderLevel.prototype.init = function() {
 		level.load();
 		level.name=this.level.name;
 		
-		gameText = new createjs.Text(level.title, "20px Visitor", "#ff7700");
+		var gameText = new createjs.Text(level.title, "20px Visitor", "#ff7700");
 		stage.addChild(gameText);
 		gameText.x=50;
 		gameText.y=50;
-		
-		gameText = new createjs.Text(level.description, "10px Visitor", "#ff7700");
-		stage.addChild(gameText);
-		gameText.x=50;
-		gameText.y=100;
+
+		var gameText2 = new createjs.Text(level.description, "10px Visitor", "#ff7700");
+		stage.addChild(gameText2);
+		gameText2.x=50;
+		gameText2.y=100;
 		
 
 		
