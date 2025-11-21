@@ -160,5 +160,43 @@ var MobileNavigation = {
         return 'padding:20px 30px;font-size:18px;font-family:Visitor,monospace;' +
                'background:#ff7700;color:#fff;border:none;border-radius:8px;' +
                'cursor:pointer;box-shadow:3px 3px 0 #000;';
+    },
+
+    // --- Intro Screen ---
+    showIntro: function(title, description, callback) {
+        this.clear();
+        this.show();
+
+        // Title
+        var titleEl = document.createElement('h2');
+        titleEl.textContent = title;
+        titleEl.style.cssText =
+            'color:#ff7700;font-size:28px;margin-bottom:20px;text-align:center;padding:0 20px;';
+        this.container.appendChild(titleEl);
+
+        // Description
+        if (description) {
+            var descEl = document.createElement('p');
+            descEl.textContent = description;
+            descEl.style.cssText =
+                'color:#fff;font-size:16px;margin-bottom:40px;text-align:center;padding:0 20px;max-width:350px;';
+            this.container.appendChild(descEl);
+        }
+
+        // Tap to continue hint
+        var hint = document.createElement('p');
+        hint.textContent = 'Tap to start';
+        hint.style.cssText =
+            'color:#888;font-size:14px;position:absolute;bottom:50px;';
+        this.container.appendChild(hint);
+
+        // Tap anywhere to continue
+        var that = this;
+        this.container.addEventListener('touchstart', function onTap(e) {
+            e.preventDefault();
+            that.container.removeEventListener('touchstart', onTap);
+            that.hide();
+            if (callback) callback();
+        }, {once: true});
     }
 };

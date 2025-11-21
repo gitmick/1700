@@ -182,25 +182,32 @@ FolderLevel.prototype.init = function() {
 		this.level.introImage=this.loader.loadImage(this.level.dirPath+"/introScreen.png",this.level.introImage);
 		this.loader.loadScript(this.level.dirPath+"/level.js");
 	};
-	this.showIntroAction.load = function() {		
+	this.showIntroAction.load = function() {
 		game.lemmings = [];
 		game.added=0;
 		game.currentScroll=0;
-		
-		var bitmap = new createjs.Bitmap(this.level.introImage);
-		stage.addChild(bitmap);
+
 		level.load();
 		level.name=this.level.name;
-		
-		var gameText = new createjs.Text(level.title, "20px Visitor", "#ff7700");
-		stage.addChild(gameText);
-		gameText.x=50;
-		gameText.y=50;
 
-		var gameText2 = new createjs.Text(level.description, "10px Visitor", "#ff7700");
-		stage.addChild(gameText2);
-		gameText2.x=50;
-		gameText2.y=100;
+		// Show mobile intro overlay if on mobile
+		if (typeof isMobileDevice !== 'undefined' && isMobileDevice && typeof MobileNavigation !== 'undefined') {
+			MobileNavigation.showIntro(level.title, level.description, null);
+		} else {
+			// Desktop: show on canvas
+			var bitmap = new createjs.Bitmap(this.level.introImage);
+			stage.addChild(bitmap);
+
+			var gameText = new createjs.Text(level.title, "20px Visitor", "#ff7700");
+			stage.addChild(gameText);
+			gameText.x=50;
+			gameText.y=50;
+
+			var gameText2 = new createjs.Text(level.description, "10px Visitor", "#ff7700");
+			stage.addChild(gameText2);
+			gameText2.x=50;
+			gameText2.y=100;
+		}
 		
 
 		
