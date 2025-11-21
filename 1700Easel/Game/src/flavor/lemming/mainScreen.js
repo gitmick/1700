@@ -50,10 +50,10 @@ MainLevel.prototype.init = function () {
 		this.loader.loadSound("fx/atmolong.mp3","atmolong");
 	};
 	this.levelInitialize.fire = function () {
-		gameText = new createjs.Text("Gugug", "20px Visitor", "black");
+		var gameText = new createjs.Text("Gugug", "20px Visitor", "black");
 		stage.addChild(gameText);
 		var bitmap = new createjs.Bitmap(this.level.mainScreen);
-		scaledWidth = (384/height())*width();
+		var scaledWidth = (384/height())*width();
 		bitmap.x=parseInt((scaledWidth-800)/2);
 		stage.addChild(bitmap);
 		
