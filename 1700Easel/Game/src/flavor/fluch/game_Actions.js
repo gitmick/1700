@@ -76,14 +76,14 @@ WinAction.prototype.act = function() {
 		soundPlayer.reset();
 		displayEntityHolder.destroy();
 		stage.removeAllChildren();
-		img = globalLoader.getImage("img/background-Zib.png");
+		var img = globalLoader.getImage("img/background-Zib.png");
 		var dE = new DisplayEntity();
 		dE.addBitmap(img,false);
-		wolf = globalLoader.getImage("img/arminwolf.png");
-		d=dE.addBitmap(wolf, false);
+		var wolf = globalLoader.getImage("img/arminwolf.png");
+		var d=dE.addBitmap(wolf, false);
 		d.xOff = 500;
 		d.pos = function(x,y,deFrame) {
-			scaledWidth = (384/height())*width()-336;
+			var scaledWidth = (384/height())*width()-336;
 			if (scaledWidth>800-336) {
 				scaledWidth=800-336;
 			}
@@ -94,7 +94,7 @@ WinAction.prototype.act = function() {
 				this.element.x=parseInt(x+scaledWidth);
 		};
 		d.pos(0,0);
-		startObject = new IntroButton(0,0,400,400);
+		var startObject = new IntroButton(0,0,400,400);
 		startObject.delaySelect = function(x, y) {
 			game.level = new FolderLevel(level.nextLevel);
 			game.level.start(game.machine);
