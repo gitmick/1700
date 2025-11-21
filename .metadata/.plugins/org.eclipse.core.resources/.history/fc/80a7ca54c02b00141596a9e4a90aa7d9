@@ -1,8 +1,0 @@
-/**
- * 
- */
-
-
-function LevelLoader(levelName) {
-	this.name=levelName;
-}
