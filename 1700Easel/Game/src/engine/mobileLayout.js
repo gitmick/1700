@@ -90,13 +90,10 @@ MobileLayout.prototype.createCanvases = function() {
     this.zoomCtx = this.zoomCanvas.getContext('2d');
     container.appendChild(this.zoomCanvas);
 
-    // Hide original canvas
-    var originalCanvas = document.getElementById('canvas');
-    if (originalCanvas) {
-        originalCanvas.style.display = 'none';
-    }
-
     document.body.appendChild(container);
+
+    // Mobile container starts hidden, original canvas stays visible for intro screens
+    container.style.display = 'none';
 };
 
 MobileLayout.prototype.setupGestures = function() {
