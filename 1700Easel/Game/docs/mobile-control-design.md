@@ -162,13 +162,35 @@ class MobileGameState {
 }
 ```
 
+## Entscheidungen
+
+1. **Canvas-Größe**: Dynamisch an Bildschirm anpassen
+2. **Zoom-Faktor**: Fest, deutlich höher als 1.5x (ca. 2-3x)
+3. **Lemming-Selektion**: Visuelles Feedback siehe unten
+
+### Visuelles Feedback bei Selektion
+
+Wenn ein Lemming selektiert wird, erscheinen halbtransparente Pfeile die vom Lemming weg zeigen.
+Jeder Pfeil zeigt eine verfügbare Aktion an:
+
+```
+        ↑ Float
+    ↖       ↗ Build
+      \   /
+← Block ● → Bash
+      /   \
+    ↙       ↘ Mine
+        ↓ Dig
+```
+
+- Pfeile nur für Aktionen die noch verfügbar sind (count > 0)
+- Alpha: 0.3-0.5
+- Beim Swipen: Pfeil in Swipe-Richtung wird hervorgehoben (alpha: 1.0)
+
 ## Offene Punkte
 
-1. **Canvas-Größe**: Dynamisch an Bildschirm anpassen?
-2. **Zoom-Faktor**: Fest oder vom Spieler einstellbar?
-3. **Lemming-Selektion**: Visuelles Feedback (Highlight)?
-4. **Sound**: Feedback-Sounds für Gesten?
-5. **Tutorial**: Gesten-Anleitung für neue Spieler?
+1. **Sound**: Feedback-Sounds für Gesten?
+2. **Tutorial**: Gesten-Anleitung für neue Spieler?
 
 ## Testplan
 
