@@ -77,13 +77,23 @@ function init() {
 	if (isMobileDevice) {
 		mobileLayout = new MobileLayout();
 		mobileLayout.init();
+		MobileNavigation.init();
 		console.log("Mobile mode initialized");
-	}
 
-//	flavor = new FluchFlavor();
-//	flavor.init();
-    flavor = new LemmingFlavor();
-	flavor.init();
+		// Create game object but don't start MainLevel
+		flavor = new LemmingFlavor();
+		game = new LemmingGame();
+		// Don't call game.init() - that would start MainLevel
+		// Instead show mobile navigation menu
+
+		MobileNavigation.showMainMenu();
+	} else {
+		// Desktop: normal initialization
+//		flavor = new FluchFlavor();
+//		flavor.init();
+		flavor = new LemmingFlavor();
+		flavor.init();
+	}
 
     createjs.Ticker.setFPS(25);
     createjs.Ticker.addEventListener("tick", tick);
