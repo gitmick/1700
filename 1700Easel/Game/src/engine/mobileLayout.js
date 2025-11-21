@@ -405,8 +405,8 @@ MobileLayout.prototype.render = function() {
 MobileLayout.prototype.renderMinimap = function(sourceCanvas) {
     var ctx = this.minimapCtx;
 
-    // Clear
-    ctx.fillStyle = '#000';
+    // Clear with sky color
+    ctx.fillStyle = '#87CEEB';
     ctx.fillRect(0, 0, this.screenWidth, this.minimapHeight);
 
     // Calculate scale to fit entire level in minimap
@@ -418,18 +418,18 @@ MobileLayout.prototype.renderMinimap = function(sourceCanvas) {
     var offsetX = (this.screenWidth - this.levelWidth * scale) / 2;
     var offsetY = (this.minimapHeight - this.levelHeight * scale) / 2;
 
-    // Draw scaled level
-    ctx.save();
-    ctx.translate(offsetX, offsetY);
-    ctx.scale(scale, scale);
+    // Draw level background rectangle
+    ctx.fillStyle = '#5a8f3a';
+    ctx.fillRect(offsetX, offsetY, this.levelWidth * scale, this.levelHeight * scale);
 
-    // Draw from source canvas (which has scroll offset)
-    // We need to draw the full level, not just visible part
-    // For now, draw what's visible and indicate scroll position
-    ctx.drawImage(sourceCanvas, game.currentScroll, 0, sourceCanvas.width, sourceCanvas.height,
-                  game.currentScroll, 0, sourceCanvas.width, sourceCanvas.height);
-
-    ctx.restore();
+    // Draw what's visible from source canvas at correct position
+    var visibleWidth = Math.min(sourceCanvas.width, this.levelWidth - game.currentScroll);
+    ctx.drawImage(
+        sourceCanvas,
+        0, 0, visibleWidth, sourceCanvas.height,
+        offsetX + game.currentScroll * scale, offsetY,
+        visibleWidth * scale, sourceCanvas.height * scale
+    );
 
     // Draw viewport indicator
     this.drawViewportIndicator(ctx, scale, offsetX, offsetY);
