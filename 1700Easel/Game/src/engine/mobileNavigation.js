@@ -149,10 +149,8 @@ var MobileNavigation = {
     },
 
     startLevel: function(levelName) {
-        // Show mobile layout for gameplay
-        if (mobileLayout) {
-            mobileLayout.show();
-        }
+        // Don't show mobile layout yet - intro screen needs fullscreen
+        // Mobile layout will be shown when gameplay starts (in loadAssets.load)
 
         game.level = new FolderLevel(levelName);
         game.level.start(game.machine);

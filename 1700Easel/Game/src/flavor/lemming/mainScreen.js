@@ -290,6 +290,11 @@ FolderLevel.prototype.init = function() {
 		stage.removeAllChildren();
 		this.level.world.init(this.level);
 		game.control.init();
+
+		// Show mobile layout when gameplay starts
+		if (typeof mobileLayout !== 'undefined' && mobileLayout) {
+			mobileLayout.show();
+		}
 		
 		level.initAssets();
 		var trigger = new ExitChecker();
