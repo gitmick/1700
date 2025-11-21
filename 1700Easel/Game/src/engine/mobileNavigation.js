@@ -56,9 +56,7 @@ var MobileNavigation = {
 
         // Start Button
         this.addNavButton('Spiel Starten', function() {
-            MobileNavigation.hide();
-            game.level = new SelectLevel();
-            game.level.start(game.machine);
+            MobileNavigation.showLevelSelect();
         });
 
         // Fluch Mode Button (optional)
