@@ -9,6 +9,11 @@ function LemmingControl() {
 LemmingControl.prototype = new Control();
 
 LemmingControl.prototype.init = function() {
+	// Skip desktop controls on mobile - we use swipe gestures instead
+	if (typeof isMobileDevice !== 'undefined' && isMobileDevice) {
+		return;
+	}
+
 	this.addControl(1, 350, Climb,"climb");
 	this.addControl(35, 350, Float,"float");
 	this.addControl(69, 350, Bomb,"bomb");
@@ -17,13 +22,13 @@ LemmingControl.prototype.init = function() {
 	this.addControl(171, 350, Bash,"bash");
 	this.addControl(204, 350, Mine,"mine");
 	this.addControl(237, 350, Dig,"dig");
-	
+
 	this.addControl(271, 350, JumpAll,"jumpAll");
 	this.addControl(305, 350, JumpSingle, "jumpSingle");  ///<-Einzel sprung
-	
+
 	this.addGlobalControl(339, 350, MorePolicemen,"plus");
 	this.addGlobalControl(373, 350, LessPolicemen,"minus");
-	
+
 	this.addGlobalControl(407, 350, FinishSpeed,"fastForward");
 	this.addGlobalControl(441, 350, BombAll,"bombAll");
 }
