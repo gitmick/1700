@@ -1,3 +1,4 @@
+"use strict";
 /**
  * 
  */
@@ -16,8 +17,8 @@ Control.prototype.init = function() {
 
 Control.prototype.showPic = function(x,y,picName) {
 	picName = "img/actions/"+picName+".png";
-	pic = globalLoader.getImage(picName);
-	bitmap= new createjs.Bitmap(pic);
+	var pic = globalLoader.getImage(picName);
+	var bitmap = new createjs.Bitmap(pic);
 	bitmap.y=y;
 	bitmap.x=x;
 	stage.addChild(bitmap);
@@ -25,8 +26,8 @@ Control.prototype.showPic = function(x,y,picName) {
 
 Control.prototype.showEntityPic = function(x,y,picName,displayEntity) {
 	picName = "img/actions/"+picName+".png";
-	pic = globalLoader.getImage(picName);
-	bitmap= displayEntity.addBitmap(pic,false).element;
+	var pic = globalLoader.getImage(picName);
+	var bitmap = displayEntity.addBitmap(pic,false).element;
 	return bitmap;
 };
 
@@ -51,7 +52,7 @@ Control.prototype.useAction = function() {
 }
 
 Control.prototype.displayUseAction = function(count) {
-	ce = this.controlAction[this.selectedAction]; 
+	var ce = this.controlAction[this.selectedAction];
 	if (ce && count==0)
 		ce.select();
 };

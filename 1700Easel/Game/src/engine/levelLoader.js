@@ -1,3 +1,4 @@
+"use strict";
 /**
  * d-p-t-r was here
  */

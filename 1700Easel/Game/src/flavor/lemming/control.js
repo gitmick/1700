@@ -1,3 +1,4 @@
+"use strict";
 /**
  * 
  */
@@ -34,7 +35,7 @@ function JumpAll() {
 
 LemmingControl.prototype.addControl = function(x,y,action_,picName) {
 	y=y-11;
-	cE = new ControlElement();
+	var cE = new ControlElement();
 	this.showEntityPic(x,y,picName,cE.displayEntity);
 	cE.scaleBitmap = this.showEntityPic(x,y,picName,cE.displayEntity);
 	cE.scaleBitmap.alpha=0.5;
@@ -62,7 +63,7 @@ LemmingControl.prototype.addControl = function(x,y,action_,picName) {
 
 LemmingControl.prototype.addGlobalControl = function(x,y,action_,picName) {
 
-	cE = new GlobalControlElement();
+	var cE = new GlobalControlElement();
 	this.showEntityPic(x,y,picName,cE.displayEntity);
 	cE.scaleBitmap = this.showEntityPic(x,y,picName,cE.displayEntity);
 	cE.scaleBitmap.alpha=0.5;
@@ -79,7 +80,7 @@ LemmingControl.prototype.addGlobalControl = function(x,y,action_,picName) {
 
 
 LemmingControl.prototype.displayUseAction = function(count) {
-	ce = this.controlAction[this.selectedAction]; 
+	var ce = this.controlAction[this.selectedAction];
 	ce.text.text=""+count;	
 	ce.text.updateCache();
 	if (count==0)
@@ -98,10 +99,10 @@ function ControlElement() {
 }
 
 ControlElement.prototype.select = function(x,y){
-	leftActions = level.actionCount[this.action];
+	var leftActions = level.actionCount[this.action];
 	if (leftActions>0) {
 		if (game.control.selectedAction) {
-			lastCE=game.control.controlAction[game.control.selectedAction];
+			var lastCE = game.control.controlAction[game.control.selectedAction];
 			if (lastCE.selectedBitmap)
 				lastCE.selectedBitmap.alpha=0;
 		}
@@ -135,11 +136,11 @@ function GlobalControlElement() {
 };
 
 GlobalControlElement.prototype.select = function(x,y){
-	a = new this.action;
+	var a = new this.action();
 	if (a.check && a.check())
 		this.active=true;
-	if (this.active) {	
-		active = a.execute();
+	if (this.active) {
+		var active = a.execute();
 		if (!active) {
 			this.selectionShape.graphics.clear();
 			this.selectionShape.graphics.beginFill("rgba(100,100,100,0.5)").drawRect(2,2,32,32);

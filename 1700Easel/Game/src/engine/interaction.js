@@ -1,3 +1,4 @@
+"use strict";
 /**
  * 
  */
@@ -27,8 +28,8 @@ function InteractionEntity(x,y,w,h,target) {
 
 InteractionEntity.prototype.click = function(x,y) {
 	if (x>this.x && x<this.x+this.w && y>this.y && y<this.y+this.h) {
-		xCenter = this.x + (this.w/2);
-		yCenter = this.y + (this.h/2);
+		var xCenter = this.x + (this.w/2);
+		var yCenter = this.y + (this.h/2);
 		return Math.abs(xCenter-x)+Math.abs(yCenter-y);
 	}
 	else
@@ -66,7 +67,7 @@ InteractionHandler.prototype.reset = function() {
 
 InteractionHandler.prototype.select = function(x,y) {
 	//console.log("try selecting");
-	selected = false;
+	var selected = false;
 	for (var i=0;i<this.interactionEntities.length;i++) {
 		var iE = this.interactionEntities[i];
 		if (!iE.target.select) {
@@ -93,7 +94,7 @@ function CollectionItem(time,item) {
 
 
 InteractionHandler.prototype.collect = function(x,y,time) {
-	collected=false;
+	var collected = false;
 	for (var i=0;i<this.interactionEntities.length;i++) {
 		var iE = this.interactionEntities[i];
 		if (!iE.target.collected) {
@@ -121,8 +122,8 @@ InteractionHandler.prototype.collected = function() {
 
 InteractionHandler.prototype.explore = function(x,y) {
 	//TODO remove duplication
-	
-	selected = false;
+
+	var selected = false;
 	for (var i=0;i<this.interactionEntities.length;i++) {
 		var iE = this.interactionEntities[i];
 		if (!iE.target.explore) {
@@ -151,7 +152,7 @@ InteractionHandler.prototype.explore = function(x,y) {
 	}
 };
 
-interactionHandler = new InteractionHandler();
+var interactionHandler = new InteractionHandler();
 
 
 function DeviceInteraction() {
@@ -302,9 +303,9 @@ DesktopInteraction.prototype.calculateDirection = function() {
 			game.dirX=0;
 		if (directiony==0)
 			game.dirY=0;
-		if (!game.dirX==0 && !game.dirY==0) {
-			absx=Math.abs(direction);
-			absy=Math.abs(directiony);
+		if (game.dirX !== 0 && game.dirY !== 0) {
+			var absx = Math.abs(direction);
+			var absy = Math.abs(directiony);
 			var lower=absy;
 			var upper=absx;
 			if (absy>absx) {

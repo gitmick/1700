@@ -1,3 +1,4 @@
+"use strict";
 /**
  * 
  */
@@ -32,15 +33,15 @@ function contains(a, obj) {
 
 function formatPrice(num) {
 	num=num.toFixed(2);
-	numStr = num+"";
-	euro = numStr.substring(0,numStr.length-3);
-	cent = numStr.substring(numStr.length-2);
-	eurNew = formatEuro(euro);
+	var numStr = num+"";
+	var euro = numStr.substring(0,numStr.length-3);
+	var cent = numStr.substring(numStr.length-2);
+	var eurNew = formatEuro(euro);
 	return eurNew+","+cent;
 }
 
 function formatEuro(euro) {
-	eurNew="";
+	var eurNew = "";
 	for (var i=0;i<euro.length;i++) {
 		if (i%3==0 && i!=0) {
 			eurNew="."+eurNew;

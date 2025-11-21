@@ -1,3 +1,4 @@
+"use strict";
 function Actor() {
 	this.action;
 	this.lastAction;

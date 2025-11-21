@@ -1,3 +1,4 @@
+"use strict";
 /**
  * 
  */
@@ -40,7 +41,7 @@ DisplayEntityHolder.prototype.destroy = function() {
 	}
 }
 
-displayEntityHolder = new DisplayEntityHolder();
+var displayEntityHolder = new DisplayEntityHolder();
 
 var deCount=0;
 
@@ -67,7 +68,7 @@ DisplayEntity.prototype.adjust = function(deFrame) {
 }
 DisplayEntity.prototype.addBitmap = function(img,scrollable) {
 	var ent = scrollable?new DEScrollElement():new DEElement();
-	bitmap = new createjs.Bitmap(img);
+	var bitmap = new createjs.Bitmap(img);
 	stage.addChild(bitmap);
 	ent.element=bitmap;
 	this.deElements.push(ent);
@@ -76,7 +77,7 @@ DisplayEntity.prototype.addBitmap = function(img,scrollable) {
 
 DisplayEntity.prototype.addBitmapClone = function(b,scrollable) {
 	var ent = scrollable?new DEScrollElement():new DEElement();
-	bitmap = b.clone();
+	var bitmap = b.clone();
 	stage.addChild(bitmap);
 	ent.element=bitmap;
 	this.deElements.push(ent);
@@ -85,7 +86,7 @@ DisplayEntity.prototype.addBitmapClone = function(b,scrollable) {
 
 DisplayEntity.prototype.addSprite = function(spriteSheet,name,scrollable) {
 	var ent = scrollable?new DEScrollElement():new DEElement();
-	sprite = new createjs.Sprite(spriteSheet,name);
+	var sprite = new createjs.Sprite(spriteSheet,name);
 	stage.addChild(sprite);
 	ent.element=sprite;
 	this.deElements.push(ent);
@@ -94,7 +95,7 @@ DisplayEntity.prototype.addSprite = function(spriteSheet,name,scrollable) {
 
 DisplayEntity.prototype.addInteractionEntity = function(width,height,target,scrollable) {
 	var ent = scrollable?new DEScrollElement():new DEElement();
-	ml = new InteractionEntity(0,0,width,height,target);
+	var ml = new InteractionEntity(0,0,width,height,target);
 	ent.element=ml;
 	this.deElements.push(ent);
 	interactionHandler.interactionEntities.push(ml);
@@ -106,7 +107,7 @@ DisplayEntity.prototype.addInteractionEntity = function(width,height,target,scro
 
 DisplayEntity.prototype.addShape = function(scrollable) {
 	var ent = scrollable?new DEScrollElement():new DEElement();
-	s = new createjs.Shape();
+	var s = new createjs.Shape();
 	stage.addChild(s);
 	ent.element=s;
 	this.deElements.push(ent);

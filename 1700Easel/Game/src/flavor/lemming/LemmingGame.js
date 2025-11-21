@@ -1,3 +1,4 @@
+"use strict";
 /**
  * 
  */
@@ -59,7 +60,7 @@ LemmingGame.prototype.drawRect = function(px,py,w,h,color){
 };
 
 LemmingGame.prototype.addLemmings = function(){
-	hasadded=false;
+	var hasadded = false;
 	if(this.added++<level.maxPoliceMen){
 		var lemming = new Lemming();
 		lemming.x=level.dropX;
@@ -85,7 +86,7 @@ LemmingGame.prototype.scrollLevel = function(mouseX){
     			this.currentScroll-=(100-mouseX)/8.0;
     	}
 		this.currentScroll=parseInt(this.currentScroll);
-		def = new DEFrame();
+		var def = new DEFrame();
 		def.currentScroll = this.currentScroll;
 		this.level.world.scroll(def);
 	}

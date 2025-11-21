@@ -1,3 +1,4 @@
+"use strict";
  /**
  * 
  */
@@ -59,10 +60,10 @@ Fall.prototype.act=function() {
 		this.lemming.updateAnimation("run");
 		this.init=true;
 	}
-	
-	speed=5;
+
+	var speed = 5;
 	if (this.lemming.canFloat) {
-		speed=1;
+		speed = 1;
 		this.effect("Float");
 		if (!this.paraOpen) {
 			this.lemming.circle.gotoAndPlay("par");
@@ -71,7 +72,7 @@ Fall.prototype.act=function() {
 	}
 	else if (this.height>32)
 		this.effect("FloatFall");
-	for (i=0;i<speed;i++) {
+	for (var i=0;i<speed;i++) {
 		if (this.check()) {
 			this.lemming.y+=this.lemming.speed;
 			if (this.lemming.y>0)
@@ -146,7 +147,7 @@ Bomb.prototype=new Action();
 
 Bomb.prototype.check=function() {
 	if (this.counter>20) {
-		p = (this.counter-20)/90;
+		var p = (this.counter-20)/90;
 		this.lemming.setProgress(p);
 	}
 	else
@@ -222,8 +223,8 @@ Build.prototype.act=function() {
 		this.effectInstance.stop();
 	}
 	if (this.counter%36==0) {
-		characterCenter = this.lemming.x+(this.lemming.width/2);
-		startDraw = characterCenter + ((this.lemming.width/3)*this.lemming.direction);
+		var characterCenter = this.lemming.x+(this.lemming.width/2);
+		var startDraw = characterCenter + ((this.lemming.width/3)*this.lemming.direction);
 		if (this.lemming.direction<0) {
 			startDraw-=8;
 		}
@@ -242,8 +243,8 @@ function Bash() {
 Bash.prototype=new Action();
 
 Bash.prototype.check=function() {
-	
-	bashResult = this.lemming.canBash();
+
+	var bashResult = this.lemming.canBash();
 	if (bashResult==POLICE || bashResult==EVERBLOCK) {
 		this.lemming.reverse();
 		this.lemming.setAction(new Walk());
@@ -408,7 +409,7 @@ function Mine() {
 Mine.prototype=new Action();
 
 Mine.prototype.check = function() {
-	mineResult = this.lemming.canMine();
+	var mineResult = this.lemming.canMine();
 	if (mineResult==POLICE || mineResult==EVERBLOCK) {
 		this.lemming.reverse();
 		this.lemming.setAction(new Walk());

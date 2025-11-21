@@ -1,3 +1,4 @@
+"use strict";
 /**
  * 
  */
@@ -18,7 +19,7 @@ Act.prototype.act = function() {
 
 Act.prototype.effect3 = function(name1,name2,name3,probabl) {
 	if (Math.random()>probabl) {
-		ran = Math.random();
+		var ran = Math.random();
 		if (ran<0.34)
 			this.effect(name1);
 		else if (ran<0.68)

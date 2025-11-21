@@ -1,3 +1,4 @@
+"use strict";
 /**
  * 
  */
@@ -81,7 +82,7 @@ World.prototype.setEquipment=function(eq) {
 World.prototype.init = function(lvl) {
 	
 	//blueSky
-	sky=this.displayEntity.addShape(true).element;
+	var sky = this.displayEntity.addShape(true).element;
 	sky.graphics.beginFill("#D0EEf3").drawRect(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	
 	
@@ -119,7 +120,7 @@ World.prototype.init = function(lvl) {
 		};
 	}
 	if (lvl.backgroundHtmlImage) {
-		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
+		var bg = this.displayEntity.addBitmap(lvl.backgroundHtmlImage,true);
 		//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
 		bg.width=lvl.worldHtmlImage.width;
 		bg.xOff=0;
@@ -156,7 +157,7 @@ World.prototype.init = function(lvl) {
 		};
 	}
 	if (lvl.backgroundHtmlImage2) {
-		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage2,true);
+		var bg = this.displayEntity.addBitmap(lvl.backgroundHtmlImage2,true);
 		//bg.element.cache(0,0,lvl.backgroundHtmlImage.width,lvl.backgroundHtmlImage.height);
 		bg.width=lvl.worldHtmlImage.width;
 		bg.yOff=84;
@@ -242,7 +243,7 @@ World.prototype.init = function(lvl) {
 	
 	if (lvl.mapHtmlImage!=lvl.worldHtmlImage) {
 		this.backButton = this.displayEntity.addBitmap(globalLoader.getImage("img/back.png"),false);
-		b = new Button(5,5,15,15);
+		var b = new Button(5,5,15,15);
 		b.select = function() {
 			game.machine.setAction(new MachineAction());
 			displayEntityHolder.destroy();
@@ -288,9 +289,9 @@ World.prototype.drawCircle = function(px,py,radius,color){
 	this.drawRect(px-radius*3/4,py-radius*3/4,radius*3/2,radius*3/2,color);
 }
 
-World.prototype.drawRect = function(px,py,w,h,color){	
-	for (xi=-1;xi<=w;xi++) {
-		for (yi=-1;yi<=h;yi++) {
+World.prototype.drawRect = function(px,py,w,h,color){
+	for (var xi=-1;xi<=w;xi++) {
+		for (var yi=-1;yi<=h;yi++) {
 			this.worldBitmapData.setPixel(px+xi,py+yi,color);
 		}
 	}
@@ -329,7 +330,7 @@ World.prototype.canFall = function(x,y,width) {
 	var dead=false;
 	var block = INVISIBLE_BLOCK;
 	for(var aw=border;aw<width-border;aw++){
-		result = this.getWorldPixel(x+aw,y);
+		var result = this.getWorldPixel(x+aw,y);
 		if(result==DEADLY)
 			dead=true;
 		if(result>=FREE){
@@ -378,7 +379,7 @@ World.prototype.getDY=function(x,y,height,maxDY,direction){
 			}
 			else {
 				if (openSize>=height) {
-					dy=height-aw;
+					var dy = height-aw;
 					return dy;
 				} 
 				openSize=0;

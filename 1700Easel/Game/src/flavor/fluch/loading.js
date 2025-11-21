@@ -1,3 +1,4 @@
+"use strict";
 var eff1;
 var eff2;
 var eff3;

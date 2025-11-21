@@ -1,3 +1,4 @@
+"use strict";
 net_asifism_engine_core_Messages = (function() {
 	
 	collection = net_asifism_utils_Collections;
