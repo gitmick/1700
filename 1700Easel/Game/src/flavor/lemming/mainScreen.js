@@ -192,7 +192,10 @@ FolderLevel.prototype.init = function() {
 
 		// Show mobile intro overlay if on mobile
 		if (typeof isMobileDevice !== 'undefined' && isMobileDevice && typeof MobileNavigation !== 'undefined') {
-			MobileNavigation.showIntro(level.title, level.description, null);
+			MobileNavigation.showIntro(level.title, level.description, function() {
+				// Release the intro block when user taps
+				introSoundBlock.isBlock = false;
+			});
 		} else {
 			// Desktop: show on canvas
 			var bitmap = new createjs.Bitmap(this.level.introImage);
