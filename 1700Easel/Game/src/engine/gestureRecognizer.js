@@ -205,9 +205,10 @@ GestureRecognizer.prototype.mapDirectionToAction = function(direction) {
         'down-right': Mine,
         'right': Bash,
         'up-right': Build,
-        'up': Float,
+        'up': Climb,
+        'up-left': Float,
         'left': Block
-        // 'up-left' and 'down-left' reserved
+        // 'down-left' reserved
     };
 
     return actionMap[direction] || null;

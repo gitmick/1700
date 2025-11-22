@@ -162,15 +162,39 @@ MobileLayout.prototype.createControlPanel = function() {
         'padding:5px;' +
         'box-sizing:border-box;';
 
-    // Add control buttons
-    this.addControlButton('Jump', 'jump-mode', this.toggleJumpMode.bind(this));
-    this.addControlButton('Bomb', 'bomb-all', this.bombAll.bind(this));
-    this.addControlButton('⚡', 'speed', this.toggleSpeed.bind(this));
-    this.addControlButton('+', 'more', this.moreLemmings.bind(this));
-    this.addControlButton('-', 'less', this.lessLemmings.bind(this));
-    this.addControlButton('←', 'back', this.goBack.bind(this));
+    // Add control buttons with images
+    this.addControlButtonImg('img/actions/jumpAll.png', 'jump-mode', this.toggleJumpMode.bind(this));
+    this.addControlButtonImg('img/actions/bombAll.png', 'bomb-all', this.bombAll.bind(this));
+    this.addControlButtonImg('img/actions/fastForward.png', 'speed', this.toggleSpeed.bind(this));
+    this.addControlButtonImg('img/actions/plus.png', 'more', this.moreLemmings.bind(this));
+    this.addControlButtonImg('img/actions/minus.png', 'less', this.lessLemmings.bind(this));
+    this.addControlButtonImg('img/back.png', 'back', this.goBack.bind(this));
 
     document.getElementById('mobile-container').appendChild(this.controlPanel);
+};
+
+MobileLayout.prototype.addControlButtonImg = function(imgSrc, id, callback) {
+    var btn = document.createElement('button');
+    btn.id = 'ctrl-' + id;
+    btn.style.cssText =
+        'padding:0;' +
+        'margin:0;' +
+        'background:none;' +
+        'border:none;' +
+        'cursor:pointer;' +
+        'display:block;';
+
+    var img = document.createElement('img');
+    img.src = imgSrc;
+    img.style.cssText = 'width:40px;height:40px;display:block;';
+    btn.appendChild(img);
+
+    btn.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        callback();
+    });
+
+    this.controlPanel.appendChild(btn);
 };
 
 MobileLayout.prototype.addControlButton = function(label, id, callback) {
@@ -279,20 +303,14 @@ MobileLayout.prototype.handleZoomTap = function(x, y) {
 };
 
 MobileLayout.prototype.handleZoomDoubleTap = function(x, y) {
+    // Double tap currently unused
+};
+
+MobileLayout.prototype.handleZoomLongPress = function(x, y) {
     // Bomb action on selected lemming
     if (this.selectedLemming && level.actionCount[Bomb] > 0) {
         this.selectedLemming.setAction(new Bomb());
         level.actionCount[Bomb]--;
-        this.selectedLemming = null;
-        game.selectedLemming = null;
-    }
-};
-
-MobileLayout.prototype.handleZoomLongPress = function(x, y) {
-    // Climb action on selected lemming
-    if (this.selectedLemming && level.actionCount[Climb] > 0) {
-        this.selectedLemming.setAction(new Climb());
-        level.actionCount[Climb]--;
         this.selectedLemming = null;
         game.selectedLemming = null;
     }
@@ -340,16 +358,12 @@ MobileLayout.prototype.toggleJumpMode = function() {
 
 MobileLayout.prototype.bombAll = function() {
     var action = new BombAll();
-    if (action.check && action.check()) {
-        action.execute();
-    }
+    action.execute();
 };
 
 MobileLayout.prototype.toggleSpeed = function() {
     var action = new FinishSpeed();
-    if (action.check && action.check()) {
-        action.execute();
-    }
+    action.execute();
 };
 
 MobileLayout.prototype.moreLemmings = function() {
@@ -688,68 +702,66 @@ MobileLayout.prototype.drawActionArrows = function(ctx) {
     var arrowStart = 30;
 
     var actions = [
-        { dir: 'down', angle: 90, action: Dig, icon: 'dig' },
-        { dir: 'down-right', angle: 45, action: Mine, icon: 'mine' },
-        { dir: 'right', angle: 0, action: Bash, icon: 'bash' },
-        { dir: 'up-right', angle: -45, action: Build, icon: 'build' },
-        { dir: 'up', angle: -90, action: Float, icon: 'float' },
-        { dir: 'left', angle: 180, action: Block, icon: 'block' }
+        { dir: 'down', angle: 90, action: Dig, name: 'Dig' },
+        { dir: 'down-right', angle: 45, action: Mine, name: 'Mine' },
+        { dir: 'right', angle: 0, action: Bash, name: 'Bash' },
+        { dir: 'up-right', angle: -45, action: Build, name: 'Build' },
+        { dir: 'up', angle: -90, action: Climb, name: 'Climb' },
+        { dir: 'up-left', angle: -135, action: Float, name: 'Float' },
+        { dir: 'left', angle: 180, action: Block, name: 'Block' }
     ];
 
     for (var i = 0; i < actions.length; i++) {
         var a = actions[i];
 
-        // Check if action is available
+        // Check if action count is available
         var count = level.actionCount[a.action];
         if (!count || count <= 0) continue;
+
+        // Check if lemming can perform this action
+        var canPerform = this.selectedLemming.checkAction(new a.action());
 
         // Determine alpha based on highlight
         var alpha = (this.highlightedDirection === a.dir) ? 0.9 : 0.4;
 
-        // Calculate arrow end position
+        // Calculate positions
         var rad = a.angle * Math.PI / 180;
-        var endX = centerX + Math.cos(rad) * arrowLength;
-        var endY = centerY + Math.sin(rad) * arrowLength;
-        var startX = centerX + Math.cos(rad) * arrowStart;
-        var startY = centerY + Math.sin(rad) * arrowStart;
 
-        // Draw arrow line
-        ctx.strokeStyle = 'rgba(255, 255, 0, ' + alpha + ')';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(startX, startY);
-        ctx.lineTo(endX, endY);
-        ctx.stroke();
+        // Only draw arrow if action is possible
+        if (canPerform) {
+            var endX = centerX + Math.cos(rad) * arrowLength;
+            var endY = centerY + Math.sin(rad) * arrowLength;
+            var startX = centerX + Math.cos(rad) * arrowStart;
+            var startY = centerY + Math.sin(rad) * arrowStart;
 
-        // Draw arrowhead
-        var headLen = 10;
-        var headAngle = Math.PI / 6;
-        ctx.beginPath();
-        ctx.moveTo(endX, endY);
-        ctx.lineTo(endX - headLen * Math.cos(rad - headAngle), endY - headLen * Math.sin(rad - headAngle));
-        ctx.moveTo(endX, endY);
-        ctx.lineTo(endX - headLen * Math.cos(rad + headAngle), endY - headLen * Math.sin(rad + headAngle));
-        ctx.stroke();
+            // Draw arrow line
+            ctx.strokeStyle = 'rgba(255, 255, 0, ' + alpha + ')';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
 
-        // Draw action icon and count at end of arrow
+            // Draw arrowhead
+            var headLen = 10;
+            var headAngle = Math.PI / 6;
+            ctx.beginPath();
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(endX - headLen * Math.cos(rad - headAngle), endY - headLen * Math.sin(rad - headAngle));
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(endX - headLen * Math.cos(rad + headAngle), endY - headLen * Math.sin(rad + headAngle));
+            ctx.stroke();
+        }
+
+        // Always draw action name and count
         var labelX = centerX + Math.cos(rad) * (maxRadius + 10);
         var labelY = centerY + Math.sin(rad) * (maxRadius + 10);
 
-        // Draw icon
-        var iconImg = globalLoader.getImage('img/actions/' + a.icon + '.png');
-        if (iconImg && iconImg.complete) {
-            ctx.globalAlpha = alpha;
-            var iconSize = 24;
-            ctx.drawImage(iconImg, labelX - iconSize/2, labelY - iconSize/2, iconSize, iconSize);
-            ctx.globalAlpha = 1.0;
-        }
-
-        // Draw count below icon
-        ctx.font = '10px Visitor, monospace';
-        ctx.fillStyle = 'rgba(255, 255, 0, ' + alpha + ')';
+        ctx.font = '16px Visitor, monospace';
+        ctx.fillStyle = 'rgba(0, 0, 0, ' + (canPerform ? alpha : 0.2) + ')';
         ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText(count, labelX, labelY + 14);
+        ctx.textBaseline = 'middle';
+        ctx.fillText(a.name + ' ' + count, labelX, labelY);
     }
 
     // Reset highlight after drawing
