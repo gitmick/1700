@@ -72,14 +72,14 @@ WinAction.prototype.act = function() {
 		soundPlayer.reset();
 		displayEntityHolder.destroy();
 		stage.removeAllChildren();
-		img = globalLoader.getImage("img/background-Zib.png");
+		var img = globalLoader.getImage("img/background-Zib.png");
 		var dE = new DisplayEntity();
 		dE.addBitmap(img,false);
-		wolf = globalLoader.getImage("img/arminwolf.png");
-		d=dE.addBitmap(wolf, false);
+		var wolf = globalLoader.getImage("img/arminwolf.png");
+		var d = dE.addBitmap(wolf, false);
 		d.xOff = 500;
 		d.pos = function(x,y,deFrame) {
-			scaledWidth = (384/height())*width()-336;
+			var scaledWidth = (384/height())*width()-336;
 			if (scaledWidth>800-336) {
 				scaledWidth=800-336;
 			}
@@ -90,23 +90,23 @@ WinAction.prototype.act = function() {
 				this.element.x=parseInt(x+scaledWidth);
 		};
 		d.pos(0,0);
-		startObject = new IntroButton(0,0,400,400);
+		var startObject = new IntroButton(0,0,400,400);
 		startObject.delaySelect = function(x, y) {
 			game.level = new FolderLevel(level.nextLevel);
 			game.level.start(game.machine);
 		};
 		this.started=true;
-		gameText = new createjs.Text(timeKeeper.toString(), "10px Visitor", "#300300"); 
+		var gameText = new createjs.Text(timeKeeper.toString(), "10px Visitor", "#300300");
 		gameText.x=100;
 		gameText.y=60;
 		stage.addChild(gameText);
-		
-		gameText2 = new createjs.Text(timeKeeper.toString2(), "10px Visitor", "#300300"); 
+
+		var gameText2 = new createjs.Text(timeKeeper.toString2(), "10px Visitor", "#300300");
 		gameText2.x=180;
 		gameText2.y=60;
 		stage.addChild(gameText2);
-		
-		gameText3 = new createjs.Text("Polizei hat es\ngeschafft!!", "20px Visitor", "#300300"); 
+
+		var gameText3 = new createjs.Text("Polizei hat es\ngeschafft!!", "20px Visitor", "#300300");
 		gameText3.x=120;
 		gameText3.y=239;
 		stage.addChild(gameText3);
@@ -120,50 +120,48 @@ LostAction.prototype.act = function() {
 	if (!this.started) {
 		displayEntityHolder.destroy();
 		stage.removeAllChildren();
-	
-	soundPlayer.reset();
-	img = globalLoader.getImage("img/background-Zib.png");
-	var dE = new DisplayEntity();
-	dE.addBitmap(img,false);
-	wolf = globalLoader.getImage("img/arminwolf.png");
-	d=dE.addBitmap(wolf, false);
-	d.xOff = 500;
-	d.pos = function(x,y,deFrame) {
-		scaledWidth = (384/height())*width()-336;
-		if (scaledWidth>800-336) {
-			scaledWidth=800-336;
-		}
-		console.log(scaledWidth);
-		if (deFrame)
-			this.element.x=x-deFrame.currentScroll+this.xOff;
-		else
-			this.element.x=parseInt(x+scaledWidth);
-	};
-	d.pos(0,0);
-	startObject = new IntroButton(0,0,400,700);
-	startObject.delaySelect = function(x, y) {
-		game.level = new FolderLevel(level.name);
-		game.level.start(game.machine);
-	};
-	this.started=true;
-	
 
-	gameText = new createjs.Text(timeKeeper.toString(), "10px Visitor", "#300300"); 
-	gameText.x=100;
-	gameText.y=60;
-	stage.addChild(gameText);
-	
-	gameText2 = new createjs.Text(timeKeeper.toString2(), "10px Visitor", "#300300"); 
-	gameText2.x=180;
-	gameText2.y=60;
-	stage.addChild(gameText2);
-	
-	gameText3 = new createjs.Text("Polizei versagt\nschon wieder!!", "20px Visitor", "#300300"); 
-	gameText3.x=120;
-	gameText3.y=239;
-	stage.addChild(gameText3);
-	
-}
+		soundPlayer.reset();
+		var img = globalLoader.getImage("img/background-Zib.png");
+		var dE = new DisplayEntity();
+		dE.addBitmap(img,false);
+		var wolf = globalLoader.getImage("img/arminwolf.png");
+		var d = dE.addBitmap(wolf, false);
+		d.xOff = 500;
+		d.pos = function(x,y,deFrame) {
+			var scaledWidth = (384/height())*width()-336;
+			if (scaledWidth>800-336) {
+				scaledWidth=800-336;
+			}
+			console.log(scaledWidth);
+			if (deFrame)
+				this.element.x=x-deFrame.currentScroll+this.xOff;
+			else
+				this.element.x=parseInt(x+scaledWidth);
+		};
+		d.pos(0,0);
+		var startObject = new IntroButton(0,0,400,700);
+		startObject.delaySelect = function(x, y) {
+			game.level = new FolderLevel(level.name);
+			game.level.start(game.machine);
+		};
+		this.started=true;
+
+		var gameText = new createjs.Text(timeKeeper.toString(), "10px Visitor", "#300300");
+		gameText.x=100;
+		gameText.y=60;
+		stage.addChild(gameText);
+
+		var gameText2 = new createjs.Text(timeKeeper.toString2(), "10px Visitor", "#300300");
+		gameText2.x=180;
+		gameText2.y=60;
+		stage.addChild(gameText2);
+
+		var gameText3 = new createjs.Text("Polizei versagt\nschon wieder!!", "20px Visitor", "#300300");
+		gameText3.x=120;
+		gameText3.y=239;
+		stage.addChild(gameText3);
+	}
 }
 
 
@@ -213,7 +211,7 @@ TimeKeeper.prototype.toString = function() {
 	string+=this.policeCount+" Polizisten: "+"\n\n";
 	sum+=(this.policeCount*this.pricePolice);
 	for (var i=0;i<this.pricedAssets.length;i++) {
-		pricedAsset = this.pricedAssets[i];
+		var pricedAsset = this.pricedAssets[i];
 		sum+=pricedAsset.value;
 		string+=pricedAsset.name+" "+"\n\n";
 	}
@@ -233,7 +231,7 @@ TimeKeeper.prototype.toString2 = function() {
 	this.moneyLeft-=this.policeCount*this.pricePolice;
 	sum+=(this.policeCount*this.pricePolice);
 	for (var i=0;i<this.pricedAssets.length;i++) {
-		pricedAsset = this.pricedAssets[i];
+		var pricedAsset = this.pricedAssets[i];
 		sum+=pricedAsset.value;
 		this.moneyLeft-=pricedAsset.value;
 		string+=formatPrice(pricedAsset.value)+" EUR\n\n";

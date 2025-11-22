@@ -42,6 +42,9 @@ function MobileLayout() {
 
     // Visibility state
     this.visible = false;
+
+    // Audio unlocked flag
+    this.audioUnlocked = false;
 }
 
 MobileLayout.prototype.init = function() {
@@ -72,22 +75,24 @@ MobileLayout.prototype.createCanvases = function() {
     container.id = 'mobile-container';
     container.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
 
-    // Minimap canvas
+    // Minimap canvas (now at bottom, above nothing)
     this.minimapCanvas = document.createElement('canvas');
     this.minimapCanvas.id = 'minimap-canvas';
     this.minimapCanvas.width = this.screenWidth;
     this.minimapCanvas.height = this.minimapHeight;
-    this.minimapCanvas.style.cssText = 'position:absolute;top:0;left:0;background:#000;';
+    this.minimapCanvas.style.cssText = 'position:absolute;top:' + (this.controlHeight + this.zoomHeight) + 'px;left:0;background:#000;';
     this.minimapCtx = this.minimapCanvas.getContext('2d');
+    this.minimapCtx.imageSmoothingEnabled = false;
     container.appendChild(this.minimapCanvas);
 
-    // Zoom canvas
+    // Zoom canvas (middle)
     this.zoomCanvas = document.createElement('canvas');
     this.zoomCanvas.id = 'zoom-canvas';
     this.zoomCanvas.width = this.zoomWidth;
     this.zoomCanvas.height = this.zoomHeight;
-    this.zoomCanvas.style.cssText = 'position:absolute;top:' + this.minimapHeight + 'px;left:0;background:#87CEEB;';
+    this.zoomCanvas.style.cssText = 'position:absolute;top:' + this.controlHeight + 'px;left:0;background:#87CEEB;';
     this.zoomCtx = this.zoomCanvas.getContext('2d');
+    this.zoomCtx.imageSmoothingEnabled = false;
     container.appendChild(this.zoomCanvas);
 
     document.body.appendChild(container);
@@ -135,6 +140,9 @@ MobileLayout.prototype.setupGestures = function() {
     this.zoomGesture.onSwipeMove = function(direction, dx, dy, x, y) {
         that.handleSwipeMove(direction, dx, dy, x, y);
     };
+    this.zoomGesture.onDrag = function(dx, dy) {
+        that.handleZoomDrag(dx, dy);
+    };
 };
 
 MobileLayout.prototype.createControlPanel = function() {
@@ -142,7 +150,7 @@ MobileLayout.prototype.createControlPanel = function() {
     this.controlPanel.id = 'control-panel';
     this.controlPanel.style.cssText =
         'position:absolute;' +
-        'top:' + (this.minimapHeight + this.zoomHeight) + 'px;' +
+        'top:0;' +
         'left:0;' +
         'width:100%;' +
         'height:' + this.controlHeight + 'px;' +
@@ -191,6 +199,7 @@ MobileLayout.prototype.addControlButton = function(label, id, callback) {
 // --- Event Handlers ---
 
 MobileLayout.prototype.handleMinimapTap = function(x, y) {
+    this.unlockAudio();
     this.moveViewportToMinimap(x, y);
     // Deselect lemming on tap
     this.selectedLemming = null;
@@ -204,8 +213,9 @@ MobileLayout.prototype.handleMinimapDrag = function(x, y) {
 
 MobileLayout.prototype.moveViewportToMinimap = function(x, y) {
     // Convert minimap coordinates to level coordinates
+    // Use 350 for height (gameplay area without control bar)
     var levelX = (x / this.screenWidth) * this.levelWidth;
-    var levelY = (y / this.minimapHeight) * this.levelHeight;
+    var levelY = (y / this.minimapHeight) * 350;
 
     // Center viewport on position
     this.viewportX = levelX - (this.zoomWidth / this.zoomFactor) / 2;
@@ -213,12 +223,45 @@ MobileLayout.prototype.moveViewportToMinimap = function(x, y) {
 
     // Clamp viewport
     this.clampViewport();
+
+    // Sync game scroll with viewport so canvas renders correct content
+    this.syncGameScroll();
+};
+
+MobileLayout.prototype.syncGameScroll = function() {
+    // Update game.currentScroll to match viewportX
+    // This ensures the main canvas renders what the viewport wants to see
+    game.currentScroll = Math.max(0, Math.min(this.viewportX, this.levelWidth - canvasWidth));
 };
 
 MobileLayout.prototype.handleZoomTap = function(x, y) {
-    // Convert zoom coordinates to level coordinates
-    var levelX = this.viewportX + (x / this.zoomFactor);
-    var levelY = this.viewportY + (y / this.zoomFactor);
+    this.unlockAudio();
+
+    // Convert client coordinates to canvas-relative coordinates
+    var rect = this.zoomCanvas.getBoundingClientRect();
+    var canvasX = x - rect.left;
+    var canvasY = y - rect.top;
+
+    // Get clamped viewport position (same as used in rendering)
+    var viewWidth = this.zoomWidth / this.zoomFactor;
+    var viewHeight = this.zoomHeight / this.zoomFactor;
+    var clampedX = Math.max(0, Math.min(this.viewportX, this.levelWidth - viewWidth));
+    var clampedY = Math.max(0, Math.min(this.viewportY, 350 - viewHeight));
+
+    // Account for centering offset used in rendering
+    var model = game.level && game.level.world && game.level.world.levelModel;
+    var offsetX = 0;
+    var offsetY = 0;
+    if (model) {
+        var contentWidth = model.width * this.zoomFactor;
+        var contentHeight = model.height * this.zoomFactor;
+        offsetX = Math.max(0, (this.zoomWidth - contentWidth) / 2);
+        offsetY = Math.max(0, (this.zoomHeight - contentHeight) / 2);
+    }
+
+    // Convert canvas coordinates to level coordinates
+    var levelX = clampedX + ((canvasX - offsetX) / this.zoomFactor);
+    var levelY = clampedY + ((canvasY - offsetY) / this.zoomFactor);
 
     // Find lemming at this position
     var lemming = this.findLemmingAt(levelX, levelY);
@@ -226,6 +269,9 @@ MobileLayout.prototype.handleZoomTap = function(x, y) {
     if (lemming) {
         this.selectedLemming = lemming;
         game.selectedLemming = lemming;
+        // Store offset from viewport corner to maintain position during follow
+        this.followOffsetX = lemming.x - clampedX;
+        this.followOffsetY = lemming.y - clampedY;
     } else {
         this.selectedLemming = null;
         game.selectedLemming = null;
@@ -234,17 +280,21 @@ MobileLayout.prototype.handleZoomTap = function(x, y) {
 
 MobileLayout.prototype.handleZoomDoubleTap = function(x, y) {
     // Bomb action on selected lemming
-    if (this.selectedLemming && game.control.actionAvailable(Bomb)) {
+    if (this.selectedLemming && level.actionCount[Bomb] > 0) {
         this.selectedLemming.setAction(new Bomb());
-        game.control.useAction(Bomb);
+        level.actionCount[Bomb]--;
+        this.selectedLemming = null;
+        game.selectedLemming = null;
     }
 };
 
 MobileLayout.prototype.handleZoomLongPress = function(x, y) {
     // Climb action on selected lemming
-    if (this.selectedLemming && game.control.actionAvailable(Climb)) {
+    if (this.selectedLemming && level.actionCount[Climb] > 0) {
         this.selectedLemming.setAction(new Climb());
-        game.control.useAction(Climb);
+        level.actionCount[Climb]--;
+        this.selectedLemming = null;
+        game.selectedLemming = null;
     }
 };
 
@@ -253,16 +303,31 @@ MobileLayout.prototype.handleZoomSwipe = function(direction, dx, dy, startX, sta
 
     // Map direction to action
     var action = this.zoomGesture.mapDirectionToAction(direction);
+    var count = action ? level.actionCount[action] : 0;
 
-    if (action && game.control.actionAvailable(action)) {
+    if (action && count > 0) {
         this.selectedLemming.setAction(new action());
-        game.control.useAction(action);
+        level.actionCount[action]--;
+        // Deselect after action
+        this.selectedLemming = null;
+        game.selectedLemming = null;
     }
 };
 
 MobileLayout.prototype.handleSwipeMove = function(direction, dx, dy, x, y) {
     // Update arrow highlighting during swipe
     this.highlightedDirection = direction;
+};
+
+MobileLayout.prototype.handleZoomDrag = function(dx, dy) {
+    // Only allow dragging when no lemming is selected
+    if (this.selectedLemming) return;
+
+    // Convert screen delta to level delta (inverted for natural feel)
+    this.viewportX -= dx / this.zoomFactor;
+    this.viewportY -= dy / this.zoomFactor;
+    this.clampViewport();
+    this.syncGameScroll();
 };
 
 // --- Control Button Actions ---
@@ -308,9 +373,37 @@ MobileLayout.prototype.goBack = function() {
 
 // --- Helper Methods ---
 
+MobileLayout.prototype.unlockAudio = function() {
+    if (this.audioUnlocked) return;
+
+    // Unlock Web Audio API context (used by CreateJS Sound)
+    if (createjs && createjs.Sound && createjs.Sound.activePlugin) {
+        var ctx = createjs.Sound.activePlugin.context;
+        if (ctx && ctx.state === 'suspended') {
+            ctx.resume();
+        }
+    }
+
+    // Also try playing a silent sound to fully unlock
+    if (createjs && createjs.Sound) {
+        try {
+            var instance = createjs.Sound.play('_silence_');
+            if (instance) instance.stop();
+        } catch(e) {}
+    }
+
+    this.audioUnlocked = true;
+};
+
 MobileLayout.prototype.setLevelDimensions = function(width, height) {
     this.levelWidth = width;
     this.levelHeight = height;
+
+    // Default viewport to lower left corner
+    var viewHeight = this.zoomHeight / this.zoomFactor;
+    this.viewportX = 0;
+    this.viewportY = height - viewHeight;
+    this.clampViewport();
 };
 
 MobileLayout.prototype.clampViewport = function() {
@@ -326,8 +419,11 @@ MobileLayout.prototype.findLemmingAt = function(levelX, levelY) {
 
     for (var i = 0; i < game.lemmings.length; i++) {
         var lemming = game.lemmings[i];
-        // Check if click is within lemming bounds (roughly 32x32)
-        if (Math.abs(lemming.x - levelX) < 16 && Math.abs(lemming.y - levelY) < 32) {
+        // lemming.x/y is top-left of sprite
+        // Sprite is roughly 20x30, centered hitbox
+        var dx = levelX - lemming.x;
+        var dy = levelY - lemming.y;
+        if (dx >= 5 && dx < 25 && dy >= 5 && dy < 35) {
             return lemming;
         }
     }
@@ -335,15 +431,24 @@ MobileLayout.prototype.findLemmingAt = function(levelX, levelY) {
 };
 
 MobileLayout.prototype.update = function() {
-    // Follow selected lemming
+    // Check if selected lemming is still valid (in game.lemmings array)
     if (this.selectedLemming) {
-        var viewWidth = this.zoomWidth / this.zoomFactor;
-        var viewHeight = this.zoomHeight / this.zoomFactor;
+        var stillValid = game.lemmings && game.lemmings.indexOf(this.selectedLemming) !== -1;
+        if (!stillValid) {
+            this.selectedLemming = null;
+            game.selectedLemming = null;
+        }
+    }
 
-        this.viewportX = this.selectedLemming.x - viewWidth / 2;
-        this.viewportY = this.selectedLemming.y - viewHeight / 2;
+    // Follow selected lemming, maintaining its position in viewport
+    if (this.selectedLemming && this.followOffsetX !== undefined) {
+        this.viewportX = this.selectedLemming.x - this.followOffsetX;
+        this.viewportY = this.selectedLemming.y - this.followOffsetY;
         this.clampViewport();
     }
+
+    // Always sync game scroll with viewport
+    this.syncGameScroll();
 };
 
 MobileLayout.prototype.destroy = function() {
@@ -405,37 +510,30 @@ MobileLayout.prototype.render = function() {
 MobileLayout.prototype.renderMinimap = function(sourceCanvas) {
     var ctx = this.minimapCtx;
 
-    // Clear with sky color
-    ctx.fillStyle = '#87CEEB';
-    ctx.fillRect(0, 0, this.screenWidth, this.minimapHeight);
+    // Get model from world
+    var model = game.level && game.level.world && game.level.world.levelModel;
+    if (!model || !levelRenderer) {
+        // Fallback: clear with sky
+        ctx.fillStyle = '#87CEEB';
+        ctx.fillRect(0, 0, this.screenWidth, this.minimapHeight);
+        return;
+    }
 
-    // Calculate scale to fit entire level in minimap
-    var scaleX = this.screenWidth / this.levelWidth;
-    var scaleY = this.minimapHeight / this.levelHeight;
-    var scale = Math.min(scaleX, scaleY);
+    // Create minimap viewport (shows entire level, no parallax)
+    var minimapViewport = Viewport.createMinimap(this.levelWidth, 350, this.screenWidth, this.minimapHeight);
 
-    // Center the minimap
+    // Render using new architecture
+    levelRenderer.render(model, minimapViewport, ctx, {
+        skyColor: '#D0EEf3',
+        renderEntities: true,
+        selectedLemming: this.selectedLemming
+    });
+
+    // Draw viewport indicator on top
+    var scale = minimapViewport.scale;
     var offsetX = (this.screenWidth - this.levelWidth * scale) / 2;
-    var offsetY = (this.minimapHeight - this.levelHeight * scale) / 2;
-
-    // Draw level background rectangle
-    ctx.fillStyle = '#5a8f3a';
-    ctx.fillRect(offsetX, offsetY, this.levelWidth * scale, this.levelHeight * scale);
-
-    // Draw what's visible from source canvas at correct position
-    var visibleWidth = Math.min(sourceCanvas.width, this.levelWidth - game.currentScroll);
-    ctx.drawImage(
-        sourceCanvas,
-        0, 0, visibleWidth, sourceCanvas.height,
-        offsetX + game.currentScroll * scale, offsetY,
-        visibleWidth * scale, sourceCanvas.height * scale
-    );
-
-    // Draw viewport indicator
+    var offsetY = (this.minimapHeight - 350 * scale) / 2;
     this.drawViewportIndicator(ctx, scale, offsetX, offsetY);
-
-    // Draw lemming positions
-    this.drawMinimapLemmings(ctx, scale, offsetX, offsetY);
 };
 
 MobileLayout.prototype.drawViewportIndicator = function(ctx, scale, offsetX, offsetY) {
@@ -455,64 +553,121 @@ MobileLayout.prototype.drawViewportIndicator = function(ctx, scale, offsetX, off
 MobileLayout.prototype.drawMinimapLemmings = function(ctx, scale, offsetX, offsetY) {
     if (!game.lemmings) return;
 
-    for (var i = 0; i < game.lemmings.length; i++) {
-        var lemming = game.lemmings[i];
+    // Check if spritesheet is available
+    if (typeof lemmingsSheet !== 'undefined' && lemmingsSheet && lemmingsSheet._images && lemmingsSheet._images[0]) {
+        var sheetImage = lemmingsSheet._images[0];
 
-        // Draw lemming as colored dot
-        ctx.fillStyle = (lemming === this.selectedLemming) ? '#ff0' : '#0f0';
-        ctx.beginPath();
-        ctx.arc(
-            offsetX + lemming.x * scale,
-            offsetY + lemming.y * scale,
-            Math.max(2, 4 * scale),
-            0, Math.PI * 2
-        );
-        ctx.fill();
+        for (var i = 0; i < game.lemmings.length; i++) {
+            var lemming = game.lemmings[i];
+            var sprite = lemming.circle;
+
+            if (!sprite) continue;
+
+            // Get current frame data from spritesheet
+            var frame = sprite.currentFrame;
+            var frameData = lemmingsSheet.getFrame(frame);
+
+            if (frameData && frameData.rect) {
+                // Draw the sprite frame at lemming's position
+                ctx.drawImage(
+                    sheetImage,
+                    frameData.rect.x, frameData.rect.y,
+                    frameData.rect.width, frameData.rect.height,
+                    offsetX + lemming.x * scale,
+                    offsetY + lemming.y * scale,
+                    frameData.rect.width * scale,
+                    frameData.rect.height * scale
+                );
+
+                // Highlight selected lemming
+                if (lemming === this.selectedLemming) {
+                    ctx.strokeStyle = '#ff0';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(
+                        offsetX + lemming.x * scale,
+                        offsetY + lemming.y * scale,
+                        frameData.rect.width * scale,
+                        frameData.rect.height * scale
+                    );
+                }
+            }
+        }
+    } else {
+        // Fallback to dots if spritesheet not available
+        for (var i = 0; i < game.lemmings.length; i++) {
+            var lemming = game.lemmings[i];
+            ctx.fillStyle = (lemming === this.selectedLemming) ? '#ff0' : '#0f0';
+            ctx.beginPath();
+            ctx.arc(
+                offsetX + lemming.x * scale,
+                offsetY + lemming.y * scale,
+                Math.max(2, 4 * scale),
+                0, Math.PI * 2
+            );
+            ctx.fill();
+        }
     }
 };
 
 MobileLayout.prototype.renderZoomView = function(sourceCanvas) {
     var ctx = this.zoomCtx;
 
-    // Clear with sky color
-    ctx.fillStyle = '#87CEEB';
-    ctx.fillRect(0, 0, this.zoomWidth, this.zoomHeight);
-
-    // Calculate source rectangle
-    var srcX = this.viewportX;
-    var srcY = this.viewportY;
-    var srcWidth = this.zoomWidth / this.zoomFactor;
-    var srcHeight = this.zoomHeight / this.zoomFactor;
-
-    // Clamp to level bounds
-    srcX = Math.max(0, Math.min(srcX, this.levelWidth - srcWidth));
-    srcY = Math.max(0, Math.min(srcY, this.levelHeight - srcHeight));
-
-    // The source canvas shows level from game.currentScroll
-    // We need to translate our viewport to canvas coordinates
-    var canvasX = srcX - game.currentScroll;
-
-    // Draw zoomed portion
-    ctx.save();
-    ctx.scale(this.zoomFactor, this.zoomFactor);
-
-    // Draw from source, accounting for scroll
-    if (canvasX >= 0 && canvasX + srcWidth <= sourceCanvas.width) {
-        ctx.drawImage(sourceCanvas, canvasX, srcY, srcWidth, srcHeight, 0, 0, srcWidth, srcHeight);
-    } else {
-        // Viewport extends beyond current canvas view
-        // Draw what we can
-        ctx.drawImage(sourceCanvas, Math.max(0, canvasX), srcY,
-                      Math.min(srcWidth, sourceCanvas.width), srcHeight,
-                      Math.max(0, -canvasX), 0,
-                      Math.min(srcWidth, sourceCanvas.width), srcHeight);
+    // Get model from world
+    var model = game.level && game.level.world && game.level.world.levelModel;
+    if (!model || !levelRenderer) {
+        // Fallback: clear with sky
+        ctx.fillStyle = '#87CEEB';
+        ctx.fillRect(0, 0, this.zoomWidth, this.zoomHeight);
+        return;
     }
 
-    ctx.restore();
+    // Create zoomed viewport
+    var zoomedViewport = new Viewport({
+        scrollX: this.viewportX,
+        scrollY: this.viewportY,
+        width: this.zoomWidth,
+        height: this.zoomHeight,
+        scale: this.zoomFactor,
+        parallaxEnabled: true
+    });
+
+    // Clamp scroll to level bounds
+    zoomedViewport.clampScroll(this.levelWidth, 350);
+
+    // Render using new architecture
+    levelRenderer.render(model, zoomedViewport, ctx, {
+        skyColor: '#D0EEf3',
+        renderEntities: true,
+        selectedLemming: this.selectedLemming
+    });
 
     // Draw action arrows if lemming selected
     if (this.selectedLemming) {
         this.drawActionArrows(ctx);
+    }
+};
+
+MobileLayout.prototype.drawHitboxes = function(ctx) {
+    if (!game.lemmings) return;
+
+    ctx.strokeStyle = 'rgba(255, 0, 255, 0.5)';
+    ctx.lineWidth = 1;
+
+    for (var i = 0; i < game.lemmings.length; i++) {
+        var lemming = game.lemmings[i];
+        // Hitbox: dx >= 5 && dx < 25 && dy >= 5 && dy < 35
+        var hx = lemming.x + 5;
+        var hy = lemming.y + 5;
+        var hw = 20;
+        var hh = 30;
+
+        // Convert to screen coordinates
+        var screenX = (hx - this.viewportX) * this.zoomFactor;
+        var screenY = (hy - this.viewportY) * this.zoomFactor;
+        var screenW = hw * this.zoomFactor;
+        var screenH = hh * this.zoomFactor;
+
+        ctx.strokeRect(screenX, screenY, screenW, screenH);
     }
 };
 
@@ -523,25 +678,23 @@ MobileLayout.prototype.renderOverlays = function() {
 MobileLayout.prototype.drawActionArrows = function(ctx) {
     if (!this.selectedLemming) return;
 
-    // Convert lemming position to zoom view coordinates
-    var lx = (this.selectedLemming.x - this.viewportX) * this.zoomFactor;
-    var ly = (this.selectedLemming.y - this.viewportY) * this.zoomFactor;
+    // Draw from center of zoom canvas
+    var centerX = this.zoomWidth / 2;
+    var centerY = this.zoomHeight / 2;
 
-    // Arrow configuration
-    var arrowLength = 40;
-    var arrowWidth = 8;
+    // Arrow configuration - use most of the available space
+    var maxRadius = Math.min(centerX, centerY) - 40; // Leave room for icons
+    var arrowLength = maxRadius - 30;
+    var arrowStart = 30;
 
     var actions = [
-        { dir: 'down', angle: 90, action: Dig, label: '↓' },
-        { dir: 'down-right', angle: 45, action: Mine, label: '↘' },
-        { dir: 'right', angle: 0, action: Bash, label: '→' },
-        { dir: 'up-right', angle: -45, action: Build, label: '↗' },
-        { dir: 'up', angle: -90, action: Float, label: '↑' },
-        { dir: 'left', angle: 180, action: Block, label: '←' }
+        { dir: 'down', angle: 90, action: Dig, icon: 'dig' },
+        { dir: 'down-right', angle: 45, action: Mine, icon: 'mine' },
+        { dir: 'right', angle: 0, action: Bash, icon: 'bash' },
+        { dir: 'up-right', angle: -45, action: Build, icon: 'build' },
+        { dir: 'up', angle: -90, action: Float, icon: 'float' },
+        { dir: 'left', angle: 180, action: Block, icon: 'block' }
     ];
-
-    ctx.save();
-    ctx.translate(lx, ly - 16); // Center on lemming
 
     for (var i = 0; i < actions.length; i++) {
         var a = actions[i];
@@ -551,27 +704,53 @@ MobileLayout.prototype.drawActionArrows = function(ctx) {
         if (!count || count <= 0) continue;
 
         // Determine alpha based on highlight
-        var alpha = (this.highlightedDirection === a.dir) ? 1.0 : this.arrowAlpha;
+        var alpha = (this.highlightedDirection === a.dir) ? 0.9 : 0.4;
 
-        ctx.save();
-        ctx.rotate(a.angle * Math.PI / 180);
+        // Calculate arrow end position
+        var rad = a.angle * Math.PI / 180;
+        var endX = centerX + Math.cos(rad) * arrowLength;
+        var endY = centerY + Math.sin(rad) * arrowLength;
+        var startX = centerX + Math.cos(rad) * arrowStart;
+        var startY = centerY + Math.sin(rad) * arrowStart;
 
-        // Draw arrow
-        ctx.fillStyle = 'rgba(255, 255, 0, ' + alpha + ')';
-        ctx.beginPath();
-        ctx.moveTo(20, 0);
-        ctx.lineTo(20 + arrowLength, 0);
-        ctx.lineTo(20 + arrowLength - arrowWidth, -arrowWidth);
-        ctx.moveTo(20 + arrowLength, 0);
-        ctx.lineTo(20 + arrowLength - arrowWidth, arrowWidth);
-        ctx.lineWidth = 3;
+        // Draw arrow line
         ctx.strokeStyle = 'rgba(255, 255, 0, ' + alpha + ')';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
         ctx.stroke();
 
-        ctx.restore();
-    }
+        // Draw arrowhead
+        var headLen = 10;
+        var headAngle = Math.PI / 6;
+        ctx.beginPath();
+        ctx.moveTo(endX, endY);
+        ctx.lineTo(endX - headLen * Math.cos(rad - headAngle), endY - headLen * Math.sin(rad - headAngle));
+        ctx.moveTo(endX, endY);
+        ctx.lineTo(endX - headLen * Math.cos(rad + headAngle), endY - headLen * Math.sin(rad + headAngle));
+        ctx.stroke();
 
-    ctx.restore();
+        // Draw action icon and count at end of arrow
+        var labelX = centerX + Math.cos(rad) * (maxRadius + 10);
+        var labelY = centerY + Math.sin(rad) * (maxRadius + 10);
+
+        // Draw icon
+        var iconImg = globalLoader.getImage('img/actions/' + a.icon + '.png');
+        if (iconImg && iconImg.complete) {
+            ctx.globalAlpha = alpha;
+            var iconSize = 24;
+            ctx.drawImage(iconImg, labelX - iconSize/2, labelY - iconSize/2, iconSize, iconSize);
+            ctx.globalAlpha = 1.0;
+        }
+
+        // Draw count below icon
+        ctx.font = '10px Visitor, monospace';
+        ctx.fillStyle = 'rgba(255, 255, 0, ' + alpha + ')';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(count, labelX, labelY + 14);
+    }
 
     // Reset highlight after drawing
     this.highlightedDirection = null;

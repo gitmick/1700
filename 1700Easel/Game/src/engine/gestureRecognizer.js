@@ -23,7 +23,12 @@ function GestureRecognizer(element) {
     this.onLongPress = null;
     this.onSwipe = null;
     this.onSwipeMove = null;      // called during swipe for feedback
+    this.onDrag = null;           // called during drag with delta
     this.onPan = null;
+
+    // Track last position for drag delta
+    this.lastX = 0;
+    this.lastY = 0;
 
     this.init();
 }
@@ -56,6 +61,8 @@ GestureRecognizer.prototype.handleTouchStart = function(e) {
 
     this.startX = touch.clientX;
     this.startY = touch.clientY;
+    this.lastX = touch.clientX;
+    this.lastY = touch.clientY;
     this.startTime = Date.now();
     this.moved = false;
 
@@ -93,6 +100,16 @@ GestureRecognizer.prototype.handleTouchMove = function(e) {
         var direction = this.getSwipeDirection(dx, dy);
         this.onSwipeMove(direction, dx, dy, touch.clientX, touch.clientY);
     }
+
+    // Call drag with delta since last move
+    if (this.moved && this.onDrag) {
+        var dragDx = touch.clientX - this.lastX;
+        var dragDy = touch.clientY - this.lastY;
+        this.onDrag(dragDx, dragDy);
+    }
+
+    this.lastX = touch.clientX;
+    this.lastY = touch.clientY;
 };
 
 GestureRecognizer.prototype.handleTouchEnd = function(e) {

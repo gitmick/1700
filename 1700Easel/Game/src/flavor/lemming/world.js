@@ -72,7 +72,23 @@ World.prototype.setEquipment=function(eq) {
 //}
 
 World.prototype.init = function(lvl) {
-	
+
+	// Initialize LevelModel for new architecture
+	if (typeof LevelModel !== 'undefined') {
+		this.levelModel = new LevelModel();
+		this.levelModel.initFromLevel(lvl, level);
+
+		// Create desktop viewport
+		this.desktopViewport = new Viewport({
+			scrollX: 0,
+			scrollY: 0,
+			width: canvasWidth,
+			height: 350,
+			scale: 1.0,
+			parallaxEnabled: true
+		});
+	}
+
 	//blueSky
 	var sky = this.displayEntity.addShape(true).element;
 	sky.graphics.beginFill("#D0EEf3").drawRect(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
@@ -87,8 +103,9 @@ World.prototype.init = function(lvl) {
 	this.displayEntity.addBitmap(lvl.worldHtmlImage,true).element.cache(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 
 	// Set level dimensions for mobile layout
+	// Height is 350px (gameplay area without control bar at bottom)
 	if (typeof mobileLayout !== 'undefined' && mobileLayout) {
-		mobileLayout.setLevelDimensions(this.width, this.height);
+		mobileLayout.setLevelDimensions(this.width, 350);
 	}
 	
 	//Paralax
@@ -369,7 +386,7 @@ World.prototype.canWalk=function(x,y,height,maxDY){
 
 World.prototype.getDY=function(x,y,height,maxDY,direction){
 	var openSize=0;
-		
+
 		for(var aw=-maxDY;aw<height+maxDY;aw++){
 			if(this.getWorldPixel(x-(direction*5),y+aw)>=FREE){
 				openSize++;
@@ -378,9 +395,65 @@ World.prototype.getDY=function(x,y,height,maxDY,direction){
 				if (openSize>=height) {
 					var dy = height-aw;
 					return dy;
-				} 
+				}
 				openSize=0;
 			}
 		}
 		return 0;
 	}
+
+/**
+ * Update desktop viewport scroll position
+ */
+World.prototype.updateViewportScroll = function(scrollX) {
+	if (this.desktopViewport) {
+		this.desktopViewport.scrollX = scrollX;
+	}
+};
+
+/**
+ * Test render using new Model-View architecture
+ * Call this from console: game.level.world.testNewRenderer()
+ */
+World.prototype.testNewRenderer = function() {
+	if (!this.levelModel || !this.desktopViewport || !levelRenderer) {
+		console.log('New architecture not initialized');
+		return;
+	}
+
+	// Create a test canvas
+	var testCanvas = document.createElement('canvas');
+	testCanvas.width = this.desktopViewport.width;
+	testCanvas.height = this.desktopViewport.height;
+	testCanvas.style.position = 'absolute';
+	testCanvas.style.top = '0';
+	testCanvas.style.left = '0';
+	testCanvas.style.zIndex = '1000';
+	testCanvas.style.border = '2px solid red';
+	testCanvas.id = 'testNewRenderer';
+
+	// Remove existing test canvas if any
+	var existing = document.getElementById('testNewRenderer');
+	if (existing) existing.remove();
+
+	document.body.appendChild(testCanvas);
+	var ctx = testCanvas.getContext('2d');
+
+	// Sync scroll position
+	if (game && game.currentScroll !== undefined) {
+		this.desktopViewport.scrollX = game.currentScroll;
+	}
+
+	// Render using new architecture
+	levelRenderer.render(this.levelModel, this.desktopViewport, ctx, {
+		skyColor: '#D0EEf3',
+		renderEntities: true
+	});
+
+	console.log('Test render complete. Red-bordered canvas shows new renderer output.');
+	console.log('Click the test canvas to close it.');
+
+	testCanvas.onclick = function() {
+		testCanvas.remove();
+	};
+};

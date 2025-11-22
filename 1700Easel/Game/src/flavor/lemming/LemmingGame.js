@@ -77,14 +77,19 @@ LemmingGame.prototype.addLemmings = function(){
 LemmingGame.prototype.scrollLevel = function(mouseX){
 	if (this.level && this.level.world) {
 		this.level.world.tick();
-		if (mouseX>canvasWidth-100) {
-    		if (this.currentScroll<=this.level.world.width-canvasWidth)
-    			this.currentScroll+=(mouseX-(canvasWidth-100))/8.0;
-    	}
-    	else if (mouseX<100) {
-    		if (this.currentScroll>1)
-    			this.currentScroll-=(100-mouseX)/8.0;
-    	}
+
+		// Skip mouse-based scroll on mobile - scroll is controlled by mobileLayout
+		if (!isMobileDevice) {
+			if (mouseX>canvasWidth-100) {
+				if (this.currentScroll<=this.level.world.width-canvasWidth)
+					this.currentScroll+=(mouseX-(canvasWidth-100))/8.0;
+			}
+			else if (mouseX<100) {
+				if (this.currentScroll>1)
+					this.currentScroll-=(100-mouseX)/8.0;
+			}
+		}
+
 		this.currentScroll=parseInt(this.currentScroll);
 		var def = new DEFrame();
 		def.currentScroll = this.currentScroll;

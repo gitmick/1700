@@ -102,6 +102,27 @@ function init() {
 		// Don't call game.init() - that would start MainLevel
 		// Instead show mobile navigation menu
 
+		// Load action sounds that would normally be loaded in MainLevel
+		createjs.Sound.registerSound({id:"Float", src:"fx/float_huuu.mp3"});
+		createjs.Sound.registerSound({id:"FloatFall", src:"fx/float_naaa.mp3"});
+		createjs.Sound.registerSound({id:"Climb", src:"fx/Climb.mp3"});
+		createjs.Sound.registerSound({id:"Block", src:"fx/Block.mp3"});
+		createjs.Sound.registerSound({id:"Bomb", src:"fx/bomb_jessas.mp3"});
+		createjs.Sound.registerSound({id:"Exp", src:"fx/bomb_exp2.mp3"});
+		createjs.Sound.registerSound({id:"Build", src:"fx/build_2.mp3"});
+		createjs.Sound.registerSound({id:"Kill", src:"fx/gen_death3.mp3"});
+		createjs.Sound.registerSound({id:"ClimbUp", src:"fx/climb_jodel2.mp3"});
+		createjs.Sound.registerSound({id:"Juhu", src:"fx/gen_uhoh.mp3"});
+		createjs.Sound.registerSound({id:"hoppala", src:"fx/block_hoppala.mp3"});
+		createjs.Sound.registerSound({id:"Ausweis", src:"fx/block_ausweis.mp3"});
+		createjs.Sound.registerSound({id:"Momenterl", src:"fx/block_momenterl.mp3"});
+		createjs.Sound.registerSound({id:"Ha", src:"fx/block_ha.mp3"});
+		createjs.Sound.registerSound({id:"Mine", src:"fx/bash_1.mp3"});
+		createjs.Sound.registerSound({id:"Dig", src:"fx/build_3.mp3"});
+		createjs.Sound.registerSound({id:"Beidl", src:"fx/splash.mp3"});
+		createjs.Sound.registerSound({id:"Bash", src:"fx/bash_2.mp3"});
+		createjs.Sound.registerSound({id:"Piss", src:"fx/pisse.mp3"});
+
 		MobileNavigation.showMainMenu();
 	} else {
 		// Desktop: normal initialization
