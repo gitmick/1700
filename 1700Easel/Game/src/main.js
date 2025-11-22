@@ -63,6 +63,11 @@ function init() {
 	// Check for mobile device
 	isMobileDevice = DeviceDetection.isMobile();
 
+	// Initialize game state (loads from cookies)
+	if (typeof GameState !== 'undefined') {
+		GameState.init();
+	}
+
 	setSize();
 
 	window.onresize = function(event) {
@@ -185,7 +190,27 @@ function tick(evt) {
 	}
 
 	game.update();
+
+	// Update desktop stats display
+	if (!isMobileDevice && game.level && game.level.world && game.level.world.updateStatsDisplay) {
+		game.level.world.updateStatsDisplay();
+	}
+
 	stage.update(evt);
+
+	// Apply flashback effects for desktop
+	if (!isMobileDevice) {
+		var canvas = document.getElementById('canvas');
+		if (canvas) {
+			// Only apply if in gameplay (game.level.world exists) and level is flashback
+			var inGameplay = game && game.level && game.level.world && game.level.world.levelModel;
+			if (inGameplay && level && level.isFlashback) {
+				canvas.style.filter = 'sepia(0.6) contrast(1.1)';
+			} else {
+				canvas.style.filter = '';
+			}
+		}
+	}
 
 	// Render mobile views after stage update
 	if (isMobileDevice && mobileLayout) {

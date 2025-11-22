@@ -57,10 +57,11 @@ function Colorbags() {
 		     animations: {thro:[0,11],idle:[12,19]}
 		 };
 	this.throwSheet;
-	
-	
-	A.bus.initBangDispatch(cb,[STOP_COLOR]);
-	
+
+
+	// TODO: cb was never defined - commenting out broken code
+	// A.bus.initBangDispatch(cb,[STOP_COLOR]);
+
 }
 Colorbags.prototype = new Asset();
 Colorbags.prototype.load = function () {

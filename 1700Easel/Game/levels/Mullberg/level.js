@@ -30,14 +30,8 @@
 		level.registerAsset("PeeingPunk");
 		level.registerAsset("Colorbags");
 		level.registerAsset("MetBox");
-		level.registerAsset("points");
 		level.initAssets=function(){
-			
-		p = this.initAsset("points");
-		p.startX=0;
-		p.startY=0;
-		p.show();
-			
+
 		p = this.initAsset("PeeingPunk");
 		p.startX=490;
 		p.startY=105;

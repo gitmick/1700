@@ -53,12 +53,14 @@ Lemming.prototype.updateAnimation = function(a) {
 
 Lemming.prototype.setProgress=function(p) {
 	this.clearProgress();
+	this.progressValue = p;  // Store for mobile renderer
 	//this.progress.graphics.beginFill(createjs.Graphics.getRGB(255-255*p,255*p,0)).drawRect(5,5,22*p,5);
 	this.progress.graphics.beginFill(createjs.Graphics.getRGB(parseInt(255-255*p),parseInt(255*p),0)).drawRect(5,5,22*p,5);
 };
 
 Lemming.prototype.clearProgress=function() {
 	this.progress.graphics.clear();
+	this.progressValue = null;  // Clear stored value
 };
 
 Lemming.prototype.kill=function() {

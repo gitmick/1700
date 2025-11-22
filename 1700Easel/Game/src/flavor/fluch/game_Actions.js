@@ -73,6 +73,12 @@ WinAction.prototype = new MachineAction();
 
 WinAction.prototype.act = function() {
 	if (!this.started) {
+		// Save completion to GameState
+		if (typeof GameState !== 'undefined' && level && level.name) {
+			GameState.completeLevel(level.name);
+			console.log('Level saved to GameState:', level.name);
+		}
+
 		soundPlayer.reset();
 		displayEntityHolder.destroy();
 		stage.removeAllChildren();

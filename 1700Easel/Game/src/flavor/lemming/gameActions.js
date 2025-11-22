@@ -69,6 +69,13 @@ WinAction.prototype = new MachineAction();
 
 WinAction.prototype.act = function() {
 	if (!this.started) {
+		// Save completion to GameState
+		console.log('WinAction saving level:', level ? level.name : 'no level');
+		if (typeof GameState !== 'undefined' && level && level.name) {
+			GameState.completeLevel(level.name);
+			console.log('Level saved to GameState:', level.name);
+		}
+
 		soundPlayer.reset();
 		displayEntityHolder.destroy();
 		stage.removeAllChildren();
@@ -110,6 +117,15 @@ WinAction.prototype.act = function() {
 		gameText3.x=120;
 		gameText3.y=239;
 		stage.addChild(gameText3);
+
+		// Show outro text if available
+		if (level && level.outroText) {
+			var outroText = new createjs.Text(level.outroText, "12px Visitor", "#553300");
+			outroText.x = 120;
+			outroText.y = 300;
+			outroText.lineWidth = 300;
+			stage.addChild(outroText);
+		}
 	}
 }
 

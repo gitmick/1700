@@ -190,9 +190,31 @@ FolderLevel.prototype.init = function() {
 		level.load();
 		level.name=this.level.name;
 
+		// Apply registry metadata
+		if (typeof LevelRegistry !== 'undefined') {
+			var registryData = LevelRegistry.getLevel(this.level.name);
+			if (registryData) {
+				level.year = registryData.year;
+				level.isFlashback = registryData.isFlashback;
+				level.act = registryData.act;
+				level.actName = registryData.actName;
+				level.levelNumber = registryData.number;
+				level.introText = registryData.introText;
+				level.outroText = registryData.outroText;
+				level.isEndlessRunner = registryData.isEndlessRunner || false;
+			}
+		}
+
+		// Update current level in game state
+		if (typeof GameState !== 'undefined') {
+			GameState.setCurrentLevel(this.level.name);
+		}
+
 		// Show mobile intro overlay if on mobile
 		if (typeof isMobileDevice !== 'undefined' && isMobileDevice && typeof MobileNavigation !== 'undefined') {
-			MobileNavigation.showIntro(level.title, level.description, function() {
+			// Use introText from registry if available, fall back to description
+			var introText = level.introText || level.description;
+			MobileNavigation.showIntro(level.title, introText, function() {
 				// Release the intro block when user taps
 				introSoundBlock.isBlock = false;
 			});
@@ -276,22 +298,27 @@ FolderLevel.prototype.init = function() {
 	this.loadLevelSpecific.load = function() {
 		//effectInstance = soundPlayer.play(this.level.name+"intro");
 		soundPlayer.reset();
-		introSoundBlock.isBlock=true;
-		var effectInstance = soundPlayer.play(level.intro);
-		effectInstance.addEventListener("complete",function() {
-			introSoundBlock.isBlock=false;
-		});
 
-		var startObject = new IntroButton(0,0,1024,386);
-		startObject.delaySelect = function(x, y) {
-			introSoundBlock.isBlock=false;
-			effectInstance.stop();
-			this.time=false;
-		};
+		// Only set block if not already released by mobile tap
+		if (introSoundBlock.isBlock) {
+			var effectInstance = soundPlayer.play(level.intro);
+			effectInstance.addEventListener("complete",function() {
+				introSoundBlock.isBlock=false;
+			});
+
+			var startObject = new IntroButton(0,0,1024,386);
+			startObject.delaySelect = function(x, y) {
+				introSoundBlock.isBlock=false;
+				effectInstance.stop();
+				this.time=false;
+			};
+
+			this.machine.addBlock(introSoundBlock);
+		}
+
 		//this.loader.loadSound(this.level.dirPath+"/track.mp3",this.level.name);
 		this.loader.loadSound("levels/track.mp3","track");
-		this.machine.addBlock(introSoundBlock);
-		
+
 
 	};
 	this.loadAssets.load = function() {
@@ -300,6 +327,11 @@ FolderLevel.prototype.init = function() {
 		stage.removeAllChildren();
 		this.level.world.init(this.level);
 		game.control.init();
+
+		// Init stats tracking
+		if (typeof StatsTracker !== 'undefined') {
+			StatsTracker.init();
+		}
 
 		// Show mobile layout when gameplay starts
 		if (typeof mobileLayout !== 'undefined' && mobileLayout) {
@@ -317,6 +349,11 @@ FolderLevel.prototype.init = function() {
 		soundPlayer.reset();
 		var eff=soundPlayer.play("track",5,100);
 		eff.volume=1;
+
+		// Init stats display for desktop (after everything else so it's on top)
+		if ((typeof isMobileDevice === 'undefined' || !isMobileDevice) && this.level.world.initStatsDisplay) {
+			this.level.world.initStatsDisplay(this.level.scoreHtmlImage);
+		}
 	};
 };
 

@@ -90,7 +90,9 @@ PunkPeeAction.prototype.act = function () {
 		this.asset.sprite.gotoAndPlay("hide");
 	}
 	if (this.counter%this.asset.cycleLength==8) {
-		this.effectInstance.stop();
+		if (this.effectInstance) {
+			this.effectInstance.stop();
+		}
 		this.effectStarted=false;
 		this.asset.sprite.gotoAndPlay("away");
 	}

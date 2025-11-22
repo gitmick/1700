@@ -381,8 +381,10 @@ MobileLayout.prototype.goBack = function() {
     displayEntityHolder.destroy();
     stage.removeAllChildren();
     soundPlayer.reset();
-    game.level = new SelectLevel();
-    game.level.start(game.machine);
+
+    // Hide mobile layout and show navigation menu
+    this.hide();
+    MobileNavigation.showLevelSelect();
 };
 
 // --- Helper Methods ---
@@ -655,10 +657,153 @@ MobileLayout.prototype.renderZoomView = function(sourceCanvas) {
         selectedLemming: this.selectedLemming
     });
 
+    // Apply flashback effects if this is a flashback level
+    if (level && level.isFlashback) {
+        this.applyFlashbackEffects(ctx);
+    }
+
     // Draw action arrows if lemming selected
     if (this.selectedLemming) {
         this.drawActionArrows(ctx);
     }
+
+    // Draw year indicator
+    if (level && level.year) {
+        this.drawYearIndicator(ctx, level.year);
+    }
+
+    // Draw game stats overlay
+    this.drawStatsOverlay(ctx);
+};
+
+/**
+ * Draw game stats (police out, saved, money) in top left
+ * Uses scaled scoreImage with text overlay like desktop
+ */
+MobileLayout.prototype.drawStatsOverlay = function(ctx) {
+    if (!game || !game.lemmings) return;
+
+    // Get scoreImage from globalLoader
+    var scoreImg = globalLoader ? globalLoader.getImage('img/scoreImage.png') : null;
+    if (!scoreImg || !scoreImg.complete) return;
+
+    ctx.save();
+
+    // Scale factor for the score panel
+    var scale = 1.0;
+    var x = 5;
+    var y = 5;
+
+    // Draw scaled scoreImage
+    ctx.drawImage(scoreImg, x, y, scoreImg.width * scale, scoreImg.height * scale);
+
+    // Police out (count alive lemmings) - yellow like gameText
+    var out = 0;
+    if (game.lemmings) {
+        for (var i = 0; i < game.lemmings.length; i++) {
+            if (!game.lemmings[i].dead && !game.lemmings[i].saved) {
+                out++;
+            }
+        }
+    }
+
+    // Police count - gameText: x=73, y=6, font=40px
+    ctx.font = '40px Visitor, monospace';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#fff600';
+    ctx.fillText(out.toString(), x + 73, y + 38);
+
+    // Saved / Required - goalText: x=73, y=58, font=10px
+    var saved = typeof StatsTracker !== 'undefined' ? StatsTracker.getSaved() : 0;
+    var required = typeof StatsTracker !== 'undefined' ? StatsTracker.getRequired() : 0;
+    ctx.font = '10px Visitor, monospace';
+    ctx.fillStyle = '#2b3642';
+    ctx.fillText(saved + ' / ' + required, x + 73, y + 68);
+
+    // Money - moneyText: x=180, y=15, font=20px
+    var money = typeof StatsTracker !== 'undefined' ? StatsTracker.getMoney() : 870000;
+    ctx.font = '20px Visitor, monospace';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#ac6363';
+    ctx.fillText(money.toLocaleString(), x + 180, y + 30);
+
+    ctx.restore();
+};
+
+/**
+ * Apply sepia and vignette effects for flashback levels
+ */
+MobileLayout.prototype.applyFlashbackEffects = function(ctx) {
+    var width = this.zoomWidth;
+    var height = this.zoomHeight;
+
+    // Apply sepia tone
+    var imageData = ctx.getImageData(0, 0, width, height);
+    var data = imageData.data;
+
+    for (var i = 0; i < data.length; i += 4) {
+        var r = data[i];
+        var g = data[i + 1];
+        var b = data[i + 2];
+
+        // Sepia formula
+        data[i] = Math.min(255, (r * 0.393) + (g * 0.769) + (b * 0.189));
+        data[i + 1] = Math.min(255, (r * 0.349) + (g * 0.686) + (b * 0.168));
+        data[i + 2] = Math.min(255, (r * 0.272) + (g * 0.534) + (b * 0.131));
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+
+    // Draw vignette - linear gradients on edges like desktop
+    // Top edge
+    var topGrad = ctx.createLinearGradient(0, 0, 0, 100);
+    topGrad.addColorStop(0, 'rgba(0, 0, 0, 0.7)');
+    topGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = topGrad;
+    ctx.fillRect(0, 0, width, 100);
+
+    // Bottom edge
+    var bottomGrad = ctx.createLinearGradient(0, height - 100, 0, height);
+    bottomGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+    bottomGrad.addColorStop(1, 'rgba(0, 0, 0, 0.7)');
+    ctx.fillStyle = bottomGrad;
+    ctx.fillRect(0, height - 100, width, 100);
+
+    // Left edge
+    var leftGrad = ctx.createLinearGradient(0, 0, 100, 0);
+    leftGrad.addColorStop(0, 'rgba(0, 0, 0, 0.7)');
+    leftGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = leftGrad;
+    ctx.fillRect(0, 0, 100, height);
+
+    // Right edge
+    var rightGrad = ctx.createLinearGradient(width - 100, 0, width, 0);
+    rightGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+    rightGrad.addColorStop(1, 'rgba(0, 0, 0, 0.7)');
+    ctx.fillStyle = rightGrad;
+    ctx.fillRect(width - 100, 0, 100, height);
+};
+
+/**
+ * Draw year indicator in corner
+ */
+MobileLayout.prototype.drawYearIndicator = function(ctx, year) {
+    ctx.save();
+
+    // Background
+    var text = year.toString();
+    var x = this.zoomWidth - 60;
+    var y = 5;
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    ctx.fillRect(x - 5, y, 60, 25);
+
+    // Text
+    ctx.font = 'bold 18px Visitor, monospace';
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'right';
+    ctx.fillText(text, this.zoomWidth - 10, y + 18);
+
+    ctx.restore();
 };
 
 MobileLayout.prototype.drawHitboxes = function(ctx) {

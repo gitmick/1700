@@ -257,6 +257,21 @@ LevelRenderer.prototype.renderLemmings = function(lemmings, viewport, ctx, offse
             frameData.rect.height * viewport.scale
         );
 
+        // Draw progress bar if lemming has one (bomb countdown, build progress, etc.)
+        if (lemming.progressValue !== null && lemming.progressValue !== undefined) {
+            var p = lemming.progressValue;
+            var barX = screenX + 5 * viewport.scale;
+            var barY = screenY + 5 * viewport.scale;
+            var barWidth = 22 * p * viewport.scale;
+            var barHeight = 5 * viewport.scale;
+
+            // Color: red (p=0) to green (p=1)
+            var r = parseInt(255 - 255 * p);
+            var g = parseInt(255 * p);
+            ctx.fillStyle = 'rgb(' + r + ',' + g + ',0)';
+            ctx.fillRect(barX, barY, barWidth, barHeight);
+        }
+
         // Highlight selected lemming
         if (options.selectedLemming === lemming) {
             ctx.strokeStyle = '#ff0';

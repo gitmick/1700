@@ -71,6 +71,91 @@ World.prototype.setEquipment=function(eq) {
 //	this.gameText.updateCache();
 //}
 
+World.prototype.initStatsDisplay = function(scoreHtmlImage) {
+	// Get scoreImage from parameter or fallback
+	var scoreImg = scoreHtmlImage || (globalLoader ? globalLoader.getImage('img/scoreImage.png') : null);
+	if (scoreImg) {
+		this.scoreImageBitmap = new createjs.Bitmap(scoreImg);
+		this.scoreImageBitmap.x = 0;
+		this.scoreImageBitmap.y = 0;
+		stage.addChild(this.scoreImageBitmap);
+	}
+
+	// Police count text
+	this.statsOutText = new createjs.Text("", "40px Visitor", "#fff600");
+	this.statsOutText.x = 73;
+	this.statsOutText.y = 6;
+	this.statsOutText.textAlign = "center";
+	stage.addChild(this.statsOutText);
+
+	// Saved/required text
+	this.statsSavedText = new createjs.Text("", "10px Visitor", "#2b3642");
+	this.statsSavedText.x = 73;
+	this.statsSavedText.y = 58;
+	this.statsSavedText.textAlign = "center";
+	stage.addChild(this.statsSavedText);
+
+	// Money text
+	this.statsMoneyText = new createjs.Text("", "20px Visitor", "#ac6363");
+	this.statsMoneyText.x = 180;
+	this.statsMoneyText.y = 15;
+	stage.addChild(this.statsMoneyText);
+
+	// Year indicator for flashback levels
+	if (level && level.year) {
+		// Background
+		this.yearBg = new createjs.Shape();
+		this.yearBg.graphics.beginFill("rgba(0,0,0,0.5)").drawRoundRect(0, 0, 100, 50, 5);
+		this.yearBg.x = canvasWidth - 110;
+		this.yearBg.y = 10;
+		stage.addChild(this.yearBg);
+
+		// Text
+		this.yearText = new createjs.Text(level.year.toString(), "36px Visitor", "#fff");
+		this.yearText.x = canvasWidth - 100;
+		this.yearText.y = 15;
+		stage.addChild(this.yearText);
+	}
+
+	// Vignette for flashback levels
+	if (level && level.isFlashback) {
+		this.vignette = new createjs.Shape();
+		var g = this.vignette.graphics;
+		var w = canvasWidth;
+		var h = 384;
+
+		// Draw gradient edges (top, bottom, left, right)
+		// Top edge
+		g.beginLinearGradientFill(["rgba(0,0,0,0.7)", "rgba(0,0,0,0)"], [0, 1], 0, 0, 0, 100);
+		g.drawRect(0, 0, w, 100);
+		// Bottom edge
+		g.beginLinearGradientFill(["rgba(0,0,0,0)", "rgba(0,0,0,0.7)"], [0, 1], 0, h-100, 0, h);
+		g.drawRect(0, h-100, w, 100);
+		// Left edge
+		g.beginLinearGradientFill(["rgba(0,0,0,0.7)", "rgba(0,0,0,0)"], [0, 1], 0, 0, 100, 0);
+		g.drawRect(0, 0, 100, h);
+		// Right edge
+		g.beginLinearGradientFill(["rgba(0,0,0,0)", "rgba(0,0,0,0.7)"], [0, 1], w-100, 0, w, 0);
+		g.drawRect(w-100, 0, 100, h);
+
+		stage.addChild(this.vignette);
+	}
+};
+
+World.prototype.updateStatsDisplay = function() {
+	if (!this.statsOutText) return;
+
+	// Get stats from tracker
+	var out = typeof StatsTracker !== 'undefined' ? StatsTracker.getOut() : 0;
+	var saved = typeof StatsTracker !== 'undefined' ? StatsTracker.getSaved() : 0;
+	var required = typeof StatsTracker !== 'undefined' ? StatsTracker.getRequired() : 0;
+	var money = typeof StatsTracker !== 'undefined' ? StatsTracker.getMoney() : 870000;
+
+	this.statsOutText.text = out.toString();
+	this.statsSavedText.text = saved + ' / ' + required;
+	this.statsMoneyText.text = money.toLocaleString();
+};
+
 World.prototype.init = function(lvl) {
 
 	// Initialize LevelModel for new architecture
@@ -88,6 +173,7 @@ World.prototype.init = function(lvl) {
 			parallaxEnabled: true
 		});
 	}
+
 
 	//blueSky
 	var sky = this.displayEntity.addShape(true).element;

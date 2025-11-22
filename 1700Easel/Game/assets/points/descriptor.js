@@ -61,6 +61,7 @@ points.prototype.setMoneyLeft=function(left) {
 
 points.prototype.setPoliceOut=function(out) {
 //	if (out!=this.policeOut) {
+		if (!this.gameText) return;
 		this.gameText.text=out;
 		this.policeOut=out;
 		this.gameText.updateCache();
