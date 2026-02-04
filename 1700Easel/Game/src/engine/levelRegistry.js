@@ -9,14 +9,14 @@ var LevelRegistry = {
     levels: [
         // Prolog (Act 0)
         {
-            id: 'IvoLevel',
+            id: 'buerstelDream',
             number: 1,
-            title: 'Investorentraum',
+            title: 'Bürsteltraum',
             act: 0,
             actName: 'Prolog',
             year: 2014,
             isFlashback: true,
-            introText: 'Punks haben besetzt. Zeit zum Aufräumen!',
+            introText: 'Wien, 2014. Die Pizzeria Anarchia.',
             outroText: 'Die haben einen Mietvertrag? Ohne Miete?'
         },
         {

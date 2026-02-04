@@ -34,6 +34,13 @@ var MobileNavigation = {
         if (this.container) {
             this.container.style.display = 'none';
         }
+        // Show the main canvas when hiding navigation
+        var canvas = document.getElementById('canvas');
+        if (canvas) {
+            canvas.style.display = 'block';
+            canvas.style.position = '';
+            canvas.style.left = '';
+        }
     },
 
     clear: function() {
@@ -54,16 +61,29 @@ var MobileNavigation = {
             'color:#ff7700;font-size:48px;margin-bottom:60px;text-shadow:3px 3px #000;';
         this.container.appendChild(title);
 
-        // Start Button
-        this.addNavButton('Spiel Starten', function() {
+        // Start/Continue Button
+        var currentLevel = null;
+        if (typeof GameState !== 'undefined') {
+            currentLevel = GameState.getCurrentLevel();
+        }
+
+        if (currentLevel) {
+            this.addNavButton('Fortsetzen', function() {
+                MobileNavigation.hide();
+                game.level = new FolderLevel(currentLevel);
+                game.level.start(game.machine);
+            });
+        }
+
+        this.addNavButton('Neues Spiel', function() {
             MobileNavigation.showLevelSelect();
         });
 
-        // Fluch Mode Button (optional)
-        this.addNavButton('Fluch Modus', function() {
-            MobileNavigation.hide();
-            flavor = new FluchFlavor();
-            flavor.init();
+        // Timeline button
+        this.addNavButton('Timeline', function() {
+            if (typeof TimelineUI !== 'undefined') {
+                TimelineUI.show();
+            }
         });
     },
 

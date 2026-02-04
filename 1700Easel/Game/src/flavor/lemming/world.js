@@ -157,6 +157,8 @@ World.prototype.updateStatsDisplay = function() {
 };
 
 World.prototype.init = function(lvl) {
+	console.log('World.init called');
+	console.log('lvl.worldHtmlImage width:', lvl.worldHtmlImage ? lvl.worldHtmlImage.width : 'N/A');
 
 	// Initialize LevelModel for new architecture
 	if (typeof LevelModel !== 'undefined') {

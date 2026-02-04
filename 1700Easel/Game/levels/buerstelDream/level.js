@@ -25,29 +25,22 @@
 		level.minSafeCount=10;
 		level.soundFile="track.mp3";
 		level.nextLevel="couch";
-		level.registerAsset("Sign2");
 		level.registerAsset("Drink");
-		//level.initAssets=function(){};
-		/*level.registerAsset("Pee");
-		level.initAssets=function(){
-			p = this.initAsset("Pee");
-			p.startX=600;
-			p.startY=280;
-			p.show();
-		}*/
+
 		level.initAssets = function() {
-	
-			var sign = this.initAsset("Sign2");
-			sign.startX=120;
-			sign.startY=20;
-			sign.triggerName=ADD_POLICEMEN_FINISHED;
-			sign.show();
-			
+			// Show tweet/image when all police have been dropped
+			if (typeof OverlayManager !== 'undefined') {
+				OverlayManager.showOnTrigger(ADD_POLICEMEN_FINISHED, 'overlays/burschen.png', {
+					duration: 4000,
+					position: { x: 120, y: 20 }
+				});
+			}
+
 			bagthrower = this.initAsset("Drink");
 			bagthrower.startX=480;
 			bagthrower.startY=18;
 			bagthrower.show();
 		};
-		
-		
+
+
 	}

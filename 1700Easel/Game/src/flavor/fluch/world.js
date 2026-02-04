@@ -94,7 +94,7 @@ FluchWorld.prototype.setMoneyLeft=function(left) {
 
 
 FluchWorld.prototype.setIntro=function(left) {
-	if (left!=this.moneyLeft) {
+	if (this.moneyText && left!=this.moneyLeft) {
 		this.moneyLeft=left;
 		this.moneyText.text=left;
 		this.moneyText.updateCache();
@@ -121,7 +121,7 @@ FluchWorld.prototype.init = function(lvl) {
 		 this.displayEntity.addBitmap(lvl.skyImage,false);
 	}
 	else {
-		sky=this.displayEntity.addShape(true).element;
+		var sky=this.displayEntity.addShape(true).element;
 		sky.graphics.beginFill("#000000").drawRect(0,0,lvl.worldHtmlImage.width,lvl.worldHtmlImage.height);
 	}
 	this.foreGroundMask = this.displayEntity.addShape(false).element;
@@ -165,8 +165,8 @@ FluchWorld.prototype.init = function(lvl) {
 	this.addTiledBackground(lvl.backgroundHtmlImage, 67, 0.6, 4);
 	if (lvl.backgroundHtmlImage2) {
 		this.addTiledBackground(lvl.backgroundHtmlImage2, 84, 0.9, 4);
-	
-		bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage3,true);
+
+		var bg=this.displayEntity.addBitmap(lvl.backgroundHtmlImage3,true);
 		bg.width=lvl.backgroundHtmlImage3.width;
 		bg.yOff=-10;
 		bg.xOff=460;
@@ -207,7 +207,7 @@ FluchWorld.prototype.init = function(lvl) {
 	this.gameText.cache(-500,0,1000,40);
 	stage.addChild(this.gameText);
 	
-	this.moneyText = new createjs.Text("Und da erwacht unser kleiner Polizist \npl�tzlich als w�tender Demonstrant. \nJetzt halte dich aber schnell von den \nM�llk�beln fern, sonst geht�s dir an den Kragen.", "20px Visitor", "#ac6363"); 
+	this.moneyText = new createjs.Text("Und da erwacht unser kleiner Polizist \nplötzlich als wütender Demonstrant. \nJetzt halte dich aber schnell von den \nMüllkübeln fern, sonst geht's dir an den Kragen.", "20px Visitor", "#ac6363"); 
 	this.moneyText.x=180;
 	this.moneyText.y=15;
 	this.moneyText.cache(0,0,1000,400);
@@ -231,7 +231,7 @@ FluchWorld.prototype.init = function(lvl) {
 	
 	if (lvl.mapHtmlImage!=lvl.worldHtmlImage) {
 		this.backButton = this.displayEntity.addBitmap(globalLoader.getImage("img/back.png"),false);
-		b = new Button(5,5,15,15);
+		var b = new Button(5,5,15,15);
 		b.select = function() {
 			game.machine.setAction(new MachineAction());
 			displayEntityHolder.destroy();
@@ -291,7 +291,7 @@ FluchWorld.prototype.tick = function() {
 	faders.tick();
 	this.setRounds(parseInt(game.currentScroll/4000));
 	if (game.currentScroll<800) {
-		this.setIntro("Und da erwacht unser kleiner Polizist \npl�tzlich als w�tender Demonstrant. \nJetzt halte dich aber schnell von den \nM�llk�beln fern, sonst geht�s dir an den Kragen.");
+		this.setIntro("Und da erwacht unser kleiner Polizist \nplötzlich als wütender Demonstrant. \nJetzt halte dich aber schnell von den \nMüllkübeln fern, sonst geht's dir an den Kragen.");
 	}
 	else {
 		this.setIntro(game.outro);
@@ -333,9 +333,9 @@ FluchWorld.prototype.drawCircle = function(px,py,radius,color){
 	this.drawRect(px-radius*3/4,py-radius*3/4,radius*3/2,radius*3/2,color);
 }
 
-FluchWorld.prototype.drawRect = function(px,py,w,h,color){	
-	for (xi=-1;xi<=w;xi++) {
-		for (yi=-1;yi<=h;yi++) {
+FluchWorld.prototype.drawRect = function(px,py,w,h,color){
+	for (var xi=-1;xi<=w;xi++) {
+		for (var yi=-1;yi<=h;yi++) {
 			this.worldBitmapData.setPixel(px+xi,py+yi,color);
 		}
 	}
@@ -374,7 +374,7 @@ FluchWorld.prototype.canFall = function(x,y,width) {
 	var dead=false;
 	var block = INVISIBLE_BLOCK;
 	for(var aw=border;aw<width-border;aw++){
-		result = this.getWorldPixel(x+aw,y);
+		var result = this.getWorldPixel(x+aw,y);
 		if(result==DEADLY)
 			dead=true;
 		if(result>=FREE){
@@ -423,7 +423,7 @@ FluchWorld.prototype.getDY=function(x,y,height,maxDY,direction){
 			}
 			else {
 				if (openSize>=height) {
-					dy=height-aw;
+					var dy=height-aw;
 					return dy;
 				} 
 				openSize=0;

@@ -1,22 +1,27 @@
 "use strict";
-function PlayAction() {}
-PlayAction.prototype = new MachineAction();
 
-PlayAction.prototype.act = function() {
-	
-	game.speedFactor+=0.2;
-	
-	
+// Debug flag - set to true to see hitboxes
+var DEBUG_HITBOXES = false;
+var debugShape = null;
+
+function FluchPlayAction() {}
+FluchPlayAction.prototype = new MachineAction();
+
+FluchPlayAction.prototype.act = function() {
+
 	if (!A.bus.bang(ADD_POLICEMEN)) {
-		
+
 		if (game.delayCount++%level.policeDelay==2){
 			if (game.addLemmings())
 				A.bus.bang(ADD_POLICEMEN);
 		}
 	}
+
+	// No speed increase - keep at 1
+	// game.speedFactor+=0.01;
 	//game.selectedLemming=false;
-	
-	def = new DEFrame();
+
+	var def = new DEFrame();
 	def.currentScroll = game.currentScroll;
 	
 	for (var i=0; i<level.assets.length;i++) {
@@ -33,10 +38,73 @@ PlayAction.prototype.act = function() {
 	}
 	timeKeeper.tick();
 	soundPlayer.tick();
-	game.level.world.setPoliceOut(timeKeeper.totalPolice);
-	game.level.world.setPoliceSaved(game.winCount);
-	game.level.world.updateText();
-	game.level.world.updateCache();
+	if (game.level && game.level.world) {
+		game.level.world.setPoliceOut(timeKeeper.totalPolice);
+		game.level.world.setPoliceSaved(game.winCount);
+		game.level.world.updateText();
+		game.level.world.updateCache();
+	}
+
+	// Debug hitbox rendering
+	if (DEBUG_HITBOXES) {
+		if (!debugShape) {
+			debugShape = new createjs.Shape();
+		}
+		// Always re-add to ensure it's on top
+		stage.removeChild(debugShape);
+		stage.addChild(debugShape);
+		debugShape.graphics.clear();
+
+		// Draw demonstrant hitbox (green)
+		for (var i = 0; i < game.lemmings.length; i++) {
+			var lem = game.lemmings[i];
+			// Use displayEntity position which matches the actual sprite
+			var screenX = lem.displayEntity.x;
+			var screenY = lem.displayEntity.y;
+
+			// Main body hitbox (using collision dimensions)
+			debugShape.graphics.beginStroke("#00ff00").setStrokeStyle(2);
+			debugShape.graphics.drawRect(
+				screenX + (lem.collisionOffsetX || 0),
+				screenY + (lem.collisionOffsetY || 0),
+				lem.collisionWidth || lem.width,
+				lem.collisionHeight || lem.height
+			);
+
+			// Front foot check point (where wall collision happens)
+			var frontX = lem.frontFootX();
+			debugShape.graphics.beginFill("#ffff00");
+			debugShape.graphics.drawCircle(frontX - game.currentScroll, screenY + (lem.collisionOffsetY || 0) + (lem.collisionHeight || lem.height)/2, 3);
+
+			// Floor check area
+			debugShape.graphics.beginStroke("#ff00ff").setStrokeStyle(1);
+			debugShape.graphics.drawRect(
+				screenX + (lem.collisionOffsetX || 0),
+				screenY + (lem.collisionOffsetY || 0) + (lem.collisionHeight || lem.height) + 1,
+				lem.collisionWidth || lem.width,
+				2
+			);
+		}
+
+		// Draw asset hitboxes (red for deadly)
+		for (var i = 0; i < level.assets.length; i++) {
+			var asset = level.assets[i];
+			if (asset.collisionHeight > 0 && asset.collisionSet) {
+				// Use collisionLastX/Y which has the actual collision position
+				var assetX = asset.collisionLastX;
+				var assetY = asset.collisionLastY;
+				var color = (asset.collisionType == DEADLY || asset.collisionType == INVISIBLE_BLOCK) ? "#ff0000" : "#0000ff";
+				debugShape.graphics.beginStroke(color).setStrokeStyle(1);
+				debugShape.graphics.drawRect(
+					assetX + (asset.collisionOffsetX || 0),
+					assetY + (asset.collisionOffsetY || 0),
+					asset.collisionWidth,
+					asset.collisionHeight
+				);
+			}
+		}
+	}
+
 	return true;
 };
 

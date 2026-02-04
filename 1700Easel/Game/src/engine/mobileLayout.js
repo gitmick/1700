@@ -45,6 +45,9 @@ function MobileLayout() {
 
     // Audio unlocked flag
     this.audioUnlocked = false;
+
+    // Fluch mode (endless runner)
+    this.isFluchMode = false;
 }
 
 MobileLayout.prototype.init = function() {
@@ -261,6 +264,15 @@ MobileLayout.prototype.syncGameScroll = function() {
 MobileLayout.prototype.handleZoomTap = function(x, y) {
     this.unlockAudio();
 
+    // In fluch mode, tap triggers jump on demonstrant
+    if (this.isFluchMode && game.lemmings && game.lemmings.length > 0) {
+        var demonstrant = game.lemmings[0];
+        if (demonstrant && demonstrant.select) {
+            demonstrant.select();
+        }
+        return;
+    }
+
     // Convert client coordinates to canvas-relative coordinates
     var rect = this.zoomCanvas.getBoundingClientRect();
     var canvasX = x - rect.left;
@@ -296,6 +308,11 @@ MobileLayout.prototype.handleZoomTap = function(x, y) {
         // Store offset from viewport corner to maintain position during follow
         this.followOffsetX = lemming.x - clampedX;
         this.followOffsetY = lemming.y - clampedY;
+
+        // Tutorial hook
+        if (typeof Tutorial !== 'undefined') {
+            Tutorial.onPoliceSelected();
+        }
     } else {
         this.selectedLemming = null;
         game.selectedLemming = null;
@@ -311,6 +328,12 @@ MobileLayout.prototype.handleZoomLongPress = function(x, y) {
     if (this.selectedLemming && level.actionCount[Bomb] > 0) {
         this.selectedLemming.setAction(new Bomb());
         level.actionCount[Bomb]--;
+
+        // Tutorial hook
+        if (typeof Tutorial !== 'undefined') {
+            Tutorial.onActionUsed('Bomb');
+        }
+
         this.selectedLemming = null;
         game.selectedLemming = null;
     }
@@ -326,6 +349,12 @@ MobileLayout.prototype.handleZoomSwipe = function(direction, dx, dy, startX, sta
     if (action && count > 0) {
         this.selectedLemming.setAction(new action());
         level.actionCount[action]--;
+
+        // Tutorial hook
+        if (typeof Tutorial !== 'undefined') {
+            Tutorial.onActionUsed(action.name || action.toString());
+        }
+
         // Deselect after action
         this.selectedLemming = null;
         game.selectedLemming = null;
@@ -382,9 +411,24 @@ MobileLayout.prototype.goBack = function() {
     stage.removeAllChildren();
     soundPlayer.reset();
 
+    // Clean up overlays
+    if (typeof OverlayManager !== 'undefined') {
+        OverlayManager.cleanup();
+    }
+
+    // Clean up tutorial
+    if (typeof Tutorial !== 'undefined') {
+        Tutorial.cleanup();
+    }
+
+    // Reset fluch mode if active
+    if (this.isFluchMode) {
+        this.setFluchMode(false);
+    }
+
     // Hide mobile layout and show navigation menu
     this.hide();
-    MobileNavigation.showLevelSelect();
+    MobileNavigation.showMainMenu();
 };
 
 // --- Helper Methods ---
@@ -447,6 +491,29 @@ MobileLayout.prototype.findLemmingAt = function(levelX, levelY) {
 };
 
 MobileLayout.prototype.update = function() {
+    // In fluch mode, auto-follow the demonstrant
+    if (this.isFluchMode) {
+        if (game.lemmings && game.lemmings.length > 0) {
+            var demonstrant = game.lemmings[0];
+            if (demonstrant) {
+                // Center viewport on demonstrant
+                var viewWidth = this.zoomWidth / this.zoomFactor;
+                var viewHeight = this.zoomHeight / this.zoomFactor;
+                this.viewportX = demonstrant.x - viewWidth / 3; // Keep demonstrant in left third
+                this.viewportY = demonstrant.y - viewHeight / 2;
+                this.clampViewport();
+                this.syncGameScroll();
+            }
+        } else {
+            // Before demonstrant appears, start at beginning of level
+            this.viewportX = 0;
+            this.viewportY = 0;
+            this.clampViewport();
+            this.syncGameScroll();
+        }
+        return;
+    }
+
     // Check if selected lemming is still valid (in game.lemmings array)
     if (this.selectedLemming) {
         var stillValid = game.lemmings && game.lemmings.indexOf(this.selectedLemming) !== -1;
@@ -487,7 +554,14 @@ MobileLayout.prototype.show = function() {
     }
     var originalCanvas = document.getElementById('canvas');
     if (originalCanvas) {
-        originalCanvas.style.display = 'none';
+        // In fluch mode, keep canvas rendering but move off-screen
+        // (display:none prevents CreateJS from rendering)
+        if (this.isFluchMode) {
+            originalCanvas.style.position = 'absolute';
+            originalCanvas.style.left = '-9999px';
+        } else {
+            originalCanvas.style.display = 'none';
+        }
     }
     this.visible = true;
 };
@@ -501,12 +575,46 @@ MobileLayout.prototype.hide = function() {
     var originalCanvas = document.getElementById('canvas');
     if (originalCanvas) {
         originalCanvas.style.display = 'block';
+        originalCanvas.style.position = '';
+        originalCanvas.style.left = '';
     }
     this.visible = false;
 };
 
 MobileLayout.prototype.isVisible = function() {
     return this.visible;
+};
+
+/**
+ * Set fluch (endless runner) mode - simplifies UI for tap-to-jump gameplay
+ */
+MobileLayout.prototype.setFluchMode = function(enabled) {
+    this.isFluchMode = enabled;
+
+    // Hide/show control buttons based on mode
+    var buttons = ['ctrl-jump-mode', 'ctrl-bomb-all', 'ctrl-speed', 'ctrl-more', 'ctrl-less'];
+    for (var i = 0; i < buttons.length; i++) {
+        var btn = document.getElementById(buttons[i]);
+        if (btn) {
+            btn.style.display = enabled ? 'none' : 'block';
+        }
+    }
+
+    // Hide minimap in fluch mode (auto-scrolling, no need to navigate)
+    if (this.minimapCanvas) {
+        this.minimapCanvas.style.display = enabled ? 'none' : 'block';
+    }
+
+    // Expand zoom view if minimap hidden
+    if (enabled) {
+        this.zoomHeight = this.screenHeight - this.controlHeight;
+        this.zoomCanvas.height = this.zoomHeight;
+        this.zoomCanvas.style.top = this.controlHeight + 'px';
+    } else {
+        this.zoomHeight = this.screenHeight - this.minimapHeight - this.controlHeight;
+        this.zoomCanvas.height = this.zoomHeight;
+        this.zoomCanvas.style.top = this.controlHeight + 'px';
+    }
 };
 
 // --- Rendering Methods ---
@@ -631,7 +739,24 @@ MobileLayout.prototype.renderZoomView = function(sourceCanvas) {
     // Get model from world
     var model = game.level && game.level.world && game.level.world.levelModel;
     if (!model || !levelRenderer) {
-        // Fallback: clear with sky
+        // Fallback for fluch mode: draw from main stage canvas
+        if (this.isFluchMode && sourceCanvas) {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, this.zoomWidth, this.zoomHeight);
+
+            // Draw the portion of the stage visible in the viewport
+            var viewWidth = this.zoomWidth / this.zoomFactor;
+            var viewHeight = this.zoomHeight / this.zoomFactor;
+
+            ctx.drawImage(
+                sourceCanvas,
+                this.viewportX, this.viewportY, viewWidth, viewHeight,
+                0, 0, this.zoomWidth, this.zoomHeight
+            );
+            return;
+        }
+
+        // Default fallback: clear with sky
         ctx.fillStyle = '#87CEEB';
         ctx.fillRect(0, 0, this.zoomWidth, this.zoomHeight);
         return;

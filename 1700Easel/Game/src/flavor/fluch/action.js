@@ -35,10 +35,10 @@ FluchFall.prototype.check=function() {
 };
 
 FluchFall.prototype.act=function() {
-	speed=5;
+	var speed=5;
 	if (this.height>32)
 		this.effect("FloatFall");
-	for (i=0;i<speed;i++) {
+	for (var i=0;i<speed;i++) {
 		if (this.check()) {
 			this.lemming.y+=this.lemming.speed;
 			if (this.lemming.y>0)
@@ -101,7 +101,7 @@ FluchKill.prototype.act = function() {
 	this.effect("Ja");
 	if (this.count++==0) {
 		this.lemming.circle.gotoAndPlay("stand");
-		stillAcc=false;
+		game.stillAcc=false;
 		A.bus.bang(JOSEF_CAUGHT);
 	}
 	if (this.count==10) {
@@ -129,16 +129,19 @@ function FluchJump() {
 	this.possibleActions.push(FluchFall);
 	this.possibleActions.push(FluchKill);
 	this.possibleActions.push(FluchWalk);
+	console.log("FluchJump CREATED - speedFactor:", game.speedFactor);
 	//////
 };
 FluchJump.prototype=new Action();
 
 FluchJump.prototype.check=function() {
 	if (!this.lemming.hasFloor() && this.jumpProcedure>1) {
+		console.log("FluchJump.check -> FALL (no floor, procedure>1)");
 		this.lemming.setAction(new FluchFall());
 		return false;
 	}
 	if (this.lemming.againstWall()) {
+		console.log("FluchJump.check -> againstWall, dead=", this.lemming.dead);
 		if (this.lemming.dead) {
 			console.log("DEAD!!!!");
 			return false;
@@ -148,15 +151,17 @@ FluchJump.prototype.check=function() {
 };
 
 FluchJump.prototype.act = function() {
+		console.log("FluchJump.act", this.jumpProcedure);
 		this.effect("Ha");
 		this.jumpProcedure--;
 		this.lemming.y-=((this.jumpProcedure+10)/2);
 		//this.lemming.x+=this.lemming.direction*this.lemming.speed;
 		this.lemming.floor=-1;
-		if (this.lemming.hasFloor() || this.jumpProcedure<-17)
+		// Only check for floor when falling (negative jumpProcedure below -5)
+		if (this.jumpProcedure < -5 && this.lemming.hasFloor()) {
 			this.lemming.setAction(new FluchWalk());
-		//this.lemming.x+=this.lemming.direction*this.lemming.speed;
-		if (this.jumpProcedure<-17)
+		} else if (this.jumpProcedure<-17) {
 			this.lemming.setAction(new FluchWalk());
+		}
 };
 /////////////ENDE JUMP SINGLE

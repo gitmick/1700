@@ -68,6 +68,11 @@ function init() {
 		GameState.init();
 	}
 
+	// Initialize story screen system
+	if (typeof StoryScreen !== 'undefined') {
+		StoryScreen.init();
+	}
+
 	setSize();
 
 	window.onresize = function(event) {
@@ -128,13 +133,54 @@ function init() {
 		createjs.Sound.registerSound({id:"Bash", src:"fx/bash_2.mp3"});
 		createjs.Sound.registerSound({id:"Piss", src:"fx/pisse.mp3"});
 
-		MobileNavigation.showMainMenu();
+		// Check if first-time player
+		if (typeof StoryScreen !== 'undefined' && typeof GameState !== 'undefined' && !GameState.hasSeenIntro()) {
+			StoryScreen.showGameIntro(function() {
+				GameState.setIntroSeen();
+				// Go directly to timeline
+				if (typeof TimelineUI !== 'undefined') {
+					TimelineUI.init();
+					TimelineUI.show();
+				} else {
+					MobileNavigation.showMainMenu();
+				}
+			});
+		} else {
+			// Go directly to timeline
+			if (typeof TimelineUI !== 'undefined') {
+				TimelineUI.init();
+				TimelineUI.show();
+			} else {
+				MobileNavigation.showMainMenu();
+			}
+		}
 	} else {
-		// Desktop: normal initialization
-//		flavor = new FluchFlavor();
-//		flavor.init();
+		// Desktop: initialize game but show timeline first
 		flavor = new LemmingFlavor();
-		flavor.init();
+		deviceInteraction = new DesktopInteraction();
+		game = new LemmingGame();
+
+		// Check if first-time player
+		if (typeof StoryScreen !== 'undefined' && typeof GameState !== 'undefined' && !GameState.hasSeenIntro()) {
+			StoryScreen.showGameIntro(function() {
+				GameState.setIntroSeen();
+				// Go directly to timeline
+				if (typeof TimelineUI !== 'undefined') {
+					TimelineUI.init();
+					TimelineUI.show();
+				} else {
+					flavor.init();
+				}
+			});
+		} else {
+			// Go directly to timeline
+			if (typeof TimelineUI !== 'undefined') {
+				TimelineUI.init();
+				TimelineUI.show();
+			} else {
+				flavor.init();
+			}
+		}
 	}
 
     createjs.Ticker.setFPS(25);
@@ -190,6 +236,11 @@ function tick(evt) {
 	}
 
 	game.update();
+
+	// Update tutorial hints
+	if (typeof TutorialManager !== 'undefined') {
+		TutorialManager.update();
+	}
 
 	// Update desktop stats display
 	if (!isMobileDevice && game.level && game.level.world && game.level.world.updateStatsDisplay) {

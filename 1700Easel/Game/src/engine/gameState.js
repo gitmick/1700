@@ -11,10 +11,13 @@ var GameState = {
     // Default state
     defaultState: {
         completedLevels: [],
-        unlockedLevels: ['IvoLevel'], // First level always unlocked
+        unlockedLevels: ['buerstelDream'], // First level always unlocked
         collectedZitate: [],
         currentLevel: null,
-        highestAct: 0
+        highestAct: 0,
+        seenIntro: false,
+        seenTutorials: [],
+        lastCompletedAct: -1
     },
 
     // Current state in memory
@@ -22,9 +25,23 @@ var GameState = {
 
     /**
      * Initialize state from cookie or defaults
+     * Merges new default fields into existing saves
      */
     init: function() {
-        this.state = this.load() || this.getDefaultState();
+        var loaded = this.load();
+        var defaults = this.getDefaultState();
+
+        if (loaded) {
+            // Merge: keep loaded values, add missing defaults
+            this.state = defaults;
+            for (var key in loaded) {
+                if (loaded.hasOwnProperty(key)) {
+                    this.state[key] = loaded[key];
+                }
+            }
+        } else {
+            this.state = defaults;
+        }
     },
 
     /**
@@ -191,5 +208,72 @@ var GameState = {
         var total = LevelRegistry.getTotalLevels();
         if (total === 0) return 0;
         return Math.round((this.state.completedLevels.length / total) * 100);
+    },
+
+    /**
+     * Check if game intro has been seen
+     */
+    hasSeenIntro: function() {
+        if (!this.state) this.init();
+        return this.state.seenIntro === true;
+    },
+
+    /**
+     * Mark game intro as seen
+     */
+    setIntroSeen: function() {
+        if (!this.state) this.init();
+        this.state.seenIntro = true;
+        this.save();
+    },
+
+    /**
+     * Check if a tutorial hint has been seen
+     */
+    hasTutorialSeen: function(hintId) {
+        if (!this.state) this.init();
+        if (!this.state.seenTutorials) this.state.seenTutorials = [];
+        return this.state.seenTutorials.indexOf(hintId) !== -1;
+    },
+
+    /**
+     * Mark a tutorial hint as seen
+     */
+    setTutorialSeen: function(hintId) {
+        if (!this.state) this.init();
+        if (!this.state.seenTutorials) this.state.seenTutorials = [];
+        if (this.state.seenTutorials.indexOf(hintId) === -1) {
+            this.state.seenTutorials.push(hintId);
+            this.save();
+        }
+    },
+
+    /**
+     * Get last completed act number
+     */
+    getLastCompletedAct: function() {
+        if (!this.state) this.init();
+        return this.state.lastCompletedAct || -1;
+    },
+
+    /**
+     * Set last completed act (for quote display tracking)
+     */
+    setLastCompletedAct: function(actNumber) {
+        if (!this.state) this.init();
+        if (!this.state.lastCompletedAct || actNumber > this.state.lastCompletedAct) {
+            this.state.lastCompletedAct = actNumber;
+            this.save();
+        }
+    },
+
+    /**
+     * Check if quote should be shown for this act
+     * (shown once when act is first completed)
+     */
+    shouldShowQuoteForAct: function(actNumber) {
+        if (!this.state) this.init();
+        var lastAct = this.state.lastCompletedAct || -1;
+        return actNumber > lastAct;
     }
 };

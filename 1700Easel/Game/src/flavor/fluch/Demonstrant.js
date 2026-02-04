@@ -11,8 +11,14 @@ function Demonstrant() {
 	this.progress;
 	this.direction=1;
 	this.height=32;
-	this.width=32;	
-	
+	this.width=32;
+
+	// Collision box (smaller than sprite, centered)
+	this.collisionWidth=16;
+	this.collisionHeight=28;
+	this.collisionOffsetX=8;  // center 16px box in 32px sprite
+	this.collisionOffsetY=3;  // slight offset from top
+
 	this.scale=1;
 	
 	this.maxDY=2; //maximum pitch/slope (should be smaller than this.height)
@@ -112,15 +118,15 @@ Demonstrant.prototype.create=function() {
 };
 
 Demonstrant.prototype.frontFootX = function() {
-		return this.x+(this.width/2)+((this.width/8)*(this.direction));
+		return this.x+this.collisionOffsetX+(this.collisionWidth/2)+((this.collisionWidth/8)*(this.direction));
 };
 
 Demonstrant.prototype.backFootX = function() {
-	return this.x+(this.width/2)-((this.width/8)*(this.direction));
+	return this.x+this.collisionOffsetX+(this.collisionWidth/2)-((this.collisionWidth/8)*(this.direction));
 };
 
 Demonstrant.prototype.frontFootY = function() {
-	return this.y+this.height;
+	return this.y+this.collisionOffsetY+this.collisionHeight;
 };
 
 Demonstrant.prototype.select = function(x,y) {
@@ -128,6 +134,10 @@ Demonstrant.prototype.select = function(x,y) {
 //		this.control.useAction();
 //		this.setAction(new this.control.selectedAction);
 //	}
+	// Don't start new jump if already jumping
+	if (this.action instanceof FluchJump) {
+		return;
+	}
 	console.log("select");
 	this.setAction(new FluchJump());
 };
@@ -184,18 +194,18 @@ Demonstrant.prototype.startMove=function(){
 
 Demonstrant.prototype.getFloor=function() {
 	if (this.floor==-1)
-		this.floor = game.level.world.canFall(this.x,this.y+this.height+1,this.width);
+		this.floor = game.level.world.canFall(this.x+this.collisionOffsetX,this.y+this.collisionOffsetY+this.collisionHeight+1,this.collisionWidth);
 	return this.floor;
 };
 
 Demonstrant.prototype.getWall=function() {
 	if (this.wall==-1)
-		this.wall = game.level.world.canWalk(this.frontFootX(),this.y,this.height,this.maxDY);
+		this.wall = game.level.world.canWalk(this.frontFootX(),this.y+this.collisionOffsetY,this.collisionHeight,this.maxDY);
 	return this.wall;
 };
 
 Demonstrant.prototype.hasRoof=function(){
-	var result = game.level.world.canFall(this.backFootX(),this.y-1,this.width/4);
+	var result = game.level.world.canFall(this.backFootX(),this.y+this.collisionOffsetY-1,this.collisionWidth/4);
 	if (result==DEADLY)
 		this.showKill();
 	return (result!=FREE);
@@ -203,8 +213,7 @@ Demonstrant.prototype.hasRoof=function(){
 
 Demonstrant.prototype.hasFloor=function(){
 	var result = this.getFloor();
-	if (result==DEADLY)
-		this.showKill();
+	// Don't kill on floor DEADLY - only wall collision kills
 	return (result!=FREE);
 };
 
@@ -248,7 +257,7 @@ Demonstrant.prototype.isPolice=function(){
 };
 
 Demonstrant.prototype.getDY=function(){
-	return game.level.world.getDY(this.frontFootX(),this.y,this.height,this.maxDY,this.direction);
+	return game.level.world.getDY(this.frontFootX(),this.y+this.collisionOffsetY,this.collisionHeight,this.maxDY,this.direction);
 };
 
 

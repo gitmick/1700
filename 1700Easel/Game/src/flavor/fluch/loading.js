@@ -20,6 +20,11 @@ function FluchLevel(levelName) {
 	this.cloudImage= new Image();
 	this.introImage= new Image(); //Check
 	this.world = new FluchWorld();
+
+	// Override parent's PlayAction with FluchPlayAction
+	this.play = new FluchPlayAction();
+	// Update the afterLoad chain to use the new play action
+	this.loadAssets.afterLoad = this.play;
 }
 FluchLevel.prototype = new IntroLevel();
 FluchLevel.prototype.init = function() {
@@ -43,15 +48,15 @@ FluchLevel.prototype.init = function() {
 		level.load();
 		level.name=this.level.name;
 		
-		gameText = new createjs.Text(level.title, "20px Visitor", "#ff7700");
-		stage.addChild(gameText);
-		gameText.x=50;
-		gameText.y=50;
-		
-		gameText = new createjs.Text(level.description, "10px Visitor", "#ff7700");
-		stage.addChild(gameText);
-		gameText.x=50;
-		gameText.y=100;
+		var titleText = new createjs.Text(level.title, "20px Visitor", "#ff7700");
+		stage.addChild(titleText);
+		titleText.x=50;
+		titleText.y=50;
+
+		var descText = new createjs.Text(level.description, "10px Visitor", "#ff7700");
+		stage.addChild(descText);
+		descText.x=50;
+		descText.y=100;
 		
 
 		
@@ -128,12 +133,12 @@ FluchLevel.prototype.init = function() {
 		//effectInstance = soundPlayer.play(this.level.name+"intro");
 		soundPlayer.reset();
 		introSoundBlock.isBlock=true;
-		effectInstance = soundPlayer.play(level.intro);
+		var effectInstance = soundPlayer.play(level.intro);
 		effectInstance.addEventListener("complete",function() {
 			introSoundBlock.isBlock=false;
 		});
-		
-		startObject = new IntroButton(0,0,1024,386);
+
+		var startObject = new IntroButton(0,0,1024,386);
 		startObject.delaySelect = function(x, y) {
 			introSoundBlock.isBlock=false;
 			effectInstance.stop();
@@ -171,13 +176,13 @@ FluchLevel.prototype.init = function() {
 		stage.removeAllChildren();
 		this.level.world.init(this.level);
 		game.control.init();
-		
+
 		level.initAssets();
-		trigger = new ExitChecker();
+		var trigger = new ExitChecker();
 		A.bus.addTrigger(POLICEMAN_SAVED, trigger);
 		A.bus.addTrigger(POLICEMAN_KILLED, trigger);
 		A.bus.addTrigger(ADD_POLICEMEN_FINISHED, trigger);
-		
+
 		A.bus.addTrigger(ADD_POLICEMEN,timeKeeper);
 		//eff=soundPlayer.play(this.level.name,1,100);
 		soundPlayer.reset();
@@ -188,5 +193,11 @@ FluchLevel.prototype.init = function() {
 //		eff4=soundPlayer.play("track4",5,100);
 //		eff5=soundPlayer.play("track5",5,100);
 
+		// Mobile layout setup for fluch mode
+		if (isMobileDevice && mobileLayout) {
+			mobileLayout.setLevelDimensions(this.level.world.width, this.level.world.height);
+			mobileLayout.setFluchMode(true);
+			mobileLayout.show();
+		}
 	};
 };

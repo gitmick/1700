@@ -18,7 +18,7 @@ var INVISIBLE_BLOCK = 0;
 
 function Loader() {
 	this.waitingForLoads=0;
-	this.debug=true;
+	this.debug=false;
 	this.queue = new Array();
 	this.initializedSoundHandle=false;
 	this.dev="notInit";

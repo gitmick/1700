@@ -17,6 +17,13 @@ function LevelRenderer() {
 LevelRenderer.prototype.render = function(model, viewport, ctx, options) {
     options = options || {};
 
+    if (!this._loggedOnce) {
+        console.log('LevelRenderer.render called');
+        console.log('  model.layers:', model.layers ? model.layers.length : 'none');
+        console.log('  viewport:', viewport.width + 'x' + viewport.height, 'scale:', viewport.scale);
+        this._loggedOnce = true;
+    }
+
     // Clear with sky color
     ctx.fillStyle = options.skyColor || '#87CEEB';
     ctx.fillRect(0, 0, viewport.width, viewport.height);
@@ -51,7 +58,7 @@ LevelRenderer.prototype.renderLayer = function(layer, model, viewport, ctx, offs
     var img = layer.image;
     if (!img || !img.complete) return;
 
-    // Calculate parallax offset
+    // Calculate parallax offset (horizontal only, matching original game)
     var parallaxFactor = viewport.parallaxEnabled ? layer.parallaxFactor : 1.0;
     var parallaxOffset = viewport.scrollX * (1 - parallaxFactor);
 

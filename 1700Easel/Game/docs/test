@@ -1,0 +1,13 @@
+# Load the saved template
+newWorkflow <- improveR::workflowTemplateFromJSON("eda.json")
+
+# Set new input data
+newWorkflow$setParameter("inputData", "repo_alias_todo:FI-2422")
+
+# Define where results should go
+newWorkflow$setWorkflowTreeIdent(
+  "/Projects/acop25/t2ReproduceLocal/MS/PK/Study00t2"
+)
+
+# Execute the entire workflow
+newWorkflow$realise()

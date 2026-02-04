@@ -5,9 +5,9 @@ function Censor(){
 	this.collisionType=FREE;
 	//this.collisionType=VISIBLE_BLOCK;
 	this.shape;
-	
-	bus.initBangDispatch(cb,[JOSEF_CAUGHT]);
-	
+
+	A.bus.initBangDispatch(this,[JOSEF_CAUGHT]);
+
 }
 
 Censor.prototype = new Asset();

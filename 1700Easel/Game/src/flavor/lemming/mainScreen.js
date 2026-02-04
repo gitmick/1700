@@ -152,7 +152,12 @@ SelectLevel.prototype.init = function () {
 
 var introSoundBlock = new MachineBlock();
 introSoundBlock.isBlock=true;
+introSoundBlock.mobileIntroDismissed=false;  // Separate flag for mobile
 introSoundBlock.block = function() {
+	// For mobile, check the mobile-specific flag
+	if (typeof isMobileDevice !== 'undefined' && isMobileDevice) {
+		return !this.mobileIntroDismissed;
+	}
 	return this.isBlock;
 }
 
@@ -160,6 +165,10 @@ function FolderLevel(levelName) {
 	this.name=levelName;
 	this.dirPath = "levels/"+this.name;
 	console.log("initializing level: "+this.dirPath);
+
+	// Reset intro block for new level
+	introSoundBlock.isBlock = true;
+	introSoundBlock.mobileIntroDismissed = false;
 	this.worldHtmlImage= new Image();
 	this.backgroundHtmlImage = new Image();
 	this.backgroundHtmlImage2 = new Image();
@@ -210,17 +219,17 @@ FolderLevel.prototype.init = function() {
 			GameState.setCurrentLevel(this.level.name);
 		}
 
-		// Show mobile intro overlay if on mobile
-		if (typeof isMobileDevice !== 'undefined' && isMobileDevice && typeof MobileNavigation !== 'undefined') {
-			// Use introText from registry if available, fall back to description
-			var introText = level.introText || level.description;
-			MobileNavigation.showIntro(level.title, introText, function() {
-				// Release the intro block when user taps
-				introSoundBlock.isBlock = false;
-			});
+		// Show intro screen - different handling for mobile vs desktop
+		var that = this;
+		var registryData = LevelRegistry ? LevelRegistry.getLevel(this.level.name) : null;
+
+		if (typeof isMobileDevice !== 'undefined' && isMobileDevice) {
+			// MOBILE: Skip intro screen for now, go straight to level
+			// Set mobileIntroDismissed immediately so level starts
+			introSoundBlock.mobileIntroDismissed = true;
 		} else {
-			// Desktop: show on canvas
-			var bitmap = new createjs.Bitmap(this.level.introImage);
+			// DESKTOP: Show canvas intro (block released by sound or IntroButton)
+			var bitmap = new createjs.Bitmap(that.level.introImage);
 			stage.addChild(bitmap);
 
 			var gameText = new createjs.Text(level.title, "20px Visitor", "#ff7700");
@@ -299,8 +308,13 @@ FolderLevel.prototype.init = function() {
 		//effectInstance = soundPlayer.play(this.level.name+"intro");
 		soundPlayer.reset();
 
-		// Only set block if not already released by mobile tap
-		if (introSoundBlock.isBlock) {
+		// Mobile: always add block (StoryScreen callback will release it)
+		// Desktop: play intro sound and add click handler to skip
+		if (typeof isMobileDevice !== 'undefined' && isMobileDevice) {
+			// For mobile, always add the block - StoryScreen tap releases it
+			this.machine.addBlock(introSoundBlock);
+		} else if (introSoundBlock.isBlock) {
+			// Desktop: play intro sound, block until complete or user clicks
 			var effectInstance = soundPlayer.play(level.intro);
 			effectInstance.addEventListener("complete",function() {
 				introSoundBlock.isBlock=false;
@@ -331,6 +345,11 @@ FolderLevel.prototype.init = function() {
 		// Init stats tracking
 		if (typeof StatsTracker !== 'undefined') {
 			StatsTracker.init();
+		}
+
+		// Start tutorial for this level
+		if (typeof Tutorial !== 'undefined') {
+			Tutorial.startLevel(this.level.name);
 		}
 
 		// Show mobile layout when gameplay starts

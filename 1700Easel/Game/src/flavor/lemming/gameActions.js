@@ -3,6 +3,7 @@ function PlayAction() {}
 PlayAction.prototype = new MachineAction();
 
 PlayAction.prototype.act = function() {
+	console.log("LEMMING PlayAction running - THIS SHOULD NOT APPEAR IN FLUCH MODE");
 	if (!A.bus.bang(ADD_POLICEMEN)) {
 		
 		if (game.delayCount++%level.policeDelay==2){
@@ -64,6 +65,7 @@ ExitChecker.prototype.bang = function(name) {
 
 function WinAction() {
 	this.started=false;
+	this.storyShown=false;
 }
 WinAction.prototype = new MachineAction();
 
@@ -77,56 +79,126 @@ WinAction.prototype.act = function() {
 		}
 
 		soundPlayer.reset();
-		displayEntityHolder.destroy();
-		stage.removeAllChildren();
-		var img = globalLoader.getImage("img/background-Zib.png");
-		var dE = new DisplayEntity();
-		dE.addBitmap(img,false);
-		var wolf = globalLoader.getImage("img/arminwolf.png");
-		var d = dE.addBitmap(wolf, false);
-		d.xOff = 500;
-		d.pos = function(x,y,deFrame) {
-			var scaledWidth = (384/height())*width()-336;
-			if (scaledWidth>800-336) {
-				scaledWidth=800-336;
-			}
-			console.log(scaledWidth);
-			if (deFrame)
-				this.element.x=x-deFrame.currentScroll+this.xOff;
-			else
-				this.element.x=parseInt(x+scaledWidth);
-		};
-		d.pos(0,0);
-		var startObject = new IntroButton(0,0,400,400);
-		startObject.delaySelect = function(x, y) {
-			game.level = new FolderLevel(level.nextLevel);
-			game.level.start(game.machine);
-		};
-		this.started=true;
-		var gameText = new createjs.Text(timeKeeper.toString(), "10px Visitor", "#300300");
-		gameText.x=100;
-		gameText.y=60;
-		stage.addChild(gameText);
 
-		var gameText2 = new createjs.Text(timeKeeper.toString2(), "10px Visitor", "#300300");
-		gameText2.x=180;
-		gameText2.y=60;
-		stage.addChild(gameText2);
-
-		var gameText3 = new createjs.Text("Polizei hat es\ngeschafft!!", "20px Visitor", "#300300");
-		gameText3.x=120;
-		gameText3.y=239;
-		stage.addChild(gameText3);
-
-		// Show outro text if available
-		if (level && level.outroText) {
-			var outroText = new createjs.Text(level.outroText, "12px Visitor", "#553300");
-			outroText.x = 120;
-			outroText.y = 300;
-			outroText.lineWidth = 300;
-			stage.addChild(outroText);
+		// Check if we should show story screens (outro + quote)
+		var that = this;
+		var shouldShowStory = typeof StoryScreen !== 'undefined' && level;
+		var currentLevelData = null;
+		if (typeof LevelRegistry !== 'undefined' && level && level.name) {
+			currentLevelData = LevelRegistry.getLevel(level.name);
 		}
+
+		// Function to proceed to win screen
+		var showWinScreen = function() {
+			that.showWinScreenUI();
+		};
+
+		// Function to show quote if act completed
+		var checkAndShowQuote = function(callback) {
+			if (!currentLevelData || typeof LevelRegistry === 'undefined' || typeof GameState === 'undefined') {
+				callback();
+				return;
+			}
+
+			// Check if this level ends an act (is last level of act)
+			var levelsInAct = LevelRegistry.getLevelsByAct(currentLevelData.act);
+			var isLastLevelOfAct = levelsInAct.length > 0 &&
+				levelsInAct[levelsInAct.length - 1].id === level.name;
+
+			if (isLastLevelOfAct && GameState.shouldShowQuoteForAct(currentLevelData.act)) {
+				var quote = LevelRegistry.getZitatForAct(currentLevelData.act);
+				if (quote) {
+					GameState.setLastCompletedAct(currentLevelData.act);
+					GameState.collectZitat(quote.id);
+					StoryScreen.showQuote(quote, callback);
+					return;
+				}
+			}
+			callback();
+		};
+
+		// Function to show outro text
+		var showOutro = function(callback) {
+			if (shouldShowStory && level.outroText) {
+				StoryScreen.showSequence([
+					{ text: level.outroText, style: 'narrative' }
+				], callback);
+			} else {
+				callback();
+			}
+		};
+
+		// Check if this is the final level (show ending)
+		var isFinalLevel = currentLevelData && currentLevelData.id === 'wienHolding';
+
+		if (shouldShowStory && !this.storyShown) {
+			this.storyShown = true;
+
+			if (isFinalLevel) {
+				// Show ending sequence instead of normal win
+				showOutro(function() {
+					checkAndShowQuote(function() {
+						StoryScreen.showEnding(function() {
+							// After ending, could show credits or return to menu
+							showWinScreen();
+						});
+					});
+				});
+			} else {
+				// Normal level: outro → quote (if act ends) → win screen
+				showOutro(function() {
+					checkAndShowQuote(showWinScreen);
+				});
+			}
+		} else {
+			showWinScreen();
+		}
+
+		this.started=true;
 	}
+};
+
+WinAction.prototype.showWinScreenUI = function() {
+	displayEntityHolder.destroy();
+	stage.removeAllChildren();
+	var img = globalLoader.getImage("img/background-Zib.png");
+	var dE = new DisplayEntity();
+	dE.addBitmap(img,false);
+	var wolf = globalLoader.getImage("img/arminwolf.png");
+	var d = dE.addBitmap(wolf, false);
+	d.xOff = 500;
+	d.pos = function(x,y,deFrame) {
+		var scaledWidth = (384/height())*width()-336;
+		if (scaledWidth>800-336) {
+			scaledWidth=800-336;
+		}
+		console.log(scaledWidth);
+		if (deFrame)
+			this.element.x=x-deFrame.currentScroll+this.xOff;
+		else
+			this.element.x=parseInt(x+scaledWidth);
+	};
+	d.pos(0,0);
+	var startObject = new IntroButton(0,0,400,400);
+	startObject.delaySelect = function(x, y) {
+		game.level = new FolderLevel(level.nextLevel);
+		game.level.start(game.machine);
+	};
+
+	var gameText = new createjs.Text(timeKeeper.toString(), "10px Visitor", "#300300");
+	gameText.x=100;
+	gameText.y=60;
+	stage.addChild(gameText);
+
+	var gameText2 = new createjs.Text(timeKeeper.toString2(), "10px Visitor", "#300300");
+	gameText2.x=180;
+	gameText2.y=60;
+	stage.addChild(gameText2);
+
+	var gameText3 = new createjs.Text("Polizei hat es\ngeschafft!!", "20px Visitor", "#300300");
+	gameText3.x=120;
+	gameText3.y=239;
+	stage.addChild(gameText3);
 }
 
 function LostAction() {this.started=false;}

@@ -51,7 +51,7 @@ FluchGame.flavorReset = function() {
 
 
 FluchGame.prototype.addLemmings = function(){
-	hasadded=false;
+	var hasadded=false;
 	if(this.added++<1){
 		this.demonstrant = new Demonstrant();
 		this.demonstrant.x=level.dropX;
@@ -60,8 +60,10 @@ FluchGame.prototype.addLemmings = function(){
 	  	this.lemmings.push(this.demonstrant);
 	  	hasadded=true;
 	}
-	if (this.added==1)
+	if (this.added==1) {
 		A.bus.bang(FLUCH_STARTED);
+		A.bus.bang(ADD_POLICEMEN_FINISHED);
+	}
 	return hasadded;
 };
 
@@ -70,8 +72,13 @@ FluchGame.prototype.addLemmings = function(){
 FluchGame.prototype.scrollLevel = function(mouseX){
 	if (this.level && this.level.world) {
 		this.level.world.tick();
-		
+
+		// Check if cops have entered (only needs to trigger once)
 		if (A.bus.bang(COPS_ENTERED)) {
+			this.copsHaveEntered = true;
+		}
+
+		if (this.copsHaveEntered) {
 			if (this.demonstrant && !this.startedRun) {
 				this.demonstrant.updateAnimation("run");
 				new Act().effect("Ja");
@@ -84,10 +91,10 @@ FluchGame.prototype.scrollLevel = function(mouseX){
 			}
 			else {
 				this.stillAcc=false;
-				
+
 			}
 			this.currentScroll=parseInt(this.scrollState+=this.scrollPlus);
-			def = new DEFrame();
+			var def = new DEFrame();
 			def.currentScroll = this.currentScroll;
 			this.level.world.scroll(def);
 		}

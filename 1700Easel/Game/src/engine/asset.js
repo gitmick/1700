@@ -70,6 +70,7 @@ Asset.prototype.findCollidingItem=function() {
 }
 
 Asset.prototype.setCollision = function(x,y,type) {
+	if (!game.level || !game.level.world || !game.level.world.drawRect) return;
 	game.level.world.drawRect(x+this.collisionOffsetX,
 			y+this.collisionOffsetY,
 			this.collisionWidth,this.collisionHeight,type);

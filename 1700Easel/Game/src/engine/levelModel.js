@@ -39,6 +39,17 @@ function LayerDef(config) {
  * Initialize model from a loaded level
  */
 LevelModel.prototype.initFromLevel = function(lvl, levelData) {
+    console.log('LevelModel.initFromLevel called');
+    console.log('worldHtmlImage:', lvl.worldHtmlImage ? 'exists' : 'missing',
+                'complete:', lvl.worldHtmlImage ? lvl.worldHtmlImage.complete : 'N/A',
+                'width:', lvl.worldHtmlImage ? lvl.worldHtmlImage.width : 'N/A');
+    console.log('backgroundHtmlImage:', lvl.backgroundHtmlImage ? 'exists' : 'missing',
+                'complete:', lvl.backgroundHtmlImage ? lvl.backgroundHtmlImage.complete : 'N/A');
+    console.log('backgroundHtmlImage2:', lvl.backgroundHtmlImage2 ? 'exists' : 'missing',
+                'complete:', lvl.backgroundHtmlImage2 ? lvl.backgroundHtmlImage2.complete : 'N/A');
+    console.log('mapHtmlImage:', lvl.mapHtmlImage ? 'exists' : 'missing',
+                'complete:', lvl.mapHtmlImage ? lvl.mapHtmlImage.complete : 'N/A');
+
     // Set dimensions from world image
     if (lvl.worldHtmlImage) {
         this.width = lvl.worldHtmlImage.width;
@@ -116,6 +127,13 @@ LevelModel.prototype.initFromLevel = function(lvl, levelData) {
             parallaxFactor: 0.3,
             tiled: true
         }));
+    }
+
+    console.log('LevelModel layers created:', this.layers.length);
+    for (var i = 0; i < this.layers.length; i++) {
+        console.log('  Layer', i, ':', this.layers[i].id,
+                    'image:', this.layers[i].image ? 'yes' : 'no',
+                    'dims:', this.layers[i].image ? this.layers[i].image.width + 'x' + this.layers[i].image.height : 'N/A');
     }
 };
 
